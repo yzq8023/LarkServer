@@ -2,6 +2,7 @@ package com.github.hollykunge.servicetalk.message.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.hollykunge.servicetalk.common.utils.ChatUtils;
 import com.github.hollykunge.servicetalk.message.entity.ImMessage;
 import com.github.hollykunge.servicetalk.message.mapper.ImMessageMapper;
 import com.github.hollykunge.servicetalk.message.service.IImMessageService;
