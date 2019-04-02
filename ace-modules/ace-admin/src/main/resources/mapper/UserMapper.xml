@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.hollykunge.security.admin.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.github.hollykunge.security.admin.entity.User">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="NUMERIC" property="id" />
+    <result column="USERNAME" jdbcType="VARCHAR" property="username" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="BIRTHDAY" jdbcType="VARCHAR" property="birthday" />
+    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    <result column="TYPE" jdbcType="VARCHAR" property="type" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="XH" jdbcType="VARCHAR" property="xh" />
+    <result column="TECH_POST_NAME" jdbcType="VARCHAR" property="techPostName" />
+    <result column="TECH_POST_CODE" jdbcType="VARCHAR" property="techPostCode" />
+    <result column="TECHNICAL_POST_NAME" jdbcType="VARCHAR" property="technicalPostName" />
+    <result column="TECHNICAL_POST_CODE" jdbcType="VARCHAR" property="technicalPostCode" />
+    <result column="TECH_LEVEL_NAME" jdbcType="VARCHAR" property="techLevelName" />
+    <result column="TECH_LEVEL_CODE" jdbcType="VARCHAR" property="techLevelCode" />
+    <result column="TECHNICAL_MC_NAME" jdbcType="VARCHAR" property="technicalMcName" />
+    <result column="TECHNICAL_MC_TCODE" jdbcType="VARCHAR" property="technicalMcTcode" />
+    <result column="PERSON_NAME" jdbcType="VARCHAR" property="personName" />
+    <result column="HIGHEST_INDUSTRIAL" jdbcType="VARCHAR" property="highestIndustrial" />
+    <result column="INNER_ID" jdbcType="VARCHAR" property="innerId" />
+    <result column="OFFICE_ADDR" jdbcType="VARCHAR" property="officeAddr" />
+    <result column="IDENTITY_NO" jdbcType="VARCHAR" property="identityNo" />
+    <result column="XQAH" jdbcType="VARCHAR" property="xqah" />
+    <result column="POLICITAL_NAME" jdbcType="VARCHAR" property="policitalName" />
+    <result column="POLICITAL_CODE" jdbcType="VARCHAR" property="policitalCode" />
+    <result column="GENDER" jdbcType="VARCHAR" property="gender" />
+    <result column="XING" jdbcType="VARCHAR" property="xing" />
+    <result column="PSN_SECRET_LEVEL" jdbcType="VARCHAR" property="psnSecretLevel" />
+    <result column="DEPT_TYYH_ORG_CODE" jdbcType="VARCHAR" property="deptTyyhOrgCode" />
+    <result column="DEPT_NAME" jdbcType="VARCHAR" property="deptName" />
+    <result column="DEPT_CODE" jdbcType="VARCHAR" property="deptCode" />
+    <result column="IN_BU_DATE" jdbcType="VARCHAR" property="inBuDate" />
+    <result column="MING" jdbcType="VARCHAR" property="ming" />
+    <result column="IN_PARTY_DATE" jdbcType="VARCHAR" property="inPartyDate" />
+    <result column="MARRY_NAME" jdbcType="VARCHAR" property="marryName" />
+    <result column="MARRY_CODE" jdbcType="VARCHAR" property="marryCode" />
+    <result column="IDENTITY_TYPE" jdbcType="VARCHAR" property="identityType" />
+    <result column="HOME_TOWN" jdbcType="VARCHAR" property="homeTown" />
+    <result column="HR_PSN_CODE" jdbcType="VARCHAR" property="hrPsnCode" />
+    <result column="IN_OUT_NO" jdbcType="VARCHAR" property="inOutNo" />
+    <result column="INFO_SECRET_LEVEL_NAME" jdbcType="VARCHAR" property="infoSecretLevelName" />
+    <result column="INFO_SECRET_LEVEL_CODE" jdbcType="VARCHAR" property="infoSecretLevelCode" />
+    <result column="END_FLAG" jdbcType="VARCHAR" property="endFlag" />
+    <result column="OFFICE_TEL" jdbcType="VARCHAR" property="officeTel" />
+    <result column="CODE" jdbcType="VARCHAR" property="code" />
+    <result column="HIGHEST_EDU" jdbcType="VARCHAR" property="highestEdu" />
+    <result column="DYCN" jdbcType="VARCHAR" property="dycn" />
+    <result column="FC_FLAG" jdbcType="VARCHAR" property="fcFlag" />
+    <result column="NATIONALITY_NAME" jdbcType="VARCHAR" property="nationalityName" />
+    <result column="UNIT_NAME" jdbcType="VARCHAR" property="unitName" />
+    <result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
+    <result column="CRT_USER" jdbcType="VARCHAR" property="crtUser" />
+    <result column="CRT_NAME" jdbcType="VARCHAR" property="crtName" />
+    <result column="CRT_HOST" jdbcType="VARCHAR" property="crtHost" />
+    <result column="CRT_TIME" jdbcType="DATE" property="crtTime" />
+    <result column="UPD_USER" jdbcType="VARCHAR" property="updUser" />
+    <result column="UPD_NAME" jdbcType="VARCHAR" property="updName" />
+    <result column="UPD_HOST" jdbcType="VARCHAR" property="updHost" />
+    <result column="UPD_TIME" jdbcType="DATE" property="updTime" />
+    <result column="ATTR4" jdbcType="VARCHAR" property="attr4" />
+    <result column="ATTR5" jdbcType="VARCHAR" property="attr5" />
+    <result column="ATTR6" jdbcType="VARCHAR" property="attr6" />
+    <result column="ATTR7" jdbcType="VARCHAR" property="attr7" />
+    <result column="ATTR8" jdbcType="VARCHAR" property="attr8" />
+    <result column="CAN_ADMIN" jdbcType="BLOB" property="canAdmin" />
+    <result column="CAN_FORK" jdbcType="BLOB" property="canFork" />
+    <result column="CAN_CREATE" jdbcType="BLOB" property="canCreate" />
+  </resultMap>
+  
+  <select id="selectMemberByGroupId" resultMap="BaseResultMap">
+    select u.* from base_user u
+    left join  base_group_member gm
+    on gm.user_id = u.id where gm.group_id = #{groupId}
+  </select>
+  <select id="selectLeaderByGroupId" resultMap="BaseResultMap">
+    select u.* from base_user u
+    left join  base_group_leader gm
+    on gm.user_id = u.id where gm.group_id = #{groupId}
+  </select>
+  <select id="selectMemberByOrgId" resultMap="BaseResultMap">
+    select u.* from base_user u
+    left join  base_org_member om
+    on om.user_id = u.id where om.org_id = #{orgId}
+  </select>
+  <select id="selectLeaderByOrgId" resultMap="BaseResultMap">
+    select u.* from base_user u
+    left join  base_org_leader ol
+    on ol.user_id = u.id where ol.org_id = #{orgId}
+  </select>
+</mapper>
