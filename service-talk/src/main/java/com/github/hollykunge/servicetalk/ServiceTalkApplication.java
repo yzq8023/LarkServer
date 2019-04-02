@@ -11,10 +11,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @MapperScan("com.github.hollykunge.servicetalk")
 @EnableFeignClients
 public class ServiceTalkApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(ServiceTalkApplication.class, args);
     }
-
 }
 
