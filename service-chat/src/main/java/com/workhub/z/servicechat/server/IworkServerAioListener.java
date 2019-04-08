@@ -27,15 +27,12 @@ public class IworkServerAioListener extends WsServerAioListener {
     @Override
     public void onAfterConnected(ChannelContext channelContext, boolean isConnected, boolean isReconnect) throws Exception {
 
-//        UserModel user = (UserModel) session.getAttribute("userSessionItems");
-
+//      UserModel user = (UserModel) session.getAttribute("userSessionItems");
         super.onAfterConnected(channelContext, isConnected, isReconnect);
         if (log.isInfoEnabled()) {
             log.info("onAfterConnected\r\n{}", channelContext);
         }
         //绑定到群组，后面会有群发
-
-
     }
 
     @Override
@@ -78,5 +75,4 @@ public class IworkServerAioListener extends WsServerAioListener {
             log.info("onAfterHandled\r\n{}\r\n{}", packet.logstr(), channelContext);
         }
     }
-
 }
