@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.casic.flatform.mapper.MessageMapper">
-	<resultMap id="PrivateMsgModel" type="com.casic.flatform.model.PrivateMsgModel">
+<mapper namespace="com.workhub.z.servicechat.mapper.MessageMapper">
+	<resultMap id="PrivateMsgModel" type="com.workhub.z.servicechat.model.PrivateMsgModel">
 		<id column="msg_id" property="msgId" jdbcType="VARCHAR" />
 		<result column="msg_sender" property="msgSender" jdbcType="VARCHAR" />
 		<result column="senderName" property="senderName" jdbcType="VARCHAR" />
@@ -16,7 +16,7 @@
 		<result column="levels" property="levels" jdbcType="VARCHAR" />
 	</resultMap>
 	
-	<resultMap id="GroupMsgModel" type="com.casic.flatform.model.GroupMsgModel">
+	<resultMap id="GroupMsgModel" type="com.workhub.z.servicechat.model.GroupMsgModel">
 		<id column="msg_id" property="msgId" jdbcType="VARCHAR" />
 		<result column="msg_sender" property="msgSender" jdbcType="VARCHAR" />
 		<result column="senderName" property="senderName" jdbcType="VARCHAR" />
@@ -28,7 +28,7 @@
 		<result column="levels" property="levels" jdbcType="VARCHAR" />
 	</resultMap>
 	
-	<resultMap id="SystemNotificationModel" type="com.casic.flatform.model.SystemNotificationModel">
+	<resultMap id="SystemNotificationModel" type="com.workhub.z.servicechat.model.SystemNotificationModel">
 		<id column="notification_id" property="notificationId" jdbcType="VARCHAR" />
 		<result column="sender" property="sender" jdbcType="VARCHAR" />
 		<result column="send_time" property="sendTime" />
@@ -40,13 +40,13 @@
 		<result column="receiver" property="receiver" jdbcType="VARCHAR" />
 	</resultMap>
 	
-	<resultMap id="TreeModel" type="com.casic.flatform.model.TreeModel">
+	<resultMap id="TreeModel" type="com.workhub.z.servicechat.model.TreeModel">
 		<id column="NODE_ID" property="id" jdbcType="INTEGER" />
 		<result column="PID" property="pId" jdbcType="INTEGER" />
 		<result column="PNAME" property="name" jdbcType="VARCHAR" />
 	</resultMap>
-	
-	<resultMap id="ReModel" type="com.casic.flatform.model.ReModel">
+
+	<resultMap id="ReModel" type="com.workhub.z.servicechat.model.ReModel">
 		<id column="reid" property="reId" jdbcType="VARCHAR" />
 		<result column="remsg" property="reMsg" jdbcType="VARCHAR" />
 		<result column="reperson" property="rePerson" jdbcType="VARCHAR" />
@@ -55,7 +55,7 @@
 		<result column="msgreceiver" property="msgReceiver" jdbcType="VARCHAR" />
 	</resultMap>
 	
-	<resultMap id="UserFileListModel" type="com.casic.flatform.model.ChatFileModel">
+	<resultMap id="UserFileListModel" type="com.workhub.z.servicechat.model.ChatFileModel">
 		<id column="file_id" property="fileId" jdbcType="VARCHAR" />
 		<result column="file_name" property="fileName" jdbcType="VARCHAR" />
 		<result column="file_type" property="fileType" jdbcType="VARCHAR" />
@@ -70,7 +70,7 @@
 		<result column="levels" property="levels" jdbcType="VARCHAR" />
 	</resultMap>
 	
-	<resultMap id="GroupFileModel" type="com.casic.flatform.model.GroupFileModel">
+	<resultMap id="GroupFileModel" type="com.workhub.z.servicechat.model.GroupFileModel">
 		<id column="file_id" property="fileId" jdbcType="VARCHAR" />
 		<result column="file_name" property="fileName" jdbcType="VARCHAR" />
 		<result column="file_type" property="fileType" jdbcType="VARCHAR" />
@@ -88,18 +88,18 @@
 		<result column="levels" property="levels" jdbcType="VARCHAR" />
 	</resultMap>
 
-	<resultMap id="Content" type="com.casic.flatform.model.Content">
+	<resultMap id="Content" type="com.workhub.z.servicechat.model.Content">
 		<result column="MSG_TYPE" property="type" jdbcType="VARCHAR" />
 		<result column="MSG" property="content" jdbcType="VARCHAR" />
 		<result column="SEND_TIME" property="date"  />
 	</resultMap>
 
-	<resultMap id="msgout" type="com.casic.flatform.model.StatisticsModel">
+	<resultMap id="msgout" type="com.workhub.z.servicechat.model.StatisticsModel">
 		<result column="content" property="content" jdbcType="VARCHAR" />
 		<result column="num" property="num" jdbcType="INTEGER" />
 	</resultMap>
 
-	<resultMap id="reportdata" type="com.casic.flatform.model.ReportDataModel">
+	<resultMap id="reportdata" type="com.workhub.z.servicechat.model.ReportDataModel">
 		<result column="personalDiscuss" property="personalDiscuss" jdbcType="INTEGER" />
 		<result column="personalDiscussSum" property="personalDiscussSum" jdbcType="INTEGER" />
 		<result column="groupDiscuss" property="groupDiscuss" jdbcType="INTEGER" />
@@ -114,7 +114,7 @@
 		<result column="head" property="head" jdbcType="VARCHAR" />
 	</resultMap>
 	
-	<resultMap id="at" type="com.casic.flatform.model.ATModel">
+	<resultMap id="at" type="com.workhub.z.servicechat.model.ATModel">
 		<id column="id" property="id" jdbcType="VARCHAR" />
 		<result column="groupid" property="groupid" jdbcType="VARCHAR" />
 		<result column="receiverid" property="receiverid" jdbcType="VARCHAR" />
@@ -780,8 +780,8 @@
 	
 	<!-- 获取最近聊天历史消息数量(私聊) -->
 	<select  id="queryPrivateHisMsgsCount" resultType="int">
-		SELECT count(1) 
+		SELECT count(1)
 		FROM pf_hi_private_msg rsm LEFT JOIN sys_user sus ON rsm.msg_sender = sus.userId
-		WHERE rsm.msg_receiver = #{chatUserId} ORDER BY rsm.send_time DESC 
+		WHERE rsm.msg_receiver = #{chatUserId} ORDER BY rsm.send_time DESC
 	</select>
 </mapper>

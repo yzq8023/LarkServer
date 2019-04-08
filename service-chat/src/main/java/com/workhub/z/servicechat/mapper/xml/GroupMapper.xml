@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.casic.flatform.mapper.GroupMapper">
-	<resultMap id="UserModel" type="com.casic.flatform.model.UserModel">
+<mapper namespace="com.workhub.z.servicechat.mapper.GroupMapper">
+	<resultMap id="UserModel" type="com.workhub.z.servicechat.model.UserModel">
 		<id column="userId" property="userId" jdbcType="VARCHAR" />
 		<result column="fullname" property="fullname" jdbcType="VARCHAR" />
 		<result column="account" property="account" jdbcType="VARCHAR" />
@@ -22,7 +22,7 @@
 		<result column="isonline" property="isonline" jdbcType="VARCHAR" />
 		<result column="head" property="head" jdbcType="VARCHAR" />
 	</resultMap>
-	<resultMap id="GroupInfoModel" type="com.casic.flatform.model.GroupInfoModel">
+	<resultMap id="GroupInfoModel" type="com.workhub.z.servicechat.mapper.GroupInfoModel">
 		<id column="group_id" property="groupId" jdbcType="VARCHAR" />
 		<result column="group_name" property="groupName" jdbcType="VARCHAR" />
 		<result column="group_describe" property="groupDescribe" jdbcType="VARCHAR" />
@@ -35,7 +35,7 @@
 		<result column="people_count" property="peopleCount" jdbcType="INTEGER" />
 		<result column="isclose" property="isclose" jdbcType="VARCHAR" />
 	</resultMap>
-	<resultMap id="GroupFileModel" type="com.casic.flatform.model.GroupFileModel">
+	<resultMap id="GroupFileModel" type="com.workhub.z.servicechat.mapper.GroupFileModel">
 		<id column="file_id" property="fileId" jdbcType="VARCHAR" />
 		<result column="file_name" property="fileName" jdbcType="VARCHAR" />
 		<result column="file_type" property="fileType" jdbcType="VARCHAR" />
@@ -52,8 +52,8 @@
 		<result column="group_id" property="groupId" jdbcType="VARCHAR" />
 		<result column="levels" property="levels" jdbcType="VARCHAR" />
 	</resultMap>
-	
-	<resultMap id="GroupMsgModel" type="com.casic.flatform.model.GroupMsgModel">
+
+	<resultMap id="GroupMsgModel" type="com.workhub.z.servicechat.mapper.GroupMsgModel">
 		<id column="msg_id" property="msgId" jdbcType="VARCHAR" />
 		<result column="msg_sender" property="msgSender" jdbcType="VARCHAR" />
 		<result column="msg_receiver" property="msgReceiver" jdbcType="VARCHAR" />
@@ -65,8 +65,8 @@
 		<result column="is_important" property="isImportant" jdbcType="INTEGER" />
 		<result column="levels" property="levels" jdbcType="VARCHAR" />
 	</resultMap>
-	
-	<resultMap id="GroupUserRefModel" type="com.casic.flatform.model.GroupUserRefModel">
+
+	<resultMap id="GroupUserRefModel" type="com.workhub.z.servicechat.mapper.GroupUserRefModel">
 		<result column="user_id" property="userId" jdbcType="VARCHAR" />
 		<result column="group_id" property="groupId" jdbcType="VARCHAR" />
 		<result column="enter_time" property="enterTime" jdbcType="DATE" />
@@ -75,7 +75,7 @@
 		<result column="role" property="role" jdbcType="VARCHAR" />
 	</resultMap>
 
-	<resultMap id="GroupModel" type="com.casic.flatform.model.GroupModel">
+	<resultMap id="GroupModel" type="com.workhub.z.servicechat.mapper.GroupModel">
 		<result column="group_id" property="groupId" jdbcType="VARCHAR" />
 		<result column="group_name" property="groupName" jdbcType="VARCHAR" />
 		<result column="group_describe" property="groupDescribe" jdbcType="VARCHAR" />
@@ -89,10 +89,10 @@
 		<result column="levels" property="levels" jdbcType="VARCHAR" />
 	</resultMap>
 
-	<resultMap id="DateOut" type="com.casic.flatform.model.StatisticsModel">
-		<result column="content" property="content" jdbcType="VARCHAR" />
-		<result column="num" property="num" jdbcType="INTEGER" />
-	</resultMap>
+	<!--<resultMap id="DateOut" type="com.workhub.z.servicechat.mapper.StatisticsModel">-->
+		<!--<result column="content" property="content" jdbcType="VARCHAR" />-->
+		<!--<result column="num" property="num" jdbcType="INTEGER" />-->
+	<!--</resultMap>-->
 	
 	<!-- 获得讨论组成员 -->
 	<select id="queryGroupUser" resultMap="UserModel">
@@ -226,7 +226,7 @@
 	</update>
 	
 	<!-- 获得所有讨论组 -->
-	<select id="queryAllGroup" resultMap="GroupInfoModel" parameterType="com.casic.flatform.model.GroupInfoModel">
+	<select id="queryAllGroup" resultMap="GroupInfoModel" parameterType="com.workhub.z.servicechat.model.GroupInfoModel">
 	<![CDATA[
 		select * from pf_user_group where isdelete <> '1'
 	]]>
@@ -296,10 +296,10 @@
 		select t.levels from pf_user_group t where group_id = #{groupid,jdbcType=VARCHAR}
 	</select>
 
-	<!--根据人员ID，查找最佳讨论组（消息最多）-->
-	<select id="queryGroupMsgByUserId" parameterType="String"  resultMap="DateOut">
-		select g.msg_receiver as content,count(*) as num from PF_USER_GROUP_REF t,pf_hi_group_msg g where t.user_id = #{userid,jdbcType=VARCHAR} and g.msg_receiver = t.group_id group by g.msg_receiver,g.msg_receiver order by num asc
-	</select>
+	<!--&lt;!&ndash;根据人员ID，查找最佳讨论组（消息最多）&ndash;&gt;-->
+	<!--<select id="queryGroupMsgByUserId" parameterType="String"  resultMap="DateOut">-->
+		<!--select g.msg_receiver as content,count(*) as num from PF_USER_GROUP_REF t,pf_hi_group_msg g where t.user_id = #{userid,jdbcType=VARCHAR} and g.msg_receiver = t.group_id group by g.msg_receiver,g.msg_receiver order by num asc-->
+	<!--</select>-->
 
 	<!-- 获得讨论组文件 -->
 	<select id="queryGroupFilenum" resultType="int">
@@ -344,5 +344,10 @@
 			AND t.levels = #{msgLevels}
 		</if>
 		 order by t.send_time desc
+	</select>
+
+	<!--根据用户id获取所有群组-->
+	<select id="queryGroupByUser" resultMap="GroupInfoModel">
+		select o.* from PF_USER_GROUP_REF t left join pf_user_group o on o.group_id = t.group_id where t.user_id = '10000019431705'
 	</select>
 </mapper>
