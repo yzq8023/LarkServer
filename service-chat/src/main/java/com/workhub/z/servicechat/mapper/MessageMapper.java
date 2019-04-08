@@ -3,6 +3,7 @@ package com.workhub.z.servicechat.mapper;
 import com.workhub.z.servicechat.model.GroupMsgModel;
 import com.workhub.z.servicechat.model.PrivateMsgModel;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Map;
  * 消息处理Mapper
  * @author hanxu
  */
+@Component
 public interface MessageMapper {
 
 	

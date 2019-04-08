@@ -1,6 +1,8 @@
 package com.workhub.z.servicechat.controller.group;
 
-
+import cn.hutool.json.JSONObject;
+import com.workhub.z.servicechat.service.GroupService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -13,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/groupController")
 public class groupController {
 
+    @Autowired
+    private GroupService groupService;
+
     /**
     *@Description: 查询群组
     *@Param: 用户id
@@ -20,7 +25,12 @@ public class groupController {
     *@Author: 忠
     *@date: 2019/3/21
     */
-
+    @RequestMapping("/getGroupByUser")
+    public Object getGroupByUser(String userId){
+        JSONObject json = null;
+        groupService.queryGroupByUser(userId);
+        return json;
+    }
     /**
     *@Description: 关闭群组
     *@Param: 群组id
