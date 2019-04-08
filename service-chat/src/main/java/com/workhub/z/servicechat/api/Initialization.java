@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/api/Initialization")
 public class Initialization {
 
-//    @Autowired
-//    private IUserService iUserService;
+    @Autowired
+    private IUserService iUserService;
 
     /**
     *@Description: 查询user所在群组
@@ -33,11 +33,11 @@ public class Initialization {
     *@Author: 忠
     *@date: 2019/3/21
     */
-//    @RequestMapping("/getInfo")
-//    public UserInfo queryUserInfoBySn(String sn){
-//        iUserService.queryUserinfoBySn(sn);
-//        return null;
-//    }
+    @RequestMapping("/getInfo")
+    public UserInfo queryUserInfoBySn(String sn){
+        iUserService.queryUserinfoBySn(sn);
+        return null;
+    }
 
     /**
     *@Description: 最近联系人

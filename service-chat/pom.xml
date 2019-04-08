@@ -49,17 +49,26 @@
                 <artifactId>druid</artifactId>
                 <version>1.0.11</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>Camden.SR4</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-jdbc</artifactId>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -99,12 +108,38 @@
             <version>2.0.1</version>
         </dependency>
         <!--内部接口调用飞机-->
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-starter-openfeign</artifactId>-->
-        <!--</dependency>-->
+        <!--添加feign依赖-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>2.1.1.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.hollykunge</groupId>
+            <artifactId>ace-interface</artifactId>
+            <version>2.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.hollykunge</groupId>
+            <artifactId>ace-auth-server</artifactId>
+            <version>2.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
+    <!--<distributionManagement>-->
+        <!--<repository>-->
+            <!--<id>nexus</id>-->
+            <!--<name>maven-releases</name>-->
+            <!--<url>http://10.12.97.30:6666/repository/maven-releases/</url>-->
+        <!--</repository>-->
+        <!--<snapshotRepository>-->
+            <!--<id>nexus</id>-->
+            <!--<name>maven-snapshots</name>-->
+            <!--<url>http://10.12.97.30:6666/repository/maven-snapshots/</url>-->
+        <!--</snapshotRepository>-->
+    <!--</distributionManagement>-->
     <build>
         <plugins>
             <plugin>
