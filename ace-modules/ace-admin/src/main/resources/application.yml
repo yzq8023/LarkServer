@@ -11,7 +11,7 @@ spring:
         default-property-inclusion: non_null
     datasource:
         name: test
-        url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/ag_admin_v1?useUnicode=true&characterEncoding=UTF8&useSSL=true
+        url: jdbc:mysql://${MYSQL_HOST:10.12.97.30}:${MYSQL_PORT:3306}/lark-admin?useUnicode=true&characterEncoding=UTF8&useSSL=true
         username: root
         password: 123456
 #        url: jdbc:oracle:thin:@${ORACLE_HOST:10.12.97.30}:${ORACLE_PORT:1521}:arltr
@@ -124,7 +124,7 @@ redis:
          maxActive: 300
          maxIdle: 100
          maxWait: 1000
-    host: ${REDIS_HOST:localhost}
+    host: ${REDIS_HOST:10.12.97.34}
     port:  ${REDIS_PORT:6379}
     password:
     timeout: 2000
