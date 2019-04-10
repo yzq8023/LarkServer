@@ -1,10 +1,11 @@
 package com.workhub.z.servicechat.mapper;
 
-import com.workhub.z.servicechat.model.*;
 import com.github.hollykunge.security.api.vo.user.UserInfo;
+import com.workhub.z.servicechat.model.*;
+//import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.workhub.z.servicechat.model.GroupMsgModel;
-import org.apache.ibatis.annotations.Param;
-import org.nutz.dao.entity.annotation.Comment;
+//import feign.Param;
+import org.nutz.mvc.annotation.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
