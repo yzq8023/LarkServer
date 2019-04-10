@@ -16,11 +16,11 @@ import java.util.Map;
 public interface GroupMapper {
 
 	/**
-	*@Description:
-	*@Param:
-	*@return:
-	*@Author: 忠
-	*@date: 2019/4/8
+	* @Description: 根据userID查询当前所在组
+	* @Param: userId
+	* @return: list
+	* @Author: 忠
+	* @date: 2019/4/8
 	*/
 	public List<GroupModel> queryGroupByUser(String userId);
 

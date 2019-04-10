@@ -56,15 +56,20 @@ public class GroupServiceImpl implements GroupService {
 	public List<GroupMsgModel> queryImportantInfo(String groupId) {
 		return groupMapper.queryImportantInfo(groupId);
 	}
-	
+
+	@Override
+	public List<GroupMsgModel> queryGInfo(String groupId) {
+		return null;
+	}
+
 	/**
 	 * 导出讨论组聊天信息
 	 * @return
 	 */
-	@Override
-	public List<GroupMsgModel> queryGInfo(String groupId) {
-		return groupMapper.queryGInfo(groupId);
-	}
+//	@Override
+//	public List<GroupMsgModel> queryGroupByUserqueryGInfo(String groupId) {
+//		return groupMapper.queryGInfo(groupId);
+//	}
 	
 	/**
 	 * 获得讨论组信息

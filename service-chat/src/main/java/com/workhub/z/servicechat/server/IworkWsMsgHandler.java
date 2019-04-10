@@ -1,7 +1,11 @@
 package com.workhub.z.servicechat.server;
 
+import com.workhub.z.servicechat.model.GroupModel;
+import com.workhub.z.servicechat.service.GroupService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.tio.core.Aio;
 import org.tio.core.ChannelContext;
 import org.tio.http.common.HttpRequest;
@@ -11,10 +15,24 @@ import org.tio.websocket.common.WsResponse;
 import org.tio.websocket.common.WsSessionContext;
 import org.tio.websocket.server.handler.IWsMsgHandler;
 
+import javax.annotation.PostConstruct;
+import java.util.List;
 import java.util.Objects;
 
+@Component
 public class IworkWsMsgHandler implements IWsMsgHandler {
     private static Logger log = LoggerFactory.getLogger(IworkWsMsgHandler.class);
+
+    @Autowired
+    protected GroupService groupService;
+    private static IworkWsMsgHandler  serverHandler ;
+
+    @PostConstruct //通过@PostConstruct实现初始化bean之前进行的操作
+    public void init() {
+        serverHandler = this;
+        serverHandler.groupService = this.groupService;
+        // 初使化时将已静态化的testService实例化
+    }
 
     public static IworkWsMsgHandler me = new IworkWsMsgHandler();
 
@@ -28,14 +46,19 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
     @Override
     public HttpResponse handshake(HttpRequest request, HttpResponse httpResponse, ChannelContext channelContext) throws Exception {
         String clientip = request.getClientIp();
-//        String name=request.getParam("name");
-//        String userid=request.getParam("token");
-        String userid=request.getParam("userid");
 
-        //前端 参数 获取，绑定信息
+        String userid=request.getParam("userid");
+//      前端 参数 绑定信息
         Aio.bindUser(channelContext,userid);
-//        Aio.bindGroup(channelContext, Const.GROUP_ID);
-//        Aio.bindGroup(channelContext,Const.GROUP_ID);
+//      加入系统消息组
+        Aio.bindGroup(channelContext, Const.GROUP_ID);
+//       根据握手信息，将用户绑定到群组
+        List<GroupModel> listGroupModel =  serverHandler.groupService.queryGroupByUser("11");
+        for (int i = 0; i < listGroupModel.size() ; i++) {
+            Aio.bindGroup(channelContext,listGroupModel.get(i).getGroupId());
+            System.out.println();
+        }
+
         log.info("收到来自{}的ws握手包\r\n{}", clientip, request.toString());
         return httpResponse;
     }
@@ -95,4 +118,8 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
         //返回值是要发送给客户端的内容，一般都是返回null
         return null;
     }
+
+//    public boolean joinGroup(ChannelContext channelContext){
+//
+//    }
 }
