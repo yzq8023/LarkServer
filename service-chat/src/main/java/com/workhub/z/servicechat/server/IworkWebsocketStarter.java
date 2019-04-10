@@ -11,8 +11,9 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 
 @Component
-@Order(1)
-public class IworkWebsocketStarter implements ApplicationRunner {
+//@Order(1)
+//public class IworkWebsocketStarter implements ApplicationRunner {
+public class IworkWebsocketStarter {
     private WsServerStarter wsServerStarter;
     private ServerGroupContext serverGroupContext;
 
@@ -47,8 +48,14 @@ public class IworkWebsocketStarter implements ApplicationRunner {
         return wsServerStarter;
     }
 
-    @Override
-    public void run(ApplicationArguments applicationArguments) throws Exception {
+//    @Override 默认启动 取消
+//    public void run(ApplicationArguments applicationArguments) throws Exception {
+//        IworkWebsocketStarter appStarter = new IworkWebsocketStarter();
+//        appStarter.wsServerStarter.start();
+//        System.out.println("网络初始化成功!!");
+//    }
+
+    public void run() throws Exception {
         IworkWebsocketStarter appStarter = new IworkWebsocketStarter();
         appStarter.wsServerStarter.start();
         System.out.println("网络初始化成功!!");

@@ -2,6 +2,7 @@ package com.workhub.z.servicechat.api;
 
 //import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.workhub.z.servicechat.feign.IUserService;
+import com.workhub.z.servicechat.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,9 @@ public class Initialization {
 
     @Autowired
     private IUserService iUserService;
+
+    @Autowired
+    private GroupService groupService;
 
     /**
     *@Description: 查询user所在群组
