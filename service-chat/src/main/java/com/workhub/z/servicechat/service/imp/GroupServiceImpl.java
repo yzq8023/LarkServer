@@ -1,13 +1,14 @@
 package com.workhub.z.servicechat.service.imp;
 
+//import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.workhub.z.servicechat.mapper.GroupMapper;
-import com.workhub.z.servicechat.mapper.MessageMapper;
 import com.workhub.z.servicechat.model.*;
 import com.workhub.z.servicechat.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+//import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -25,9 +26,9 @@ public class GroupServiceImpl implements GroupService {
 
 	@Autowired
 	private GroupMapper groupMapper;
-
-	@Autowired
-	private MessageMapper messageMapper;
+//
+//	@Autowired
+//	private MessageMapper messageMapper;
 
 	@Override
 	public List<GroupModel> queryGroupByUser(String userid) {
@@ -227,7 +228,7 @@ public class GroupServiceImpl implements GroupService {
 	 */
 	@Override
 	public void updateSysMsgFlag(String notificationId) {
-		messageMapper.updateSysMsgFlag(notificationId);
+//		messageMapper.updateSysMsgFlag(notificationId);
 	}
 
 	/**
@@ -340,7 +341,8 @@ public class GroupServiceImpl implements GroupService {
 	@SuppressWarnings("unchecked")
 	public List<GroupMsgModel> queryGroupMsg(String groupId, String msg, int page, int rows, Date startDate,
 			Date endDate) {
-		return (List<GroupMsgModel>)messageMapper.groupHiMsg(msg, groupId, (rows * (page-1)+1), rows*page, startDate, endDate);
+//		return (List<GroupMsgModel>)messageMapper.groupHiMsg(msg, groupId, (rows * (page-1)+1), rows*page, startDate, endDate);
+	return null;
 	}
 	
 	/**
@@ -353,7 +355,8 @@ public class GroupServiceImpl implements GroupService {
 	 */
 	@Override
 	public int queryGroupMsgCount(String groupId, String msg, Date startDate, Date endDate) {
-		return messageMapper.groupHiMsgCount(msg, groupId, startDate, endDate);
+//		return messageMapper.groupHiMsgCount(msg, groupId, startDate, endDate);
+		return 0;
 	}
 	
 	/**

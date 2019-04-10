@@ -1,6 +1,6 @@
 package com.workhub.z.servicechat.api;
 
-import com.github.hollykunge.security.api.vo.user.UserInfo;
+//import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.workhub.z.servicechat.feign.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,9 +34,10 @@ public class Initialization {
     *@date: 2019/3/21
     */
     @RequestMapping("/getInfo")
-    public UserInfo queryUserInfoBySn(String sn){
-        iUserService.queryUserinfoBySn(sn);
-        return null;
+    public void queryUserInfoBySn(String sn){
+//        iUserService.queryUserinfoBySn(sn);
+        iUserService.validate("11","11");
+//        return null;
     }
 
     /**

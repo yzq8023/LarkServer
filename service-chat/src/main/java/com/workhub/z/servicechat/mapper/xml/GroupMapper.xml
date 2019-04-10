@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.workhub.z.servicechat.mapper.GroupMapper">
-	<resultMap id="UserModel" type="com.workhub.z.servicechat.model.UserModel">
-		<id column="userId" property="userId" jdbcType="VARCHAR" />
-		<result column="fullname" property="fullname" jdbcType="VARCHAR" />
-		<result column="account" property="account" jdbcType="VARCHAR" />
-	<!--<result column="password" property="password" jdbcType="VARCHAR" /> -->
-		<result column="isExpired" property="isExpired" jdbcType="INTEGER" />
-		<result column="isLock" property="isLock" jdbcType="INTEGER" />
-		<result column="createtime" property="createtime" jdbcType="DATE" />
-		<result column="status" property="status" jdbcType="INTEGER" />
-		<result column="roomid" property="roomid" jdbcType="VARCHAR" />
-		<result column="mobile" property="mobile" jdbcType="VARCHAR" />
-		<result column="phone" property="phone" jdbcType="VARCHAR" />
-		<result column="sex" property="sex" jdbcType="VARCHAR" />
-		<result column="picture" property="picture" jdbcType="INTEGER" />
-		<result column="FROMTYPE" property="fromType" jdbcType="INTEGER" />
-		<result column="orgId" property="orgId" jdbcType="VARCHAR" />
-		<result column="orgSn" property="orgSn" jdbcType="VARCHAR" />
-		<result column="shortAccount" property="shortAccount" jdbcType="VARCHAR" />
-		<result column="isonline" property="isonline" jdbcType="VARCHAR" />
-		<result column="head" property="head" jdbcType="VARCHAR" />
-	</resultMap>
-	<resultMap id="GroupInfoModel" type="com.workhub.z.servicechat.mapper.GroupInfoModel">
+	<!--<resultMap id="UserModel" type="com.workhub.z.servicechat.model.UserModel">-->
+		<!--<id column="userId" property="userId" jdbcType="VARCHAR" />-->
+		<!--<result column="fullname" property="fullname" jdbcType="VARCHAR" />-->
+		<!--<result column="account" property="account" jdbcType="VARCHAR" />-->
+	<!--&lt;!&ndash;<result column="password" property="password" jdbcType="VARCHAR" /> &ndash;&gt;-->
+		<!--<result column="isExpired" property="isExpired" jdbcType="INTEGER" />-->
+		<!--<result column="isLock" property="isLock" jdbcType="INTEGER" />-->
+		<!--<result column="createtime" property="createtime" jdbcType="DATE" />-->
+		<!--<result column="status" property="status" jdbcType="INTEGER" />-->
+		<!--<result column="roomid" property="roomid" jdbcType="VARCHAR" />-->
+		<!--<result column="mobile" property="mobile" jdbcType="VARCHAR" />-->
+		<!--<result column="phone" property="phone" jdbcType="VARCHAR" />-->
+		<!--<result column="sex" property="sex" jdbcType="VARCHAR" />-->
+		<!--<result column="picture" property="picture" jdbcType="INTEGER" />-->
+		<!--<result column="FROMTYPE" property="fromType" jdbcType="INTEGER" />-->
+		<!--<result column="orgId" property="orgId" jdbcType="VARCHAR" />-->
+		<!--<result column="orgSn" property="orgSn" jdbcType="VARCHAR" />-->
+		<!--<result column="shortAccount" property="shortAccount" jdbcType="VARCHAR" />-->
+		<!--<result column="isonline" property="isonline" jdbcType="VARCHAR" />-->
+		<!--<result column="head" property="head" jdbcType="VARCHAR" />-->
+	<!--</resultMap>-->
+
+	<resultMap id="GroupInfoModel" type="com.workhub.z.servicechat.model.GroupInfoModel">
 		<id column="group_id" property="groupId" jdbcType="VARCHAR" />
 		<result column="group_name" property="groupName" jdbcType="VARCHAR" />
 		<result column="group_describe" property="groupDescribe" jdbcType="VARCHAR" />
@@ -35,7 +36,7 @@
 		<result column="people_count" property="peopleCount" jdbcType="INTEGER" />
 		<result column="isclose" property="isclose" jdbcType="VARCHAR" />
 	</resultMap>
-	<resultMap id="GroupFileModel" type="com.workhub.z.servicechat.mapper.GroupFileModel">
+	<resultMap id="GroupFileModel" type="com.workhub.z.servicechat.model.GroupFileModel">
 		<id column="file_id" property="fileId" jdbcType="VARCHAR" />
 		<result column="file_name" property="fileName" jdbcType="VARCHAR" />
 		<result column="file_type" property="fileType" jdbcType="VARCHAR" />
@@ -53,7 +54,7 @@
 		<result column="levels" property="levels" jdbcType="VARCHAR" />
 	</resultMap>
 
-	<resultMap id="GroupMsgModel" type="com.workhub.z.servicechat.mapper.GroupMsgModel">
+	<resultMap id="GroupMsgModel" type="com.workhub.z.servicechat.model.GroupMsgModel">
 		<id column="msg_id" property="msgId" jdbcType="VARCHAR" />
 		<result column="msg_sender" property="msgSender" jdbcType="VARCHAR" />
 		<result column="msg_receiver" property="msgReceiver" jdbcType="VARCHAR" />
@@ -66,7 +67,7 @@
 		<result column="levels" property="levels" jdbcType="VARCHAR" />
 	</resultMap>
 
-	<resultMap id="GroupUserRefModel" type="com.workhub.z.servicechat.mapper.GroupUserRefModel">
+	<resultMap id="GroupUserRefModel" type="com.workhub.z.servicechat.model.GroupUserRefModel">
 		<result column="user_id" property="userId" jdbcType="VARCHAR" />
 		<result column="group_id" property="groupId" jdbcType="VARCHAR" />
 		<result column="enter_time" property="enterTime" jdbcType="DATE" />
@@ -75,7 +76,7 @@
 		<result column="role" property="role" jdbcType="VARCHAR" />
 	</resultMap>
 
-	<resultMap id="GroupModel" type="com.workhub.z.servicechat.mapper.GroupModel">
+	<resultMap id="GroupModel" type="com.workhub.z.servicechat.model.GroupModel">
 		<result column="group_id" property="groupId" jdbcType="VARCHAR" />
 		<result column="group_name" property="groupName" jdbcType="VARCHAR" />
 		<result column="group_describe" property="groupDescribe" jdbcType="VARCHAR" />
@@ -95,11 +96,11 @@
 	<!--</resultMap>-->
 	
 	<!-- 获得讨论组成员 -->
-	<select id="queryGroupUser" resultMap="UserModel">
-		SELECT su.*, so.orgName as orgName FROM sys_user su JOIN pf_user_group_ref ugr ON su.userId = ugr.user_id
-		LEFT JOIN sys_org so ON so.orgId = su.orgId
-		WHERE ugr.group_id = #{groupId} and su.endFlag != '1' order by su.picture asc
-	</select>
+	<!--<select id="queryGroupUser" resultMap="UserModel">-->
+		<!--SELECT su.*, so.orgName as orgName FROM sys_user su JOIN pf_user_group_ref ugr ON su.userId = ugr.user_id-->
+		<!--LEFT JOIN sys_org so ON so.orgId = su.orgId-->
+		<!--WHERE ugr.group_id = #{groupId} and su.endFlag != '1' order by su.picture asc-->
+	<!--</select>-->
 	
 	<!-- 获得重要信息 -->
 	<select id="queryImportantInfo" resultMap="GroupMsgModel">
@@ -174,7 +175,7 @@
 	</delete>
 	
 	<!-- 更新讨论组信息 -->
-	<update id="updateGroupInfo" parameterType="com.casic.flatform.model.GroupInfoModel">
+	<update id="updateGroupInfo" parameterType="com.workhub.z.servicechat.model.GroupInfoModel">
 		UPDATE pf_user_group SET group_name = #{groupName}, group_describe = #{groupDescribe}, update_time = SYSDATE, updator = #{updator}
 		WHERE group_id = #{groupId}
 	</update>
