@@ -1,10 +1,16 @@
 package com.workhub.z.servicechat.server;
 
+import com.workhub.z.servicechat.config.AsyncTaskConfig;
+import com.workhub.z.servicechat.config.AsyncTaskService;
+import com.workhub.z.servicechat.feign.IValidateService;
 import com.workhub.z.servicechat.model.GroupModel;
 import com.workhub.z.servicechat.service.GroupService;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 import org.tio.core.Aio;
 import org.tio.core.ChannelContext;
@@ -22,15 +28,19 @@ import java.util.Objects;
 @Component
 public class IworkWsMsgHandler implements IWsMsgHandler {
     private static Logger log = LoggerFactory.getLogger(IworkWsMsgHandler.class);
+    private static AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AsyncTaskConfig.class);
+    private static AsyncTaskService asyncTaskService = context.getBean(AsyncTaskService.class);
 
     @Autowired
     protected GroupService groupService;
+    protected IValidateService iValidateService;
     private static IworkWsMsgHandler  serverHandler ;
 
     @PostConstruct //通过@PostConstruct实现初始化bean之前进行的操作
     public void init() {
         serverHandler = this;
         serverHandler.groupService = this.groupService;
+        serverHandler.iValidateService = this.iValidateService;
         // 初使化时将已静态化的testService实例化
     }
 
@@ -46,8 +56,10 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
     @Override
     public HttpResponse handshake(HttpRequest request, HttpResponse httpResponse, ChannelContext channelContext) throws Exception {
         String clientip = request.getClientIp();
-
+        String token = request.getParam("token");
         String userid=request.getParam("userid");
+//      用户token验证
+//        iValidateService.validate(token);
 //      前端 参数 绑定信息
         Aio.bindUser(channelContext,userid);
 //      加入系统消息组
@@ -55,8 +67,9 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
 //       根据握手信息，将用户绑定到群组
         List<GroupModel> listGroupModel =  serverHandler.groupService.queryGroupByUser("11");
         for (int i = 0; i < listGroupModel.size() ; i++) {
-            Aio.bindGroup(channelContext,listGroupModel.get(i).getGroupId());
-            System.out.println();
+            String groupid  =listGroupModel.get(i).getGroupId();
+            Aio.bindGroup(channelContext,groupid);
+            System.out.println("join group "+ listGroupModel.get(i).getGroupName());
         }
 
         log.info("收到来自{}的ws握手包\r\n{}", clientip, request.toString());
@@ -92,8 +105,44 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
         String type=httpRequest.getParam("type");
         String r=httpRequest.getParam("recipient");
 
-        Aio.bindUser(channelContext,userid);
-        Aio.bindGroup(channelContext, Const.GROUP_ID);
+
+        JSONArray jsonArray11 = new JSONArray();
+        JSONObject jsonObject = JSONObject.fromObject(text);
+        String code = jsonObject.getString("code");
+        String message = jsonObject.getString("data");
+        JSONObject jsonObject2 = JSONObject.fromObject(message);
+        JSONArray content = jsonObject2.getJSONArray("content");
+//        for(int i=0;i<content.size();i++){
+//            String s = content.getString(i);
+//            JSONObject data = JSONObject.fromObject(s);
+//            System.out.println(data2.getString("address"));
+//            System.out.println(data2.getString("province"));
+//            System.out.println(data2.getString("district"));
+//            System.out.println(data2.getString("city"));
+//        }
+
+//        利用多线程进行数据处理
+//        解析Code
+        switch (Integer.parseInt(code)){
+            case Const.JOIN_GROUP:
+                asyncTaskService.joinGroup();
+                break;
+            case Const.EXIT_GROUP:
+                asyncTaskService.exitGroup();
+                break;
+            case Const.PING:
+                break;
+            case Const.SEND_MSG:
+                asyncTaskService.saveMessage();
+                break;
+            case Const.CLOSE_GROUP:
+                asyncTaskService.closeGroup();
+                break;
+        }
+
+//        Aio.bindUser(channelContext,userid);
+//        Aio.bindGroup(channelContext, Const.GROUP_ID);
+
 
         //获取前端消息 展示
         if (log.isDebugEnabled()) {
@@ -101,13 +150,15 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
         }
 
         log.info("收到ws消息:{}", text);
+        String t = String.valueOf(text);
+//        JSONObject jsonObject = JSON.parseObject(text);
 
         if (Objects.equals("心跳内容", text)) {
             return null;
         }
-        System.out.println(text);
+        System.out.println(t);
 //      String msg = channelContext.getClientNode().toString() + " 说：" + text;
-        String msg = text;
+        String msg = t;
         //用tio-websocket，服务器发送到客户端的Packet都是WsResponse
         WsResponse wsResponse = WsResponse.fromText(msg, IworkServerConfig.CHARSET);
         //群发
@@ -119,7 +170,4 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
         return null;
     }
 
-//    public boolean joinGroup(ChannelContext channelContext){
-//
-//    }
 }
