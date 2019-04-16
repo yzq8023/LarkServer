@@ -1,7 +1,8 @@
 package com.workhub.z.servicechat.api;
 
-import com.github.hollykunge.security.api.vo.user.UserInfo;
+//import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.workhub.z.servicechat.feign.IUserService;
+import com.workhub.z.servicechat.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/api/Initialization")
 public class Initialization {
 
-//    @Autowired
-//    private IUserService iUserService;
+    @Autowired
+    private IUserService iUserService;
+
+    @Autowired
+    private GroupService groupService;
 
     /**
     *@Description: 查询user所在群组
@@ -33,11 +37,12 @@ public class Initialization {
     *@Author: 忠
     *@date: 2019/3/21
     */
-//    @RequestMapping("/getInfo")
-//    public UserInfo queryUserInfoBySn(String sn){
+    @RequestMapping("/getInfo")
+    public void queryUserInfoBySn(String sn){
 //        iUserService.queryUserinfoBySn(sn);
+        iUserService.validate("11","11");
 //        return null;
-//    }
+    }
 
     /**
     *@Description: 最近联系人

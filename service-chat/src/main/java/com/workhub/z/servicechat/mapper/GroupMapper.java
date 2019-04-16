@@ -1,15 +1,28 @@
 package com.workhub.z.servicechat.mapper;
 
-import com.workhub.z.servicechat.model.*;
 import com.github.hollykunge.security.api.vo.user.UserInfo;
+import com.workhub.z.servicechat.model.*;
+//import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.workhub.z.servicechat.model.GroupMsgModel;
-import org.apache.ibatis.annotations.Param;
+//import feign.Param;
+import org.nutz.mvc.annotation.Param;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public interface GroupMapper {
+
+	/**
+	* @Description: 根据userID查询当前所在组
+	* @Param: userId
+	* @return: list
+	* @Author: 忠
+	* @date: 2019/4/8
+	*/
+	public List<GroupModel> queryGroupByUser(String userId);
 
 	/**
 	 * 获得讨论组成员信息
@@ -74,7 +87,7 @@ public interface GroupMapper {
 	 * @param groupFile	:讨论组文件对象
 	 * @return
 	 */
-//	public int saveGroupFile(GroupFileModel groupFile);
+	public int saveGroupFile(GroupFileModel groupFile);
 
 	/**
 	 * 新增讨论组
@@ -88,7 +101,7 @@ public interface GroupMapper {
 	 * @param groupUser	:讨论组人员关联对象
 	 * @return
 	 */
-//	public int saveGroupUser(GroupUserRefModel groupUser);
+	public int saveGroupUser(GroupUserRefModel groupUser);
 
 	/**
 	 * 删除讨论组成员
@@ -150,7 +163,7 @@ public interface GroupMapper {
 	 * @param fileId	：文件id
 	 * @return
 	 */
-//	public GroupFileModel queryGroupFileById(@Param("fileId") String fileId);
+	public GroupFileModel queryGroupFileById(@Param("fileId") String fileId);
 
 	/**
 	 * 更新讨论组文件转码路径，线程调用更新

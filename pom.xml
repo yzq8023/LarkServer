@@ -35,7 +35,7 @@
         <module>ace-auth</module>
         <module>ace-modules</module>
         <module>service-chat</module>
-        <module>service-talk</module>
+        <module>service-discuss</module>
     </modules>
     <packaging>pom</packaging>
     <developers>
