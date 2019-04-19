@@ -348,7 +348,7 @@
 	</select>
 	<!--忠-->
 	<!--根据用户id获取所有群组-->
-	<select id="queryGroupByUser" resultMap="GroupInfoModel">
+	<select id="queryGroupByUser" resultMap="GroupModel">
 		select o.* from PF_USER_GROUP_REF t left join pf_user_group o on o.group_id = t.group_id where t.user_id = '10000019431705'
 	</select>
 </mapper>

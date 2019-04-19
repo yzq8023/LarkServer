@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(value = "ace-admin")
-public interface IUserService extends com.github.hollykunge.security.auth.feign.IUserService {
+public interface IUserService {
     /**
     *@Description: 根据user身份证查询用户信息
     *@Param: sn
@@ -16,8 +16,8 @@ public interface IUserService extends com.github.hollykunge.security.auth.feign.
     *@Author: 忠
     *@date: 2019/3/22
     */
-//    @RequestMapping(value = "/api/user/validate", method = RequestMethod.POST)
-//    public UserInfo validate(@RequestParam("username") String username, @RequestParam("password") String password);
-////    @RequestMapping(value = "/api/user/test", method = RequestMethod.POST)
-////    public void test();
+    @RequestMapping(value = "/api/user/validate", method = RequestMethod.POST)
+    public UserInfo validate(@RequestParam("username") String username, @RequestParam("password") String password);
+//    @RequestMapping(value = "/api/user/test", method = RequestMethod.POST)
+//    public void test();
 }
