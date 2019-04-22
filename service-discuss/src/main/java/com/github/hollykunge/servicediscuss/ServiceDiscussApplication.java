@@ -8,9 +8,9 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
-@EnableCaching
 @EnableEurekaClient
 @EnableFeignClients
+@EnableCaching
 @MapperScan("com.github.hollykunge.servicediscuss")
 public class ServiceDiscussApplication {
 
