@@ -11,7 +11,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 @EnableFeignClients
 @EnableEurekaClient
-@EnableAutoConfiguration
 @MapperScan("com.workhub.z.servicechat.mapper")
 public class ServiceChatApplication {
 
