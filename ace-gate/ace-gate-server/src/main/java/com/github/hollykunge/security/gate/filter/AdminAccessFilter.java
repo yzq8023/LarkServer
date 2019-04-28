@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * ${DESCRIPTION}
+ * 请求权限验证过滤器
  *
  * @author 协同设计小组
  * @create 2017-06-23 8:25
@@ -100,6 +100,7 @@ public class AdminAccessFilter extends ZuulFilter {
             setFailedRequest(JSON.toJSONString(new TokenErrorResponse(e.getMessage())), 200);
             return null;
         }
+        //获取所有的资源信息，包括menu和element
         List<PermissionInfo> permissionIfs = userService.getAllPermissionInfo();
         // 判断资源是否启用权限约束
         Stream<PermissionInfo> stream = getPermissionIfs(requestUri, method, permissionIfs);
@@ -144,7 +145,7 @@ public class AdminAccessFilter extends ZuulFilter {
     }
 
     /**
-     * 返回session中的用户信息
+     * 返回token中的用户信息
      *
      * @param request
      * @param ctx

@@ -48,6 +48,9 @@ public class ServiceAuthUtil{
         }
     }
 
+    /**
+     * 每30分钟触发一次
+     */
     @Scheduled(cron = "0/30 * * * * ?")
     public void refreshAllowedClient() {
         log.debug("refresh allowedClient.....");
@@ -57,7 +60,9 @@ public class ServiceAuthUtil{
             this.allowedClient = allowedClient.getData();
         }
     }
-
+    /**
+     * 每10分钟触发一次
+     */
     @Scheduled(cron = "0 0/10 * * * ?")
     public void refreshClientToken() {
         log.debug("refresh client token.....");

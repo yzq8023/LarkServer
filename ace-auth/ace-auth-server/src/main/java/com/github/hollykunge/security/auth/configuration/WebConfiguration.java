@@ -14,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author ace
  * @date 2017/9/8
  */
-@Configuration("admimWebConfig")
+@Configuration("adminWebConfig")
 @Primary
 public class WebConfiguration implements WebMvcConfigurer {
     @Bean

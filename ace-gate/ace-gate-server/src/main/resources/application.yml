@@ -53,10 +53,6 @@ zuul:
       path: /auth/**
       serviceId: ace-auth
 
-    project:
-      path: /project/**
-      serviceId: service-project
-
 ribbon:
   eureka:
     enabled: true

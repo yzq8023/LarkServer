@@ -6,4 +6,5 @@ public interface AuthService {
     String refresh(String oldToken);
     void validate(String token) throws Exception;
     Boolean invalid(String token);
+    Object tokenValidate(String token) throws Exception;
 }
