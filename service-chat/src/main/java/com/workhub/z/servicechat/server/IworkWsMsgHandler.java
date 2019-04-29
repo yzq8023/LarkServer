@@ -1,12 +1,12 @@
 package com.workhub.z.servicechat.server;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.workhub.z.servicechat.config.AsyncTaskConfig;
 import com.workhub.z.servicechat.config.AsyncTaskService;
 import com.workhub.z.servicechat.feign.IValidateService;
 import com.workhub.z.servicechat.model.GroupModel;
 import com.workhub.z.servicechat.service.GroupService;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,10 +107,10 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
 
 
         JSONArray jsonArray11 = new JSONArray();
-        JSONObject jsonObject = JSONObject.fromObject(text);
+        JSONObject jsonObject = JSONObject.parseObject(text);
         String code = jsonObject.getString("code");
         String message = jsonObject.getString("data");
-        JSONObject jsonObject2 = JSONObject.fromObject(message);
+        JSONObject jsonObject2 = JSONObject.parseObject(message);
         JSONArray content = jsonObject2.getJSONArray("content");
 //        for(int i=0;i<content.size();i++){
 //            String s = content.getString(i);
