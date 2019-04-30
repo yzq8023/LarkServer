@@ -1,6 +1,7 @@
 package com.github.hollykunge.security.api.vo.authority;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * ${DESCRIPTION}
@@ -9,60 +10,70 @@ import java.io.Serializable;
  * @create 2017-06-22 15:19
  */
 public class PermissionInfo implements Serializable{
-    private String code;
-    private String type;
-    private String uri;
-    private String method;
-    private String name;
-    private String menu;
+    private String roleId;
 
-    public String getMenu() {
-        return menu;
+    private String permissionId;
+    private String permissionName;
+    private String actions;
+
+    private String actionList;
+    private String dataAccess;
+
+    private List<ActionEntitySet> actionEntitySetList;
+
+    public String getRoleId() {
+        return roleId;
     }
 
-    public void setMenu(String menu) {
-        this.menu = menu;
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
     }
 
-    public String getName() {
-        return name;
+    public String getPermissionId() {
+        return permissionId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPermissionId(String permissionId) {
+        this.permissionId = permissionId;
     }
 
-
-
-    public String getMethod() {
-        return method;
+    public String getPermissionName() {
+        return permissionName;
     }
 
-    public void setMethod(String method) {
-        this.method = method;
+    public void setPermissionName(String permissionName) {
+        this.permissionName = permissionName;
     }
 
-    public String getCode() {
-        return code;
+    public String getActions() {
+        return actions;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setActions(String actions) {
+        this.actions = actions;
     }
 
-    public String getType() {
-        return type;
+    public String getActionList() {
+        return actionList;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setActionList(String actionList) {
+        this.actionList = actionList;
     }
 
-    public String getUri() {
-        return uri;
+    public String getDataAccess() {
+        return dataAccess;
     }
 
-    public void setUri(String uri) {
-        this.uri = uri;
+    public void setDataAccess(String dataAccess) {
+        this.dataAccess = dataAccess;
+    }
+
+    public List<ActionEntitySet> getActionEntitySetList() {
+        return actionEntitySetList;
+    }
+
+    public void setActionEntitySetList(List<ActionEntitySet> actionEntitySetList) {
+        this.actionEntitySetList = actionEntitySetList;
     }
 }

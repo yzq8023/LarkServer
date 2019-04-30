@@ -1,29 +1,71 @@
 package com.github.hollykunge.security.admin.vo;
 
-import com.github.hollykunge.security.api.vo.authority.PermissionInfo;
-
-import java.util.List;
-
 /**
- * Created by 协同设计小组 on 2017/8/22.
+ * 业务对象：前端用户登录
+ * @author 协同设计小组
+ * @date 2017/8/22
  */
 public class FrontUser {
-    public String id;
-    public String username;
-    public String name;
+    private String id;
+    private String username;
+    private String name;
     private String description;
-    private String image;
-    private List<PermissionInfo> menus;
-    private List<PermissionInfo> elements;
-    public String getImage() {
-        return image;
+    private String avatar;
+
+    private Integer status;
+    private Integer telephone;
+    private Integer deleted;
+    private String roleId;
+
+    private UserRole userRole;
+
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
+    public Integer getTelephone() {
+        return telephone;
+    }
 
+    public void setTelephone(Integer telephone) {
+        this.telephone = telephone;
+    }
+
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
+
+    public UserRole getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
     public String getId() {
         return id;
@@ -56,19 +98,5 @@ public class FrontUser {
     public void setDescription(String description) {
         this.description = description;
     }
-    public List<PermissionInfo> getMenus() {
-        return menus;
-    }
 
-    public void setMenus(List<PermissionInfo> menus) {
-        this.menus = menus;
-    }
-
-    public List<PermissionInfo> getElements() {
-        return elements;
-    }
-
-    public void setElements(List<PermissionInfo> elements) {
-        this.elements = elements;
-    }
 }
