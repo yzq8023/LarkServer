@@ -9,6 +9,7 @@ import com.github.hollykunge.security.admin.entity.Menu;
 import com.github.hollykunge.security.admin.entity.User;
 import com.github.hollykunge.security.admin.vo.FrontUser;
 import com.github.hollykunge.security.admin.vo.MenuTree;
+import com.github.hollykunge.security.admin.vo.UserRole;
 import com.github.hollykunge.security.api.vo.authority.PermissionInfo;
 import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.github.hollykunge.security.auth.client.jwt.UserAuthUtil;
@@ -26,7 +27,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- *
+ * 权限管理
  * @author 协同设计小组
  * @date 2017/9/12
  */
@@ -138,16 +139,27 @@ public class PermissionService {
         UserInfo user = this.getUserByUsername(username);
         FrontUser frontUser = new FrontUser();
         BeanUtils.copyProperties(user, frontUser);
-        List<PermissionInfo> permissionInfos = this.getPermissionByUsername(username);
-        Stream<PermissionInfo> menus = permissionInfos.parallelStream().filter((permission) -> {
-            return permission.getType().equals(CommonConstants.RESOURCE_TYPE_MENU);
-        });
-        frontUser.setMenus(menus.collect(Collectors.toList()));
-        Stream<PermissionInfo> elements = permissionInfos.parallelStream().filter((permission) -> {
-            return !permission.getType().equals(CommonConstants.RESOURCE_TYPE_MENU);
-        });
-        frontUser.setElements(elements.collect(Collectors.toList()));
+//        List<PermissionInfo> permissionInfos = this.getPermissionByUsername(username);
+//        Stream<PermissionInfo> menus = permissionInfos.parallelStream().filter((permission) -> {
+//            return permission.getType().equals(CommonConstants.RESOURCE_TYPE_MENU);
+//        });
+        UserRole userRole = this.getUserRoleByUserId(username);
+        frontUser.setUserRole(userRole);
+//        frontUser.setMenus(menus.collect(Collectors.toList()));
+//        Stream<PermissionInfo> elements = permissionInfos.parallelStream().filter((permission) -> {
+//            return !permission.getType().equals(CommonConstants.RESOURCE_TYPE_MENU);
+//        });
+//        frontUser.setElements(elements.collect(Collectors.toList()));
         return frontUser;
+    }
+
+    public UserRole getUserRoleByUserId(String username) {
+        Role role = getRoleByUserId(username);
+        UserRole userRole = new UserRole();
+        BeanUtils.copyProperties(role, userRole);
+        List<PermissionInfo> permissionInfoList = this.getPermissionByUsername(username);
+        userRole.setPermissionInfos(permissionInfoList);
+        return userRole;
     }
 
     public List<MenuTree> getMenusByUsername(String token) throws Exception {

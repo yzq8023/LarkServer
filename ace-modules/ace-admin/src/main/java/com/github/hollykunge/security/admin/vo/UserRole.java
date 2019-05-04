@@ -11,12 +11,19 @@ import java.util.List;
  * @since: 2019/4/29
  */
 public class UserRole {
+    //角色id
     private String id;
+    //角色名称
     private String name;
+    //角色描述
     private String describe;
+    //角色状态
     private Integer status;
+    //创建人id
     private String creatorId;
+    //创建时间
     private Long createTime;
+    //删除状态0未删除
     private Integer deleted;
 
     private List<PermissionInfo> permissionInfos;

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * ${DESCRIPTION}
+ * 用户相关信息接口
  *
  * @author 协同设计小组
  * @create 2017-06-08 11:51

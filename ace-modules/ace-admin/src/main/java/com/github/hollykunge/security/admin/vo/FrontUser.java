@@ -1,23 +1,33 @@
 package com.github.hollykunge.security.admin.vo;
 
 /**
- * 业务对象：前端用户登录
+ * 业务对象：前端获取用户信息
  * @author 协同设计小组
  * @date 2017/8/22
  */
 public class FrontUser {
+    //系统内id
     private String id;
+    //身份证号
     private String username;
+    //用户姓名
     private String name;
+    //自述信息
     private String description;
+    //头像
     private String avatar;
-
+    //状态0离职1在职
     private Integer status;
+    //电话
     private Integer telephone;
+    //系统内删除状态0未删除
     private Integer deleted;
+    //角色
     private String roleId;
 
     private UserRole userRole;
+
+
 
     public Integer getStatus() {
         return status;
