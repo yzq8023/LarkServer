@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 树节点方法类
  * Created by 协同设计小组 on 2017/6/12.
  */
 public class TreeUtil{

@@ -4,19 +4,23 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * ${DESCRIPTION}
+ * 角色所属功能
  *
  * @author 协同设计小组
  * @create 2017-06-22 15:19
  */
 public class PermissionInfo implements Serializable{
+    //角色id
     private String roleId;
-
+    //菜单权限id
     private String permissionId;
+    //菜单权限名称
     private String permissionName;
+    //功能集合
     private String actions;
-
+    //暂时没用上null
     private String actionList;
+    //暂时没用上null
     private String dataAccess;
 
     private List<ActionEntitySet> actionEntitySetList;

@@ -1,6 +1,7 @@
 package com.github.hollykunge.security.common.exception;
 
 /**
+ * 统一异常处理
  * Created by 协同设计小组 on 2017/9/8.
  */
 public class BaseException extends RuntimeException {
