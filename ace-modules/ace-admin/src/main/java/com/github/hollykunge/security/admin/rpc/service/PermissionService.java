@@ -94,6 +94,11 @@ public class PermissionService {
         }
     }
 
+    /**
+     * 根据用户id获取资源列表
+     * @param username
+     * @return
+     */
     public List<PermissionInfo> getPermissionByUsername(String username) {
         User user = userBiz.getUserByUsername(username);
         List<Menu> menus = menuBiz.getUserAuthorityMenuByUserId(user.getId());
