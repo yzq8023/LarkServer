@@ -16,7 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
- * Created by 协同设计小组 on 2017/9/12.
+ *
+ * @author 协同设计小组
+ * @date 2017/9/12
  */
 @SuppressWarnings("ALL")
 public class ServiceAuthRestInterceptor extends HandlerInterceptorAdapter {
