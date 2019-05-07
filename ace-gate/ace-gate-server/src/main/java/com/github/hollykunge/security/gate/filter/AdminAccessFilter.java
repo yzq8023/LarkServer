@@ -106,6 +106,7 @@ public class AdminAccessFilter extends ZuulFilter {
         Stream<PermissionInfo> stream = getPermissionIfs(requestUri, method, permissionIfs);
         List<PermissionInfo> result = stream.collect(Collectors.toList());
         PermissionInfo[] permissions = result.toArray(new PermissionInfo[]{});
+
         if (permissions.length > 0) {
             checkUserPermission(permissions, ctx, user);
         }
@@ -116,7 +117,7 @@ public class AdminAccessFilter extends ZuulFilter {
 
     /**
      * 获取目标权限资源
-     *
+     * 请求资源和权限列表匹配，并且与资源方法相同
      * @param requestUri
      * @param method
      * @param serviceInfo
@@ -135,6 +136,9 @@ public class AdminAccessFilter extends ZuulFilter {
         });
     }
 
+    /**
+     * 在上下文中设置当前用户信息和操作日志
+     */
     private void setCurrentUserInfoAndLog(RequestContext ctx, IJWTInfo user, PermissionInfo pm) {
         String host = ClientUtil.getClientIp(ctx.getRequest());
         ctx.addZuulRequestHeader("userId", user.getId());
@@ -162,7 +166,14 @@ public class AdminAccessFilter extends ZuulFilter {
     }
 
 
+    /**
+     * 检查用户是否有该权限
+     * @param permissions
+     * @param ctx
+     * @param user
+     */
     private void checkUserPermission(PermissionInfo[] permissions, RequestContext ctx, IJWTInfo user) {
+        //根据用户id获取资源列表，包括菜单和菜单功能
         List<PermissionInfo> permissionInfos = userService.getPermissionByUsername(user.getUniqueName());
         PermissionInfo current = null;
         for (PermissionInfo info : permissions) {
