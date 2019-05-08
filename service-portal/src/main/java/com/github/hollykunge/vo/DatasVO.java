@@ -25,7 +25,7 @@ public class DatasVO {
 
     private String tag;
 
-    private String read;
+    private boolean read;
 
     private String imageUrl;
 
