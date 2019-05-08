@@ -16,9 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
- *
- * @author 协同设计小组
- * @date 2017/9/12
+ * 服务鉴权拦截器
+ * Created by 协同设计小组 on 2017/9/12.
  */
 @SuppressWarnings("ALL")
 public class ServiceAuthRestInterceptor extends HandlerInterceptorAdapter {
@@ -45,8 +44,10 @@ public class ServiceAuthRestInterceptor extends HandlerInterceptorAdapter {
         }
 
         String token = request.getHeader(serviceAuthConfig.getTokenHeader());
+        //解析获取当前发起请求的服务
         IJWTInfo infoFromToken = serviceAuthUtil.getInfoFromToken(token);
         String uniqueName = infoFromToken.getUniqueName();
+        //判断当前被调用服务的可被访问列表是否包含发起请求的服务
         for(String client:serviceAuthUtil.getAllowedClient()){
             if(client.equals(uniqueName)){
                 return super.preHandle(request, response, handler);
