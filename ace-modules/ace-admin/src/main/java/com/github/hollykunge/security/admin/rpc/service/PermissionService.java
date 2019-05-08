@@ -79,23 +79,23 @@ public class PermissionService {
                 menu.setHref("/" + menu.getCode());
             }
             info = new PermissionInfo();
-            info.setCode(menu.getCode());
-            info.setType(AdminCommonConstant.RESOURCE_TYPE_MENU);
-            info.setName(AdminCommonConstant.RESOURCE_ACTION_VISIT);
+//            info.setCode(menu.getCode());
+//            info.setType(AdminCommonConstant.RESOURCE_TYPE_MENU);
+//            info.setName(AdminCommonConstant.RESOURCE_ACTION_VISIT);
             String uri = menu.getHref();
             if (!uri.startsWith("/")) {
                 uri = "/" + uri;
             }
-            info.setUri(uri);
-            info.setMethod(AdminCommonConstant.RESOURCE_REQUEST_METHOD_GET);
+//            info.setUri(uri);
+//            info.setMethod(AdminCommonConstant.RESOURCE_REQUEST_METHOD_GET);
             result.add(info
             );
-            info.setMenu(menu.getTitle());
+//            info.setMenu(menu.getTitle());
         }
     }
 
     /**
-     * 根据用户id获取资源列表
+     * 根据用户id获取用户权限
      * @param username
      * @return
      */
