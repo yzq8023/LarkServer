@@ -1,0 +1,15 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: ace-config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/ChalkShaw/ace-config.git
+          search-paths: /
+          username:
+          password:
+      label: master
