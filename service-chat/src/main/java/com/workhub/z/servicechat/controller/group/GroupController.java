@@ -1,6 +1,6 @@
 package com.workhub.z.servicechat.controller.group;
 
-import cn.hutool.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 import com.workhub.z.servicechat.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 *@date: 2019/3/21
 */
 @Controller
-@RequestMapping("/groupController")
-public class groupController {
+@RequestMapping("/group")
+public class GroupController {
 
     @Autowired
     private GroupService groupService;

@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * ${DESCRIPTION}
+ * 网关核心权限拦截类
  *
  * @author 协同设计小组
  * @create 2017-06-23 8:25
@@ -100,22 +100,25 @@ public class AdminAccessFilter extends ZuulFilter {
             setFailedRequest(JSON.toJSONString(new TokenErrorResponse(e.getMessage())), 200);
             return null;
         }
+        //获取所有的资源信息，包括menu和element
         List<PermissionInfo> permissionIfs = userService.getAllPermissionInfo();
-        // 判断资源是否启用权限约束
+        // 判断当前资源是否属于权限资源
         Stream<PermissionInfo> stream = getPermissionIfs(requestUri, method, permissionIfs);
         List<PermissionInfo> result = stream.collect(Collectors.toList());
         PermissionInfo[] permissions = result.toArray(new PermissionInfo[]{});
+
         if (permissions.length > 0) {
+            //判断用户是否有当前资源访问权限
             checkUserPermission(permissions, ctx, user);
         }
-        // 申请客户端密钥头
+        // 申请客户端密钥头，加到header里传递到下方服务
         ctx.addZuulRequestHeader(serviceAuthConfig.getTokenHeader(), serviceAuthUtil.getClientToken());
         return null;
     }
 
     /**
      * 获取目标权限资源
-     *
+     * 请求资源和权限列表匹配，并且与资源方法相同
      * @param requestUri
      * @param method
      * @param serviceInfo
@@ -134,6 +137,9 @@ public class AdminAccessFilter extends ZuulFilter {
         });
     }
 
+    /**
+     * 在上下文中设置当前用户信息和操作日志
+     */
     private void setCurrentUserInfoAndLog(RequestContext ctx, IJWTInfo user, PermissionInfo pm) {
         String host = ClientUtil.getClientIp(ctx.getRequest());
         ctx.addZuulRequestHeader("userId", user.getId());
@@ -144,7 +150,7 @@ public class AdminAccessFilter extends ZuulFilter {
     }
 
     /**
-     * 返回session中的用户信息
+     * 返回token中的用户信息
      *
      * @param request
      * @param ctx
@@ -161,7 +167,14 @@ public class AdminAccessFilter extends ZuulFilter {
     }
 
 
+    /**
+     * 检查用户是否有该权限
+     * @param permissions
+     * @param ctx
+     * @param user
+     */
     private void checkUserPermission(PermissionInfo[] permissions, RequestContext ctx, IJWTInfo user) {
+        //根据用户id获取资源列表，包括菜单和菜单功能
         List<PermissionInfo> permissionInfos = userService.getPermissionByUsername(user.getUniqueName());
         PermissionInfo current = null;
         for (PermissionInfo info : permissions) {

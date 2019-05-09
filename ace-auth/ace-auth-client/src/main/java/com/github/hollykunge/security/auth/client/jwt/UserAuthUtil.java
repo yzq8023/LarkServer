@@ -20,11 +20,11 @@ public class UserAuthUtil {
         try {
             return JWTHelper.getInfoFromToken(token, userAuthConfig.getPubKeyByte());
         }catch (ExpiredJwtException ex){
-            throw new UserTokenException("User token expired!");
+            throw new UserTokenException("token过期了!");
         }catch (SignatureException ex){
-            throw new UserTokenException("User token signature error!");
+            throw new UserTokenException("token签名错误!");
         }catch (IllegalArgumentException ex){
-            throw new UserTokenException("User token is null or empty!");
+            throw new UserTokenException("token为null或者空!");
         }
     }
 }

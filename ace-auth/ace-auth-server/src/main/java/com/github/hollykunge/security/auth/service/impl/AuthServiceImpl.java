@@ -1,6 +1,7 @@
 package com.github.hollykunge.security.auth.service.impl;
 
 import com.github.hollykunge.security.api.vo.user.UserInfo;
+import com.github.hollykunge.security.auth.common.util.jwt.IJWTInfo;
 import com.github.hollykunge.security.auth.common.util.jwt.JWTInfo;
 import com.github.hollykunge.security.auth.feign.IUserService;
 import com.github.hollykunge.security.auth.service.AuthService;
@@ -36,6 +37,11 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void validate(String token) throws Exception {
         jwtTokenUtil.getInfoFromToken(token);
+    }
+
+    @Override
+    public IJWTInfo tokenValidate(String token) throws Exception {
+        return jwtTokenUtil.getInfoFromToken(token);
     }
 
     @Override

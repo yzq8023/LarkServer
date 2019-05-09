@@ -3,6 +3,7 @@ package com.github.hollykunge.servicediscuss.tio;
 import com.github.hollykunge.servicediscuss.api.entity.Message;
 import com.github.hollykunge.servicediscuss.api.entity.SendInfo;
 import com.github.hollykunge.servicediscuss.common.utils.ChatUtils;
+import com.github.hollykunge.servicediscuss.feign.ITokenService;
 import com.github.hollykunge.servicediscuss.message.entity.ImMessage;
 import com.github.hollykunge.servicediscuss.message.service.IImMessageService;
 import com.github.hollykunge.servicediscuss.user.entity.ImChatGroup;
@@ -10,9 +11,11 @@ import com.github.hollykunge.servicediscuss.user.service.IImUserService;
 import com.github.hollykunge.servicediscuss.user.entity.ImUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -44,8 +47,12 @@ public class TioWsMsgHandler implements IWsMsgHandler {
 
     private static Logger log = LoggerFactory.getLogger(TioWsMsgHandler.class);
 
-    @Resource
-    private DefaultTokenServices defaultTokenServices;
+    @Autowired
+    @Lazy
+    private ITokenService iTokenService;
+
+//    @Resource
+//    private DefaultTokenServices defaultTokenServices;
 
     @Resource
     @Qualifier(value = "imUserService")
@@ -56,7 +63,7 @@ public class TioWsMsgHandler implements IWsMsgHandler {
     private IImMessageService iImMessageService;
 
     /**
-     * 握手时走这个方法，业务可以在这里获取cookie，request参数等
+     * 握手时走这个方法，业务可以在这里获取token，request参数等
      *
      * @param httpRequest    httpRequest
      * @param httpResponse   httpResponse
@@ -67,9 +74,11 @@ public class TioWsMsgHandler implements IWsMsgHandler {
     public HttpResponse handshake(HttpRequest httpRequest, HttpResponse httpResponse, ChannelContext channelContext) throws Exception {
         String token = httpRequest.getParam("token");
         try {
-            OAuth2Authentication auth2Authentication = defaultTokenServices.loadAuthentication(token);
-            org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) auth2Authentication.getUserAuthentication().getPrincipal();
-            String userId = imUserService.getByLoginName(user.getUsername()).getId();
+//            OAuth2Authentication auth2Authentication = defaultTokenServices.loadAuthentication(token);
+//            org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) auth2Authentication.getUserAuthentication().getPrincipal();
+//            String userId = imUserService.getByLoginName(user.getUsername()).getId();
+
+            String userId = iTokenService.verify(token);
             //绑定用户
             Tio.bindUser(channelContext, userId);
             //绑定群组
