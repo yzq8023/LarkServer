@@ -2,35 +2,18 @@ package com.github.hollykunge.security.admin.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
 
-@Table(name = "BASE_RESOURCE_AUTHORITY")
-public class ResourceAuthority {
+public class RoleUserMap {
     @Id
     @Column(name = "ID")
-    private Integer id;
+    private String id;
 
-    @Column(name = "AUTHORITY_ID")
-    private String authorityId;
+    @Column(name = "ROLEID")
+    private String roleid;
 
-    @Column(name = "AUTHORITY_TYPE")
-    private String authorityType;
-
-    @Column(name = "RESOURCE_ID")
-    private String resourceId;
-
-    @Column(name = "RESOURCE_TYPE")
-    private String resourceType;
-
-    @Column(name = "PARENT_ID")
-    private String parentId;
-
-    @Column(name = "PATH")
-    private String path;
-
-    @Column(name = "DESCRIPTION")
-    private String description;
+    @Column(name = "USERID")
+    private String userid;
 
     @Column(name = "CRT_TIME")
     private Date crtTime;
@@ -43,6 +26,18 @@ public class ResourceAuthority {
 
     @Column(name = "CRT_HOST")
     private String crtHost;
+
+    @Column(name = "UPD_TIME")
+    private Date updTime;
+
+    @Column(name = "UPD_USER")
+    private String updUser;
+
+    @Column(name = "UPD_NAME")
+    private String updName;
+
+    @Column(name = "UPD_HOST")
+    private String updHost;
 
     @Column(name = "ATTR1")
     private String attr1;
@@ -68,124 +63,46 @@ public class ResourceAuthority {
     @Column(name = "ATTR8")
     private String attr8;
 
-    public ResourceAuthority(String authorityType, String resourceType) {
-        this.authorityType = authorityType;
-        this.resourceType = resourceType;
-    }
-
-    public ResourceAuthority() {
-    }
-
     /**
      * @return ID
      */
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
     /**
      * @param id
      */
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
     /**
-     * @return AUTHORITY_ID
+     * @return ROLEID
      */
-    public String getAuthorityId() {
-        return authorityId;
+    public String getRoleid() {
+        return roleid;
     }
 
     /**
-     * @param authorityId
+     * @param roleid
      */
-    public void setAuthorityId(String authorityId) {
-        this.authorityId = authorityId;
+    public void setRoleid(String roleid) {
+        this.roleid = roleid;
     }
 
     /**
-     * @return AUTHORITY_TYPE
+     * @return USERID
      */
-    public String getAuthorityType() {
-        return authorityType;
+    public String getUserid() {
+        return userid;
     }
 
     /**
-     * @param authorityType
+     * @param userid
      */
-    public void setAuthorityType(String authorityType) {
-        this.authorityType = authorityType;
-    }
-
-    /**
-     * @return RESOURCE_ID
-     */
-    public String getResourceId() {
-        return resourceId;
-    }
-
-    /**
-     * @param resourceId
-     */
-    public void setResourceId(String resourceId) {
-        this.resourceId = resourceId;
-    }
-
-    /**
-     * @return RESOURCE_TYPE
-     */
-    public String getResourceType() {
-        return resourceType;
-    }
-
-    /**
-     * @param resourceType
-     */
-    public void setResourceType(String resourceType) {
-        this.resourceType = resourceType;
-    }
-
-    /**
-     * @return PARENT_ID
-     */
-    public String getParentId() {
-        return parentId;
-    }
-
-    /**
-     * @param parentId
-     */
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
-    }
-
-    /**
-     * @return PATH
-     */
-    public String getPath() {
-        return path;
-    }
-
-    /**
-     * @param path
-     */
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    /**
-     * @return DESCRIPTION
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * @param description
-     */
-    public void setDescription(String description) {
-        this.description = description;
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
 
     /**
@@ -242,6 +159,62 @@ public class ResourceAuthority {
      */
     public void setCrtHost(String crtHost) {
         this.crtHost = crtHost;
+    }
+
+    /**
+     * @return UPD_TIME
+     */
+    public Date getUpdTime() {
+        return updTime;
+    }
+
+    /**
+     * @param updTime
+     */
+    public void setUpdTime(Date updTime) {
+        this.updTime = updTime;
+    }
+
+    /**
+     * @return UPD_USER
+     */
+    public String getUpdUser() {
+        return updUser;
+    }
+
+    /**
+     * @param updUser
+     */
+    public void setUpdUser(String updUser) {
+        this.updUser = updUser;
+    }
+
+    /**
+     * @return UPD_NAME
+     */
+    public String getUpdName() {
+        return updName;
+    }
+
+    /**
+     * @param updName
+     */
+    public void setUpdName(String updName) {
+        this.updName = updName;
+    }
+
+    /**
+     * @return UPD_HOST
+     */
+    public String getUpdHost() {
+        return updHost;
+    }
+
+    /**
+     * @param updHost
+     */
+    public void setUpdHost(String updHost) {
+        this.updHost = updHost;
     }
 
     /**

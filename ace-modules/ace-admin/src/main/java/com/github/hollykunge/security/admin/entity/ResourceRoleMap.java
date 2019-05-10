@@ -2,35 +2,18 @@ package com.github.hollykunge.security.admin.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
 
-@Table(name = "BASE_GROUP")
-public class Group {
+public class ResourceRoleMap {
     @Id
     @Column(name = "ID")
-    private Integer id;
+    private String id;
 
-    @Column(name = "CODE")
-    private String code;
+    @Column(name = "RESOURCEID")
+    private String resourceid;
 
-    @Column(name = "NAME")
-    private String name;
-
-    @Column(name = "PARENT_ID")
-    private Integer parentId;
-
-    @Column(name = "PATH")
-    private String path;
-
-    @Column(name = "TYPE")
-    private String type;
-
-    @Column(name = "GROUP_TYPE")
-    private Long groupType;
-
-    @Column(name = "DESCRIPTION")
-    private String description;
+    @Column(name = "ROLEID")
+    private String roleid;
 
     @Column(name = "CRT_TIME")
     private Date crtTime;
@@ -83,113 +66,43 @@ public class Group {
     /**
      * @return ID
      */
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
     /**
      * @param id
      */
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
     /**
-     * @return CODE
+     * @return RESOURCEID
      */
-    public String getCode() {
-        return code;
+    public String getResourceid() {
+        return resourceid;
     }
 
     /**
-     * @param code
+     * @param resourceid
      */
-    public void setCode(String code) {
-        this.code = code;
+    public void setResourceid(String resourceid) {
+        this.resourceid = resourceid;
     }
 
     /**
-     * @return NAME
+     * @return ROLEID
      */
-    public String getName() {
-        return name;
+    public String getRoleid() {
+        return roleid;
     }
 
     /**
-     * @param name
+     * @param roleid
      */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * @return PARENT_ID
-     */
-    public Integer getParentId() {
-        return parentId;
-    }
-
-    /**
-     * @param parentId
-     */
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
-    }
-
-    /**
-     * @return PATH
-     */
-    public String getPath() {
-        return path;
-    }
-
-    /**
-     * @param path
-     */
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    /**
-     * @return TYPE
-     */
-    public String getType() {
-        return type;
-    }
-
-    /**
-     * @param type
-     */
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    /**
-     * @return GROUP_TYPE
-     */
-    public Long getGroupType() {
-        return groupType;
-    }
-
-    /**
-     * @param groupType
-     */
-    public void setGroupType(Long groupType) {
-        this.groupType = groupType;
-    }
-
-    /**
-     * @return DESCRIPTION
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * @param description
-     */
-    public void setDescription(String description) {
-        this.description = description;
+    public void setRoleid(String roleid) {
+        this.roleid = roleid;
     }
 
     /**

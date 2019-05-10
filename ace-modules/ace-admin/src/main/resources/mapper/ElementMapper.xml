@@ -5,28 +5,28 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="ID" jdbcType="NUMERIC" property="id" />
-    <result column="CODE" jdbcType="VARCHAR" property="code" />
-    <result column="TYPE" jdbcType="VARCHAR" property="type" />
-    <result column="NAME" jdbcType="VARCHAR" property="name" />
-    <result column="URI" jdbcType="VARCHAR" property="uri" />
-    <result column="MENU_ID" jdbcType="VARCHAR" property="menuId" />
-    <result column="PARENT_ID" jdbcType="VARCHAR" property="parentId" />
-    <result column="PATH" jdbcType="VARCHAR" property="path" />
-    <result column="METHOD" jdbcType="VARCHAR" property="method" />
-    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
-    <result column="CRT_TIME" jdbcType="DATE" property="crtTime" />
-    <result column="CRT_USER" jdbcType="VARCHAR" property="crtUser" />
-    <result column="CRT_NAME" jdbcType="VARCHAR" property="crtName" />
-    <result column="CRT_HOST" jdbcType="VARCHAR" property="crtHost" />
-    <result column="ATTR1" jdbcType="VARCHAR" property="attr1" />
-    <result column="ATTR2" jdbcType="VARCHAR" property="attr2" />
-    <result column="ATTR3" jdbcType="VARCHAR" property="attr3" />
-    <result column="ATTR4" jdbcType="VARCHAR" property="attr4" />
-    <result column="ATTR5" jdbcType="VARCHAR" property="attr5" />
-    <result column="ATTR6" jdbcType="VARCHAR" property="attr6" />
-    <result column="ATTR7" jdbcType="VARCHAR" property="attr7" />
-    <result column="ATTR8" jdbcType="VARCHAR" property="attr8" />
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="CODE" property="code" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="URI" property="uri" jdbcType="VARCHAR" />
+    <result column="MENU_ID" property="menuId" jdbcType="VARCHAR" />
+    <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
+    <result column="PATH" property="path" jdbcType="VARCHAR" />
+    <result column="METHOD" property="method" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER" property="crtUser" jdbcType="VARCHAR" />
+    <result column="CRT_NAME" property="crtName" jdbcType="VARCHAR" />
+    <result column="CRT_HOST" property="crtHost" jdbcType="VARCHAR" />
+    <result column="ATTR1" property="attr1" jdbcType="VARCHAR" />
+    <result column="ATTR2" property="attr2" jdbcType="VARCHAR" />
+    <result column="ATTR3" property="attr3" jdbcType="VARCHAR" />
+    <result column="ATTR4" property="attr4" jdbcType="VARCHAR" />
+    <result column="ATTR5" property="attr5" jdbcType="VARCHAR" />
+    <result column="ATTR6" property="attr6" jdbcType="VARCHAR" />
+    <result column="ATTR7" property="attr7" jdbcType="VARCHAR" />
+    <result column="ATTR8" property="attr8" jdbcType="VARCHAR" />
   </resultMap>
   <select id="selectAuthorityElementByUserId" resultMap="BaseResultMap">
     select distinct t.code,t.type,t.name,t.uri,t.method,m.title as menu_id from base_resource_authority ra

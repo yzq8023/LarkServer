@@ -2,20 +2,30 @@ package com.github.hollykunge.security.admin.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
 
-@Table(name = "BASE_GROUP_TYPE")
-public class GroupType {
+public class Role {
     @Id
     @Column(name = "ID")
-    private Integer id;
+    private String id;
 
     @Column(name = "CODE")
     private String code;
 
     @Column(name = "NAME")
     private String name;
+
+    @Column(name = "PARENT_ID")
+    private String parentId;
+
+    @Column(name = "PATH")
+    private String path;
+
+    @Column(name = "TYPE")
+    private String type;
+
+    @Column(name = "GROUP_TYPE")
+    private Long groupType;
 
     @Column(name = "DESCRIPTION")
     private String description;
@@ -71,14 +81,14 @@ public class GroupType {
     /**
      * @return ID
      */
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
     /**
      * @param id
      */
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -108,6 +118,62 @@ public class GroupType {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * @return PARENT_ID
+     */
+    public String getParentId() {
+        return parentId;
+    }
+
+    /**
+     * @param parentId
+     */
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
+    /**
+     * @return PATH
+     */
+    public String getPath() {
+        return path;
+    }
+
+    /**
+     * @param path
+     */
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    /**
+     * @return TYPE
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * @param type
+     */
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    /**
+     * @return GROUP_TYPE
+     */
+    public Long getGroupType() {
+        return groupType;
+    }
+
+    /**
+     * @param groupType
+     */
+    public void setGroupType(Long groupType) {
+        this.groupType = groupType;
     }
 
     /**

@@ -3,7 +3,7 @@ package com.github.hollykunge.security.admin.rest;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.hollykunge.security.admin.biz.ResourceAuthorityBiz;
+import com.github.hollykunge.security.admin.biz.ResourceRoleMapBiz;
 import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
 import com.github.hollykunge.security.admin.vo.AuthorityMenuTree;
 import com.github.hollykunge.security.admin.vo.GroupUsers;
@@ -18,8 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.github.hollykunge.security.admin.biz.GroupBiz;
-import com.github.hollykunge.security.admin.entity.Group;
+import com.github.hollykunge.security.admin.biz.RoleBiz;
 import com.github.hollykunge.security.admin.vo.GroupTree;
 import com.github.hollykunge.security.common.rest.BaseController;
 import com.github.hollykunge.security.common.util.TreeUtil;
@@ -37,7 +36,7 @@ import tk.mybatis.mapper.entity.Example;
 @Api("群组模块")
 public class GroupController extends BaseController<GroupBiz, Group> {
     @Autowired
-    private ResourceAuthorityBiz resourceAuthorityBiz;
+    private ResourceRoleMapBiz resourceRoleMapBiz;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody

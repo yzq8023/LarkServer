@@ -1,18 +1,24 @@
-package com.github.hollykunge.security.api.vo.authority;
+package com.github.hollykunge.security.admin.vo;
 
 /**
  * 菜单内部功能控制实体
  *
  * @author: holly
- * @since: 2019/4/30
+ * @since: 2019/5/9
  */
 public class ActionEntitySet {
 
-    //功能add、query、get、update、delete
+    /**
+     * 功能add、query、get、update、delete
+     */
     private String action;
-    //描述：新增、查询、详情、修改、删除
+    /**
+     * 描述：新增、查询、详情、修改、删除
+     */
     private String describe;
-    //默认选中
+    /**
+     * 默认选中
+     */
     private Boolean defaultCheck;
 
     public String getAction() {
