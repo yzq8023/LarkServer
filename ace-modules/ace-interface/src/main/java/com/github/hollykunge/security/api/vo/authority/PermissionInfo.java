@@ -1,83 +1,68 @@
 package com.github.hollykunge.security.api.vo.authority;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
- * 角色所属功能
+ * ${DESCRIPTION}
  *
  * @author 协同设计小组
  * @create 2017-06-22 15:19
  */
 public class PermissionInfo implements Serializable{
-    //角色id
-    private String roleId;
-    //菜单权限id
-    private String permissionId;
-    //菜单权限名称
-    private String permissionName;
-    //功能集合
-    private String actions;
-    //暂时没用上null
-    private String actionList;
-    //暂时没用上null
-    private String dataAccess;
+    private String code;
+    private String type;
+    private String uri;
+    private String method;
+    private String name;
+    private String menu;
 
-    private List<ActionEntitySet> actionEntitySetList;
-
-    public String getRoleId() {
-        return roleId;
+    public String getMenu() {
+        return menu;
     }
 
-    public void setRoleId(String roleId) {
-        this.roleId = roleId;
+    public void setMenu(String menu) {
+        this.menu = menu;
     }
 
-    public String getPermissionId() {
-        return permissionId;
+    public String getName() {
+        return name;
     }
 
-    public void setPermissionId(String permissionId) {
-        this.permissionId = permissionId;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getPermissionName() {
-        return permissionName;
+
+
+    public String getMethod() {
+        return method;
     }
 
-    public void setPermissionName(String permissionName) {
-        this.permissionName = permissionName;
+    public void setMethod(String method) {
+        this.method = method;
     }
 
-    public String getActions() {
-        return actions;
+    public String getCode() {
+        return code;
     }
 
-    public void setActions(String actions) {
-        this.actions = actions;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public String getActionList() {
-        return actionList;
+    public String getType() {
+        return type;
     }
 
-    public void setActionList(String actionList) {
-        this.actionList = actionList;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getDataAccess() {
-        return dataAccess;
+    public String getUri() {
+        return uri;
     }
 
-    public void setDataAccess(String dataAccess) {
-        this.dataAccess = dataAccess;
-    }
-
-    public List<ActionEntitySet> getActionEntitySetList() {
-        return actionEntitySetList;
-    }
-
-    public void setActionEntitySetList(List<ActionEntitySet> actionEntitySetList) {
-        this.actionEntitySetList = actionEntitySetList;
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 }
