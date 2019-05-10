@@ -6,6 +6,7 @@ import com.github.hollykunge.security.admin.biz.UserBiz;
 import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
 import com.github.hollykunge.security.admin.entity.Element;
 import com.github.hollykunge.security.admin.entity.Menu;
+import com.github.hollykunge.security.admin.entity.Role;
 import com.github.hollykunge.security.admin.entity.User;
 import com.github.hollykunge.security.admin.vo.FrontUser;
 import com.github.hollykunge.security.admin.vo.MenuTree;
