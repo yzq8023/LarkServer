@@ -9,7 +9,7 @@ import java.util.Date;
 public class GateLog {
     @Id
     @Column(name = "ID")
-    private Integer id;
+    private Long id;
 
     @Column(name = "MENU")
     private String menu;
@@ -35,14 +35,14 @@ public class GateLog {
     /**
      * @return ID
      */
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
     /**
      * @param id
      */
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -5,7 +5,7 @@ import com.ace.cache.annotation.CacheClear;
 import com.github.hollykunge.security.admin.entity.Org;
 import com.github.hollykunge.security.admin.mapper.MenuMapper;
 import com.github.hollykunge.security.admin.mapper.OrgMapper;
-import com.github.hollykunge.security.admin.mapper.ResourceAuthorityMapper;
+import com.github.hollykunge.security.admin.mapper.ResourceRoleMapMapper;
 import com.github.hollykunge.security.admin.mapper.UserMapper;
 import com.github.hollykunge.security.admin.vo.OrgUsers;
 import com.github.hollykunge.security.common.biz.BaseBiz;
@@ -21,7 +21,7 @@ public class OrgBiz extends BaseBiz<OrgMapper, Org> {
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    private ResourceAuthorityMapper resourceAuthorityMapper;
+    private ResourceRoleMapMapper resourceRoleMapMapper;
     @Autowired
     private MenuMapper menuMapper;
     /**
