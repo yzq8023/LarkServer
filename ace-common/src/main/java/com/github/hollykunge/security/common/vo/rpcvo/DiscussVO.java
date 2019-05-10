@@ -1,4 +1,4 @@
-package com.github.hollykunge.vo;
+package com.github.hollykunge.security.common.vo.rpcvo;
 
 import lombok.Data;
 import lombok.Getter;
