@@ -10,6 +10,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>ace-config</artifactId>
-
+    <packaging>pom</packaging>
+    <modules>
+        <module>config-server</module>
+    </modules>
 
 </project>
