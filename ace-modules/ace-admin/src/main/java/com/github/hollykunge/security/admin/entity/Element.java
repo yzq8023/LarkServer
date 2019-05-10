@@ -2,14 +2,12 @@ package com.github.hollykunge.security.admin.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
 
-@Table(name = "BASE_ELEMENT")
 public class Element {
     @Id
     @Column(name = "ID")
-    private Integer id;
+    private String id;
 
     @Column(name = "CODE")
     private String code;
@@ -77,14 +75,14 @@ public class Element {
     /**
      * @return ID
      */
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
     /**
      * @param id
      */
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

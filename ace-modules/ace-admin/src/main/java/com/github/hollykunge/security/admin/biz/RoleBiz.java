@@ -2,15 +2,16 @@ package com.github.hollykunge.security.admin.biz;
 
 import com.ace.cache.annotation.CacheClear;
 import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
-import com.github.hollykunge.security.admin.entity.Group;
+import com.github.hollykunge.security.admin.entity.ResourceRoleMap;
+import com.github.hollykunge.security.admin.entity.Role;
 import com.github.hollykunge.security.admin.entity.Menu;
 import com.github.hollykunge.security.admin.entity.ResourceAuthority;
-import com.github.hollykunge.security.admin.mapper.GroupMapper;
+import com.github.hollykunge.security.admin.mapper.RoleMapper;
 import com.github.hollykunge.security.admin.mapper.MenuMapper;
-import com.github.hollykunge.security.admin.mapper.ResourceAuthorityMapper;
+import com.github.hollykunge.security.admin.mapper.ResourceRoleMapMapper;
 import com.github.hollykunge.security.admin.mapper.UserMapper;
 import com.github.hollykunge.security.admin.vo.AuthorityMenuTree;
-import com.github.hollykunge.security.admin.vo.GroupUsers;
+import com.github.hollykunge.security.admin.vo.RoleUsers;
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,31 +29,31 @@ import java.util.*;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class GroupBiz extends BaseBiz<GroupMapper, Group> {
+public class RoleBiz extends BaseBiz<RoleMapper, Role> {
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    private ResourceAuthorityMapper resourceAuthorityMapper;
+    private ResourceRoleMapMapper resourceRoleMapMapper;
     @Autowired
     private MenuMapper menuMapper;
 
     @Override
-    public void insertSelective(Group entity) {
+    public void insertSelective(Role entity) {
         if (AdminCommonConstant.ROOT == entity.getParentId()) {
             entity.setPath("/" + entity.getCode());
         } else {
-            Group parent = this.selectById(entity.getParentId());
+            Role parent = this.selectById(entity.getParentId());
             entity.setPath(parent.getPath() + "/" + entity.getCode());
         }
         super.insertSelective(entity);
     }
 
     @Override
-    public void updateById(Group entity) {
+    public void updateById(Role entity) {
         if (AdminCommonConstant.ROOT == entity.getParentId()) {
             entity.setPath("/" + entity.getCode());
         } else {
-            Group parent = this.selectById(entity.getParentId());
+            Role parent = this.selectById(entity.getParentId());
             entity.setPath(parent.getPath() + "/" + entity.getCode());
         }
         super.updateById(entity);
@@ -69,8 +70,8 @@ public class GroupBiz extends BaseBiz<GroupMapper, Group> {
      * @param groupId
      * @return
      */
-    public GroupUsers getGroupUsers(int groupId) {
-        return new GroupUsers(userMapper.selectMemberByGroupId(groupId), userMapper.selectLeaderByGroupId(groupId));
+    public RoleUsers getRoleUsers(int groupId) {
+        return new RoleUsers(userMapper.selectMemberByRoleId(groupId), userMapper.selectLeaderByRoleId(groupId));
     }
 
     /**
@@ -81,19 +82,19 @@ public class GroupBiz extends BaseBiz<GroupMapper, Group> {
      * @param leaders
      */
     @CacheClear(pre = "permission")
-    public void modifyGroupUsers(int groupId, String members, String leaders) {
-        mapper.deleteGroupLeadersById(groupId);
-        mapper.deleteGroupMembersById(groupId);
+    public void modifyRoleUsers(int groupId, String members, String leaders) {
+        mapper.deleteRoleLeadersById(groupId);
+        mapper.deleteRoleMembersById(groupId);
         if (!StringUtils.isEmpty(members)) {
             String[] mem = members.split(",");
             for (String m : mem) {
-                mapper.insertGroupMembersById(groupId, Integer.parseInt(m));
+                mapper.insertRoleMembersById(groupId, Integer.parseInt(m));
             }
         }
         if (!StringUtils.isEmpty(leaders)) {
             String[] mem = leaders.split(",");
             for (String m : mem) {
-                mapper.insertGroupLeadersById(groupId, Integer.parseInt(m));
+                mapper.insertRoleLeadersById(groupId, Integer.parseInt(m));
             }
         }
     }
@@ -106,7 +107,7 @@ public class GroupBiz extends BaseBiz<GroupMapper, Group> {
      */
     @CacheClear(keys = {"permission:menu","permission:u"})
     public void modifyAuthorityMenu(int groupId, String[] menus) {
-        resourceAuthorityMapper.deleteByAuthorityIdAndResourceType(groupId + "", AdminCommonConstant.RESOURCE_TYPE_MENU);
+        resourceRoleMapMapper.deleteByAuthorityIdAndResourceType(groupId + "", AdminCommonConstant.RESOURCE_TYPE_MENU);
         List<Menu> menuList = menuMapper.selectAll();
         Map<String, String> map = new HashMap<String, String>();
         for (Menu menu : menuList) {
@@ -114,16 +115,16 @@ public class GroupBiz extends BaseBiz<GroupMapper, Group> {
         }
         Set<String> relationMenus = new HashSet<String>();
         relationMenus.addAll(Arrays.asList(menus));
-        ResourceAuthority authority = null;
+        ResourceRoleMap authority = null;
         for (String menuId : menus) {
             findParentID(map, relationMenus, menuId);
         }
         for (String menuId : relationMenus) {
-            authority = new ResourceAuthority(AdminCommonConstant.AUTHORITY_TYPE_GROUP, AdminCommonConstant.RESOURCE_TYPE_MENU);
+            authority = new ResourceRoleMap(AdminCommonConstant.AUTHORITY_TYPE_GROUP, AdminCommonConstant.RESOURCE_TYPE_MENU);
             authority.setAuthorityId(groupId + "");
             authority.setResourceId(menuId);
             authority.setParentId("-1");
-            resourceAuthorityMapper.insertSelective(authority);
+            resourceRoleMapMapper.insertSelective(authority);
         }
     }
 
@@ -145,11 +146,11 @@ public class GroupBiz extends BaseBiz<GroupMapper, Group> {
      */
     @CacheClear(keys = {"permission:ele","permission:u"})
     public void modifyAuthorityElement(int groupId, int menuId, int elementId) {
-        ResourceAuthority authority = new ResourceAuthority(AdminCommonConstant.AUTHORITY_TYPE_GROUP, AdminCommonConstant.RESOURCE_TYPE_BTN);
+        ResourceRoleMap authority = new ResourceRoleMap(AdminCommonConstant.AUTHORITY_TYPE_GROUP, AdminCommonConstant.RESOURCE_TYPE_BTN);
         authority.setAuthorityId(groupId + "");
         authority.setResourceId(elementId + "");
         authority.setParentId("-1");
-        resourceAuthorityMapper.insertSelective(authority);
+        resourceRoleMapMapper.insertSelective(authority);
     }
 
     /**
@@ -161,11 +162,11 @@ public class GroupBiz extends BaseBiz<GroupMapper, Group> {
      */
     @CacheClear(keys = {"permission:ele","permission:u"})
     public void removeAuthorityElement(int groupId, int menuId, int elementId) {
-        ResourceAuthority authority = new ResourceAuthority();
+        ResourceRoleMap authority = new ResourceRoleMap();
         authority.setAuthorityId(groupId + "");
         authority.setResourceId(elementId + "");
         authority.setParentId("-1");
-        resourceAuthorityMapper.delete(authority);
+        resourceRoleMapMapper.delete(authority);
     }
 
 
@@ -195,11 +196,11 @@ public class GroupBiz extends BaseBiz<GroupMapper, Group> {
      * @return
      */
     public List<Integer> getAuthorityElement(int groupId) {
-        ResourceAuthority authority = new ResourceAuthority(AdminCommonConstant.AUTHORITY_TYPE_GROUP, AdminCommonConstant.RESOURCE_TYPE_BTN);
+        ResourceRoleMap authority = new ResourceRoleMap(AdminCommonConstant.AUTHORITY_TYPE_GROUP, AdminCommonConstant.RESOURCE_TYPE_BTN);
         authority.setAuthorityId(groupId + "");
-        List<ResourceAuthority> authorities = resourceAuthorityMapper.select(authority);
+        List<ResourceRoleMap> authorities = resourceRoleMapMapper.select(authority);
         List<Integer> ids = new ArrayList<Integer>();
-        for (ResourceAuthority auth : authorities) {
+        for (ResourceRoleMap auth : authorities) {
             ids.add(Integer.parseInt(auth.getResourceId()));
         }
         return ids;

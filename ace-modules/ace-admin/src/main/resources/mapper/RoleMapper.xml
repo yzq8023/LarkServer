@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.github.hollykunge.security.admin.mapper.RoleMapper" >
+  <resultMap id="BaseResultMap" type="com.github.hollykunge.security.admin.entity.Role" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="CODE" property="code" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
+    <result column="PATH" property="path" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="CHAR" />
+    <result column="GROUP_TYPE" property="groupType" jdbcType="DECIMAL" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
+    <result column="CRT_USER" property="crtUser" jdbcType="VARCHAR" />
+    <result column="CRT_NAME" property="crtName" jdbcType="VARCHAR" />
+    <result column="CRT_HOST" property="crtHost" jdbcType="VARCHAR" />
+    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
+    <result column="UPD_USER" property="updUser" jdbcType="VARCHAR" />
+    <result column="UPD_NAME" property="updName" jdbcType="VARCHAR" />
+    <result column="UPD_HOST" property="updHost" jdbcType="VARCHAR" />
+    <result column="ATTR1" property="attr1" jdbcType="VARCHAR" />
+    <result column="ATTR2" property="attr2" jdbcType="VARCHAR" />
+    <result column="ATTR3" property="attr3" jdbcType="VARCHAR" />
+    <result column="ATTR4" property="attr4" jdbcType="VARCHAR" />
+    <result column="ATTR5" property="attr5" jdbcType="VARCHAR" />
+    <result column="ATTR6" property="attr6" jdbcType="VARCHAR" />
+    <result column="ATTR7" property="attr7" jdbcType="VARCHAR" />
+    <result column="ATTR8" property="attr8" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteGroupMembersById">
+      delete from base_group_member where group_id = #{groupId}
+  </delete>
+  <delete id="deleteGroupLeadersById">
+    delete from base_group_leader where group_id = #{groupId}
+  </delete>
+  <insert id="insertGroupMembersById">
+    insert into base_group_member (
+       group_id,user_id
+    )
+    values(
+       #{groupId},#{userId}
+    )
+  </insert>
+  <insert id="insertGroupLeadersById">
+    insert into base_group_leader (
+       group_id,user_id
+    )
+    values(
+       #{groupId},#{userId}
+    )
+  </insert>
+</mapper>
