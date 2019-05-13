@@ -3,6 +3,8 @@ package com.workhub.z.servicechat.config;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.Callable;
+
 /**
 *@Description: 多线程任务处理类
 *@Param: 
@@ -48,7 +50,8 @@ public class AsyncTaskService {
         System.out.println("关闭群组");
     }
 
-
-
-
+//    @Override
+//    public String call() throws Exception {
+//        return null;
+//    }
 }

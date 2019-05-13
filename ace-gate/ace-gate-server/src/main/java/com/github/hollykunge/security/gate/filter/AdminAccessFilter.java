@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * 请求权限验证过滤器
+ * 网关核心权限拦截类
  *
  * @author 协同设计小组
  * @create 2017-06-23 8:25
@@ -102,15 +102,16 @@ public class AdminAccessFilter extends ZuulFilter {
         }
         //获取所有的资源信息，包括menu和element
         List<PermissionInfo> permissionIfs = userService.getAllPermissionInfo();
-        // 判断资源是否启用权限约束
+        // 判断当前资源是否属于权限资源
         Stream<PermissionInfo> stream = getPermissionIfs(requestUri, method, permissionIfs);
         List<PermissionInfo> result = stream.collect(Collectors.toList());
         PermissionInfo[] permissions = result.toArray(new PermissionInfo[]{});
 
         if (permissions.length > 0) {
+            //判断用户是否有当前资源访问权限
             checkUserPermission(permissions, ctx, user);
         }
-        // 申请客户端密钥头
+        // 申请客户端密钥头，加到header里传递到下方服务
         ctx.addZuulRequestHeader(serviceAuthConfig.getTokenHeader(), serviceAuthUtil.getClientToken());
         return null;
     }

@@ -1,7 +1,5 @@
 package com.github.hollykunge.security.admin.vo;
 
-import com.github.hollykunge.security.api.vo.authority.PermissionInfo;
-
 import java.util.List;
 
 /**
@@ -11,22 +9,36 @@ import java.util.List;
  * @since: 2019/4/29
  */
 public class UserRole {
-    //角色id
+    /**
+     * 角色id
+     */
     private String id;
-    //角色名称
+    /**
+     * 角色名称
+     */
     private String name;
-    //角色描述
-    private String describe;
-    //角色状态
+    /**
+     * 角色描述
+     */
+    private String description;
+    /**
+     * 角色状态
+     */
     private Integer status;
-    //创建人id
+    /**
+     * 创建人id
+     */
     private String creatorId;
-    //创建时间
+    /**
+     * 创建时间
+     */
     private Long createTime;
-    //删除状态0未删除
+    /**
+     * 删除状态0未删除
+     */
     private Integer deleted;
 
-    private List<PermissionInfo> permissionInfos;
+    private List<FrontPermission> frontPermissionList;
 
     public String getId() {
         return id;
@@ -44,12 +56,12 @@ public class UserRole {
         this.name = name;
     }
 
-    public String getDescribe() {
-        return describe;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescribe(String describe) {
-        this.describe = describe;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Integer getStatus() {
@@ -84,11 +96,11 @@ public class UserRole {
         this.deleted = deleted;
     }
 
-    public List<PermissionInfo> getPermissionInfos() {
-        return permissionInfos;
+    public List<FrontPermission> getPermissionInfos() {
+        return frontPermissionList;
     }
 
-    public void setPermissionInfos(List<PermissionInfo> permissionInfos) {
-        this.permissionInfos = permissionInfos;
+    public void setPermissionInfos(List<FrontPermission> frontPermissionList) {
+        this.frontPermissionList = frontPermissionList;
     }
 }
