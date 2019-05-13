@@ -21,3 +21,11 @@ spring:
           username:
           password:
       label: master
+
+##rabbitmq配置
+  rabbitmq:
+    host: 10.12.97.45
+    password: guest
+    port: 5672
+    username: guest
+    virtual-host: /
