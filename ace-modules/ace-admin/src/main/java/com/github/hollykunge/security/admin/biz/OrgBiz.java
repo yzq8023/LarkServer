@@ -24,27 +24,22 @@ public class OrgBiz extends BaseBiz<OrgMapper, Org> {
     private ResourceRoleMapMapper resourceRoleMapMapper;
     @Autowired
     private MenuMapper menuMapper;
+
     /**
      * 变更组织所分配用户
      *
      * @param orgId
-     * @param members
-     * @param leaders
+     * @param users
      */
     @CacheClear(pre = "permission")
-    public void modifyOrgUsers(int orgId, String members, String leaders) {
-        mapper.deleteOrgLeadersById(orgId);
-        mapper.deleteOrgMembersById(orgId);
-        if (!StringUtils.isEmpty(members)) {
-            String[] mem = members.split(",");
+    public void modifyOrgUsers(int orgId, String users) {
+
+        // TODO: 根据组织id删除用户 mapper.deleteUsersByOrgId(orgId)
+
+        if (!StringUtils.isEmpty(users)) {
+            String[] mem = users.split(",");
             for (String m : mem) {
-                mapper.insertOrgMembersById(orgId, Integer.parseInt(m));
-            }
-        }
-        if (!StringUtils.isEmpty(leaders)) {
-            String[] mem = leaders.split(",");
-            for (String m : mem) {
-                mapper.insertOrgLeadersById(orgId, Integer.parseInt(m));
+             // TODO: 根据组织id添加用户   mapper.insertUsersByOrgId(orgId, Integer.parseInt(m));
             }
         }
     }
@@ -56,7 +51,7 @@ public class OrgBiz extends BaseBiz<OrgMapper, Org> {
      * @return
      */
     public OrgUsers getOrgUsers(Integer orgId) {
-        return new OrgUsers(userMapper.selectMemberByOrgId(orgId), userMapper.selectLeaderByOrgId(orgId));
+        return new OrgUsers(userMapper.selectUserByOrgId(orgId));
     }
 
     @Override
