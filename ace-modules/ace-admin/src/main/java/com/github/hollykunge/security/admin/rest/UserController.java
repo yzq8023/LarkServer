@@ -34,9 +34,9 @@ public class UserController extends BaseController<UserBiz,User> {
         }
     }
 
-    @RequestMapping(value = "/front/menus", method = RequestMethod.GET)
-    public @ResponseBody
-    List<MenuTree> getMenusByUsername(String token) throws Exception {
-        return permissionService.getMenusByUsername(token);
-    }
+//    @RequestMapping(value = "/front/menus", method = RequestMethod.GET)
+//    public @ResponseBody
+//    List<MenuTree> getMenusByUsername(String token) throws Exception {
+//        return permissionService.getMenusByUsername(token);
+//    }
 }
