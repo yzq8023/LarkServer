@@ -1,5 +1,6 @@
 package com.github.hollykunge.security.config;
 
+import com.github.hollykunge.security.common.constant.CommonConstants;
 import com.github.hollykunge.security.constants.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -27,6 +28,6 @@ public class ProduceSenderConfig {
      */
     public void send(String uuid,Object message) {
         CorrelationData correlationId = new CorrelationData(uuid);
-        rabbitTemplate.convertAndSend(Constants.EXCHANGE, "",message, correlationId);
+        rabbitTemplate.convertAndSend(CommonConstants.PORTAL_EXCHANGE, "",message, correlationId);
     }
 }

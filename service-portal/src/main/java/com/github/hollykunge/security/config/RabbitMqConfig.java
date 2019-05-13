@@ -1,10 +1,9 @@
 package com.github.hollykunge.security.config;
 
-import com.github.hollykunge.security.constants.Constants;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
  * @create 2019/5/9 13:37
  */
 @Configuration
+@Slf4j
 public class RabbitMqConfig {
 
 
@@ -30,7 +30,7 @@ public class RabbitMqConfig {
     private ConnectionFactory connectionFactory;
 
     /**
-     将消息队列1和交换机进行绑定
+     将消息队列和交换机进行绑定
      */
     @Bean
     public Binding binding_portal() {
@@ -41,22 +41,36 @@ public class RabbitMqConfig {
      * 当有消息到达时会通知监听在对应的队列上的监听对象
      * @return
      */
-    @Bean
-    public SimpleMessageListenerContainer simpleMessageListenerContainer(){
-        SimpleMessageListenerContainer simpleMessageListenerContainer = new SimpleMessageListenerContainer(connectionFactory);
-        simpleMessageListenerContainer.addQueues(queueConfig.portalQueue());
-        simpleMessageListenerContainer.setMessageListener((MessageListener)message->{
-            if(Constants.PORTAL_QUEUE_NAMA.equals(message.getMessageProperties().getConsumerQueue())){
-                String s = new String(message.getBody());
-                System.out.printf(s);
-            }
-        });
-        simpleMessageListenerContainer.setExposeListenerChannel(true);
-        simpleMessageListenerContainer.setMaxConcurrentConsumers(5);
-        simpleMessageListenerContainer.setConcurrentConsumers(1);
-        simpleMessageListenerContainer.setAcknowledgeMode(AcknowledgeMode.MANUAL); //设置确认模式手工确认
-        return simpleMessageListenerContainer;
-    }
+//    @Bean
+//    public SimpleMessageListenerContainer simpleMessageListenerContainer() {
+//        //加载处理消息A的队列
+//        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(connectionFactory);
+//        //设置接收多个队列里面的消息，这里设置接收队列portal
+//        //假如想一个消费者处理多个队列里面的信息可以如下设置：
+//        //container.setQueues(queueA(),queueB(),queueC());
+//        container.setQueues(queueConfig.portalQueue());
+//        container.setExposeListenerChannel(true);
+//        //设置最大的并发的消费者数量
+//        container.setMaxConcurrentConsumers(10);
+//        //最小的并发消费者的数量
+//        container.setConcurrentConsumers(1);
+//        //设置确认模式手工确认
+//        container.setAcknowledgeMode(AcknowledgeMode.MANUAL);
+//        container.setMessageListener(new ChannelAwareMessageListener() {
+//            @Override
+//            public void onMessage(Message message, Channel channel) throws Exception {
+//                /**通过basic.qos方法设置prefetch_count=1，这样RabbitMQ就会使得每个Consumer在同一个时间点最多处理一个Message，
+//                 换句话说,在接收到该Consumer的ack前,它不会将新的Message分发给它 */
+//                channel.basicQos(1);
+//                byte[] body = message.getBody();
+//                log.info("接收处理队列A当中的消息:" + new String(body));
+//                /**为了保证永远不会丢失消息，RabbitMQ支持消息应答机制。
+//                 当消费者接收到消息并完成任务后会往RabbitMQ服务器发送一条确认的命令，然后RabbitMQ才会将消息删除。*/
+//                channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+//            }
+//        });
+//        return container;
+//    }
 
     /**
      * 定义rabbit template用于数据的接收和发送
@@ -65,32 +79,7 @@ public class RabbitMqConfig {
     @Bean
     public RabbitTemplate rabbitTemplate() {
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
-        /**若使用confirm-callback或return-callback，s
-         * 必须要配置publisherConfirms或publisherReturns为true
-         * 每个rabbitTemplate只能有一个confirm-callback和return-callback
-         */
-        template.setConfirmCallback(msgSendConfirmCallBack());
-        //template.setReturnCallback(msgSendReturnCallback());
-        /**
-         * 使用return-callback时必须设置mandatory为true，或者在配置中设置mandatory-expression的值为true，
-         * 可针对每次请求的消息去确定’mandatory’的boolean值，
-         * 只能在提供’return -callback’时使用，与mandatory互斥
-         */
-        //  template.setMandatory(true);
         return template;
-    }
-
-    /**
-     * 消息确认机制
-     * Confirms给客户端一种轻量级的方式，能够跟踪哪些消息被broker处理，
-     * 哪些可能因为broker宕掉或者网络失败的情况而重新发布。
-     * 确认并且保证消息被送达，提供了两种方式：发布确认和事务。(两者不可同时使用)
-     * 在channel为事务时，不可引入确认模式；同样channel为确认模式下，不可使用事务。
-     * @return
-     */
-    @Bean
-    public MsgSendConfirmCallBack msgSendConfirmCallBack(){
-        return new MsgSendConfirmCallBack();
     }
 
 }

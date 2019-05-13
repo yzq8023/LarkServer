@@ -1,5 +1,6 @@
 package com.github.hollykunge.security.config;
 
+import com.github.hollykunge.security.common.constant.CommonConstants;
 import com.github.hollykunge.security.constants.Constants;
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +21,6 @@ public class QueueConfig {
          auto-delete 表示消息队列没有在使用时将被自动删除 默认是false
          exclusive  表示该消息队列是否只在当前connection生效,默认是false
          */
-        return new Queue(Constants.PORTAL_QUEUE_NAMA,true,false,false);
+        return new Queue(CommonConstants.PORTAL_QUEUE_NAMA,true,false,false);
     }
 }
