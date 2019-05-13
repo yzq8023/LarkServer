@@ -1,4 +1,4 @@
-package com.github.hollykunge.vo;
+package com.github.hollykunge.security.vo;
 
 import lombok.Data;
 import lombok.Getter;
@@ -7,17 +7,14 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class KnowledgeVO {
-
-    private String id;
-
+public class ResourceListVO {
     private String type;
 
     private String name;
 
-    private String date;
+    private String img;
 
-    private String color;
+    private String date;
 
     private String time;
 }
