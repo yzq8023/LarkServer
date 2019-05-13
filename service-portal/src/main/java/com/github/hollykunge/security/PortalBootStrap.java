@@ -1,9 +1,8 @@
-package com.github.hollykunge;
+package com.github.hollykunge.security;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * <p>author  zhhongyu </p><br>
@@ -12,7 +11,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  */
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients({"com.github.hollykunge.feign"})
 public class PortalBootStrap {
     public static void main(String[] args) {
         SpringApplication.run(PortalBootStrap.class, args);
