@@ -19,7 +19,7 @@ public class CommonConstants {
     public static final String JWT_KEY_USER_ID = "userId";
     public static final String JWT_KEY_NAME = "name";
     /** 消息交换机的名字*/
-    public static final String EXCHANGE = "exchangePortal";
+    public static final String PORTAL_EXCHANGE = "exchangePortal";
     //门户接口队列
     public static final String PORTAL_QUEUE_NAMA = "portal_queue";
 }
