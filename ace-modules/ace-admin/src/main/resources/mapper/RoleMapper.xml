@@ -1,34 +1,34 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.github.hollykunge.security.admin.mapper.RoleMapper" >
   <resultMap id="BaseResultMap" type="com.github.hollykunge.security.admin.entity.Role" >
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="ID" property="id" jdbcType="VARCHAR" />
-    <result column="CODE" property="code" jdbcType="VARCHAR" />
-    <result column="NAME" property="name" jdbcType="VARCHAR" />
-    <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
-    <result column="PATH" property="path" jdbcType="VARCHAR" />
-    <result column="TYPE" property="type" jdbcType="CHAR" />
-    <result column="GROUP_TYPE" property="groupType" jdbcType="DECIMAL" />
-    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
-    <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
-    <result column="CRT_USER" property="crtUser" jdbcType="VARCHAR" />
-    <result column="CRT_NAME" property="crtName" jdbcType="VARCHAR" />
-    <result column="CRT_HOST" property="crtHost" jdbcType="VARCHAR" />
-    <result column="UPD_TIME" property="updTime" jdbcType="TIMESTAMP" />
-    <result column="UPD_USER" property="updUser" jdbcType="VARCHAR" />
-    <result column="UPD_NAME" property="updName" jdbcType="VARCHAR" />
-    <result column="UPD_HOST" property="updHost" jdbcType="VARCHAR" />
-    <result column="ATTR1" property="attr1" jdbcType="VARCHAR" />
-    <result column="ATTR2" property="attr2" jdbcType="VARCHAR" />
-    <result column="ATTR3" property="attr3" jdbcType="VARCHAR" />
-    <result column="ATTR4" property="attr4" jdbcType="VARCHAR" />
-    <result column="ATTR5" property="attr5" jdbcType="VARCHAR" />
-    <result column="ATTR6" property="attr6" jdbcType="VARCHAR" />
-    <result column="ATTR7" property="attr7" jdbcType="VARCHAR" />
-    <result column="ATTR8" property="attr8" jdbcType="VARCHAR" />
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="CODE" jdbcType="VARCHAR" property="code" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="PARENT_ID" jdbcType="VARCHAR" property="parentId" />
+    <result column="TYPE" jdbcType="CHAR" property="type" />
+    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="STATUS" jdbcType="DECIMAL" property="status" />
+    <result column="DELETED" jdbcType="DECIMAL" property="deleted" />
+    <result column="CRT_TIME" jdbcType="TIMESTAMP" property="crtTime" />
+    <result column="CRT_USER" jdbcType="VARCHAR" property="crtUser" />
+    <result column="CRT_NAME" jdbcType="VARCHAR" property="crtName" />
+    <result column="CRT_HOST" jdbcType="VARCHAR" property="crtHost" />
+    <result column="UPD_TIME" jdbcType="TIMESTAMP" property="updTime" />
+    <result column="UPD_USER" jdbcType="VARCHAR" property="updUser" />
+    <result column="UPD_NAME" jdbcType="VARCHAR" property="updName" />
+    <result column="UPD_HOST" jdbcType="VARCHAR" property="updHost" />
+    <result column="ATTR1" jdbcType="VARCHAR" property="attr1" />
+    <result column="ATTR2" jdbcType="VARCHAR" property="attr2" />
+    <result column="ATTR3" jdbcType="VARCHAR" property="attr3" />
+    <result column="ATTR4" jdbcType="VARCHAR" property="attr4" />
+    <result column="ATTR5" jdbcType="VARCHAR" property="attr5" />
+    <result column="ATTR6" jdbcType="VARCHAR" property="attr6" />
+    <result column="ATTR7" jdbcType="VARCHAR" property="attr7" />
+    <result column="ATTR8" jdbcType="VARCHAR" property="attr8" />
   </resultMap>
   <delete id="deleteGroupMembersById">
       delete from base_group_member where group_id = #{groupId}
