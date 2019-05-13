@@ -2,7 +2,10 @@ package com.github.hollykunge.security.common.vo.rpcvo;
 
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.io.Serializable;
 
 /**
  * 研讨页面展示实体类
@@ -10,7 +13,8 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class DiscussVO {
+@NoArgsConstructor
+public class DiscussVO implements Serializable {
 
     private String id;
 
