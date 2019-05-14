@@ -1,7 +1,9 @@
 package com.github.hollykunge.security.common.constant;
 
 /**
- * Created by 协同设计小组 on 2017/8/23.
+ * 外部访问异常码
+ * @author 协同设计小组
+ * @date 2017/8/23
  */
 public class RestCodeConstants {
 
