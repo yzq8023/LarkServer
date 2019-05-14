@@ -1,7 +1,9 @@
 package com.github.hollykunge.security.common.msg;
 
 /**
- * Created by 协同设计小组 on 2017/6/11.
+ * 对象返回类型
+ * @author 协同设计小组
+ * @date 2017/6/11
  */
 public class ObjectRestResponse<T> extends BaseResponse {
 
