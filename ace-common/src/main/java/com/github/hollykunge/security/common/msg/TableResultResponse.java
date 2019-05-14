@@ -10,71 +10,61 @@ import java.util.List;
  */
 public class TableResultResponse<T> extends BaseResponse {
 
-    TableData<T> data;
 
-    public TableResultResponse(long total, List<T> rows) {
-        this.data = new TableData<T>(total, rows);
-    }
+     private T data;
+     private Integer pageSize;
+     private Integer pageNo;
+     private Integer totalPage;
+     private Integer totalCount;
 
-    public TableResultResponse() {
-        this.data = new TableData<T>();
-    }
-
-    TableResultResponse<T> total(int total) {
-        this.data.setTotal(total);
-        return this;
-    }
-
-    TableResultResponse<T> rows(List<T> rows) {
-        this.data.setRows(rows);
-        return this;
-    }
-
-    public List<T> getRows() {
-        return data.getRows();
-}
-
-    public TableData<T> getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(TableData<T> data) {
+    public void setData(T data) {
         this.data = data;
     }
 
-    class TableData<T> {
-        long total;
-        List<T> rows;
+    public Integer getPageSize() {
+        return pageSize;
+    }
 
-        public TableData(long total, List<T> rows) {
-            this.total = total;
-            this.rows = rows;
-        }
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
 
-        public TableData() {
-        }
+    public Integer getPageNo() {
+        return pageNo;
+    }
 
-        public long getTotal() {
-            return total;
-        }
+    public void setPageNo(Integer pageNo) {
+        this.pageNo = pageNo;
+    }
 
-        public void setTotal(long total) {
-            this.total = total;
-        }
+    public Integer getTotalPage() {
+        return totalPage;
+    }
 
-        public List<T> getRows() {
-            return rows;
-        }
+    public void setTotalPage(Integer totalPage) {
+        this.totalPage = totalPage;
+    }
 
-        public void setRows(List<T> rows) {
-            this.rows = rows;
-        }
+    public Integer getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(Integer totalCount) {
+        this.totalCount = totalCount;
     }
 
     @Override
     public String toString() {
-        return "{" +
+        return "TableResultResponse{" +
                 "data=" + data +
-                "}";
+                ", pageSize=" + pageSize +
+                ", pageNo=" + pageNo +
+                ", totalPage=" + totalPage +
+                ", totalCount=" + totalCount +
+                '}';
     }
 }
