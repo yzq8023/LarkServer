@@ -11,10 +11,9 @@ public class BaseResponse {
 
 
 
-    public BaseResponse(int status, String message,String timestamp) {
+    public BaseResponse(int status, String message) {
         this.status = status;
         this.message = message;
-        this.timestamp = timestamp;
     }
 
     public BaseResponse() {
@@ -43,5 +42,4 @@ public class BaseResponse {
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
-
 }
