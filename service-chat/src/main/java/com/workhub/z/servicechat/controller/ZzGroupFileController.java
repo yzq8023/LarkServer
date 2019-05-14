@@ -32,4 +32,8 @@ public class ZzGroupFileController {
         return this.zzGroupFileService.queryById(id);
     }
 
+    // TODO: 2019/5/14 群文件查询
+
+    // TODO: 2019/5/14 文件删除（数据库）
+
 }
