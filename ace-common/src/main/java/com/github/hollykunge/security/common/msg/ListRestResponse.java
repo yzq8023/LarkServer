@@ -1,7 +1,7 @@
 package com.github.hollykunge.security.common.msg;
 
 /**
- * ${DESCRIPTION}
+ * 列表返回类型
  *
  * @author 协同设计小组
  * @create 2017-06-09 7:32
