@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.workhub.z.servicechat.dao.ZzGroupDao">
+
+    <resultMap type="com.workhub.z.servicechat.entity.ZzGroup" id="ZzGroupMap">
+        <result property="groupId" column="GROUP_ID" jdbcType="VARCHAR"/>
+        <result property="groupName" column="GROUP_NAME" jdbcType="VARCHAR"/>
+        <result property="groupDescribe" column="GROUP_DESCRIBE" jdbcType="VARCHAR"/>
+        <result property="isdelete" column="ISDELETE" jdbcType="VARCHAR"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="creator" column="CREATOR" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="updator" column="UPDATOR" jdbcType="VARCHAR"/>
+        <result property="pname" column="PNAME" jdbcType="VARCHAR"/>
+        <result property="scop" column="SCOP" jdbcType="VARCHAR"/>
+        <result property="ispublic" column="ISPUBLIC" jdbcType="VARCHAR"/>
+        <result property="levels" column="LEVELS" jdbcType="VARCHAR"/>
+        <result property="isclose" column="ISCLOSE" jdbcType="VARCHAR"/>
+        <result property="groupImg" column="GROUP_IMG" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ZzGroupMap">
+        select
+          GROUP_ID, GROUP_NAME, GROUP_DESCRIBE, ISDELETE, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, PNAME, SCOP, ISPUBLIC, LEVELS, ISCLOSE, GROUP_IMG
+        from ZZ_GROUP
+        where GROUP_ID = #{groupId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ZzGroupMap">
+        select
+          GROUP_ID, GROUP_NAME, GROUP_DESCRIBE, ISDELETE, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, PNAME, SCOP, ISPUBLIC, LEVELS, ISCLOSE, GROUP_IMG
+        from ZZ_GROUP
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="ZzGroupMap">
+        select
+          GROUP_ID, GROUP_NAME, GROUP_DESCRIBE, ISDELETE, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, PNAME, SCOP, ISPUBLIC, LEVELS, ISCLOSE, GROUP_IMG
+        from ZZ_GROUP
+        <where>
+            <if test="groupId != null and groupId != ''">
+                and GROUP_ID = #{groupId}
+            </if>
+            <if test="groupName != null and groupName != ''">
+                and GROUP_NAME = #{groupName}
+            </if>
+            <if test="groupDescribe != null and groupDescribe != ''">
+                and GROUP_DESCRIBE = #{groupDescribe}
+            </if>
+            <if test="isdelete != null and isdelete != ''">
+                and ISDELETE = #{isdelete}
+            </if>
+            <if test="createTime != null">
+                and CREATE_TIME = #{createTime}
+            </if>
+            <if test="creator != null and creator != ''">
+                and CREATOR = #{creator}
+            </if>
+            <if test="updateTime != null">
+                and UPDATE_TIME = #{updateTime}
+            </if>
+            <if test="updator != null and updator != ''">
+                and UPDATOR = #{updator}
+            </if>
+            <if test="pname != null and pname != ''">
+                and PNAME = #{pname}
+            </if>
+            <if test="scop != null and scop != ''">
+                and SCOP = #{scop}
+            </if>
+            <if test="ispublic != null and ispublic != ''">
+                and ISPUBLIC = #{ispublic}
+            </if>
+            <if test="levels != null and levels != ''">
+                and LEVELS = #{levels}
+            </if>
+            <if test="isclose != null and isclose != ''">
+                and ISCLOSE = #{isclose}
+            </if>
+            <if test="groupImg != null and groupImg != ''">
+                and GROUP_IMG = #{groupImg}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="groupId" useGeneratedKeys="true">
+        insert into ZZ_GROUP(GROUP_NAME, GROUP_DESCRIBE, ISDELETE, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, PNAME, SCOP, ISPUBLIC, LEVELS, ISCLOSE, GROUP_IMG)
+        values (#{groupName}, #{groupDescribe}, #{isdelete}, #{createTime}, #{creator}, #{updateTime}, #{updator}, #{pname}, #{scop}, #{ispublic}, #{levels}, #{isclose}, #{groupImg})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update ZZ_GROUP
+        <set>
+            <if test="groupName != null and groupName != ''">
+                GROUP_NAME = #{groupName},
+            </if>
+            <if test="groupDescribe != null and groupDescribe != ''">
+                GROUP_DESCRIBE = #{groupDescribe},
+            </if>
+            <if test="isdelete != null and isdelete != ''">
+                ISDELETE = #{isdelete},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime},
+            </if>
+            <if test="creator != null and creator != ''">
+                CREATOR = #{creator},
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME = #{updateTime},
+            </if>
+            <if test="updator != null and updator != ''">
+                UPDATOR = #{updator},
+            </if>
+            <if test="pname != null and pname != ''">
+                PNAME = #{pname},
+            </if>
+            <if test="scop != null and scop != ''">
+                SCOP = #{scop},
+            </if>
+            <if test="ispublic != null and ispublic != ''">
+                ISPUBLIC = #{ispublic},
+            </if>
+            <if test="levels != null and levels != ''">
+                LEVELS = #{levels},
+            </if>
+            <if test="isclose != null and isclose != ''">
+                ISCLOSE = #{isclose},
+            </if>
+            <if test="groupImg != null and groupImg != ''">
+                GROUP_IMG = #{groupImg},
+            </if>
+        </set>
+        where GROUP_ID = #{groupId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from ZZ_GROUP where GROUP_ID = #{groupId}
+    </delete>
+
+</mapper>

@@ -18,17 +18,17 @@ public class Role {
     @Column(name = "PARENT_ID")
     private String parentId;
 
-    @Column(name = "PATH")
-    private String path;
-
     @Column(name = "TYPE")
     private String type;
 
-    @Column(name = "GROUP_TYPE")
-    private Long groupType;
-
     @Column(name = "DESCRIPTION")
     private String description;
+
+    @Column(name = "STATUS")
+    private Short status;
+
+    @Column(name = "DELETED")
+    private Short deleted;
 
     @Column(name = "CRT_TIME")
     private Date crtTime;
@@ -135,20 +135,6 @@ public class Role {
     }
 
     /**
-     * @return PATH
-     */
-    public String getPath() {
-        return path;
-    }
-
-    /**
-     * @param path
-     */
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    /**
      * @return TYPE
      */
     public String getType() {
@@ -163,20 +149,6 @@ public class Role {
     }
 
     /**
-     * @return GROUP_TYPE
-     */
-    public Long getGroupType() {
-        return groupType;
-    }
-
-    /**
-     * @param groupType
-     */
-    public void setGroupType(Long groupType) {
-        this.groupType = groupType;
-    }
-
-    /**
      * @return DESCRIPTION
      */
     public String getDescription() {
@@ -188,6 +160,34 @@ public class Role {
      */
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    /**
+     * @return STATUS
+     */
+    public Short getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status
+     */
+    public void setStatus(Short status) {
+        this.status = status;
+    }
+
+    /**
+     * @return DELETED
+     */
+    public Short getDeleted() {
+        return deleted;
+    }
+
+    /**
+     * @param deleted
+     */
+    public void setDeleted(Short deleted) {
+        this.deleted = deleted;
     }
 
     /**
