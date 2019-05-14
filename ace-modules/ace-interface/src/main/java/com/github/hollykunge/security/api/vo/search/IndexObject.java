@@ -41,7 +41,7 @@ public class IndexObject implements Comparable<IndexObject>,Serializable{
 
 	private String keywords;
 
-	private String descripton;
+	private String description;
 
 	private String postDate;
 
@@ -53,19 +53,18 @@ public class IndexObject implements Comparable<IndexObject>,Serializable{
 		this.postDate = postDate;
 	}
 
-	public String getDescripton() {
-		return descripton;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDescripton(String descripton) {
-		this.descripton = descripton;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	private String url;
 
-	/*相似度*/
+	/**相似度**/
 	private float score;
-
 
 	public String getKeywords() {
 		return keywords;

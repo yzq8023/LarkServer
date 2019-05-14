@@ -25,7 +25,7 @@ public class UserInfo implements Serializable{
     public Date getUpdTime() {
         return updTime;
     }
-    @JsonDeserialize(using = Custom_Json_Date_Deserializer.class)
+    @JsonDeserialize(using = CustomJsonDateDeserializer.class)
     public void setUpdTime(Date updTime) {
         this.updTime = updTime;
     }
