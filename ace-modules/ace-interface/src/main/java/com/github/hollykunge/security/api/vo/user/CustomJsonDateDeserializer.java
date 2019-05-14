@@ -15,7 +15,7 @@ import java.util.Date;
  * @date 2018/7/12
  * @des
  */
-    public class Custom_Json_Date_Deserializer extends JsonDeserializer<Date> {
+    public class CustomJsonDateDeserializer extends JsonDeserializer<Date> {
         @Override
         public Date deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
