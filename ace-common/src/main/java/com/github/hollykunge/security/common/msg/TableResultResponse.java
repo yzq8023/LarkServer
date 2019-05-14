@@ -12,10 +12,10 @@ public class TableResultResponse<T> extends BaseResponse {
 
 
      private T data;
-     private Integer pageSize;
-     private Integer pageNo;
-     private Integer totalPage;
-     private Integer totalCount;
+     private int pageSize;
+     private int pageNo;
+     private int totalPage;
+     private int totalCount;
 
     public T getData() {
         return data;
