@@ -18,4 +18,7 @@ public class CommonConstants {
     public static final String CONTEXT_KEY_USER_TOKEN = "currentUserToken";
     public static final String JWT_KEY_USER_ID = "userId";
     public static final String JWT_KEY_NAME = "name";
+
+    //密级异常
+    public static final Integer EX_LEVELS = 40000;
 }
