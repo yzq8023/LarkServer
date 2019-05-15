@@ -52,4 +52,10 @@ public interface ZzPrivateMsgService {
      */
     boolean deleteById(String msgId);
 
+    // TODO: 2019/5/15 msgSender msgReceiver查询消息列表
+
+    // TODO: 2019/5/15 根据 msgSender msgReceiver更新未读消息isRead
+
+    // TODO: 2019/5/15  
+
 }

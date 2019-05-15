@@ -1,22 +1,21 @@
-package com.workhub.z.servicechat.model;
+package com.workhub.z.servicechat.VO;
 
 /**
 *@Description: 最近联系人前端交互实体类
 *@Author: 忠
 *@date: 2019/5/10
 */
-public class ContactModel {
-
-    private String id;
-    private String name;
-    private String time;
-    private String lastMessage;
-    private String avatar;
-    private int unreadNum;
-    private boolean atMe;
-    private boolean isTop;
-    private boolean isMute;
-    private boolean isGroup;
+public class Contact {
+    private String id;//用户id
+    private String name;//名称
+    private String time;//最近联系时间
+    private String lastMessage;//最后一条消息
+    private String avatar;//头像
+    private int unreadNum;//未读消息条数
+    private boolean atMe;//是否@我
+    private boolean isTop;//是否置顶
+    private boolean isMute;//
+    private boolean isGroup;//群组消息
     public void setId(String id) {
         this.id = id;
     }

@@ -32,4 +32,6 @@ public class ZzPrivateMsgController {
         return this.zzPrivateMsgService.queryById(id);
     }
 
+    // TODO: 2019/5/15 插入单条数据
+
 }

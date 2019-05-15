@@ -1,6 +1,8 @@
 package com.workhub.z.servicechat.api;
 
 //import com.github.hollykunge.security.api.vo.user.UserInfo;
+import com.github.hollykunge.security.common.msg.ListRestResponse;
+import com.workhub.z.servicechat.VO.Contact;
 import com.workhub.z.servicechat.feign.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,13 +45,15 @@ public class Initialization {
     /**
     *@Description: 最近联系人
     *@Param:userid
-    *@return:userlist
+    *@return:Contact
     *@Author: 忠
     *@date: 2019/3/21
     */
     @RequestMapping("/getContact")
-    public void queryContactById(){
-        // TODO: 2019/5/9 跟海南确认详细的结果集
+    public ListRestResponse queryContactById(){
+        //
+        // TODO: 2019/5/15  消息实体类Contact
+//
 //        {
 //            "id": "@id",
 //                "name": "@cname",
@@ -63,5 +67,7 @@ public class Initialization {
 //                "isMute": true,
 //                "isGroup": true
 //        }
+        return null;
+
     }
 }
