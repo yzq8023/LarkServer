@@ -8,6 +8,7 @@ import java.util.List;
  * @author 协同设计小组
  * @create 2017-06-14 22:40
  */
+
 public class TableResultResponse<T> extends BaseResponse {
 
 
@@ -17,6 +18,23 @@ public class TableResultResponse<T> extends BaseResponse {
      private int totalPage;
      private int totalCount;
 
+    public TableResultResponse(int status, String message, T data, int pageSize, int pageNo, int totalPage, int totalCount) {
+        super(status, message);
+        this.data = data;
+        this.pageSize = pageSize;
+        this.pageNo = pageNo;
+        this.totalPage = totalPage;
+        this.totalCount = totalCount;
+    }
+
+    public TableResultResponse(T data, int pageSize, int pageNo, int totalPage, int totalCount) {
+        this.data = data;
+        this.pageSize = pageSize;
+        this.pageNo = pageNo;
+        this.totalPage = totalPage;
+        this.totalCount = totalCount;
+    }
+
     public T getData() {
         return data;
     }
@@ -25,46 +43,35 @@ public class TableResultResponse<T> extends BaseResponse {
         this.data = data;
     }
 
-    public Integer getPageSize() {
+    public int getPageSize() {
         return pageSize;
     }
 
-    public void setPageSize(Integer pageSize) {
+    public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
     }
 
-    public Integer getPageNo() {
+    public int getPageNo() {
         return pageNo;
     }
 
-    public void setPageNo(Integer pageNo) {
+    public void setPageNo(int pageNo) {
         this.pageNo = pageNo;
     }
 
-    public Integer getTotalPage() {
+    public int getTotalPage() {
         return totalPage;
     }
 
-    public void setTotalPage(Integer totalPage) {
+    public void setTotalPage(int totalPage) {
         this.totalPage = totalPage;
     }
 
-    public Integer getTotalCount() {
+    public int getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(Integer totalCount) {
+    public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
-    }
-
-    @Override
-    public String toString() {
-        return "TableResultResponse{" +
-                "data=" + data +
-                ", pageSize=" + pageSize +
-                ", pageNo=" + pageNo +
-                ", totalPage=" + totalPage +
-                ", totalCount=" + totalCount +
-                '}';
     }
 }
