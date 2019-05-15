@@ -5,6 +5,7 @@ import com.workhub.z.servicechat.service.ZzGroupFileService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 群文件(ZzGroupFile)表控制层
@@ -13,7 +14,7 @@ import javax.annotation.Resource;
  * @since 2019-05-13 10:59:08
  */
 @RestController
-@RequestMapping("zzGroupFile")
+@RequestMapping("/zzGroupFile")
 public class ZzGroupFileController {
     /**
      * 服务对象
@@ -33,7 +34,23 @@ public class ZzGroupFileController {
     }
 
     // TODO: 2019/5/14 群文件查询
+    @PostMapping("/groupfile")
+    public boolean groupFileList(@RequestParam("id")String id){
+        try {
+            List<String> strings = this.zzGroupFileService.groupFileList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return true;
+    }
+
 
     // TODO: 2019/5/14 文件删除（数据库）
+    @GetMapping("/delete")
+    public boolean delFileInfo(@RequestParam("id") String id){
+        boolean flag = this.zzGroupFileService.deleteById(id);
+        return flag;
+    }
 
 }

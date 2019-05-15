@@ -1,7 +1,9 @@
 package com.github.hollykunge.security.common.constant;
 
 /**
- * Created by 协同设计小组 on 2017/8/29.
+ *
+ * @author 协同设计小组
+ * @date 2017/8/29
  */
 public class CommonConstants {
     public final static String RESOURCE_TYPE_MENU = "menu";
@@ -18,7 +20,8 @@ public class CommonConstants {
     public static final String CONTEXT_KEY_USER_TOKEN = "currentUserToken";
     public static final String JWT_KEY_USER_ID = "userId";
     public static final String JWT_KEY_NAME = "name";
-
-    //密级异常
-    public static final Integer EX_LEVELS = 40000;
+    /** 消息交换机的名字*/
+    public static final String PORTAL_EXCHANGE = "exchangePortal";
+    //门户接口队列
+    public static final String PORTAL_QUEUE_NAMA = "portal_queue";
 }

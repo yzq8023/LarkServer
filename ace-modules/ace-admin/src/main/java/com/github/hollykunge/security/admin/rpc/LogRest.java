@@ -6,7 +6,6 @@ import com.github.hollykunge.security.admin.entity.GateLog;
 import com.github.hollykunge.security.api.vo.log.LogInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 /**

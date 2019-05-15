@@ -3,7 +3,10 @@ package com.github.hollykunge.security.common.util;
 import java.util.UUID;
 
 /**
- * Created by 协同设计小组 on 2017/9/27.
+ *
+ * @author 协同设计小组
+ * @date 2017/9/27
+ * 唯一编码
  */
 public class UUIDUtils {
     public static String[] chars = new String[] { "a", "b", "c", "d", "e", "f",

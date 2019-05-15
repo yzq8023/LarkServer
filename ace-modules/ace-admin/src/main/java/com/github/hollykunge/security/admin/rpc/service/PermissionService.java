@@ -2,13 +2,16 @@ package com.github.hollykunge.security.admin.rpc.service;
 
 import com.github.hollykunge.security.admin.biz.ElementBiz;
 import com.github.hollykunge.security.admin.biz.MenuBiz;
+import com.github.hollykunge.security.admin.biz.RoleBiz;
 import com.github.hollykunge.security.admin.biz.UserBiz;
 import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
 import com.github.hollykunge.security.admin.entity.Element;
 import com.github.hollykunge.security.admin.entity.Menu;
+import com.github.hollykunge.security.admin.entity.Role;
 import com.github.hollykunge.security.admin.entity.User;
 import com.github.hollykunge.security.admin.vo.FrontUser;
 import com.github.hollykunge.security.admin.vo.MenuTree;
+import com.github.hollykunge.security.admin.vo.UserRole;
 import com.github.hollykunge.security.api.vo.authority.PermissionInfo;
 import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.github.hollykunge.security.auth.client.jwt.UserAuthUtil;
@@ -26,10 +29,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Created by 协同设计小组 on 2017/9/12.
+ *
+ * @author 协同设计小组
+ * @date 2017/9/12
  */
 @Service
 public class PermissionService {
+
+    @Autowired
+    private RoleBiz roleBiz;
     @Autowired
     private UserBiz userBiz;
     @Autowired
@@ -136,15 +144,10 @@ public class PermissionService {
         UserInfo user = this.getUserByUsername(username);
         FrontUser frontUser = new FrontUser();
         BeanUtils.copyProperties(user, frontUser);
-        List<PermissionInfo> permissionInfos = this.getPermissionByUsername(username);
-        Stream<PermissionInfo> menus = permissionInfos.parallelStream().filter((permission) -> {
-            return permission.getType().equals(CommonConstants.RESOURCE_TYPE_MENU);
-        });
-        frontUser.setMenus(menus.collect(Collectors.toList()));
-        Stream<PermissionInfo> elements = permissionInfos.parallelStream().filter((permission) -> {
-            return !permission.getType().equals(CommonConstants.RESOURCE_TYPE_MENU);
-        });
-        frontUser.setElements(elements.collect(Collectors.toList()));
+
+        UserRole userRole = this.getUserRoleByUserId(username);
+        frontUser.setUserRole(userRole);
+
         return frontUser;
     }
 
@@ -156,5 +159,14 @@ public class PermissionService {
         User user = userBiz.getUserByUsername(username);
         List<Menu> menus = menuBiz.getUserAuthorityMenuByUserId(user.getId());
         return getMenuTree(menus,AdminCommonConstant.ROOT);
+    }
+
+    public UserRole getUserRoleByUserId(String username) {
+        Role role = roleBiz.getRoleByUserId(username);
+        UserRole userRole = new UserRole();
+        BeanUtils.copyProperties(role, userRole);
+        List<PermissionInfo> permissionInfoList = this.getPermissionByUsername(username);
+        userRole.setPermissionInfos(permissionInfoList);
+        return userRole;
     }
 }

@@ -2,15 +2,75 @@ package com.github.hollykunge.security.admin.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
-import javax.persistence.Table;
-import java.math.BigDecimal;
 import java.util.Date;
 
-@Table(name = "BASE_USER")
 public class User {
     @Id
     @Column(name = "ID")
-    private Integer id;
+    private String id;
+
+    @Column(name = "H_ID")
+    private Long hId;
+
+    @Column(name = "SYS_ID")
+    private String sysId;
+
+    @Column(name = "CASIC_ORG_CODE")
+    private String casicOrgCode;
+
+    @Column(name = "OPERATOR_NAME")
+    private String operatorName;
+
+    @Column(name = "EMP_CODE")
+    private String empCode;
+
+    @Column(name = "P_ID")
+    private String pId;
+
+    @Column(name = "SECRET_LEVEL")
+    private String secretLevel;
+
+    @Column(name = "BIRTH_DATE")
+    private Date birthDate;
+
+    @Column(name = "GENDER")
+    private String gender;
+
+    @Column(name = "O_TEL")
+    private String oTel;
+
+    @Column(name = "O_EMAIL")
+    private String oEmail;
+
+    @Column(name = "WORK_POST")
+    private String workPost;
+
+    @Column(name = "TEC_POST")
+    private String tecPost;
+
+    @Column(name = "ORDER_ID")
+    private Long orderId;
+
+    @Column(name = "SYNC_TYPE")
+    private String syncType;
+
+    @Column(name = "DISP_TIME")
+    private Date dispTime;
+
+    @Column(name = "STATUS")
+    private String status;
+
+    @Column(name = "REMARK")
+    private String remark;
+
+    @Column(name = "REFA")
+    private String refa;
+
+    @Column(name = "REFB")
+    private String refb;
+
+    @Column(name = "ORG_NAME")
+    private String orgName;
 
     @Column(name = "USERNAME")
     private String username;
@@ -21,17 +81,11 @@ public class User {
     @Column(name = "PASSWORD")
     private String password;
 
-    @Column(name = "BIRTHDAY")
-    private String birthday;
-
     @Column(name = "EMAIL")
     private String email;
 
     @Column(name = "TYPE")
     private String type;
-
-    @Column(name = "STATUS")
-    private String status;
 
     @Column(name = "DESCRIPTION")
     private String description;
@@ -63,9 +117,6 @@ public class User {
     @Column(name = "TECHNICAL_MC_TCODE")
     private String technicalMcTcode;
 
-    @Column(name = "PERSON_NAME")
-    private String personName;
-
     @Column(name = "HIGHEST_INDUSTRIAL")
     private String highestIndustrial;
 
@@ -74,9 +125,6 @@ public class User {
 
     @Column(name = "OFFICE_ADDR")
     private String officeAddr;
-
-    @Column(name = "IDENTITY_NO")
-    private String identityNo;
 
     @Column(name = "XQAH")
     private String xqah;
@@ -87,29 +135,17 @@ public class User {
     @Column(name = "POLICITAL_CODE")
     private String policitalCode;
 
-    @Column(name = "GENDER")
-    private String gender;
-
-    @Column(name = "XING")
-    private String xing;
-
     @Column(name = "PSN_SECRET_LEVEL")
     private String psnSecretLevel;
 
     @Column(name = "DEPT_TYYH_ORG_CODE")
     private String deptTyyhOrgCode;
 
-    @Column(name = "DEPT_NAME")
-    private String deptName;
-
     @Column(name = "DEPT_CODE")
     private String deptCode;
 
     @Column(name = "IN_BU_DATE")
     private String inBuDate;
-
-    @Column(name = "MING")
-    private String ming;
 
     @Column(name = "IN_PARTY_DATE")
     private String inPartyDate;
@@ -129,9 +165,6 @@ public class User {
     @Column(name = "HR_PSN_CODE")
     private String hrPsnCode;
 
-    @Column(name = "IN_OUT_NO")
-    private String inOutNo;
-
     @Column(name = "INFO_SECRET_LEVEL_NAME")
     private String infoSecretLevelName;
 
@@ -140,9 +173,6 @@ public class User {
 
     @Column(name = "END_FLAG")
     private String endFlag;
-
-    @Column(name = "OFFICE_TEL")
-    private String officeTel;
 
     @Column(name = "CODE")
     private String code;
@@ -165,6 +195,9 @@ public class User {
     @Column(name = "MOBILE")
     private String mobile;
 
+    @Column(name = "CRT_TIME")
+    private Date crtTime;
+
     @Column(name = "CRT_USER")
     private String crtUser;
 
@@ -174,8 +207,8 @@ public class User {
     @Column(name = "CRT_HOST")
     private String crtHost;
 
-    @Column(name = "CRT_TIME")
-    private Date crtTime;
+    @Column(name = "UPD_TIME")
+    private Date updTime;
 
     @Column(name = "UPD_USER")
     private String updUser;
@@ -186,8 +219,14 @@ public class User {
     @Column(name = "UPD_HOST")
     private String updHost;
 
-    @Column(name = "UPD_TIME")
-    private Date updTime;
+    @Column(name = "ATTR1")
+    private String attr1;
+
+    @Column(name = "ATTR2")
+    private String attr2;
+
+    @Column(name = "ATTR3")
+    private String attr3;
 
     @Column(name = "ATTR4")
     private String attr4;
@@ -204,39 +243,319 @@ public class User {
     @Column(name = "ATTR8")
     private String attr8;
 
-    @Column(name = "CAN_ADMIN")
-    private byte[] canAdmin;
-
-    @Column(name = "CAN_FORK")
-    private byte[] canFork;
-
-    @Column(name = "CAN_CREATE")
-    private byte[] canCreate;
-
     /**
      * @return ID
      */
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
     /**
      * @param id
      */
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
     /**
-     * @return USERNAME
+     * @return H_ID
      */
+    public Long gethId() {
+        return hId;
+    }
+
+    /**
+     * @param hId
+     */
+    public void sethId(Long hId) {
+        this.hId = hId;
+    }
+
+    /**
+     * @return SYS_ID
+     */
+    public String getSysId() {
+        return sysId;
+    }
+
+    /**
+     * @param sysId
+     */
+    public void setSysId(String sysId) {
+        this.sysId = sysId;
+    }
+
+    /**
+     * @return CASIC_ORG_CODE
+     */
+    public String getCasicOrgCode() {
+        return casicOrgCode;
+    }
+
+    /**
+     * @param casicOrgCode
+     */
+    public void setCasicOrgCode(String casicOrgCode) {
+        this.casicOrgCode = casicOrgCode;
+    }
+
+    /**
+     * @return OPERATOR_NAME
+     */
+    public String getOperatorName() {
+        return operatorName;
+    }
+
+    /**
+     * @param operatorName
+     */
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
+    }
+
+    /**
+     * @return EMP_CODE
+     */
+    public String getEmpCode() {
+        return empCode;
+    }
+
+    /**
+     * @param empCode
+     */
+    public void setEmpCode(String empCode) {
+        this.empCode = empCode;
+    }
+
+    /**
+     * @return P_ID
+     */
+    public String getpId() {
+        return pId;
+    }
+
+    /**
+     * @param pId
+     */
+    public void setpId(String pId) {
+        this.pId = pId;
+    }
+
+    /**
+     * @return SECRET_LEVEL
+     */
+    public String getSecretLevel() {
+        return secretLevel;
+    }
+
+    /**
+     * @param secretLevel
+     */
+    public void setSecretLevel(String secretLevel) {
+        this.secretLevel = secretLevel;
+    }
+
+    /**
+     * @return BIRTH_DATE
+     */
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    /**
+     * @param birthDate
+     */
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    /**
+     * @return GENDER
+     */
+    public String getGender() {
+        return gender;
+    }
+
+    /**
+     * @param gender
+     */
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    /**
+     * @return O_TEL
+     */
+    public String getoTel() {
+        return oTel;
+    }
+
+    /**
+     * @param oTel
+     */
+    public void setoTel(String oTel) {
+        this.oTel = oTel;
+    }
+
+    /**
+     * @return O_EMAIL
+     */
+    public String getoEmail() {
+        return oEmail;
+    }
+
+    /**
+     * @param oEmail
+     */
+    public void setoEmail(String oEmail) {
+        this.oEmail = oEmail;
+    }
+
+    /**
+     * @return WORK_POST
+     */
+    public String getWorkPost() {
+        return workPost;
+    }
+
+    /**
+     * @param workPost
+     */
+    public void setWorkPost(String workPost) {
+        this.workPost = workPost;
+    }
+
+    /**
+     * @return TEC_POST
+     */
+    public String getTecPost() {
+        return tecPost;
+    }
+
+    /**
+     * @param tecPost
+     */
+    public void setTecPost(String tecPost) {
+        this.tecPost = tecPost;
+    }
+
+    /**
+     * @return ORDER_ID
+     */
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    /**
+     * @param orderId
+     */
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
+    }
+
+    /**
+     * @return SYNC_TYPE
+     */
+    public String getSyncType() {
+        return syncType;
+    }
+
+    /**
+     * @param syncType
+     */
+    public void setSyncType(String syncType) {
+        this.syncType = syncType;
+    }
+
+    /**
+     * @return DISP_TIME
+     */
+    public Date getDispTime() {
+        return dispTime;
+    }
+
+    /**
+     * @param dispTime
+     */
+    public void setDispTime(Date dispTime) {
+        this.dispTime = dispTime;
+    }
+
+    /**
+     * @return STATUS
+     */
+    public String getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status
+     */
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    /**
+     * @return REMARK
+     */
+    public String getRemark() {
+        return remark;
+    }
+
+    /**
+     * @param remark
+     */
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    /**
+     * @return REFA
+     */
+    public String getRefa() {
+        return refa;
+    }
+
+    /**
+     * @param refa
+     */
+    public void setRefa(String refa) {
+        this.refa = refa;
+    }
+
+    /**
+     * @return REFB
+     */
+    public String getRefb() {
+        return refb;
+    }
+
+    /**
+     * @param refb
+     */
+    public void setRefb(String refb) {
+        this.refb = refb;
+    }
+
+    /**
+     * @return ORG_NAME
+     */
+    public String getOrgName() {
+        return orgName;
+    }
+
+    /**
+     * @param orgName
+     */
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
+    }
+
+
     public String getUsername() {
         return username;
     }
 
-    /**
-     * @param username
-     */
     public void setUsername(String username) {
         this.username = username;
     }
@@ -270,20 +589,6 @@ public class User {
     }
 
     /**
-     * @return BIRTHDAY
-     */
-    public String getBirthday() {
-        return birthday;
-    }
-
-    /**
-     * @param birthday
-     */
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
-
-    /**
      * @return EMAIL
      */
     public String getEmail() {
@@ -309,20 +614,6 @@ public class User {
      */
     public void setType(String type) {
         this.type = type;
-    }
-
-    /**
-     * @return STATUS
-     */
-    public String getStatus() {
-        return status;
-    }
-
-    /**
-     * @param status
-     */
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     /**
@@ -466,20 +757,6 @@ public class User {
     }
 
     /**
-     * @return PERSON_NAME
-     */
-    public String getPersonName() {
-        return personName;
-    }
-
-    /**
-     * @param personName
-     */
-    public void setPersonName(String personName) {
-        this.personName = personName;
-    }
-
-    /**
      * @return HIGHEST_INDUSTRIAL
      */
     public String getHighestIndustrial() {
@@ -519,20 +796,6 @@ public class User {
      */
     public void setOfficeAddr(String officeAddr) {
         this.officeAddr = officeAddr;
-    }
-
-    /**
-     * @return IDENTITY_NO
-     */
-    public String getIdentityNo() {
-        return identityNo;
-    }
-
-    /**
-     * @param identityNo
-     */
-    public void setIdentityNo(String identityNo) {
-        this.identityNo = identityNo;
     }
 
     /**
@@ -578,34 +841,6 @@ public class User {
     }
 
     /**
-     * @return GENDER
-     */
-    public String getGender() {
-        return gender;
-    }
-
-    /**
-     * @param gender
-     */
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    /**
-     * @return XING
-     */
-    public String getXing() {
-        return xing;
-    }
-
-    /**
-     * @param xing
-     */
-    public void setXing(String xing) {
-        this.xing = xing;
-    }
-
-    /**
      * @return PSN_SECRET_LEVEL
      */
     public String getPsnSecretLevel() {
@@ -634,20 +869,6 @@ public class User {
     }
 
     /**
-     * @return DEPT_NAME
-     */
-    public String getDeptName() {
-        return deptName;
-    }
-
-    /**
-     * @param deptName
-     */
-    public void setDeptName(String deptName) {
-        this.deptName = deptName;
-    }
-
-    /**
      * @return DEPT_CODE
      */
     public String getDeptCode() {
@@ -673,20 +894,6 @@ public class User {
      */
     public void setInBuDate(String inBuDate) {
         this.inBuDate = inBuDate;
-    }
-
-    /**
-     * @return MING
-     */
-    public String getMing() {
-        return ming;
-    }
-
-    /**
-     * @param ming
-     */
-    public void setMing(String ming) {
-        this.ming = ming;
     }
 
     /**
@@ -774,20 +981,6 @@ public class User {
     }
 
     /**
-     * @return IN_OUT_NO
-     */
-    public String getInOutNo() {
-        return inOutNo;
-    }
-
-    /**
-     * @param inOutNo
-     */
-    public void setInOutNo(String inOutNo) {
-        this.inOutNo = inOutNo;
-    }
-
-    /**
      * @return INFO_SECRET_LEVEL_NAME
      */
     public String getInfoSecretLevelName() {
@@ -827,20 +1020,6 @@ public class User {
      */
     public void setEndFlag(String endFlag) {
         this.endFlag = endFlag;
-    }
-
-    /**
-     * @return OFFICE_TEL
-     */
-    public String getOfficeTel() {
-        return officeTel;
-    }
-
-    /**
-     * @param officeTel
-     */
-    public void setOfficeTel(String officeTel) {
-        this.officeTel = officeTel;
     }
 
     /**
@@ -942,6 +1121,20 @@ public class User {
     }
 
     /**
+     * @return CRT_TIME
+     */
+    public Date getCrtTime() {
+        return crtTime;
+    }
+
+    /**
+     * @param crtTime
+     */
+    public void setCrtTime(Date crtTime) {
+        this.crtTime = crtTime;
+    }
+
+    /**
      * @return CRT_USER
      */
     public String getCrtUser() {
@@ -984,17 +1177,17 @@ public class User {
     }
 
     /**
-     * @return CRT_TIME
+     * @return UPD_TIME
      */
-    public Date getCrtTime() {
-        return crtTime;
+    public Date getUpdTime() {
+        return updTime;
     }
 
     /**
-     * @param crtTime
+     * @param updTime
      */
-    public void setCrtTime(Date crtTime) {
-        this.crtTime = crtTime;
+    public void setUpdTime(Date updTime) {
+        this.updTime = updTime;
     }
 
     /**
@@ -1040,17 +1233,45 @@ public class User {
     }
 
     /**
-     * @return UPD_TIME
+     * @return ATTR1
      */
-    public Date getUpdTime() {
-        return updTime;
+    public String getAttr1() {
+        return attr1;
     }
 
     /**
-     * @param updTime
+     * @param attr1
      */
-    public void setUpdTime(Date updTime) {
-        this.updTime = updTime;
+    public void setAttr1(String attr1) {
+        this.attr1 = attr1;
+    }
+
+    /**
+     * @return ATTR2
+     */
+    public String getAttr2() {
+        return attr2;
+    }
+
+    /**
+     * @param attr2
+     */
+    public void setAttr2(String attr2) {
+        this.attr2 = attr2;
+    }
+
+    /**
+     * @return ATTR3
+     */
+    public String getAttr3() {
+        return attr3;
+    }
+
+    /**
+     * @param attr3
+     */
+    public void setAttr3(String attr3) {
+        this.attr3 = attr3;
     }
 
     /**
@@ -1121,47 +1342,5 @@ public class User {
      */
     public void setAttr8(String attr8) {
         this.attr8 = attr8;
-    }
-
-    /**
-     * @return CAN_ADMIN
-     */
-    public byte[] getCanAdmin() {
-        return canAdmin;
-    }
-
-    /**
-     * @param canAdmin
-     */
-    public void setCanAdmin(byte[] canAdmin) {
-        this.canAdmin = canAdmin;
-    }
-
-    /**
-     * @return CAN_FORK
-     */
-    public byte[] getCanFork() {
-        return canFork;
-    }
-
-    /**
-     * @param canFork
-     */
-    public void setCanFork(byte[] canFork) {
-        this.canFork = canFork;
-    }
-
-    /**
-     * @return CAN_CREATE
-     */
-    public byte[] getCanCreate() {
-        return canCreate;
-    }
-
-    /**
-     * @param canCreate
-     */
-    public void setCanCreate(byte[] canCreate) {
-        this.canCreate = canCreate;
     }
 }

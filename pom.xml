@@ -36,6 +36,9 @@
         <module>ace-modules</module>
         <module>service-chat</module>
         <module>service-discuss</module>
+        <module>service-portal</module>
+        <module>ace-config</module>
+        <module>service-webservice</module>
     </modules>
     <packaging>pom</packaging>
     <developers>

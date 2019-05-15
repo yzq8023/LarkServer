@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Created by 协同设计小组 on 2017/9/8.
+ * 全局异常处理器
+ * @author 协同设计小组
+ * @date 2017/9/8
  */
 @ControllerAdvice("com.github.hollykunge.security")
 @ResponseBody

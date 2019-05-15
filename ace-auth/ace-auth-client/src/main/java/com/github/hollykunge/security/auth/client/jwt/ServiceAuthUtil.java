@@ -20,6 +20,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import java.util.List;
 
 /**
+ * jwt申请服务
  * Created by 协同设计小组 on 2017/9/15.
  */
 @Configuration
@@ -49,7 +50,7 @@ public class ServiceAuthUtil{
     }
 
     /**
-     * 每30分钟触发一次
+     * 定时刷新可访问的服务列表，每30分钟触发一次
      */
     @Scheduled(cron = "0/30 * * * * ?")
     public void refreshAllowedClient() {
@@ -61,7 +62,7 @@ public class ServiceAuthUtil{
         }
     }
     /**
-     * 每10分钟触发一次
+     * 定时刷新可访问的服务JWT，每10分钟触发一次
      */
     @Scheduled(cron = "0 0/10 * * * ?")
     public void refreshClientToken() {

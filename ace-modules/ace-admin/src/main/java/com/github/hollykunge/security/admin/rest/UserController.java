@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * ${DESCRIPTION}
+ * 用户相关信息接口
  *
  * @author 协同设计小组
  * @create 2017-06-08 11:51
@@ -34,9 +34,9 @@ public class UserController extends BaseController<UserBiz,User> {
         }
     }
 
-    @RequestMapping(value = "/front/menus", method = RequestMethod.GET)
-    public @ResponseBody
-    List<MenuTree> getMenusByUsername(String token) throws Exception {
-        return permissionService.getMenusByUsername(token);
-    }
+//    @RequestMapping(value = "/front/menus", method = RequestMethod.GET)
+//    public @ResponseBody
+//    List<MenuTree> getMenusByUsername(String token) throws Exception {
+//        return permissionService.getMenusByUsername(token);
+//    }
 }
