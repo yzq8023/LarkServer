@@ -52,4 +52,6 @@ public interface ZzGroupFileService {
      */
     boolean deleteById(String fileId);
 
+    List<String> groupFileList() throws Exception;
+
 }

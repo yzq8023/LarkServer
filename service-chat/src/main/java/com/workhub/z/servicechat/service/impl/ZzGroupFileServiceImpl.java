@@ -76,4 +76,9 @@ public class ZzGroupFileServiceImpl implements ZzGroupFileService {
     public boolean deleteById(String fileId) {
         return this.zzGroupFileDao.deleteById(fileId) > 0;
     }
+
+    @Override
+    public List<String> groupFileList() throws Exception {
+        return null;
+    }
 }
