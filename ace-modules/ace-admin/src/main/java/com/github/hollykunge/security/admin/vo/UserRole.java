@@ -20,7 +20,7 @@ public class UserRole {
     /**
      * 角色描述
      */
-    private String description;
+    private String describe;
     /**
      * 角色状态
      */
@@ -56,12 +56,12 @@ public class UserRole {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDescribe() {
+        return describe;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescribe(String describe) {
+        this.describe = describe;
     }
 
     public Integer getStatus() {

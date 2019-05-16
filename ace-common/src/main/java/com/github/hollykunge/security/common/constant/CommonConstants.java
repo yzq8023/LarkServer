@@ -1,5 +1,7 @@
 package com.github.hollykunge.security.common.constant;
 
+import org.tio.utils.time.Time;
+
 /**
  *
  * @author 协同设计小组
@@ -24,7 +26,11 @@ public class CommonConstants {
     public static final String PORTAL_EXCHANGE = "exchangePortal";
     //门户接口队列
     public static final String PORTAL_QUEUE_NAMA = "portal_queue";
+
+    /** tio用ip数据监控统计，时间段*/
+    public static final Long DURATION_1 = Time.MINUTE_1 * 5;
+    public static final Long[] IPSTAT_DURATIONS = new Long[]{DURATION_1};
+
     //密级判断
     public static final Integer EX_LEVELS = 40000;
-
 }

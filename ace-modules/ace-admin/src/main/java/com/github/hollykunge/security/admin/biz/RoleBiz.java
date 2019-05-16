@@ -52,32 +52,50 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
     }
 
     /**
-     * 变更角色用户
+     * 获取群组关联用户
      *
-     * @param roleId
-     * @param users
+     * @param groupId
+     * @return
+     */
+    public RoleUsers getRoleUsers(int groupId) {
+        return new RoleUsers(userMapper.selectMemberByRoleId(groupId), userMapper.selectLeaderByRoleId(groupId));
+    }
+
+    /**
+     * 变更群主所分配用户
+     *
+     * @param groupId
+     * @param members
+     * @param leaders
      */
     @CacheClear(pre = "permission")
-    public void modifyRoleUsers(int roleId, String users) {
-        // TODO: 此处添加根据角色id删除用户 mapper.deleteUsersByRoleId(groupId)
-        if (!StringUtils.isEmpty(users)) {
-            String[] mem = users.split(",");
+    public void modifyRoleUsers(int groupId, String members, String leaders) {
+        mapper.deleteRoleLeadersById(groupId);
+        mapper.deleteRoleMembersById(groupId);
+        if (!StringUtils.isEmpty(members)) {
+            String[] mem = members.split(",");
             for (String m : mem) {
-                //TODO: 此处添加根据角色Id添加用户 mapper.insertUsersByRoleId(roleId, Integer.parseInt(m))
+                mapper.insertRoleMembersById(groupId, Integer.parseInt(m));
+            }
+        }
+        if (!StringUtils.isEmpty(leaders)) {
+            String[] mem = leaders.split(",");
+            for (String m : mem) {
+                mapper.insertRoleLeadersById(groupId, Integer.parseInt(m));
             }
         }
     }
 
     /**
-     * 变更角色关联的导航菜单
+     * 变更群组关联的菜单
      *
-     * @param roleId
+     * @param groupId
      * @param menus
      */
     @CacheClear(keys = {"permission:menu","permission:u"})
+
     public void modifyAuthorityMenu(String roleId, String[] menus) {
         // TODO: 根据角色id和资源类型删除资源 resourceRoleMapMapper.deleteByAuthorityIdAndResourceType(roleId + "", AdminCommonConstant.RESOURCE_TYPE_MENU)
-
         List<Menu> menuList = menuMapper.selectAll();
         Map<String, String> map = new HashMap<String, String>();
         for (Menu menu : menuList) {
@@ -90,6 +108,7 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
             findParentID(map, relationMenus, menuId);
         }
         for (String menuId : relationMenus) {
+
             authority = new ResourceRoleMap();
             authority.setRoleId(roleId);
             authority.setResourceId(menuId);
@@ -107,7 +126,7 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
     }
 
     /**
-     * 变更角色关联的权限资源
+     * 分配资源权限
      *
      * @param roleId
      * @param elementId
@@ -134,20 +153,11 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
         resourceRoleMapMapper.delete(authority);
     }
 
-    /**
-     * 根据用户id获取角色
-     */
-    @CacheClear
-    public Role getRoleByUserId(String userId){
-        //TODO: 根据用户id查询角色信息 return mapper.selectRoleByUserId(userId)
-        return null;
-    }
-
 
     /**
-     * 获取角色关联的菜单
+     * 获取群主关联的菜单
      *
-     * @param roleId
+     * @param groupId
      * @return
      */
     public List<AuthorityMenuTree> getAuthorityMenu(String roleId) {
@@ -165,9 +175,9 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
     }
 
     /**
-     * 获取角色关联的资源
+     * 获取群组关联的资源
      *
-     * @param roleId
+     * @param groupId
      * @return
      */
     public List<Integer> getAuthorityElement(String roleId) {
