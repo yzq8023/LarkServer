@@ -36,7 +36,7 @@ public interface ZzGroupFileService {
      * @param zzGroupFile 实例对象
      * @return 实例对象
      */
-    ZzGroupFile insert(ZzGroupFile zzGroupFile);
+    Integer insert(ZzGroupFile zzGroupFile);
 
     /**
      * 修改数据
@@ -44,7 +44,7 @@ public interface ZzGroupFileService {
      * @param zzGroupFile 实例对象
      * @return 实例对象
      */
-    ZzGroupFile update(ZzGroupFile zzGroupFile);
+    Integer update(ZzGroupFile zzGroupFile);
 
     /**
      * 通过主键删除数据

@@ -34,7 +34,7 @@ public interface ZzGroupService {
      * @param zzGroup 实例对象
      * @return 实例对象
      */
-    ZzGroup insert(ZzGroup zzGroup);
+    Integer insert(ZzGroup zzGroup);
 
     /**
      * 修改数据
@@ -42,7 +42,7 @@ public interface ZzGroupService {
      * @param zzGroup 实例对象
      * @return 实例对象
      */
-    ZzGroup update(ZzGroup zzGroup);
+    Integer update(ZzGroup zzGroup);
 
     /**
      * 通过主键删除数据

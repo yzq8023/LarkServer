@@ -4,6 +4,7 @@ import com.workhub.z.servicechat.entity.ZzGroupMsg;
 import com.workhub.z.servicechat.dao.ZzGroupMsgDao;
 import com.workhub.z.servicechat.service.ZzGroupMsgService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -49,9 +50,10 @@ public class ZzGroupMsgServiceImpl implements ZzGroupMsgService {
      * @return 实例对象
      */
     @Override
-    public ZzGroupMsg insert(ZzGroupMsg zzGroupMsg) {
-        this.zzGroupMsgDao.insert(zzGroupMsg);
-        return zzGroupMsg;
+    @Transactional
+    public Integer insert(ZzGroupMsg zzGroupMsg) {
+        int insert = this.zzGroupMsgDao.insert(zzGroupMsg);
+        return insert;
     }
 
     /**
@@ -61,9 +63,10 @@ public class ZzGroupMsgServiceImpl implements ZzGroupMsgService {
      * @return 实例对象
      */
     @Override
-    public ZzGroupMsg update(ZzGroupMsg zzGroupMsg) {
-        this.zzGroupMsgDao.update(zzGroupMsg);
-        return this.queryById(zzGroupMsg.getMsgId());
+    @Transactional
+    public Integer update(ZzGroupMsg zzGroupMsg) {
+        int update = this.zzGroupMsgDao.update(zzGroupMsg);
+        return update;
     }
 
     /**
@@ -73,6 +76,7 @@ public class ZzGroupMsgServiceImpl implements ZzGroupMsgService {
      * @return 是否成功
      */
     @Override
+    @Transactional
     public boolean deleteById(String msgId) {
         return this.zzGroupMsgDao.deleteById(msgId) > 0;
     }
