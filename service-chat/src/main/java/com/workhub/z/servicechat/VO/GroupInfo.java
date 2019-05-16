@@ -6,20 +6,21 @@ package com.workhub.z.servicechat.VO;
 */
 public class GroupInfo
 {
+//  群id
     private String id;
-
+//  群名
     private String name;
-
+//  群头像
     private String avatar;
-
+//  描述
     private String description;
-
+//  主题
     private String subject;
-
+//  密级
     private String securityClass;
-
+//  创建时间
     private String createTime;
-
+//  创建人
     private String creator;
 
     public void setId(String id){
