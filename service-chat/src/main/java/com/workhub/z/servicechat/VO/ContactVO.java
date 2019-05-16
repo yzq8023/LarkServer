@@ -5,7 +5,7 @@ package com.workhub.z.servicechat.VO;
 *@Author: 忠
 *@date: 2019/5/10
 */
-public class Contact {
+public class ContactVO {
     private String id;//用户id
     private String name;//名称
     private String time;//最近联系时间
