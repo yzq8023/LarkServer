@@ -26,10 +26,6 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class)
 public class UserBiz extends BaseBiz<UserMapper,User> {
 
-    @Autowired
-    private MenuMapper menuMapper;
-    @Autowired
-    private UserAuthUtil userAuthUtil;
     @Override
     public void insertSelective(User entity) {
         String password = new BCryptPasswordEncoder(UserConstant.PW_ENCORDER_SALT).encode(entity.getPassword());
@@ -67,7 +63,7 @@ public class UserBiz extends BaseBiz<UserMapper,User> {
      * @return
      */
     @Cache(key="user{1}")
-    public User getUserByUserId(Integer userId){
+    public User getUserByUserId(String userId){
         User user = new User();
         user.setId(userId);
         return mapper.selectOne(user);
