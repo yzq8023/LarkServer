@@ -6,7 +6,7 @@ package com.github.hollykunge.security.common.msg;
  * @author 协同设计小组
  * @create 2017-06-09 7:32
  */
-public class ListRestResponse<T> {
+public class ListRestResponse<T> extends BaseResponse {
     String msg;
     T result;
     int count;
@@ -57,4 +57,9 @@ public class ListRestResponse<T> {
         return this;
     }
 
+    public ListRestResponse(String msg, int count,T result){
+        this.count = count;
+        this.msg = msg;
+        this.result = result;
+    }
 }

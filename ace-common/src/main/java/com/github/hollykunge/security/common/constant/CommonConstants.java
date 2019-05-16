@@ -24,4 +24,7 @@ public class CommonConstants {
     public static final String PORTAL_EXCHANGE = "exchangePortal";
     //门户接口队列
     public static final String PORTAL_QUEUE_NAMA = "portal_queue";
+    //密级判断
+    public static final Integer EX_LEVELS = 40000;
+
 }
