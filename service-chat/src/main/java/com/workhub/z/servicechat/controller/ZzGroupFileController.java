@@ -1,10 +1,18 @@
 package com.workhub.z.servicechat.controller;
 
+import com.github.hollykunge.security.common.msg.ListRestResponse;
+import com.github.hollykunge.security.common.msg.ObjectRestResponse;
+import com.github.hollykunge.security.common.msg.TableResultResponse;
+import com.github.pagehelper.PageInfo;
+import com.workhub.z.servicechat.VO.GroupInfo;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
 import com.workhub.z.servicechat.service.ZzGroupFileService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,6 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/zzGroupFile")
 public class ZzGroupFileController {
+
     /**
      * 服务对象
      */
@@ -28,29 +37,72 @@ public class ZzGroupFileController {
      * @param id 主键
      * @return 单条数据
      */
-    @GetMapping("selectOne")
-    public ZzGroupFile selectOne(String id) {
+    @GetMapping("/selectOne")
+    public ZzGroupFile selectOne(@RequestParam("id") String id) {
         return this.zzGroupFileService.queryById(id);
     }
 
-    // TODO: 2019/5/14 群文件查询
+    /**
+     * 群文件查询
+     * @param id
+     * @return
+     */
     @PostMapping("/groupfile")
-    public boolean groupFileList(@RequestParam("id")String id){
+    public TableResultResponse groupFileList(@RequestParam("id")String id,
+                                          @RequestParam(value = "page",defaultValue = "1")Integer page,
+                                          @RequestParam(value = "size",defaultValue = "10")Integer size){
+        PageInfo<GroupInfo> pageInfo = null;
+        Long total = 0L;
         try {
-            List<String> strings = this.zzGroupFileService.groupFileList();
+            pageInfo = this.zzGroupFileService.groupFileList(id, page, size);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return true;
+//        T data, int pageSize, int pageNo, int totalPage, int totalCount
+        return new TableResultResponse(pageInfo.getList(),pageInfo.getPageSize(),pageInfo.getPageNum(),pageInfo.getPages(),(int)pageInfo.getTotal());
     }
 
 
-    // TODO: 2019/5/14 文件删除（数据库）
-    @GetMapping("/delete")
-    public boolean delFileInfo(@RequestParam("id") String id){
+    /**
+     * 文件删除(删记录)
+     * @param id
+     * @return
+     */
+    @PostMapping("/delete")
+    public ObjectRestResponse delFileInfo(@RequestParam("id") String id){
         boolean flag = this.zzGroupFileService.deleteById(id);
-        return flag;
+        ObjectRestResponse objectRestResponse = new ObjectRestResponse();
+        objectRestResponse.data(flag);
+        return objectRestResponse;
     }
 
+    /**
+     * 创建
+     * @param zzGroupFile
+     * @return
+     */
+    @PostMapping("/create")
+    public ObjectRestResponse insert(@RequestParam("zzGroupFile")ZzGroupFile zzGroupFile){
+        zzGroupFile.setCreator("登陆人id");//TODO
+        zzGroupFile.setCreateTime(new Date());
+        this.zzGroupFileService.insert(zzGroupFile);
+        ObjectRestResponse objectRestResponse = new ObjectRestResponse();
+        objectRestResponse.data(1);
+        return objectRestResponse;
+    }
+
+    /**
+     * 修改
+     * @param zzGroupFile
+     * @return
+     */
+    @PostMapping("/update")
+    public ObjectRestResponse update(@RequestParam("zzGroupFile")ZzGroupFile zzGroupFile){
+        zzGroupFile.setUpdator("登陆人id");//TODO
+        zzGroupFile.setUpdateTime(new Date());
+        this.zzGroupFileService.update(zzGroupFile);
+        ObjectRestResponse objectRestResponse = new ObjectRestResponse();
+        objectRestResponse.data(1);
+        return objectRestResponse;
+    }
 }

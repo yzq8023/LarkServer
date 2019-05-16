@@ -1,5 +1,7 @@
 package com.workhub.z.servicechat.service;
 
+import com.github.pagehelper.PageInfo;
+import com.workhub.z.servicechat.VO.GroupInfo;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
 import java.util.List;
 
@@ -52,6 +54,19 @@ public interface ZzGroupFileService {
      */
     boolean deleteById(String fileId);
 
-    List<String> groupFileList() throws Exception;
+    /**
+     * 查询群组的文件信息
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    PageInfo<GroupInfo> groupFileList(String id,int page,int size) throws Exception;
 
+    /**
+     * 查询群组的文件信息记录数
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    Long groupFileListTotal(String id) throws Exception;
 }

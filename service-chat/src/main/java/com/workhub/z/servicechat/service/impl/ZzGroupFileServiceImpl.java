@@ -1,8 +1,13 @@
 package com.workhub.z.servicechat.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.workhub.z.servicechat.VO.GroupInfo;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
 import com.workhub.z.servicechat.dao.ZzGroupFileDao;
 import com.workhub.z.servicechat.service.ZzGroupFileService;
+import jodd.util.StringUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -77,8 +82,36 @@ public class ZzGroupFileServiceImpl implements ZzGroupFileService {
         return this.zzGroupFileDao.deleteById(fileId) > 0;
     }
 
+    /**
+     * 查询群内文件信息
+     * @param id
+     * @param page
+     * @param size
+     * @return
+     * @throws Exception
+     */
     @Override
-    public List<String> groupFileList() throws Exception {
-        return null;
+    public PageInfo<GroupInfo> groupFileList(String id,int page,int size) throws Exception {
+        if (StringUtil.isEmpty(id)) throw new NullPointerException("id is null");
+        Page<Object> pageMassage = PageHelper.startPage(page, size);
+        pageMassage.setTotal(this.zzGroupFileDao.groupFileListTotal(id));
+        int startRow = pageMassage.getStartRow();
+        int endRow = pageMassage.getEndRow();
+        System.out.println(id+"------"+startRow+"------"+endRow);
+        PageInfo<GroupInfo> pageInfoGroupInfo = new PageInfo<GroupInfo>();
+        System.out.println(this.zzGroupFileDao.groupFileList(id,startRow,endRow));
+        pageInfoGroupInfo.setList(this.zzGroupFileDao.groupFileList(id,startRow,endRow));
+        pageInfoGroupInfo.setTotal(pageMassage.getTotal());
+        pageInfoGroupInfo.setStartRow(startRow);
+        pageInfoGroupInfo.setEndRow(endRow);
+        pageInfoGroupInfo.setPages(pageMassage.getPages());
+        pageInfoGroupInfo.setPageNum(page);
+        pageInfoGroupInfo.setPageSize(size);
+        return pageInfoGroupInfo;
+    }
+
+    @Override
+    public Long groupFileListTotal(String id) throws Exception {
+        return this.zzGroupFileDao.groupFileListTotal(id);
     }
 }
