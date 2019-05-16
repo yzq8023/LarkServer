@@ -34,7 +34,7 @@ public interface ZzPrivateMsgService {
      * @param zzPrivateMsg 实例对象
      * @return 实例对象
      */
-    ZzPrivateMsg insert(ZzPrivateMsg zzPrivateMsg);
+    Integer insert(ZzPrivateMsg zzPrivateMsg);
 
     /**
      * 修改数据
@@ -42,7 +42,7 @@ public interface ZzPrivateMsgService {
      * @param zzPrivateMsg 实例对象
      * @return 实例对象
      */
-    ZzPrivateMsg update(ZzPrivateMsg zzPrivateMsg);
+    Integer update(ZzPrivateMsg zzPrivateMsg);
 
     /**
      * 通过主键删除数据

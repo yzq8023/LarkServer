@@ -1,5 +1,8 @@
 package com.workhub.z.servicechat.controller;
 
+import com.github.hollykunge.security.common.msg.ObjectRestResponse;
+import com.workhub.z.servicechat.config.RandomId;
+import com.workhub.z.servicechat.entity.ZzGroupMsg;
 import com.workhub.z.servicechat.entity.ZzPrivateMsg;
 import com.workhub.z.servicechat.service.ZzPrivateMsgService;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +16,7 @@ import javax.annotation.Resource;
  * @since 2019-05-13 10:57:46
  */
 @RestController
-@RequestMapping("zzPrivateMsg")
+@RequestMapping("/zzPrivateMsg")
 public class ZzPrivateMsgController {
     /**
      * 服务对象
@@ -27,11 +30,56 @@ public class ZzPrivateMsgController {
      * @param id 主键
      * @return 单条数据
      */
-    @GetMapping("selectOne")
+    @GetMapping("/selectOne")
     public ZzPrivateMsg selectOne(String id) {
         return this.zzPrivateMsgService.queryById(id);
     }
 
-    // TODO: 2019/5/15 插入单条数据
+    /**
+     * 文件删除(删记录)
+     * @param id
+     * @return
+     */
+    @PostMapping("/delete")
+    public ObjectRestResponse delFileInfo(@RequestParam("id") String id){
+        boolean flag = this.zzPrivateMsgService.deleteById(id);
+        ObjectRestResponse objectRestResponse = new ObjectRestResponse();
+        objectRestResponse.data(flag);
+        return objectRestResponse;
+    }
 
+    /**
+     * 创建
+     * @param zzPrivateMsg
+     * @return
+     */
+    @PostMapping("/create")
+    public ObjectRestResponse insert(ZzPrivateMsg zzPrivateMsg){
+        zzPrivateMsg.setMsgId(RandomId.getUUID());
+        Integer insert = this.zzPrivateMsgService.insert(zzPrivateMsg);
+        ObjectRestResponse objectRestResponse = new ObjectRestResponse();
+        if (insert == null){
+            objectRestResponse.data("失败");
+            return objectRestResponse;
+        }
+        objectRestResponse.data("成功");
+        return objectRestResponse;
+    }
+
+    /**
+     * 修改
+     * @param zzPrivateMsg
+     * @return
+     */
+    @PostMapping("/update")
+    public ObjectRestResponse update(@RequestParam("zzGroupFile") ZzPrivateMsg zzPrivateMsg){
+        Integer update = this.zzPrivateMsgService.update(zzPrivateMsg);
+        ObjectRestResponse objectRestResponse = new ObjectRestResponse();
+        if (update == null){
+            objectRestResponse.data("失败");
+            return objectRestResponse;
+        }
+        objectRestResponse.data("成功");
+        return objectRestResponse;
+    }
 }

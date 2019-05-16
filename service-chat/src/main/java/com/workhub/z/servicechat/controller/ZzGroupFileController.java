@@ -5,6 +5,7 @@ import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.VO.GroupInfo;
+import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
 import com.workhub.z.servicechat.service.ZzGroupFileService;
 import org.slf4j.Logger;
@@ -83,11 +84,16 @@ public class ZzGroupFileController {
      */
     @PostMapping("/create")
     public ObjectRestResponse insert(@RequestParam("zzGroupFile")ZzGroupFile zzGroupFile){
+        zzGroupFile.setFileId(RandomId.getUUID());
         zzGroupFile.setCreator("登陆人id");//TODO
         zzGroupFile.setCreateTime(new Date());
-        this.zzGroupFileService.insert(zzGroupFile);
+        Integer insert = this.zzGroupFileService.insert(zzGroupFile);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
-        objectRestResponse.data(1);
+        if (insert == null){
+            objectRestResponse.data("失败");
+            return objectRestResponse;
+        }
+        objectRestResponse.data("成功");
         return objectRestResponse;
     }
 
@@ -100,9 +106,13 @@ public class ZzGroupFileController {
     public ObjectRestResponse update(@RequestParam("zzGroupFile")ZzGroupFile zzGroupFile){
         zzGroupFile.setUpdator("登陆人id");//TODO
         zzGroupFile.setUpdateTime(new Date());
-        this.zzGroupFileService.update(zzGroupFile);
+        Integer update = this.zzGroupFileService.update(zzGroupFile);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
-        objectRestResponse.data(1);
+        if (update == 0){
+            objectRestResponse.data("失败");
+            return objectRestResponse;
+        }
+        objectRestResponse.data("成功");
         return objectRestResponse;
     }
 }

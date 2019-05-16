@@ -9,6 +9,7 @@ import com.workhub.z.servicechat.dao.ZzGroupFileDao;
 import com.workhub.z.servicechat.service.ZzGroupFileService;
 import jodd.util.StringUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -54,9 +55,10 @@ public class ZzGroupFileServiceImpl implements ZzGroupFileService {
      * @return 实例对象
      */
     @Override
-    public ZzGroupFile insert(ZzGroupFile zzGroupFile) {
-        this.zzGroupFileDao.insert(zzGroupFile);
-        return zzGroupFile;
+    @Transactional
+    public Integer insert(ZzGroupFile zzGroupFile) {
+        int insert = this.zzGroupFileDao.insert(zzGroupFile);
+        return insert;
     }
 
     /**
@@ -66,9 +68,10 @@ public class ZzGroupFileServiceImpl implements ZzGroupFileService {
      * @return 实例对象
      */
     @Override
-    public ZzGroupFile update(ZzGroupFile zzGroupFile) {
-        this.zzGroupFileDao.update(zzGroupFile);
-        return this.queryById(zzGroupFile.getFileId());
+    @Transactional
+    public Integer update(ZzGroupFile zzGroupFile) {
+        int update = this.zzGroupFileDao.update(zzGroupFile);
+        return update;
     }
 
     /**
@@ -78,6 +81,7 @@ public class ZzGroupFileServiceImpl implements ZzGroupFileService {
      * @return 是否成功
      */
     @Override
+    @Transactional
     public boolean deleteById(String fileId) {
         return this.zzGroupFileDao.deleteById(fileId) > 0;
     }
