@@ -5,7 +5,7 @@ package com.workhub.z.servicechat.VO;
 *@Author: 忠
 *@date: 2019/5/15
 */
-public class UserInfo {
+public class UserInfoVO {
 
     private String userId;
     private int userLevels;

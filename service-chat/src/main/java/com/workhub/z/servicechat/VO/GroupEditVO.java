@@ -6,7 +6,7 @@ import java.util.List;
 *@Author: 忠
 *@date: 2019/5/15
 */
-public class GroupEdit {
+public class GroupEditVO {
 
     private String groupId;
     private String timestamp;
