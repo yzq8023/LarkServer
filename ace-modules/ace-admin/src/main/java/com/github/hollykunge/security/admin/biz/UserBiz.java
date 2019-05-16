@@ -83,34 +83,18 @@ public class UserBiz extends BaseBiz<UserMapper,User> {
         return mapper.selectAll();
     }
 
-    /**
-     * 新增用户
-     * @param entity
-     * @return
-     */
+
     public boolean addUser(User entity){
         return mapper.insert(entity) > 0 ? true:false;
     }
 
-    /**
-     * 删除用户
-     * @param entity
-     * @param id
-     * @return
-     */
-    public boolean removeUserById(User entity,String id){
-        entity.setId(id);
+
+    public boolean removeUser(User entity){
         return  mapper.delete(entity) > 0 ? true:false;
     }
 
-    /**
-     *修改用户信息
-     * @param entity
-     * @param id
-     * @return
-     */
-    public boolean updateUserById(User entity,String id){
-        entity.setId(id);
+
+    public boolean updateUser(User entity){
         return  mapper.updateByPrimaryKey(entity) > 0 ? true:false;
     }
 

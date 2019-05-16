@@ -40,21 +40,21 @@ public class UserController extends BaseController<UserBiz,User> {
 
     @RequestMapping("addUser")
     @ResponseBody
-    public ObjectRestResponse<Boolean> addUser(User entity){
+    public ObjectRestResponse<Boolean> addUser(@RequestBody User entity){
         baseBiz.addUser(entity);
         return new ObjectRestResponse<Boolean>().rel(true);
     }
 
-    @RequestMapping("removeUser/{id}")
+    @RequestMapping("removeUser")
     @ResponseBody
-    public ObjectRestResponse<Boolean> removeUserById(User entity,String id){
-        return new ObjectRestResponse<Boolean>().rel(baseBiz.removeUserById(entity,id));
+    public ObjectRestResponse<Boolean> removeUserById(@RequestBody User entity){
+        return new ObjectRestResponse<Boolean>().rel(baseBiz.removeUser(entity));
     }
 
-    @RequestMapping("updateUser/{id}")
+    @RequestMapping("updateUser")
     @ResponseBody
-    public ObjectRestResponse<Boolean> updateUserById(@RequestBody User entity,String id){
-        return new ObjectRestResponse<Boolean>().rel(baseBiz.updateUserById(entity,id));
+    public ObjectRestResponse<Boolean> updateUserById(@RequestBody User entity){
+        return new ObjectRestResponse<Boolean>().rel(baseBiz.updateUser(entity));
     }
 
 //    @RequestMapping(value = "/front/menus", method = RequestMethod.GET)
