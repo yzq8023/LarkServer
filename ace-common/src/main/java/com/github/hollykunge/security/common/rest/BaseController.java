@@ -64,7 +64,7 @@ public class BaseController<Biz extends BaseBiz, Entity> {
 
     @RequestMapping(value = "/page", method = RequestMethod.GET)
     @ResponseBody
-    public TableResultResponse<Entity> list(@RequestParam Map<String, Object> params) {
+    public TableResultResponse<Entity> page(@RequestParam Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
         return baseBiz.selectByQuery(query);

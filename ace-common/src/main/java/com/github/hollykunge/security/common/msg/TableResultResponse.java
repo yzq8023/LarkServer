@@ -11,67 +11,71 @@ import java.util.List;
 
 public class TableResultResponse<T> extends BaseResponse {
 
+    TableData<T> data;
 
-     private T data;
-     private int pageSize;
-     private int pageNo;
-     private int totalPage;
-     private int totalCount;
-
-    public TableResultResponse(int status, String message, T data, int pageSize, int pageNo, int totalPage, int totalCount) {
-        super(status, message);
-        this.data = data;
-        this.pageSize = pageSize;
-        this.pageNo = pageNo;
-        this.totalPage = totalPage;
-        this.totalCount = totalCount;
+    public TableResultResponse(long total, List<T> rows) {
+        this.data = new TableData<T>(total, rows);
     }
 
-    public TableResultResponse(T data, int pageSize, int pageNo, int totalPage, int totalCount) {
-        this.data = data;
-        this.pageSize = pageSize;
-        this.pageNo = pageNo;
-        this.totalPage = totalPage;
-        this.totalCount = totalCount;
+    public TableResultResponse() {
+        this.data = new TableData<T>();
     }
 
-    public T getData() {
+    TableResultResponse<T> total(int total) {
+        this.data.setTotal(total);
+        return this;
+    }
+
+    TableResultResponse<T> rows(List<T> rows) {
+        this.data.setRows(rows);
+        return this;
+    }
+
+    public List<T> getRows() {
+        return data.getRows();
+    }
+
+    public TableData<T> getData() {
         return data;
     }
 
-    public void setData(T data) {
+    public void setData(TableData<T> data) {
         this.data = data;
     }
 
-    public int getPageSize() {
-        return pageSize;
+    class TableData<T> {
+        long total;
+        List<T> rows;
+
+        public TableData(long total, List<T> rows) {
+            this.total = total;
+            this.rows = rows;
+        }
+
+        public TableData() {
+        }
+
+        public long getTotal() {
+            return total;
+        }
+
+        public void setTotal(long total) {
+            this.total = total;
+        }
+
+        public List<T> getRows() {
+            return rows;
+        }
+
+        public void setRows(List<T> rows) {
+            this.rows = rows;
+        }
     }
 
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    public int getPageNo() {
-        return pageNo;
-    }
-
-    public void setPageNo(int pageNo) {
-        this.pageNo = pageNo;
-    }
-
-    public int getTotalPage() {
-        return totalPage;
-    }
-
-    public void setTotalPage(int totalPage) {
-        this.totalPage = totalPage;
-    }
-
-    public int getTotalCount() {
-        return totalCount;
-    }
-
-    public void setTotalCount(int totalCount) {
-        this.totalCount = totalCount;
+    @Override
+    public String toString() {
+        return "{" +
+                "data=" + data +
+                "}";
     }
 }

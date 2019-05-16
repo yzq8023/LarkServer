@@ -5,13 +5,13 @@ import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
 import com.github.hollykunge.security.admin.entity.ResourceRoleMap;
 import com.github.hollykunge.security.admin.entity.Role;
 import com.github.hollykunge.security.admin.entity.Menu;
-import com.github.hollykunge.security.admin.entity.ResourceAuthority;
+
 import com.github.hollykunge.security.admin.mapper.RoleMapper;
 import com.github.hollykunge.security.admin.mapper.MenuMapper;
 import com.github.hollykunge.security.admin.mapper.ResourceRoleMapMapper;
-import com.github.hollykunge.security.admin.mapper.UserMapper;
+
 import com.github.hollykunge.security.admin.vo.AuthorityMenuTree;
-import com.github.hollykunge.security.admin.vo.RoleUsers;
+
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +30,7 @@ import java.util.*;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class RoleBiz extends BaseBiz<RoleMapper, Role> {
-    @Autowired
-    private UserMapper userMapper;
+
     @Autowired
     private ResourceRoleMapMapper resourceRoleMapMapper;
     @Autowired
@@ -39,23 +38,11 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
 
     @Override
     public void insertSelective(Role entity) {
-        if (AdminCommonConstant.ROOT == entity.getParentId()) {
-            entity.setPath("/" + entity.getCode());
-        } else {
-            Role parent = this.selectById(entity.getParentId());
-            entity.setPath(parent.getPath() + "/" + entity.getCode());
-        }
         super.insertSelective(entity);
     }
 
     @Override
     public void updateById(Role entity) {
-        if (AdminCommonConstant.ROOT == entity.getParentId()) {
-            entity.setPath("/" + entity.getCode());
-        } else {
-            Role parent = this.selectById(entity.getParentId());
-            entity.setPath(parent.getPath() + "/" + entity.getCode());
-        }
         super.updateById(entity);
     }
 
@@ -88,7 +75,7 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
      * @param menus
      */
     @CacheClear(keys = {"permission:menu","permission:u"})
-    public void modifyAuthorityMenu(int roleId, String[] menus) {
+    public void modifyAuthorityMenu(String roleId, String[] menus) {
         // TODO: 根据角色id和资源类型删除资源 resourceRoleMapMapper.deleteByAuthorityIdAndResourceType(roleId + "", AdminCommonConstant.RESOURCE_TYPE_MENU)
 
         List<Menu> menuList = menuMapper.selectAll();
@@ -104,8 +91,8 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
         }
         for (String menuId : relationMenus) {
             authority = new ResourceRoleMap();
-            authority.setRoleid(roleId);
-            authority.setResourceid(menuId);
+            authority.setRoleId(roleId);
+            authority.setResourceId(menuId);
             resourceRoleMapMapper.insertSelective(authority);
         }
     }
@@ -123,14 +110,13 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
      * 变更角色关联的权限资源
      *
      * @param roleId
-     * @param menuId
      * @param elementId
      */
     @CacheClear(keys = {"permission:ele","permission:u"})
-    public void modifyAuthorityElement(int roleId, int menuId, int elementId) {
-        ResourceRoleMap authority = new ResourceRoleMap(AdminCommonConstant.AUTHORITY_TYPE_GROUP, AdminCommonConstant.RESOURCE_TYPE_BTN);
-        authority.setRoleid(roleId);
-        authority.setResourceid(elementId);
+    public void modifyAuthorityElement(String roleId, String elementId) {
+        ResourceRoleMap authority = new ResourceRoleMap();
+        authority.setRoleId(roleId);
+        authority.setResourceId(elementId);
         resourceRoleMapMapper.insertSelective(authority);
     }
 
@@ -138,14 +124,13 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
      * 移除资源权限
      *
      * @param roleId
-     * @param menuId
      * @param elementId
      */
     @CacheClear(keys = {"permission:ele","permission:u"})
-    public void removeAuthorityElement(int roleId, int menuId, int elementId) {
+    public void removeAuthorityElement(String roleId, String elementId) {
         ResourceRoleMap authority = new ResourceRoleMap();
-        authority.setRoleid(roleId);
-        authority.setResourceid(elementId);
+        authority.setRoleId(roleId);
+        authority.setResourceId(elementId);
         resourceRoleMapMapper.delete(authority);
     }
 
@@ -165,9 +150,9 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
      * @param roleId
      * @return
      */
-    public List<AuthorityMenuTree> getAuthorityMenu(int roleId) {
+    public List<AuthorityMenuTree> getAuthorityMenu(String roleId) {
         // TODO: 根据角色id和类型获取菜单列表
-        List<Menu> menus = menuMapper.selectMenuByAuthorityId(String.valueOf(roleId), AdminCommonConstant.AUTHORITY_TYPE_GROUP);
+        List<Menu> menus = menuMapper.selectMenuByRoleId(roleId, AdminCommonConstant.RESOURCE_TYPE_MENU);
         List<AuthorityMenuTree> trees = new ArrayList<AuthorityMenuTree>();
         AuthorityMenuTree node = null;
         for (Menu menu : menus) {
@@ -185,8 +170,8 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
      * @param roleId
      * @return
      */
-    public List<Integer> getAuthorityElement(int roleId) {
-        ResourceRoleMap authority = new ResourceRoleMap(AdminCommonConstant.AUTHORITY_TYPE_GROUP, AdminCommonConstant.RESOURCE_TYPE_BTN);
+    public List<Integer> getAuthorityElement(String roleId) {
+        ResourceRoleMap authority = new ResourceRoleMap();
         authority.setRoleId(roleId);
         List<ResourceRoleMap> authorities = resourceRoleMapMapper.select(authority);
         List<Integer> ids = new ArrayList<Integer>();

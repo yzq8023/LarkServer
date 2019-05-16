@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.github.hollykunge.security.admin.biz.ResourceRoleMapBiz;
 import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
+import com.github.hollykunge.security.admin.entity.Role;
 import com.github.hollykunge.security.admin.vo.AuthorityMenuTree;
 import com.github.hollykunge.security.admin.vo.GroupUsers;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
@@ -32,19 +33,19 @@ import tk.mybatis.mapper.entity.Example;
  * @create 2017-06-12 8:49
  */
 @Controller
-@RequestMapping("group")
+@RequestMapping("role")
 @Api("群组模块")
-public class GroupController extends BaseController<GroupBiz, Group> {
+public class RoleController extends BaseController<RoleBiz, Role> {
     @Autowired
     private ResourceRoleMapBiz resourceRoleMapBiz;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public List<Group> list(String name,String groupType) {
+    public List<Role> list(String name,String groupType) {
         if(StringUtils.isBlank(name)&&StringUtils.isBlank(groupType)) {
-            return new ArrayList<Group>();
+            return new ArrayList<Role>();
         }
-        Example example = new Example(Group.class);
+        Example example = new Example(Role.class);
         if (StringUtils.isNotBlank(name)) {
             example.createCriteria().andLike("name", "%" + name + "%");
         }
@@ -58,7 +59,7 @@ public class GroupController extends BaseController<GroupBiz, Group> {
     @RequestMapping(value = "/{id}/user", method = RequestMethod.PUT)
     @ResponseBody
     public ObjectRestResponse modifiyUsers(@PathVariable int id,String members,String leaders){
-        baseBiz.modifyGroupUsers(id, members, leaders);
+        baseBiz.modifyRoleUsers(id, members, leaders);
         return new ObjectRestResponse().rel(true);
     }
 
@@ -109,7 +110,7 @@ public class GroupController extends BaseController<GroupBiz, Group> {
         if(StringUtils.isBlank(name)&&StringUtils.isBlank(groupType)) {
             return new ArrayList<GroupTree>();
         }
-        Example example = new Example(Group.class);
+        Example example = new Example(Role.class);
         if (StringUtils.isNotBlank(name)) {
             example.createCriteria().andLike("name", "%" + name + "%");
         }
@@ -120,10 +121,10 @@ public class GroupController extends BaseController<GroupBiz, Group> {
     }
 
 
-    private List<GroupTree> getTree(List<Group> groups,int root) {
+    private List<GroupTree> getTree(List<Role> groups,int root) {
         List<GroupTree> trees = new ArrayList<GroupTree>();
         GroupTree node = null;
-        for (Group group : groups) {
+        for (Role group : groups) {
             node = new GroupTree();
             node.setLabel(group.getName());
             BeanUtils.copyProperties(group, node);

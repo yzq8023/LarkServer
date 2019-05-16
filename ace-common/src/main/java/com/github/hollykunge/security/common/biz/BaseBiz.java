@@ -93,7 +93,7 @@ public abstract class BaseBiz<M extends Mapper<T>, T> {
                 criteria.andLike(entry.getKey(), "%" + entry.getValue().toString() + "%");
             }
         }
-        Page<Object> result = PageHelper.startPage(query.getPage(), query.getLimit());
+        Page<Object> result = PageHelper.startPage(query.getPageNo(), query.getPageSize());
         List<T> list = mapper.selectByExample(example);
         return new TableResultResponse<T>(result.getTotal(), list);
     }
