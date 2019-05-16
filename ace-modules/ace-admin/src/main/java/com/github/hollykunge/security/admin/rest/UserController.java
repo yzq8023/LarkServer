@@ -5,11 +5,14 @@ import com.github.hollykunge.security.admin.entity.User;
 import com.github.hollykunge.security.admin.rpc.service.PermissionService;
 import com.github.hollykunge.security.admin.vo.FrontUser;
 import com.github.hollykunge.security.admin.vo.MenuTree;
+import com.github.hollykunge.security.common.biz.BaseBiz;
+import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.rest.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 /**
@@ -23,6 +26,7 @@ import java.util.List;
 public class UserController extends BaseController<UserBiz,User> {
     @Autowired
     private PermissionService permissionService;
+
     @RequestMapping(value = "/front/info", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> getUserInfo(String token) throws Exception {
@@ -32,6 +36,25 @@ public class UserController extends BaseController<UserBiz,User> {
         } else {
             return ResponseEntity.ok(userInfo);
         }
+    }
+
+    @RequestMapping("addUser")
+    @ResponseBody
+    public ObjectRestResponse<Boolean> addUser(User entity){
+        baseBiz.addUser(entity);
+        return new ObjectRestResponse<Boolean>().rel(true);
+    }
+
+    @RequestMapping("removeUser/{id}")
+    @ResponseBody
+    public ObjectRestResponse<Boolean> removeUserById(User entity,String id){
+        return new ObjectRestResponse<Boolean>().rel(baseBiz.removeUserById(entity,id));
+    }
+
+    @RequestMapping("updateUser/{id}")
+    @ResponseBody
+    public ObjectRestResponse<Boolean> updateUserById(@RequestBody User entity,String id){
+        return new ObjectRestResponse<Boolean>().rel(baseBiz.updateUserById(entity,id));
     }
 
 //    @RequestMapping(value = "/front/menus", method = RequestMethod.GET)

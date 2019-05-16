@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 /**
@@ -81,4 +82,36 @@ public class UserBiz extends BaseBiz<UserMapper,User> {
     public List<User> getUsers(){
         return mapper.selectAll();
     }
+
+    /**
+     * 新增用户
+     * @param entity
+     * @return
+     */
+    public boolean addUser(User entity){
+        return mapper.insert(entity) > 0 ? true:false;
+    }
+
+    /**
+     * 删除用户
+     * @param entity
+     * @param id
+     * @return
+     */
+    public boolean removeUserById(User entity,String id){
+        entity.setId(id);
+        return  mapper.delete(entity) > 0 ? true:false;
+    }
+
+    /**
+     *修改用户信息
+     * @param entity
+     * @param id
+     * @return
+     */
+    public boolean updateUserById(User entity,String id){
+        entity.setId(id);
+        return  mapper.updateByPrimaryKey(entity) > 0 ? true:false;
+    }
+
 }

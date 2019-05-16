@@ -114,12 +114,12 @@ public class IndexObject implements Comparable<IndexObject>,Serializable{
 		super();
 	}
 
-	public IndexObject(Long _id, String _keywords, String _descripton, String _postDate, float _score) {
+	public IndexObject(Long _id, String _keywords, String _description, String _postDate, float _score) {
 		super();
 		this.id = _id;
 		this.keywords = _keywords;
 		this.score = _score;
-		this.descripton=_descripton;
+		this.description=_description;
 		this.postDate=_postDate;
 	}
 	@Override
