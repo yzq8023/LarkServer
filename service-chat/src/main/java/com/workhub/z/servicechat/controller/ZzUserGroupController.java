@@ -1,10 +1,14 @@
 package com.workhub.z.servicechat.controller;
 
+import com.github.hollykunge.security.common.msg.ObjectRestResponse;
+import com.workhub.z.servicechat.config.RandomId;
+import com.workhub.z.servicechat.entity.ZzAt;
 import com.workhub.z.servicechat.entity.ZzUserGroup;
 import com.workhub.z.servicechat.service.ZzUserGroupService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * 用户群组映射表(ZzUserGroup)表控制层
@@ -13,7 +17,7 @@ import javax.annotation.Resource;
  * @since 2019-05-10 14:22:54
  */
 @RestController
-@RequestMapping("zzUserGroup")
+@RequestMapping("/zzUserGroup")
 public class ZzUserGroupController {
     /**
      * 服务对象
@@ -27,9 +31,42 @@ public class ZzUserGroupController {
      * @param id 主键
      * @return 单条数据
      */
-    @GetMapping("selectOne")
+    @GetMapping("/selectOne")
     public ZzUserGroup selectOne(String id) {
         return this.zzUserGroupService.queryById(id);
     }
 
+    @PostMapping("/create")
+    public ObjectRestResponse insert(ZzUserGroup zzUserGroup){
+        zzUserGroup.setId(RandomId.getUUID());
+        zzUserGroup.setCreatetime(new Date());
+        Integer insert = this.zzUserGroupService.insert(zzUserGroup);
+        ObjectRestResponse objectRestResponse = new ObjectRestResponse();
+        if (insert == null){
+            objectRestResponse.data("失败");
+            return objectRestResponse;
+        }
+        objectRestResponse.data("成功");
+        return objectRestResponse;
+    }
+
+    @PostMapping("/update")
+    public ObjectRestResponse update(ZzUserGroup zzUserGroup){
+        Integer update = this.zzUserGroupService.update(zzUserGroup);
+        ObjectRestResponse objectRestResponse = new ObjectRestResponse();
+        if (update == null){
+            objectRestResponse.data("失败");
+            return objectRestResponse;
+        }
+        objectRestResponse.data("成功");
+        return objectRestResponse;
+    }
+
+    @DeleteMapping("/delete")
+    public ObjectRestResponse delete(@RequestParam("id")String id){
+        boolean flag = this.zzUserGroupService.deleteById(id);
+        ObjectRestResponse objectRestResponse = new ObjectRestResponse();
+        objectRestResponse.data(flag);
+        return objectRestResponse;
+    }
 }

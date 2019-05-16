@@ -4,6 +4,7 @@ import com.workhub.z.servicechat.entity.ZzAt;
 import com.workhub.z.servicechat.dao.ZzAtDao;
 import com.workhub.z.servicechat.service.ZzAtService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -49,9 +50,10 @@ public class ZzAtServiceImpl implements ZzAtService {
      * @return 实例对象
      */
     @Override
-    public ZzAt insert(ZzAt zzAt) {
-        this.zzAtDao.insert(zzAt);
-        return zzAt;
+    @Transactional
+    public Integer insert(ZzAt zzAt) {
+        int insert = this.zzAtDao.insert(zzAt);
+        return insert;
     }
 
     /**
@@ -61,9 +63,10 @@ public class ZzAtServiceImpl implements ZzAtService {
      * @return 实例对象
      */
     @Override
-    public ZzAt update(ZzAt zzAt) {
-        this.zzAtDao.update(zzAt);
-        return this.queryById(zzAt.getId());
+    @Transactional
+    public Integer update(ZzAt zzAt) {
+        int update = this.zzAtDao.update(zzAt);
+        return update;
     }
 
     /**
@@ -73,6 +76,7 @@ public class ZzAtServiceImpl implements ZzAtService {
      * @return 是否成功
      */
     @Override
+    @Transactional
     public boolean deleteById(String id) {
         return this.zzAtDao.deleteById(id) > 0;
     }

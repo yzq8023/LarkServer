@@ -34,7 +34,7 @@ public interface ZzPrivateMsgService {
      * @param zzPrivateMsg 实例对象
      * @return 实例对象
      */
-    ZzPrivateMsg insert(ZzPrivateMsg zzPrivateMsg);
+    Integer insert(ZzPrivateMsg zzPrivateMsg);
 
     /**
      * 修改数据
@@ -42,7 +42,7 @@ public interface ZzPrivateMsgService {
      * @param zzPrivateMsg 实例对象
      * @return 实例对象
      */
-    ZzPrivateMsg update(ZzPrivateMsg zzPrivateMsg);
+    Integer update(ZzPrivateMsg zzPrivateMsg);
 
     /**
      * 通过主键删除数据
@@ -51,5 +51,11 @@ public interface ZzPrivateMsgService {
      * @return 是否成功
      */
     boolean deleteById(String msgId);
+
+    // TODO: 2019/5/15 msgSender msgReceiver查询消息列表
+
+    // TODO: 2019/5/15 根据 msgSender msgReceiver更新未读消息isRead
+
+    // TODO: 2019/5/15  
 
 }

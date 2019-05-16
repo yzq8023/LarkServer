@@ -4,6 +4,7 @@ import com.workhub.z.servicechat.entity.ZzPrivateMsg;
 import com.workhub.z.servicechat.dao.ZzPrivateMsgDao;
 import com.workhub.z.servicechat.service.ZzPrivateMsgService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -49,9 +50,10 @@ public class ZzPrivateMsgServiceImpl implements ZzPrivateMsgService {
      * @return 实例对象
      */
     @Override
-    public ZzPrivateMsg insert(ZzPrivateMsg zzPrivateMsg) {
-        this.zzPrivateMsgDao.insert(zzPrivateMsg);
-        return zzPrivateMsg;
+    @Transactional
+    public Integer insert(ZzPrivateMsg zzPrivateMsg) {
+        int insert = this.zzPrivateMsgDao.insert(zzPrivateMsg);
+        return insert;
     }
 
     /**
@@ -61,9 +63,10 @@ public class ZzPrivateMsgServiceImpl implements ZzPrivateMsgService {
      * @return 实例对象
      */
     @Override
-    public ZzPrivateMsg update(ZzPrivateMsg zzPrivateMsg) {
-        this.zzPrivateMsgDao.update(zzPrivateMsg);
-        return this.queryById(zzPrivateMsg.getMsgId());
+    @Transactional
+    public Integer update(ZzPrivateMsg zzPrivateMsg) {
+        int update = this.zzPrivateMsgDao.update(zzPrivateMsg);
+        return update;
     }
 
     /**
@@ -73,6 +76,7 @@ public class ZzPrivateMsgServiceImpl implements ZzPrivateMsgService {
      * @return 是否成功
      */
     @Override
+    @Transactional
     public boolean deleteById(String msgId) {
         return this.zzPrivateMsgDao.deleteById(msgId) > 0;
     }
