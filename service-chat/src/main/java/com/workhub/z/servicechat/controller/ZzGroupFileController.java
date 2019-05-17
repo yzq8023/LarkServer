@@ -60,7 +60,7 @@ public class ZzGroupFileController {
             e.printStackTrace();
         }
 //        T data, int pageSize, int pageNo, int totalPage, int totalCount
-        return new TableResultResponse(pageInfo.getList(),pageInfo.getPageSize(),pageInfo.getPageNum(),pageInfo.getPages(),(int)pageInfo.getTotal());
+        return new TableResultResponse(pageInfo.getTotal(),pageInfo.getList());
     }
 
 

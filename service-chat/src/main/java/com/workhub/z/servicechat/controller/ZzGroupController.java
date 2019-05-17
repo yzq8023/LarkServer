@@ -4,7 +4,6 @@ import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.entity.ZzGroup;
 import com.workhub.z.servicechat.service.ZzGroupService;
-import oracle.jdbc.proxy.annotation.Post;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
