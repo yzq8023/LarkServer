@@ -1,12 +1,9 @@
 package com.workhub.z.servicechat.config;
 
-import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.sun.tools.javac.comp.Todo;
-import com.sun.xml.internal.bind.v2.TODO;
-import com.workhub.z.servicechat.VO.GroupInfo;
+import com.workhub.z.servicechat.VO.GroupInfoVO;
 
 import java.util.*;
 
@@ -92,11 +89,11 @@ public class common {
         Page<Object> pageMassage = PageHelper.startPage(1, 10);
         pageMassage.setTotal(100);
         System.out.println(pageMassage);
-        PageInfo<GroupInfo> pageInfoGroupInfo = new PageInfo<GroupInfo>();
+        PageInfo<GroupInfoVO> pageInfoGroupInfo = new PageInfo<GroupInfoVO>();
         pageInfoGroupInfo.setSize(10);
         pageInfoGroupInfo.setPageNum(2);
-        List<GroupInfo> list = new ArrayList<GroupInfo>();
-        for (int n=0;n<100;n++)list.add(new GroupInfo());
+        List<GroupInfoVO> list = new ArrayList<GroupInfoVO>();
+        for (int n=0;n<100;n++)list.add(new GroupInfoVO());
 //        pageInfoGroupInfo.setList(list);
         pageInfoGroupInfo.setTotal(10);
         System.out.println(pageInfoGroupInfo);

@@ -4,7 +4,7 @@ import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.pagehelper.PageInfo;
-import com.workhub.z.servicechat.VO.GroupInfo;
+import com.workhub.z.servicechat.VO.GroupInfoVO;
 import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
 import com.workhub.z.servicechat.service.ZzGroupFileService;
@@ -52,7 +52,7 @@ public class ZzGroupFileController {
     public TableResultResponse groupFileList(@RequestParam("id")String id,
                                           @RequestParam(value = "page",defaultValue = "1")Integer page,
                                           @RequestParam(value = "size",defaultValue = "10")Integer size){
-        PageInfo<GroupInfo> pageInfo = null;
+        PageInfo<GroupInfoVO> pageInfo = null;
         Long total = 0L;
         try {
             pageInfo = this.zzGroupFileService.groupFileList(id, page, size);
