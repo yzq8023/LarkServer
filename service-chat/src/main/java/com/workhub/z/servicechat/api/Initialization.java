@@ -2,7 +2,6 @@ package com.workhub.z.servicechat.api;
 
 //import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.github.hollykunge.security.common.msg.ListRestResponse;
-import com.workhub.z.servicechat.VO.Contact;
 import com.workhub.z.servicechat.feign.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
