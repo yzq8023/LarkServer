@@ -47,14 +47,14 @@ public class OrgController extends BaseController<OrgBiz, Org> {
 
     @RequestMapping(value = "/{id}/user", method = RequestMethod.PUT)
     @ResponseBody
-    public ObjectRestResponse modifiyUsers(@PathVariable int id, String members, String leaders){
-        baseBiz.modifyOrgUsers(id, members, leaders);
+    public ObjectRestResponse modifyUsers(@PathVariable String id, String users){
+        baseBiz.modifyOrgUsers(id, users);
         return new ObjectRestResponse().rel(true);
     }
 
     @RequestMapping(value = "/{id}/user", method = RequestMethod.GET)
     @ResponseBody
-    public ObjectRestResponse<OrgUsers> getUsers(@PathVariable int id){
+    public ObjectRestResponse<OrgUsers> getUsers(@PathVariable String id){
         return new ObjectRestResponse<OrgUsers>().rel(true).data(baseBiz.getOrgUsers(id));
     }
 
@@ -73,7 +73,7 @@ public class OrgController extends BaseController<OrgBiz, Org> {
         }
         return  getTree(baseBiz.selectByExample(example), AdminCommonConstant.ROOT);
     }
-    private List<OrgTree> getTree(List<Org> orgs,int root) {
+    private List<OrgTree> getTree(List<Org> orgs,String root) {
         List<OrgTree> trees = new ArrayList<OrgTree>();
         OrgTree node = null;
         for (Org org : orgs) {

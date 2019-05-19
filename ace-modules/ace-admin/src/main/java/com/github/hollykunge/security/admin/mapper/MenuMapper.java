@@ -6,5 +6,5 @@ import tk.mybatis.mapper.common.Mapper;
 import java.util.List;
 
 public interface MenuMapper extends Mapper<Menu> {
-    List<Menu> selectMenuByRoleId(String roleId, String resourceType);
+    List<Menu> selectMenuByRoleId(int roleId, String resourceType);
 }
