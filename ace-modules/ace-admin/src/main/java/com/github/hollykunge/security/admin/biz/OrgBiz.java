@@ -28,7 +28,7 @@ public class OrgBiz extends BaseBiz<OrgMapper, Org> {
      * @param users
      */
     @CacheClear(pre = "permission")
-    public void modifyOrgUsers(int orgId, String users) {
+    public void modifyOrgUsers(String orgId, String users) {
 
         // TODO: 根据组织id删除用户 mapper.deleteUsersByOrgId(orgId)
 

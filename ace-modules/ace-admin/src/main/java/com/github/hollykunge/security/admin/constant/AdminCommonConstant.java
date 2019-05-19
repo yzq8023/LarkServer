@@ -7,7 +7,7 @@ package com.github.hollykunge.security.admin.constant;
  * @create 2017-06-17 14:41
  */
 public class AdminCommonConstant {
-    public final static int ROOT = -1;
+    public final static String ROOT = "root";
     public final static int DEFAULT_GROUP_TYPE = 0;
     /**
      * 权限关联类型

@@ -75,7 +75,7 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
      * @param menus
      */
     @CacheClear(keys = {"permission:menu","permission:u"})
-    public void modifyAuthorityMenu(String roleId, String[] menus) {
+    public void modifyAuthorityMenu(int roleId, String[] menus) {
         // TODO: 根据角色id和资源类型删除资源 resourceRoleMapMapper.deleteByAuthorityIdAndResourceType(roleId + "", AdminCommonConstant.RESOURCE_TYPE_MENU)
 
         List<Menu> menuList = menuMapper.selectAll();
@@ -113,7 +113,8 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
      * @param elementId
      */
     @CacheClear(keys = {"permission:ele","permission:u"})
-    public void modifyAuthorityElement(String roleId, String elementId) {
+    public void modifyAuthorityElement(int roleId, int menuId, int elementId) {
+        //TODO: 数据库那感觉有些问题添加element时少menuId
         ResourceRoleMap authority = new ResourceRoleMap();
         authority.setRoleId(roleId);
         authority.setResourceId(elementId);
@@ -127,7 +128,7 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
      * @param elementId
      */
     @CacheClear(keys = {"permission:ele","permission:u"})
-    public void removeAuthorityElement(String roleId, String elementId) {
+    public void removeAuthorityElement(int roleId, int elementId) {
         ResourceRoleMap authority = new ResourceRoleMap();
         authority.setRoleId(roleId);
         authority.setResourceId(elementId);
@@ -150,7 +151,7 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
      * @param roleId
      * @return
      */
-    public List<AuthorityMenuTree> getAuthorityMenu(String roleId) {
+    public List<AuthorityMenuTree> getAuthorityMenu(int roleId) {
         // TODO: 根据角色id和类型获取菜单列表
         List<Menu> menus = menuMapper.selectMenuByRoleId(roleId, AdminCommonConstant.RESOURCE_TYPE_MENU);
         List<AuthorityMenuTree> trees = new ArrayList<AuthorityMenuTree>();
@@ -170,13 +171,13 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
      * @param roleId
      * @return
      */
-    public List<Integer> getAuthorityElement(String roleId) {
+    public List<Integer> getAuthorityElement(int roleId) {
         ResourceRoleMap authority = new ResourceRoleMap();
         authority.setRoleId(roleId);
         List<ResourceRoleMap> authorities = resourceRoleMapMapper.select(authority);
         List<Integer> ids = new ArrayList<Integer>();
         for (ResourceRoleMap auth : authorities) {
-            ids.add(Integer.parseInt(auth.getResourceId()));
+            ids.add(Integer.parseInt(String.valueOf(auth.getResourceId())));
         }
         return ids;
     }

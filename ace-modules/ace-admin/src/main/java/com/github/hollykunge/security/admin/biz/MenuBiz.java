@@ -68,8 +68,9 @@ public class MenuBiz extends BaseBiz<MenuMapper, Menu> {
      * @return
      */
     @Cache(key = "permission:menu:u{1}")
-    public List<Menu> getUserAuthorityMenuByUserId(int id) {
-        return mapper.selectAuthorityMenuByUserId(id);
+    public List<Menu> getUserAuthorityMenuByUserId(String id) {
+        return null;
+        //TODO: return mapper.selectAuthorityMenuByUserId(id);
     }
 
     /**
@@ -78,7 +79,8 @@ public class MenuBiz extends BaseBiz<MenuMapper, Menu> {
      * @param id
      * @return
      */
-    public List<Menu> getUserAuthoritySystemByUserId(int id) {
-        return mapper.selectAuthoritySystemByUserId(id);
+    public List<Menu> getUserAuthoritySystemByUserId(String id) {
+        return null;
+        //TODO: return mapper.selectAuthoritySystemByUserId(id);
     }
 }

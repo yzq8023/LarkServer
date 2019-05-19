@@ -64,7 +64,7 @@ public class MenuController extends BaseController<MenuBiz, Menu> {
 
     @RequestMapping(value = "/menuTree", method = RequestMethod.GET)
     @ResponseBody
-    public List<MenuTree> listMenu(Integer parentId) {
+    public List<MenuTree> listMenu(String parentId) {
         try {
             if (parentId == null) {
                 parentId = this.getSystem().get(0).getId();
@@ -96,8 +96,8 @@ public class MenuController extends BaseController<MenuBiz, Menu> {
 
     @RequestMapping(value = "/user/authorityTree", method = RequestMethod.GET)
     @ResponseBody
-    public List<MenuTree> listUserAuthorityMenu(Integer parentId){
-        int userId = userBiz.getUserByUsername(getCurrentUserName()).getId();
+    public List<MenuTree> listUserAuthorityMenu(String parentId){
+        String userId = userBiz.getUserByUsername(getCurrentUserName()).getId();
         try {
             if (parentId == null) {
                 parentId = this.getSystem().get(0).getId();
@@ -111,11 +111,11 @@ public class MenuController extends BaseController<MenuBiz, Menu> {
     @RequestMapping(value = "/user/system", method = RequestMethod.GET)
     @ResponseBody
     public List<Menu> listUserAuthoritySystem() {
-        int userId = userBiz.getUserByUsername(getCurrentUserName()).getId();
+        String userId = userBiz.getUserByUsername(getCurrentUserName()).getId();
         return baseBiz.getUserAuthoritySystemByUserId(userId);
     }
 
-    private List<MenuTree> getMenuTree(List<Menu> menus,int root) {
+    private List<MenuTree> getMenuTree(List<Menu> menus,String root) {
         List<MenuTree> trees = new ArrayList<MenuTree>();
         MenuTree node = null;
         for (Menu menu : menus) {
