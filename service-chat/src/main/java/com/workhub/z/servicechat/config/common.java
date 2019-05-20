@@ -88,6 +88,12 @@ public class common {
         return resultStr.substring(0,resultStr.length()-1);
     }
 
+    /**
+     * 涉密检索(字符串对比，请满足字符串对比规则如1和11应写成01和11)
+     * @param txt
+     * @param zzDictionaryWordsList
+     * @return
+     */
     public static String stringSearch(String txt, List<ZzDictionaryWords> zzDictionaryWordsList) {
         if(null == txt) throw new NullPointerException("txt is null");
         if(null == zzDictionaryWordsList||zzDictionaryWordsList.isEmpty()) throw new NullPointerException("zzDictionaryWordsList is null");
@@ -99,6 +105,12 @@ public class common {
         return max.get().getWordCode();
     }
 
+    /**
+     * 敏感词替换
+     * @param txt
+     * @param zzDictionaryWordsList
+     * @return
+     */
     public static String sensitiveSearch(String txt, List<ZzDictionaryWords> zzDictionaryWordsList) {
         if (null == txt) throw new NullPointerException();
         zzDictionaryWordsList.stream().forEach(list ->{
