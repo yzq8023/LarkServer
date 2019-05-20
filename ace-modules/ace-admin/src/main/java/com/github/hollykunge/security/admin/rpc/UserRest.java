@@ -56,10 +56,10 @@ public class UserRest {
     }
 
     @RequestMapping(value = "/user/all", method = RequestMethod.POST)
-    public @ResponseBody List<UserInfo> all(){
+    public @ResponseBody List<User> all(){
         List<User> users = userBiz.getUsers();
-        List<UserInfo> infos = new ArrayList<UserInfo>();
-        BeanUtils.copyProperties(users, infos);
-        return infos;
+//        List<User> infos = new ArrayList<User>();
+//        BeanUtils.copyProperties(users, infos);
+        return users;
     }
 }

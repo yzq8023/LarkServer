@@ -52,8 +52,6 @@ public class MenuController extends BaseController<MenuBiz, Menu> {
         return getMenuTree(baseBiz.selectByExample(example), AdminCommonConstant.ROOT);
     }
 
-
-
     @RequestMapping(value = "/system", method = RequestMethod.GET)
     @ResponseBody
     public List<Menu> getSystem() {
@@ -126,6 +124,4 @@ public class MenuController extends BaseController<MenuBiz, Menu> {
         }
         return TreeUtil.bulid(trees,root) ;
     }
-
-
 }
