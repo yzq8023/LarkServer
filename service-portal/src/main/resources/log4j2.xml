@@ -3,7 +3,7 @@
     <Appenders>
         <!--添加一个控制台追加器-->
         <!--<Console name="Console" target="SYSTEM_OUT" follow="true">-->
-        <File name ="file" fileName="${sys:user.home}/logs/chat.log">
+        <File name ="file" fileName="${sys:user.home}/logs/portal/portal.log">
             <PatternLayout>
                 <pattern>"%d{HH:mm:ss,SSS} %p %c (%L) - %m%n"</pattern>
             </PatternLayout>
