@@ -34,7 +34,7 @@ public interface ZzDictionaryWordsService {
      * @param zzDictionaryWords 实例对象
      * @return 实例对象
      */
-    ZzDictionaryWords insert(ZzDictionaryWords zzDictionaryWords);
+    Integer insert(ZzDictionaryWords zzDictionaryWords);
 
     /**
      * 修改数据
@@ -42,7 +42,7 @@ public interface ZzDictionaryWordsService {
      * @param zzDictionaryWords 实例对象
      * @return 实例对象
      */
-    ZzDictionaryWords update(ZzDictionaryWords zzDictionaryWords);
+    Integer update(ZzDictionaryWords zzDictionaryWords);
 
     /**
      * 通过主键删除数据
@@ -52,4 +52,16 @@ public interface ZzDictionaryWordsService {
      */
     boolean deleteById(String id);
 
+    /**
+     * 检索文本是否涉密（涉密类型）
+     * @return
+     */
+    String confidentialIndex(String txt);
+
+    /**
+     * 检索文本是否敏感词汇(敏感词汇)
+     * @param txt
+     * @return
+     */
+    String sensitiveIndex(String txt);
 }
