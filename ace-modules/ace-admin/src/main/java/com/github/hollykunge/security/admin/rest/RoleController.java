@@ -34,9 +34,8 @@ import tk.mybatis.mapper.entity.Example;
  */
 @Controller
 @RequestMapping("role")
-@Api("群组模块")
+@Api("角色模块")
 public class RoleController extends BaseController<RoleBiz, Role> {
-
 
     /**
      * 批量修改角色用户
@@ -119,7 +118,6 @@ public class RoleController extends BaseController<RoleBiz, Role> {
         }
         return  getTree(baseBiz.selectByExample(example), AdminCommonConstant.ROOT);
     }
-
 
     private List<GroupTree> getTree(List<Role> groups,int root) {
         List<GroupTree> trees = new ArrayList<GroupTree>();

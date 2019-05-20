@@ -8,7 +8,7 @@ import com.github.hollykunge.security.common.rest.BaseController;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * @author ace
+ * @author hollykunge
  * @create 2017/12/26.
  */
 @RestController
