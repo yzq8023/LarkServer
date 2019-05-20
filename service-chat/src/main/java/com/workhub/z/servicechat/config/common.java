@@ -1,11 +1,14 @@
 package com.workhub.z.servicechat.config;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.VO.GroupInfoVO;
+import com.workhub.z.servicechat.entity.ZzDictionaryWords;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
 *@Description: 通用方法
@@ -85,21 +88,60 @@ public class common {
         return resultStr.substring(0,resultStr.length()-1);
     }
 
+    public static String stringSearch(String txt, List<ZzDictionaryWords> zzDictionaryWordsList) {
+        if(null == txt) throw new NullPointerException("txt is null");
+        if(null == zzDictionaryWordsList||zzDictionaryWordsList.isEmpty()) throw new NullPointerException("zzDictionaryWordsList is null");
+        Set<String> strSet = new HashSet<String>();
+        Optional<ZzDictionaryWords> max = zzDictionaryWordsList.stream()
+                    .filter(setIndexFilter -> txt.contains(setIndexFilter.getWordName()))
+                    .max(Comparator.comparing(ZzDictionaryWords::getWordCode));
+
+        return max.get().getWordCode();
+    }
+
+    public static String sensitiveSearch(String txt, List<ZzDictionaryWords> zzDictionaryWordsList) {
+        if (null == txt) throw new NullPointerException();
+        zzDictionaryWordsList.stream().forEach(list ->{
+            txt.replace(list.getWordName(),list.getReplaceWord());
+        });
+        return txt;
+    }
+
     public static void main(String[] args){
-        Page<Object> pageMassage = PageHelper.startPage(1, 10);
-        pageMassage.setTotal(100);
-        System.out.println(pageMassage);
-        PageInfo<GroupInfoVO> pageInfoGroupInfo = new PageInfo<GroupInfoVO>();
-        pageInfoGroupInfo.setSize(10);
-        pageInfoGroupInfo.setPageNum(2);
-        List<GroupInfoVO> list = new ArrayList<GroupInfoVO>();
-        for (int n=0;n<100;n++)list.add(new GroupInfoVO());
-//        pageInfoGroupInfo.setList(list);
-        pageInfoGroupInfo.setTotal(10);
-        System.out.println(pageInfoGroupInfo);
+        List<ZzDictionaryWords> zzDictionaryWordsList = new ArrayList<ZzDictionaryWords>();
+        ZzDictionaryWords zzDictionaryWords = new ZzDictionaryWords();
+        zzDictionaryWords.setWordName("机密");
+        zzDictionaryWords.setWordCode("001");
+        zzDictionaryWordsList.add(zzDictionaryWords);
+        zzDictionaryWords = new ZzDictionaryWords();
+        zzDictionaryWords.setWordName("非密");
+        zzDictionaryWords.setWordCode("002");
+        zzDictionaryWordsList.add(zzDictionaryWords);
+        zzDictionaryWords = new ZzDictionaryWords();
+        zzDictionaryWords.setWordName("秘密");
+        zzDictionaryWords.setWordCode("003");
+        zzDictionaryWordsList.add(zzDictionaryWords);
+        zzDictionaryWords = new ZzDictionaryWords();
+        zzDictionaryWords.setWordName("123");
+        zzDictionaryWords.setWordCode("011");
+        zzDictionaryWordsList.add(zzDictionaryWords);
+        System.out.println(common.stringSearch("机密非密秘密12345揭穿你2内存浓c",zzDictionaryWordsList));
+
+//        Page<Object> pageMassage = PageHelper.startPage(1, 10);
+//        pageMassage.setTotal(100);
+//        System.out.println(pageMassage);
+//        PageInfo<GroupInfoVO> pageInfoGroupInfo = new PageInfo<GroupInfoVO>();
+//        pageInfoGroupInfo.setSize(10);
+//        pageInfoGroupInfo.setPageNum(2);
+//        List<GroupInfoVO> list = new ArrayList<GroupInfoVO>();
+//        for (int n=0;n<100;n++)list.add(new GroupInfoVO());
+////        pageInfoGroupInfo.setList(list);
+//        pageInfoGroupInfo.setTotal(10);
+//        System.out.println(pageInfoGroupInfo);
 //        System.out.println(common.stringSearch("阿里巴巴 哥斯拉 弗兰多路 蕾米莉亚 190拿分033奥巴马金正恩机-密密级.密"));
 //        System.out.println(common.convert("`0923870348934h2u20!@#$%^&*[]★()))>>PL'"));
 //        System.out.println(common.convert(convert("`0923870348934h2u20!@#$%^&*[]★()))>>PL'")));
 //        System.out.println(common.convert("陋醸嶀嶀T咑旛抽T彣億奮趛T蔊簇菽仮TEMD抋割DGG夑嶀騘醥欗思李Y宲宲结Z宲"));
     }
+
 }

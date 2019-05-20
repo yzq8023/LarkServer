@@ -4,9 +4,9 @@
     <property resource="application.properties"/>
 
     <appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/${log.env.module}.log</file>
+        <file>service-chat/logs/info/${log.env.module}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>logs/${log.env.module}-%d{yyyy-MM-dd}.%i.log
+            <fileNamePattern>logs/info/${log.env.module}-%d{yyyy-MM-dd}.%i.log
             </fileNamePattern>
             <maxFileSize>5MB</maxFileSize>
             <maxHistory>30</maxHistory>
@@ -17,8 +17,28 @@
         </layout>
     </appender>
 
+    <appender name="bug_log" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>service-chat/logs/debug/${log.env.module}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/debug/${log.env.module}-%d{yyyy-MM-dd}.%i.log
+            </fileNamePattern>
+            <maxFileSize>5MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>20GB</totalSizeCap>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{35} - %msg%n</Pattern>
+        </layout>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
     <logger name="com.workhub.z.servicechat.dao" level="debug"/>
     <root level="info">
         <appender-ref ref="ROLLING"/>
+        <appender-ref ref="bug_log"/>
     </root>
 </configuration>
