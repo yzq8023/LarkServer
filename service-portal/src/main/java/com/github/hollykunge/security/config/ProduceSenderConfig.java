@@ -27,6 +27,7 @@ public class ProduceSenderConfig {
      * @param message  消息
      */
     public void send(String uuid,Object message) {
+        //解决消费消息幂等性时用到，门户消费不涉及幂等性重复数据的问题
         CorrelationData correlationId = new CorrelationData(uuid);
         rabbitTemplate.convertAndSend(CommonConstants.PORTAL_EXCHANGE, "",message, correlationId);
     }
