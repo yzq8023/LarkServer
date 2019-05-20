@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ * 全局异常处理器
  * @author 协同设计小组
  * @date 2017/9/8
  */

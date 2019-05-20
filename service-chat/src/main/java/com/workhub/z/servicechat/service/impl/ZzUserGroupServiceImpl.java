@@ -4,6 +4,7 @@ import com.workhub.z.servicechat.entity.ZzUserGroup;
 import com.workhub.z.servicechat.dao.ZzUserGroupDao;
 import com.workhub.z.servicechat.service.ZzUserGroupService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -49,9 +50,10 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
      * @return 实例对象
      */
     @Override
-    public ZzUserGroup insert(ZzUserGroup zzUserGroup) {
-        this.zzUserGroupDao.insert(zzUserGroup);
-        return zzUserGroup;
+    @Transactional
+    public Integer insert(ZzUserGroup zzUserGroup) {
+        int insert = this.zzUserGroupDao.insert(zzUserGroup);
+        return insert;
     }
 
     /**
@@ -61,9 +63,10 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
      * @return 实例对象
      */
     @Override
-    public ZzUserGroup update(ZzUserGroup zzUserGroup) {
-        this.zzUserGroupDao.update(zzUserGroup);
-        return this.queryById(zzUserGroup.getId());
+    @Transactional
+    public Integer update(ZzUserGroup zzUserGroup) {
+        int update = this.zzUserGroupDao.update(zzUserGroup);
+        return update;
     }
 
     /**
@@ -73,6 +76,7 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
      * @return 是否成功
      */
     @Override
+    @Transactional
     public boolean deleteById(String id) {
         return this.zzUserGroupDao.deleteById(id) > 0;
     }
