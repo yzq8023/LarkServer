@@ -19,6 +19,45 @@
         <result property="groupImg" column="GROUP_IMG" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <resultMap id="GroupUserListVo" type="com.workhub.z.servicechat.VO.GroupUserListVo">
+        <result property="CREATE_TIME" column="createTime" jdbcType="TIMESTAMP"></result>
+        <result property="USER_ID" column="userId" jdbcType="VARCHAR"></result>
+        <!--<result property="FULL_NAME" column="fullName" jdbcType="VARCHAR"></result>
+        <result property="ACCOUNT" column="account" jdbcType="VARCHAR"></result>
+        <result property="PASSWORD" column="password" jdbcType="VARCHAR"></result>
+        <result property="LEVELS" column="levels" jdbcType="VARCHAR"></result>
+        <result property="SEX" column="sex" jdbcType="VARCHAR"></result>
+        <result property="HEAD" column="head" jdbcType="VARCHAR"></result>-->
+    </resultMap>
+
+    <select id="groupUserList" resultMap="GroupUserListVo">
+        SELECT *
+        FROM (SELECT VO.*, ROWNUM AS RN
+        FROM (SELECT ZUG.CREATETIME AS CREATE_TIME,
+        ZUG.USER_ID    AS USER_ID
+        FROM ZZ_USER_GROUP ZUG
+        LEFT JOIN ZZ_GROUP ZG
+        ON ZG.GROUP_ID = ZUG.GROUP_ID
+        WHERE 1 = 1
+        AND ZG.ISCLOSE = '0'
+        AND ZG.ISDELETE = '0'
+        AND ZG.GROUP_ID = #{ID}
+        ORDER BY 1) VO
+        WHERE ROWNUM &lt;= #{end})
+        WHERE &gt; #{start}
+    </select>
+
+    <select id="groupUserListTotal" resultType="java.lang.Long">
+     select count(*)
+       from zz_user_group zug
+       left join zz_group zg
+         on zg.group_id = zug.group_id
+      where 1 = 1
+        and zg.isclose = '0'
+        and zg.isdelete = '0'
+        and zg.group_id = #{ID}
+    </select>
+
     <!--查询单个-->
     <select id="queryById" resultMap="ZzGroupMap">
         select
