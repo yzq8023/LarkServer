@@ -9,43 +9,50 @@ public class Const {
      * 用于系统消息，每个登录用户都要加入系统消息组
      * 系统通知
      */
-    public static final String GROUP_ID = "Iwork-Message";
+    public static final String GROUP_SYS = "Iwork-Message";
 
     /**
-     * 用于系统消息，每个登录用户都要加入系统消息组
-     * 系统通知
+     * 加入群组
      */
     public static final int JOIN_GROUP = 2;
 
     /**
-     * 用于系统消息，每个登录用户都要加入系统消息组
-     * 系统通知
+     * 退出群组
      */
     public static final int EXIT_GROUP = 3;
 
     /**
-     * 用于系统消息，每个登录用户都要加入系统消息组
-     * 系统通知
+     * ping
      */
     public static final int PING = 1;
 
     /**
-     * 用于系统消息，每个登录用户都要加入系统消息组
-     * 系统通知
+     * 私聊消息
      */
     public static final int SEND_USER = 4;
 
     /**
-     * 用于系统消息，每个登录用户都要加入系统消息组
-     * 系统通知
+     * 群组消息
      */
     public static final int SEND_GROUP = 5;
 
     /**
-     * 用于系统消息，每个登录用户都要加入系统消息组
-     * 系统通知
+     * 发送消息
      */
     public static final int SEND_MSG = 5;
 
+    /**
+     * 关闭群组
+     */
     public static final int CLOSE_GROUP = 6;
+
+    /**
+     * 发送文件
+     */
+    public static final int SEND_FILE = 7;
+
+    /**
+     * 发送系统消息
+     */
+    public static final int SEND_SYS = 0;
 }

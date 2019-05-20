@@ -1,8 +1,8 @@
 package com.workhub.z.servicechat.api;
 
 //import com.github.hollykunge.security.api.vo.user.UserInfo;
+import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.workhub.z.servicechat.feign.IUserService;
-import com.workhub.z.servicechat.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,9 +18,6 @@ public class Initialization {
 
     @Autowired
     private IUserService iUserService;
-
-    @Autowired
-    private GroupService groupService;
 
     /**
     *@Description: 查询user所在群组
@@ -47,9 +44,29 @@ public class Initialization {
     /**
     *@Description: 最近联系人
     *@Param:userid
-    *@return:userlist
+    *@return:Contact
     *@Author: 忠
     *@date: 2019/3/21
     */
-
+    @RequestMapping("/getContact")
+    public ListRestResponse queryContactById(){
+        //
+        // TODO: 2019/5/15  消息实体类Contact
+//
+//        {
+//            "id": "@id",
+//                "name": "@cname",
+//                "time": "10:20",
+//                "lastMessage": "ganshenmene",
+//                "avatar": "/avatar2.jpg",
+//                "sender": "王白",
+//                "unreadNum": 19,
+//                "atMe": false,
+//                "isTop": false,
+//                "isMute": true,
+//                "isGroup": true
+//        }
+//        return new ListRestResponse("",11,);
+        return null;
+    }
 }

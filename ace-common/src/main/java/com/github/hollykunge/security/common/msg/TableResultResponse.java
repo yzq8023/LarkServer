@@ -3,25 +3,33 @@ package com.github.hollykunge.security.common.msg;
 import java.util.List;
 
 /**
- * ${DESCRIPTION}
+ * 分页结果返回
  *
  * @author 协同设计小组
  * @create 2017-06-14 22:40
  */
+
 public class TableResultResponse<T> extends BaseResponse {
 
+    private int pageSize;
+    private int pageNo;
+    private int totalPage;
+    private long totalCount;
     TableData<T> data;
 
-    public TableResultResponse(long total, List<T> rows) {
-        this.data = new TableData<T>(total, rows);
+    public TableResultResponse(int pageSize, int pageNo, int totalPage, long totalCount, List<T> rows) {
+        this.pageSize = pageSize;
+        this.pageNo = pageNo;
+        this.totalPage = totalPage;
+        this.data = new TableData<T>(rows);
     }
 
     public TableResultResponse() {
         this.data = new TableData<T>();
     }
 
-    TableResultResponse<T> total(int total) {
-        this.data.setTotal(total);
+    TableResultResponse<T> total(long total) {
+        this.setTotalCount(total);
         return this;
     }
 
@@ -30,9 +38,41 @@ public class TableResultResponse<T> extends BaseResponse {
         return this;
     }
 
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public int getPageNo() {
+        return pageNo;
+    }
+
+    public void setPageNo(int pageNo) {
+        this.pageNo = pageNo;
+    }
+
+    public int getTotalPage() {
+        return totalPage;
+    }
+
+    public void setTotalPage(int totalPage) {
+        this.totalPage = totalPage;
+    }
+
+    public long getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(long totalCount) {
+        this.totalCount = totalCount;
+    }
+
     public List<T> getRows() {
         return data.getRows();
-}
+    }
 
     public TableData<T> getData() {
         return data;
@@ -43,23 +83,14 @@ public class TableResultResponse<T> extends BaseResponse {
     }
 
     class TableData<T> {
-        long total;
+
         List<T> rows;
 
-        public TableData(long total, List<T> rows) {
-            this.total = total;
+        public TableData(List<T> rows) {
             this.rows = rows;
         }
 
         public TableData() {
-        }
-
-        public long getTotal() {
-            return total;
-        }
-
-        public void setTotal(long total) {
-            this.total = total;
         }
 
         public List<T> getRows() {

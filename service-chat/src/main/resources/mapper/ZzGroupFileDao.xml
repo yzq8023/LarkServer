@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.workhub.z.servicechat.dao.ZzGroupFileDao">
+
+    <resultMap type="com.workhub.z.servicechat.entity.ZzGroupFile" id="ZzGroupFileMap">
+        <result property="fileId" column="FILE_ID" jdbcType="VARCHAR"/>
+        <result property="fileName" column="FILE_NAME" jdbcType="VARCHAR"/>
+        <result property="fileExt" column="FILE_EXT" jdbcType="VARCHAR"/>
+        <result property="fileType" column="FILE_TYPE" jdbcType="VARCHAR"/>
+        <result property="sizes" column="SIZES" jdbcType="NUMERIC"/>
+        <result property="path" column="PATH" jdbcType="VARCHAR"/>
+        <result property="readPath" column="READ_PATH" jdbcType="VARCHAR"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="creator" column="CREATOR" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="updator" column="UPDATOR" jdbcType="VARCHAR"/>
+        <result property="groupId" column="GROUP_ID" jdbcType="VARCHAR"/>
+        <result property="levels" column="LEVELS" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="GroupFileVo" type="com.workhub.z.servicechat.VO.GroupFileVo">
+        <result property="fileId" column="FILE_ID" jdbcType="VARCHAR"></result>
+        <result property="fileName" column="FILE_NAME" jdbcType="VARCHAR"></result>
+        <result property="time" column="TIME" jdbcType="VARCHAR"></result>
+        <result property="reviser" column="REVISER" jdbcType="VARCHAR"></result>
+        <result property="levels" column="LEVELS" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <!--查询群组文件-->
+    <select id="groupFileList" resultMap="GroupFileVo">
+        SELECT *
+        FROM (
+        SELECT A.*, ROWNUM RN
+        FROM (SELECT ZGF.FILE_ID AS FILE_ID,
+        ZGF.FILE_NAME AS FILE_NAME,
+        ZGF.LEVELS AS LEVELS,
+        SU.FULLNAME AS REVISER,
+        TO_CHAR(ZGF.CREATE_TIME, 'YYYY-MM-DD HH24:MI:SS') AS TIME
+        FROM ZZ_GROUP ZG
+        LEFT JOIN ZZ_GROUP_FILE ZGF
+        ON ZG.GROUP_ID = ZGF.GROUP_ID
+        LEFT JOIN SYS_USER SU
+        ON ZGF.CREATOR = SU.USERID
+        WHERE ZG.GROUP_ID = #{id} ORDER BY ZGF.CREATE_TIME DESC
+        ) A
+        WHERE ROWNUM &lt;= #{end}
+        )
+        WHERE RN &gt; #{start}
+    </select>
+
+    <!--查询群组文件总记录数-->
+    <select id="groupFileListTotal" resultType="java.lang.Long">
+     SELECT COUNT(*)
+       FROM ZZ_GROUP ZG
+       LEFT JOIN ZZ_GROUP_FILE ZGF
+         ON ZG.GROUP_ID = ZGF.GROUP_ID
+       LEFT JOIN SYS_USER SU
+         ON ZGF.CREATOR = SU.USERID
+      WHERE ZG.GROUP_ID = '0'
+      ORDER BY ZGF.CREATE_TIME DESC
+    </select>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ZzGroupFileMap">
+        select
+          FILE_ID, FILE_NAME, FILE_EXT, FILE_TYPE, SIZES, PATH, READ_PATH, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, GROUP_ID, LEVELS
+        from ZZ_GROUP_FILE
+        where FILE_ID = #{fileId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ZzGroupFileMap">
+        select
+          FILE_ID, FILE_NAME, FILE_EXT, FILE_TYPE, SIZES, PATH, READ_PATH, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, GROUP_ID, LEVELS
+        from ZZ_GROUP_FILE
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="ZzGroupFileMap">
+        select
+          FILE_ID, FILE_NAME, FILE_EXT, FILE_TYPE, SIZES, PATH, READ_PATH, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, GROUP_ID, LEVELS
+        from ZZ_GROUP_FILE
+        <where>
+            <if test="fileId != null and fileId != ''">
+                and FILE_ID = #{fileId}
+            </if>
+            <if test="fileName != null and fileName != ''">
+                and FILE_NAME = #{fileName}
+            </if>
+            <if test="fileExt != null and fileExt != ''">
+                and FILE_EXT = #{fileExt}
+            </if>
+            <if test="fileType != null and fileType != ''">
+                and FILE_TYPE = #{fileType}
+            </if>
+            <if test="sizes != null">
+                and SIZES = #{sizes}
+            </if>
+            <if test="path != null and path != ''">
+                and PATH = #{path}
+            </if>
+            <if test="readPath != null and readPath != ''">
+                and READ_PATH = #{readPath}
+            </if>
+            <if test="createTime != null">
+                and CREATE_TIME = #{createTime}
+            </if>
+            <if test="creator != null and creator != ''">
+                and CREATOR = #{creator}
+            </if>
+            <if test="updateTime != null">
+                and UPDATE_TIME = #{updateTime}
+            </if>
+            <if test="updator != null and updator != ''">
+                and UPDATOR = #{updator}
+            </if>
+            <if test="groupId != null and groupId != ''">
+                and GROUP_ID = #{groupId}
+            </if>
+            <if test="levels != null and levels != ''">
+                and LEVELS = #{levels}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="fileId" useGeneratedKeys="true">
+        insert into ZZ_GROUP_FILE(FILE_NAME, FILE_EXT, FILE_TYPE, SIZES, PATH, READ_PATH, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, GROUP_ID, LEVELS)
+        values (#{fileName}, #{fileExt}, #{fileType}, #{sizes}, #{path}, #{readPath}, #{createTime}, #{creator}, #{updateTime}, #{updator}, #{groupId}, #{levels})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update ZZ_GROUP_FILE
+        <set>
+            <if test="fileName != null and fileName != ''">
+                FILE_NAME = #{fileName},
+            </if>
+            <if test="fileExt != null and fileExt != ''">
+                FILE_EXT = #{fileExt},
+            </if>
+            <if test="fileType != null and fileType != ''">
+                FILE_TYPE = #{fileType},
+            </if>
+            <if test="sizes != null">
+                SIZES = #{sizes},
+            </if>
+            <if test="path != null and path != ''">
+                PATH = #{path},
+            </if>
+            <if test="readPath != null and readPath != ''">
+                READ_PATH = #{readPath},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime},
+            </if>
+            <if test="creator != null and creator != ''">
+                CREATOR = #{creator},
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME = #{updateTime},
+            </if>
+            <if test="updator != null and updator != ''">
+                UPDATOR = #{updator},
+            </if>
+            <if test="groupId != null and groupId != ''">
+                GROUP_ID = #{groupId},
+            </if>
+            <if test="levels != null and levels != ''">
+                LEVELS = #{levels},
+            </if>
+        </set>
+        where FILE_ID = #{fileId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from ZZ_GROUP_FILE where FILE_ID = #{fileId}
+    </delete>
+
+</mapper>

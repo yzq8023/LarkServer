@@ -4,9 +4,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.workhub.z.servicechat.config.AsyncTaskConfig;
 import com.workhub.z.servicechat.config.AsyncTaskService;
+import com.workhub.z.servicechat.entity.ZzGroup;
 import com.workhub.z.servicechat.feign.IValidateService;
-import com.workhub.z.servicechat.model.GroupModel;
-import com.workhub.z.servicechat.service.GroupService;
+import com.workhub.z.servicechat.service.ZzGroupService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
     private static AsyncTaskService asyncTaskService = context.getBean(AsyncTaskService.class);
 
     @Autowired
-    protected GroupService groupService;
+    protected ZzGroupService groupService;
     protected IValidateService iValidateService;
     private static IworkWsMsgHandler  serverHandler ;
 
@@ -41,7 +41,7 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
         serverHandler = this;
         serverHandler.groupService = this.groupService;
         serverHandler.iValidateService = this.iValidateService;
-        // 初使化时将已静态化的testService实例化
+        // 初使化时将已静态化的Service实例化
     }
 
     public static IworkWsMsgHandler me = new IworkWsMsgHandler();
@@ -63,14 +63,15 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
 //      前端 参数 绑定信息
         Aio.bindUser(channelContext,userid);
 //      加入系统消息组
-        Aio.bindGroup(channelContext, Const.GROUP_ID);
+        Aio.bindGroup(channelContext, Const.GROUP_SYS);
 //       根据握手信息，将用户绑定到群组
-        List<GroupModel> listGroupModel =  serverHandler.groupService.queryGroupByUser("11");
-        for (int i = 0; i < listGroupModel.size() ; i++) {
-            String groupid  =listGroupModel.get(i).getGroupId();
-            Aio.bindGroup(channelContext,groupid);
-            System.out.println("join group "+ listGroupModel.get(i).getGroupName());
-        }
+        // TODO: 2019/5/13 获取当前登录用户所有群组
+//        List<ZzGroup> listGroupModel =  serverHandler.groupService.queryById("11");
+//        for (int i = 0; i < listGroupModel.size() ; i++) {
+//            String groupid  =listGroupModel.get(i).getGroupId();
+//            Aio.bindGroup(channelContext,groupid);
+//            System.out.println("join group "+ listGroupModel.get(i).getGroupName());
+//        }
 
         log.info("收到来自{}的ws握手包\r\n{}", clientip, request.toString());
         return httpResponse;
@@ -90,7 +91,8 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
     @Override
     public Object onClose(WsRequest wsRequest, byte[] bytes, ChannelContext channelContext) throws Exception {
         Aio.remove(channelContext, "receive close flag");
-        return null;
+        return
+                null;
     }
 
     /*
@@ -106,7 +108,6 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
         String r=httpRequest.getParam("recipient");
 
 
-        JSONArray jsonArray11 = new JSONArray();
         JSONObject jsonObject = JSONObject.parseObject(text);
         String code = jsonObject.getString("code");
         String message = jsonObject.getString("data");
@@ -140,9 +141,8 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
                 break;
         }
 
-//        Aio.bindUser(channelContext,userid);
-//        Aio.bindGroup(channelContext, Const.GROUP_ID);
-
+//      Aio.bindUser(channelContext,userid);
+//      Aio.bindGroup(channelContext, Const.GROUP_ID);
 
         //获取前端消息 展示
         if (log.isDebugEnabled()) {
@@ -162,7 +162,7 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
         //用tio-websocket，服务器发送到客户端的Packet都是WsResponse
         WsResponse wsResponse = WsResponse.fromText(msg, IworkServerConfig.CHARSET);
         //群发
-        Aio.bSendToGroup(channelContext.getGroupContext(), Const.GROUP_ID, wsResponse);
+        Aio.bSendToGroup(channelContext.getGroupContext(), Const.GROUP_SYS, wsResponse);
         //系统消息
 //      Aio.sendToAll(channelContext.getGroupContext(),wsResponse);
 //      Aio.sendToUser(channelContext.getGroupContext(),"123",wsResponse);

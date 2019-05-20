@@ -16,7 +16,6 @@ public class LogInfo implements Serializable{
 
     private String uri;
 
-
     private Date crtTime;
 
     private String crtUser;
