@@ -100,9 +100,13 @@ public class common {
         Set<String> strSet = new HashSet<String>();
         Optional<ZzDictionaryWords> max = zzDictionaryWordsList.stream()
                     .filter(setIndexFilter -> txt.contains(setIndexFilter.getWordName()))
-                    .max(Comparator.comparing(ZzDictionaryWords::getWordCode));
-
-        return max.get().getWordCode();
+                    .max(Comparator.comparing(zz ->Integer.parseInt(zz.getWordCode())));
+        try {
+            return max.get().getWordCode();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     /**
@@ -123,19 +127,19 @@ public class common {
         List<ZzDictionaryWords> zzDictionaryWordsList = new ArrayList<ZzDictionaryWords>();
         ZzDictionaryWords zzDictionaryWords = new ZzDictionaryWords();
         zzDictionaryWords.setWordName("机密");
-        zzDictionaryWords.setWordCode("001");
+        zzDictionaryWords.setWordCode("1");
         zzDictionaryWordsList.add(zzDictionaryWords);
         zzDictionaryWords = new ZzDictionaryWords();
         zzDictionaryWords.setWordName("非密");
-        zzDictionaryWords.setWordCode("002");
+        zzDictionaryWords.setWordCode("2");
         zzDictionaryWordsList.add(zzDictionaryWords);
         zzDictionaryWords = new ZzDictionaryWords();
         zzDictionaryWords.setWordName("秘密");
-        zzDictionaryWords.setWordCode("003");
+        zzDictionaryWords.setWordCode("3");
         zzDictionaryWordsList.add(zzDictionaryWords);
         zzDictionaryWords = new ZzDictionaryWords();
         zzDictionaryWords.setWordName("123");
-        zzDictionaryWords.setWordCode("011");
+        zzDictionaryWords.setWordCode("11");
         zzDictionaryWordsList.add(zzDictionaryWords);
         System.out.println(common.stringSearch("机密非密秘密12345揭穿你2内存浓c",zzDictionaryWordsList));
 
