@@ -21,6 +21,8 @@ public class GroupUserListVo {
 
     private String head;
 
+    private Integer vip;
+
     public Date getCreateTime() {
         return createTime;
     }
@@ -83,5 +85,13 @@ public class GroupUserListVo {
 
     public void setHead(String head) {
         this.head = head;
+    }
+
+    public Integer getVip() {
+        return vip;
+    }
+
+    public void setVip(Integer vip) {
+        this.vip = vip;
     }
 }

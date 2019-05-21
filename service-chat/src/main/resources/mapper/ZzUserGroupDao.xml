@@ -33,7 +33,7 @@
         ON ZG.GROUP_ID = ZUG.GROUP_ID
         WHERE ZG.ISCLOSE = '0'
         AND ZG.ISDELETE = '0'
-        AND ZUG.USER_ID = #{ID}
+        AND ZUG.USER_ID = #{id}
         ) VO
         WHERE ROWNUM &lt;= #{end})
         WHERE RN > #{start}
@@ -47,6 +47,45 @@
      where zg.isclose = '0'
        and zg.isdelete = '0'
        and zug.user_id =  #{ID}
+    </select>
+
+    <resultMap id="UserNewMsgVo" type="com.workhub.z.servicechat.VO.UserNewMsgVo">
+        <result property="MSG_ID" column="msgId" jdbcType="VARCHAR"></result>
+        <result property="TABLE_TYPE" column="tableType" jdbcType="VARCHAR"></result>
+        <result property="MSG_SENDER" column="msgSener" jdbcType="VARCHAR"></result>
+        <result property="SEND_TIME" column="sendTime" jdbcType="TIMESTAMP"></result>
+        <result property="MSG" column="msg" jdbcType="VARCHAR"></result>
+        <result property="MSG_TYPE" column="msgType" jdbcType="VARCHAR"></result>
+        <result property="LEVELS" column="levels" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <select id="getUserNewMsgList" resultMap="UserNewMsgVo">
+        SELECT *
+          FROM (SELECT PHPM.MSG_ID AS MSG_ID,
+                       'PRIVATE' AS TABLE_TYPE,
+                       PHPM.MSG_SENDER AS MSG_SENDER,
+                       PHPM.SEND_TIME AS SEND_TIME,
+                       PHPM.MSG AS MSG,
+                       PHPM.MSG_TYPE AS MSG_TYPE,
+                       PHPM.LEVELS AS LEVELS
+                  FROM ZZ_PRIVATE_MSG PHPM
+                 WHERE PHPM.MSG_RECEIVER = #{id}
+                   AND ROWID IN (SELECT MAX(ROWID)
+                                   FROM ZZ_PRIVATE_MSG SP
+                                  GROUP BY SP.MSG_SENDER)
+                UNION ALL
+                SELECT PHGM.MSG_ID AS MSG_ID,
+                       'GROUP' AS TABLE_TYPE,
+                       PHGM.MSG_SENDER AS MSG_SENDER,
+                       PHGM.SEND_TIME AS SND_TIME,
+                       PHGM.MSG AS MSG,
+                       PHGM.MSG_TYPE AS MSG_TYPE,
+                       PHGM.LEVELS AS LEVELS
+                  FROM ZZ_GROUP_MSG PHGM
+                 WHERE PHGM.MSG_RECEIVER = #{id}
+                   AND ROWID IN
+                       (SELECT MAX(ROWID) FROM ZZ_GROUP_MSG SG GROUP BY SG.MSG_SENDER)) VO
+         ORDER BY VO.SEND_TIME DESC
     </select>
 
     <delete id="deleteByGroupIdAndUserId">

@@ -2,6 +2,7 @@ package com.workhub.z.servicechat.dao;
 
 import com.workhub.z.servicechat.VO.GroupListVo;
 import com.workhub.z.servicechat.VO.GroupUserListVo;
+import com.workhub.z.servicechat.VO.UserNewMsgVo;
 import com.workhub.z.servicechat.entity.ZzUserGroup;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
@@ -69,4 +70,6 @@ public interface ZzUserGroupDao {
     Long groupListTotal(@Param("id")String id);
 
     Long deleteByGroupIdAndUserId(@Param("groupId") String groupId,@Param("userId") String userId);
+
+    List<UserNewMsgVo> getUserNewMsgList(@Param("id")String id);
 }

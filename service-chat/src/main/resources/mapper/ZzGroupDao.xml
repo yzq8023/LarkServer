@@ -42,9 +42,9 @@
         AND ZG.ISCLOSE = '0'
         AND ZG.ISDELETE = '0'
         AND ZG.GROUP_ID = #{ID}
-        ORDER BY 1) VO
+        ORDER BY ZG.CREATE_TIME desc) VO
         WHERE ROWNUM &lt;= #{end})
-        WHERE &gt; #{start}
+        WHERE RN &gt; #{start}
     </select>
 
     <select id="groupUserListTotal" resultType="java.lang.Long">
@@ -63,14 +63,14 @@
         select
           GROUP_ID, GROUP_NAME, GROUP_DESCRIBE, ISDELETE, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, PNAME, SCOP, ISPUBLIC, LEVELS, ISCLOSE, GROUP_IMG
         from ZZ_GROUP
-        where GROUP_ID = #{groupId}
+        where GROUP_ID = #{groupId} order  by CREATE_TIME desc
     </select>
 
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="ZzGroupMap">
         select
           GROUP_ID, GROUP_NAME, GROUP_DESCRIBE, ISDELETE, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, PNAME, SCOP, ISPUBLIC, LEVELS, ISCLOSE, GROUP_IMG
-        from ZZ_GROUP
+        from ZZ_GROUP order  by CREATE_TIME desc
         limit #{offset}, #{limit}
     </select>
 
@@ -121,7 +121,7 @@
             </if>
             <if test="groupImg != null and groupImg != ''">
                 and GROUP_IMG = #{groupImg}
-            </if>
+            </if> order  by CREATE_TIME desc
         </where>
     </select>
 

@@ -20,6 +20,7 @@ import javax.annotation.Resource;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 群组表(ZzGroup)表服务实现类
@@ -116,9 +117,15 @@ public class ZzGroupServiceImpl implements ZzGroupService {
                 groupUserListVosList.setLevels("1"/*TODO*/);
                 groupUserListVosList.setFullName(userInfosList.getUsername());
                 groupUserListVosList.setPassword(userInfosList.getPassword());
+                groupUserListVosList.setVip(userInfosList.getDemo());//TODO
             });
         });
-        pageInfoGroupInfo.setList(groupUserListVos);
+        ZzGroup zzGroup = this.zzGroupDao.queryById(id);
+        if (zzGroup ==null) throw new RuntimeException("未查询到群组记录");
+
+        List<GroupUserListVo> resultList = this.orderByGroupUser(groupUserListVos, zzGroup.getCreator());
+
+        pageInfoGroupInfo.setList(resultList);
         pageInfoGroupInfo.setTotal(pageMassage.getTotal());
         pageInfoGroupInfo.setStartRow(startRow);
         pageInfoGroupInfo.setEndRow(endRow);
@@ -131,5 +138,24 @@ public class ZzGroupServiceImpl implements ZzGroupService {
     @Override
     public Long groupUserListTotal(String id) throws Exception {
         return this.zzGroupDao.groupUserListTotal(id);
+    }
+
+    private List<GroupUserListVo> orderByGroupUser(List<GroupUserListVo> groupUserListVos,String creator) throws RuntimeException{
+        List<GroupUserListVo> resultList = groupUserListVos.stream()
+                .filter(listf -> !listf.getUserId().equals(creator)&&listf.getVip()!=0)
+                .sorted((a, b) -> a.getVip() - b.getVip())
+                .collect(Collectors.toList());
+        try {
+            resultList.add(0,groupUserListVos.stream()
+                    .filter(listf -> listf.getUserId().equals(creator))
+                    .collect(Collectors.toList())
+                    .get(0));
+        } catch (Exception e) {
+            throw new RuntimeException("人员排序时未找到创建人");
+        }
+        resultList.addAll(groupUserListVos.stream()
+                .filter(listf -> !listf.getUserId().equals(creator) && listf.getVip() != 0)
+                .collect(Collectors.toList()));
+        return resultList;
     }
 }

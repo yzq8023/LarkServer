@@ -1,10 +1,12 @@
 package com.workhub.z.servicechat.controller;
 
+import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.VO.GroupListVo;
 import com.workhub.z.servicechat.VO.GroupUserListVo;
+import com.workhub.z.servicechat.VO.UserNewMsgVo;
 import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.entity.ZzAt;
 import com.workhub.z.servicechat.entity.ZzUserGroup;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 用户群组映射表(ZzUserGroup)表控制层
@@ -90,5 +93,11 @@ public class ZzUserGroupController {
                 groupUserListVoPageInfo.getPages(),
                 groupUserListVoPageInfo.getTotal(),
                 groupUserListVoPageInfo.getList());
+    }
+
+    @PostMapping("/usernewmsglist")
+    public ListRestResponse getUserNewMsgList(@RequestParam("id") String id){
+        List<UserNewMsgVo> userNewMsgList = this.zzUserGroupService.getUserNewMsgList(id);
+        return new ListRestResponse("成功",0,userNewMsgList);
     }
 }
