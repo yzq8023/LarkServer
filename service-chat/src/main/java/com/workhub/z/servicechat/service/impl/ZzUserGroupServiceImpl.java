@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.VO.GroupListVo;
 import com.workhub.z.servicechat.VO.GroupUserListVo;
+import com.workhub.z.servicechat.VO.UserNewMsgVo;
 import com.workhub.z.servicechat.entity.ZzUserGroup;
 import com.workhub.z.servicechat.dao.ZzUserGroupDao;
 import com.workhub.z.servicechat.service.ZzUserGroupService;
@@ -108,5 +109,10 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
     @Override
     public Long groupUserListTotal(String id) throws Exception {
         return this.zzUserGroupDao.groupListTotal(id);
+    }
+
+    @Override
+    public List<UserNewMsgVo> getUserNewMsgList(String id) {
+        return this.zzUserGroupDao.getUserNewMsgList(id);
     }
 }
