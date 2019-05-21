@@ -195,4 +195,5 @@ public class User extends BaseEntity {
     @Column(name = "MOBILE")
     private String mobile;
 
+
 }

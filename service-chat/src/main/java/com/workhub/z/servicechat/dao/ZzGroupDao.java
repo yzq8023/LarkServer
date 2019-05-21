@@ -1,5 +1,6 @@
 package com.workhub.z.servicechat.dao;
 
+import com.workhub.z.servicechat.VO.GroupUserListVo;
 import com.workhub.z.servicechat.entity.ZzGroup;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
@@ -62,4 +63,7 @@ public interface ZzGroupDao {
      */
     int deleteById(String groupId);
 
+    List<GroupUserListVo> groupUserList(@Param("id")String id,@Param("start")Integer start,@Param("end")Integer end);
+
+    Long groupUserListTotal(@Param("id")String id);
 }
