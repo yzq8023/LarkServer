@@ -1,5 +1,6 @@
 package com.github.hollykunge.security.admin.entity;
 
+import com.github.hollykunge.security.common.entity.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -7,7 +8,7 @@ import javax.persistence.Id;
 import java.util.Date;
 
 @Data
-public class Org {
+public class Org extends BaseEntity {
 
     @Column(name = "H_ID")
     private Long hId;

@@ -85,25 +85,15 @@
     <result column="ATTR7" property="attr7" jdbcType="VARCHAR" />
     <result column="ATTR8" property="attr8" jdbcType="VARCHAR" />
   </resultMap>
-  
-  <select id="selectMemberByGroupId" resultMap="BaseResultMap">
-    select u.* from base_user u
-    left join  base_group_member gm
-    on gm.user_id = u.id where gm.group_id = #{groupId}
+
+  <select id="getUsersByRoleId" resultMap="BaseResultMap">
+    select AU.* from ADMIN_USER AU
+    left join ADMIN_ROLEUSERMAP ARU on AU.ID = ARU.USER_ID
+    where ARU.ROLE_ID = #{roleId}
   </select>
-  <select id="selectLeaderByGroupId" resultMap="BaseResultMap">
-    select u.* from base_user u
-    left join  base_group_leader gm
-    on gm.user_id = u.id where gm.group_id = #{groupId}
-  </select>
-  <select id="selectMemberByOrgId" resultMap="BaseResultMap">
-    select u.* from base_user u
-    left join  base_org_member om
-    on om.user_id = u.id where om.org_id = #{orgId}
-  </select>
-  <select id="selectLeaderByOrgId" resultMap="BaseResultMap">
-    select u.* from base_user u
-    left join  base_org_leader ol
-    on ol.user_id = u.id where ol.org_id = #{orgId}
+  <select id="getUsersByOrgId" resultMap="BaseResultMap">
+    select AU.* from ADMIN_USER AU
+    left join ADMIN_ORGUSERMAP AOU on AU.ID = AOU.USER_ID
+    where AOU.ORG_ID = #{orgId}
   </select>
 </mapper>

@@ -48,22 +48,24 @@
         </table>-->
         <!--<table tableName="base_element" domainObjectName="Element">-->
         <!--</table>-->
-        <table tableName="element" domainObjectName="Element">
-        </table>
-        <table tableName="role" domainObjectName="Role">
-        </table>
-        <table tableName="gate_log" domainObjectName="GateLog">
-        </table>
+        <!--<table tableName="element" domainObjectName="Element">-->
+        <!--</table>-->
+        <!--<table tableName="role" domainObjectName="Role">-->
+        <!--</table>-->
+        <!--<table tableName="gate_log" domainObjectName="GateLog">-->
+        <!--</table>-->
         <table tableName="resourceRoleMap" domainObjectName="ResourceRoleMap">
         </table>
-        <table tableName="menu" domainObjectName="Menu">
-        </table>
-        <table tableName="org" domainObjectName="Org">
-        </table>
-        <table tableName="roleUserMap" domainObjectName="RoleUserMap">
-        </table>
-        <table tableName="user" domainObjectName="User">
-        </table>
+        <!--<table tableName="menu" domainObjectName="Menu">-->
+        <!--</table>-->
+        <!--<table tableName="org" domainObjectName="Org">-->
+        <!--</table>-->
+        <!--<table tableName="roleUserMap" domainObjectName="RoleUserMap">-->
+        <!--</table>-->
+        <!--<table tableName="user" domainObjectName="User">-->
+        <!--</table>-->
+        <!--<table tableName="orgUserMap" domainObjectName="OrgUserMap">-->
+        <!--</table>-->
     </context>
 </generatorConfiguration>
 

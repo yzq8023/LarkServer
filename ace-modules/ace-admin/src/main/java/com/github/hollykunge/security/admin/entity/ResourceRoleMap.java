@@ -19,4 +19,7 @@ public class ResourceRoleMap extends BaseEntity {
     @Column(name = "ROLE_ID")
     private String roleId;
 
+    @Column(name = "DEFAULT_CHECKED")
+    private Integer defaultChecked;
+
 }
