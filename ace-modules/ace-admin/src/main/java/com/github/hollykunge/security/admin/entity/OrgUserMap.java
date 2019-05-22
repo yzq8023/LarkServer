@@ -8,11 +8,12 @@ import javax.persistence.Id;
 import java.util.Date;
 
 @Data
-public class RoleUserMap extends BaseEntity {
+public class OrgUserMap extends BaseEntity {
 
-    @Column(name = "ROLE_ID")
-    private String roleId;
+    @Column(name = "ORG_ID")
+    private String orgId;
 
     @Column(name = "USER_ID")
     private String userId;
+
 }
