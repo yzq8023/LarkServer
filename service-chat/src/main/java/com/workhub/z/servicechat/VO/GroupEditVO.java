@@ -12,7 +12,7 @@ public class GroupEditVO {
     private String timestamp;
     private String reviser;
     private String type;
-    private List<UserInfo> userInfos;
+    private List<UserInfoVO> userInfos;
     public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
@@ -41,11 +41,11 @@ public class GroupEditVO {
         return type;
     }
 
-    public void setUserList(List<UserInfo> userInfos) {
-        this.userInfos = userInfos;
-    }
-    public List<UserInfo> getUserList() {
+    public List<UserInfoVO> getUserInfos() {
         return userInfos;
     }
 
+    public void setUserInfos(List<UserInfoVO> userInfos) {
+        this.userInfos = userInfos;
+    }
 }

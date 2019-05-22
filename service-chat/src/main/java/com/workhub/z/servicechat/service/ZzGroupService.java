@@ -1,5 +1,8 @@
 package com.workhub.z.servicechat.service;
 
+import com.github.pagehelper.PageInfo;
+import com.workhub.z.servicechat.VO.GroupInfoVO;
+import com.workhub.z.servicechat.VO.GroupUserListVo;
 import com.workhub.z.servicechat.entity.ZzGroup;
 import java.util.List;
 
@@ -52,4 +55,7 @@ public interface ZzGroupService {
      */
     boolean deleteById(String groupId);
 
+    PageInfo<GroupUserListVo> groupUserList(String id, int page, int size) throws Exception;
+
+    Long groupUserListTotal(String id) throws Exception;
 }

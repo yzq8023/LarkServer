@@ -13,7 +13,13 @@ public class ResourceRoleMap extends BaseEntity {
     @Column(name = "RESOURCE_ID")
     private String resourceId;
 
+    @Column(name = "RESOURCE_TYPE")
+    private String resourceType;
+
     @Column(name = "ROLE_ID")
     private String roleId;
+
+    @Column(name = "DEFAULT_CHECKED")
+    private Integer defaultChecked;
 
 }

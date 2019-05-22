@@ -56,7 +56,7 @@
          ON ZG.GROUP_ID = ZGF.GROUP_ID
        LEFT JOIN SYS_USER SU
          ON ZGF.CREATOR = SU.USERID
-      WHERE ZG.GROUP_ID = '0'
+      WHERE ZG.GROUP_ID = #{id}
       ORDER BY ZGF.CREATE_TIME DESC
     </select>
 

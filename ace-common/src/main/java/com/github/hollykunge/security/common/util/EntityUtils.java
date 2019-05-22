@@ -41,18 +41,20 @@ public class EntityUtils {
 		String hostIp = "";
 		String name = "";
 		String id = "";
+		String pkID = "";
 		if(request!=null) {
 			hostIp = String.valueOf(request.getHeader("userHost"));
 			name = String.valueOf(request.getHeader("userName"));
 			id = String.valueOf(request.getHeader("userId"));
 		}
+		pkID = UUIDUtils.generateShortUuid();
 		// 默认属性
-		String[] fields = {"crtName","crtUser","crtHost","crtTime"};
+		String[] fields = {"id","crtName","crtUser","crtHost","crtTime"};
 		Field field = ReflectionUtils.getAccessibleField(entity, "crtTime");
 		// 默认值
 		Object [] value = null;
 		if(field!=null&&field.getType().equals(Date.class)){
-			value = new Object []{name,id,hostIp,new Date()};
+			value = new Object []{pkID,name,id,hostIp,new Date()};
 		}
 		// 填充默认属性值
 		setDefaultValues(entity, fields, value);

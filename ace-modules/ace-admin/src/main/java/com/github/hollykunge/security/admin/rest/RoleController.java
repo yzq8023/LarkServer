@@ -32,42 +32,29 @@ import tk.mybatis.mapper.entity.Example;
  */
 @Controller
 @RequestMapping("role")
-@Api("群组模块")
+@Api("角色模块")
 public class RoleController extends BaseController<RoleBiz, Role> {
-    @Autowired
-    private ResourceRoleMapBiz resourceRoleMapBiz;
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-    public List<Role> list(String name,String groupType) {
-        if(StringUtils.isBlank(name)&&StringUtils.isBlank(groupType)) {
-            return new ArrayList<Role>();
-        }
-        Example example = new Example(Role.class);
-        if (StringUtils.isNotBlank(name)) {
-            example.createCriteria().andLike("name", "%" + name + "%");
-        }
-        if (StringUtils.isNotBlank(groupType)) {
-            example.createCriteria().andEqualTo("groupType", groupType);
-        }
-
-        return baseBiz.selectByExample(example);
-    }
-
+    /**
+     * 批量修改角色用户
+     * @param id 角色id
+     * @param users 用户ids
+     * @return
+     */
     @RequestMapping(value = "/{id}/user", method = RequestMethod.PUT)
     @ResponseBody
-    public ObjectRestResponse modifiyUsers(@PathVariable int id,String members,String leaders){
-        baseBiz.modifyRoleUsers(id, members, leaders);
+    public ObjectRestResponse modifyUsers(@PathVariable int id,String users){
+        baseBiz.modifyRoleUsers(id, users);
         return new ObjectRestResponse().rel(true);
     }
 
-    @RequestMapping(value = "/{id}/user", method = RequestMethod.GET)
-    @ResponseBody
-    public ObjectRestResponse<GroupUsers> getUsers(@PathVariable int id){
-        return new ObjectRestResponse<GroupUsers>().rel(true).data(baseBiz.getGroupUsers(id));
-    }
-
-    @RequestMapping(value = "/{id}/authority/menu", method = RequestMethod.POST)
+    /**
+     * 批量修改角色菜单
+     * @param id
+     * @param menuTrees
+     * @return
+     */
+    @RequestMapping(value = "/{id}/menu", method = RequestMethod.POST)
     @ResponseBody
     public ObjectRestResponse modifyMenuAuthority(@PathVariable  int id, String menuTrees){
         String [] menus = menuTrees.split(",");
@@ -75,12 +62,24 @@ public class RoleController extends BaseController<RoleBiz, Role> {
         return new ObjectRestResponse().rel(true);
     }
 
+    /**
+     * 获取菜单和关联功能
+     * @param id 角色id
+     * @return
+     */
     @RequestMapping(value = "/{id}/authority/menu", method = RequestMethod.GET)
     @ResponseBody
     public ObjectRestResponse<List<AuthorityMenuTree>> getMenuAuthority(@PathVariable  int id){
         return new ObjectRestResponse().data(baseBiz.getAuthorityMenu(id)).rel(true);
     }
 
+    /**
+     * 增加角色功能
+     * @param id 角色id
+     * @param menuId 菜单id
+     * @param elementId 功能id
+     * @return
+     */
     @RequestMapping(value = "/{id}/authority/element/add", method = RequestMethod.POST)
     @ResponseBody
     public ObjectRestResponse addElementAuthority(@PathVariable  int id,int menuId, int elementId){
@@ -117,7 +116,6 @@ public class RoleController extends BaseController<RoleBiz, Role> {
         }
         return  getTree(baseBiz.selectByExample(example), AdminCommonConstant.ROOT);
     }
-
 
     private List<GroupTree> getTree(List<Role> groups,int root) {
         List<GroupTree> trees = new ArrayList<GroupTree>();

@@ -108,8 +108,7 @@ public class fileManage {
         }
         file.transferTo(new File(PATH));
     }
-    // TODO: 2019/5/14 文件下载
-    // TODO: 2019/5/14 文件删除（本地磁盘）
+
     /**
      * 删除文件(不能有子目录)
      * @param url

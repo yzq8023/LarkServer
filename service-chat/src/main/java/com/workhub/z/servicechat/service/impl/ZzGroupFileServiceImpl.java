@@ -3,7 +3,7 @@ package com.workhub.z.servicechat.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.workhub.z.servicechat.VO.GroupInfo;
+import com.workhub.z.servicechat.VO.GroupInfoVO;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
 import com.workhub.z.servicechat.dao.ZzGroupFileDao;
 import com.workhub.z.servicechat.service.ZzGroupFileService;
@@ -95,14 +95,13 @@ public class ZzGroupFileServiceImpl implements ZzGroupFileService {
      * @throws Exception
      */
     @Override
-    public PageInfo<GroupInfo> groupFileList(String id,int page,int size) throws Exception {
+    public PageInfo<GroupInfoVO> groupFileList(String id, int page, int size) throws Exception {
         if (StringUtil.isEmpty(id)) throw new NullPointerException("id is null");
         Page<Object> pageMassage = PageHelper.startPage(page, size);
         pageMassage.setTotal(this.zzGroupFileDao.groupFileListTotal(id));
         int startRow = pageMassage.getStartRow();
         int endRow = pageMassage.getEndRow();
-        System.out.println(id+"------"+startRow+"------"+endRow);
-        PageInfo<GroupInfo> pageInfoGroupInfo = new PageInfo<GroupInfo>();
+        PageInfo<GroupInfoVO> pageInfoGroupInfo = new PageInfo<GroupInfoVO>();
         System.out.println(this.zzGroupFileDao.groupFileList(id,startRow,endRow));
         pageInfoGroupInfo.setList(this.zzGroupFileDao.groupFileList(id,startRow,endRow));
         pageInfoGroupInfo.setTotal(pageMassage.getTotal());

@@ -9,6 +9,89 @@
         <result property="createtime" column="CREATETIME" jdbcType="TIMESTAMP"/>
     </resultMap>
 
+    <resultMap id="GroupListVo" type="com.workhub.z.servicechat.VO.GroupListVo">
+        <result property="GROUP_ID" column="groupId" jdbcType="VARCHAR"></result>
+        <result property="GROUP_NAME" column="groupName" jdbcType="VARCHAR"></result>
+        <result property="CREATE_TIME" column="createTime" jdbcType="TIMESTAMP"></result>
+        <result property="CREATOR" column="creator" jdbcType="VARCHAR"></result>
+        <result property="LEVELS" column="levels" jdbcType="VARCHAR"></result>
+        <result property="GROUP_IMG" column="groupImg" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <select id="groupList" resultMap="GroupListVo">
+        SELECT *
+        FROM (SELECT VO.*, ROWNUM AS RN
+        FROM （
+        SELECT ZG.GROUP_ID    AS GROUP_ID,
+        ZG.GROUP_NAME  AS GROUP_NAME,
+        ZG.CREATE_TIME AS CREATE_TIME,
+        ZG.CREATOR     AS CREATOR,
+        ZG.LEVELS      AS LEVELS,
+        ZG.GROUP_IMG   AS GROUP_IMG
+        FROM ZZ_USER_GROUP ZUG
+        LEFT JOIN ZZ_GROUP ZG
+        ON ZG.GROUP_ID = ZUG.GROUP_ID
+        WHERE ZG.ISCLOSE = '0'
+        AND ZG.ISDELETE = '0'
+        AND ZUG.USER_ID = #{id}
+        ) VO
+        WHERE ROWNUM &lt;= #{end})
+        WHERE RN > #{start}
+    </select>
+
+    <select id="groupListTotal" resultType="java.lang.Long">
+         select count(*)
+      from zz_user_group zug
+      left join zz_group zg
+        on zg.group_id = zug.group_id
+     where zg.isclose = '0'
+       and zg.isdelete = '0'
+       and zug.user_id =  #{ID}
+    </select>
+
+    <resultMap id="UserNewMsgVo" type="com.workhub.z.servicechat.VO.UserNewMsgVo">
+        <result property="MSG_ID" column="msgId" jdbcType="VARCHAR"></result>
+        <result property="TABLE_TYPE" column="tableType" jdbcType="VARCHAR"></result>
+        <result property="MSG_SENDER" column="msgSener" jdbcType="VARCHAR"></result>
+        <result property="SEND_TIME" column="sendTime" jdbcType="TIMESTAMP"></result>
+        <result property="MSG" column="msg" jdbcType="VARCHAR"></result>
+        <result property="MSG_TYPE" column="msgType" jdbcType="VARCHAR"></result>
+        <result property="LEVELS" column="levels" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <select id="getUserNewMsgList" resultMap="UserNewMsgVo">
+        SELECT *
+          FROM (SELECT PHPM.MSG_ID AS MSG_ID,
+                       'PRIVATE' AS TABLE_TYPE,
+                       PHPM.MSG_SENDER AS MSG_SENDER,
+                       PHPM.SEND_TIME AS SEND_TIME,
+                       PHPM.MSG AS MSG,
+                       PHPM.MSG_TYPE AS MSG_TYPE,
+                       PHPM.LEVELS AS LEVELS
+                  FROM ZZ_PRIVATE_MSG PHPM
+                 WHERE PHPM.MSG_RECEIVER = #{id}
+                   AND ROWID IN (SELECT MAX(ROWID)
+                                   FROM ZZ_PRIVATE_MSG SP
+                                  GROUP BY SP.MSG_SENDER)
+                UNION ALL
+                SELECT PHGM.MSG_ID AS MSG_ID,
+                       'GROUP' AS TABLE_TYPE,
+                       PHGM.MSG_SENDER AS MSG_SENDER,
+                       PHGM.SEND_TIME AS SND_TIME,
+                       PHGM.MSG AS MSG,
+                       PHGM.MSG_TYPE AS MSG_TYPE,
+                       PHGM.LEVELS AS LEVELS
+                  FROM ZZ_GROUP_MSG PHGM
+                 WHERE PHGM.MSG_RECEIVER = #{id}
+                   AND ROWID IN
+                       (SELECT MAX(ROWID) FROM ZZ_GROUP_MSG SG GROUP BY SG.MSG_SENDER)) VO
+         ORDER BY VO.SEND_TIME DESC
+    </select>
+
+    <delete id="deleteByGroupIdAndUserId">
+        delete from ZZ_USER_GROUP where GROUP_ID=#{groupId} AND USER_ID = #{userId}
+    </delete>
+
     <!--查询单个-->
     <select id="queryById" resultMap="ZzUserGroupMap">
         select

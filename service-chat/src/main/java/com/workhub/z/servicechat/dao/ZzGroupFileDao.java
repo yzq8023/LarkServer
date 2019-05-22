@@ -1,6 +1,6 @@
 package com.workhub.z.servicechat.dao;
 
-import com.workhub.z.servicechat.VO.GroupInfo;
+import com.workhub.z.servicechat.VO.GroupInfoVO;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
@@ -63,7 +63,7 @@ public interface ZzGroupFileDao {
      */
     int deleteById(String fileId);
 
-    List<GroupInfo> groupFileList(@Param("id") String id,@Param("start") Integer start,@Param("end") Integer end);
+    List<GroupInfoVO> groupFileList(@Param("id") String id, @Param("start") Integer start, @Param("end") Integer end);
 
     Long groupFileListTotal(@Param("id")String id);
 }

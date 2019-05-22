@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * @author holly
+ */
 @RestController
 @RequestMapping("jwt")
 public class AuthController {

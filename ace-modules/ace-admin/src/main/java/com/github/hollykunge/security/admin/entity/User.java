@@ -69,11 +69,11 @@ public class User extends BaseEntity {
     @Column(name = "REFB")
     private String refb;
 
+    @Column(name = "ORG_ID")
+    private String orgId;
+
     @Column(name = "ORG_NAME")
     private String orgName;
-
-    @Column(name = "USERNAME")
-    private String username;
 
     @Column(name = "NAME")
     private String name;
@@ -194,5 +194,6 @@ public class User extends BaseEntity {
 
     @Column(name = "MOBILE")
     private String mobile;
+
 
 }
