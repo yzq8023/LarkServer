@@ -12,6 +12,8 @@ import com.github.hollykunge.security.admin.mapper.ResourceRoleMapMapper;
 
 import com.github.hollykunge.security.admin.vo.AuthorityMenuTree;
 
+import com.github.hollykunge.security.admin.vo.UserRole;
+import com.github.hollykunge.security.api.vo.authority.PermissionInfo;
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * ${DESCRIPTION}
@@ -190,4 +193,34 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
         }
         return ids;
     }
+
+    /**
+     * 获取所有的角色
+     * @return
+     */
+    public List<UserRole> getAllSystemRole(){
+        List<UserRole> result = new ArrayList<UserRole>();
+        List<Role> allSystemRole = mapper.getAllSystemRole();
+        List<Role> roles = Collections.synchronizedList(allSystemRole);
+        allSystemRole.parallelStream().forEach(role -> {
+            String roleId = role.getId();
+            List<Menu> systemRoleMenu = mapper.getSystemRoleMenu(roleId);
+            Collections.synchronizedList(systemRoleMenu);
+        });
+//        for (Role info : allSystemRole) {
+//            boolean anyMatch = allSystemRole.parallelStream().anyMatch(new Predicate<Role>() {
+//                @Override
+//                public boolean test(Role role) {
+//                    return role.getCode().equals(info.getCode());
+//                }
+//            });
+//            if (anyMatch) {
+//                current = info;
+//                break;
+//            }
+//        }
+
+        return null;
+    }
+
 }
