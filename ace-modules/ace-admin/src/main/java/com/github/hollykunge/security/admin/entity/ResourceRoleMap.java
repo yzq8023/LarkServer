@@ -13,7 +13,10 @@ public class ResourceRoleMap extends BaseEntity {
     @Column(name = "RESOURCE_ID")
     private String resourceId;
 
+    @Column(name = "RESOURCE_TYPE")
+    private String resourceType;
+
     @Column(name = "ROLE_ID")
-    private int roleId;
+    private String roleId;
 
 }
