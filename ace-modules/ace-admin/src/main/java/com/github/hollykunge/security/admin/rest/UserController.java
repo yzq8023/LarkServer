@@ -21,8 +21,10 @@ import java.util.List;
 @RestController
 @RequestMapping("user")
 public class UserController extends BaseController<UserBiz,User> {
+
     @Autowired
     private PermissionService permissionService;
+
     @RequestMapping(value = "/front/info", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> getUserInfo(String token) throws Exception {

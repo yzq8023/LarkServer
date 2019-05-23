@@ -12,8 +12,11 @@ public class Menu {
     @Column(name = "CODE")
     private String code;
 
-    @Column(name = "TITLE")
-    private String title;
+    /**
+     * title->permissionName
+     */
+    @Column(name = "PERMISSION_NAME")
+    private String permissionName;
 
     @Column(name = "PARENT_ID")
     private String parentId;

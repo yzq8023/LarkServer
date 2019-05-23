@@ -25,7 +25,7 @@ public class EntityUtils {
 	 * @param entity 实体bean 
 	 * @author dk
 	 */
-	public static <T> void setCreatAndUpdatInfo(T entity) {
+	public static <T> void setCreatAndUpdateInfo(T entity) {
 		setCreateInfo(entity);
 		setUpdatedInfo(entity);
 	}
