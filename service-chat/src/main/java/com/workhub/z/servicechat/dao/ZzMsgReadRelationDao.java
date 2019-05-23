@@ -1,5 +1,6 @@
 package com.workhub.z.servicechat.dao;
 
+import com.workhub.z.servicechat.VO.NoReadVo;
 import com.workhub.z.servicechat.entity.ZzMsgReadRelation;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
@@ -62,4 +63,9 @@ public interface ZzMsgReadRelationDao {
      */
     int deleteById(String id);
 
+    boolean deleteByConsumerAndSender(@Param("sender") String sender, @Param("consumer") String consumer,@Param("sendType")String sendType);
+
+    Long queryNoReadCount(@Param("consumer")String consumer);
+
+    List<NoReadVo> queryNoReadCountList(@Param("consumer")String consumer);
 }

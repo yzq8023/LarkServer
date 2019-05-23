@@ -9,6 +9,20 @@
         <result property="sendType" column="SEND_TYPE" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <resultMap id="NoReadVo" type="com.workhub.z.servicechat.VO.NoReadVo">
+        <result property="sender" column="SENDER" jdbcType="VARCHAR"></result>
+        <result property="sendType" column="SEND_TYPE" jdbcType="VARCHAR"></result>
+        <result property="consumer" column="CONSUMER" jdbcType="VARCHAR"></result>
+        <result property="msgCount" column="MSG_COUNT" jdbcType="INTEGER"></result>
+    </resultMap>
+
+    <select id="queryNoReadCount" resultType="java.lang.Long">
+      SELECT COUNT(*) FROM ZZ_MSG_READ_RELATION WHERE CONSUMER=#{consumer} GROUP BY CONSUMER
+    </select>
+    <select id="queryNoReadCountList" resultMap="NoReadVo">
+      SELECT SENDER,SEND_TYPE,CONSUMER,COUNT(*) AS MSG_COUNT FROM ZZ_MSG_READ_RELATION WHERE CONSUMER=#{consumer} GROUP BY CONSUMER,SEND_TYPE,SENDER
+    </select>
+
     <!--查询单个-->
     <select id="queryById" resultMap="ZzMsgReadRelationMap">
         select

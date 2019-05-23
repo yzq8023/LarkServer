@@ -1,5 +1,6 @@
 package com.workhub.z.servicechat.service;
 
+import com.workhub.z.servicechat.VO.NoReadVo;
 import com.workhub.z.servicechat.entity.ZzMsgReadRelation;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public interface ZzMsgReadRelationService {
      * @param zzMsgReadRelation 实例对象
      * @return 实例对象
      */
-    ZzMsgReadRelation insert(ZzMsgReadRelation zzMsgReadRelation);
+    Integer insert(ZzMsgReadRelation zzMsgReadRelation);
 
     /**
      * 修改数据
@@ -52,4 +53,9 @@ public interface ZzMsgReadRelationService {
      */
     boolean deleteById(String id);
 
+    boolean deleteByConsumerAndSender(String sender, String consumer,String sendType);
+
+    Long queryNoReadCount(String consumer);
+
+    List<NoReadVo> queryNoReadCountList(String consumer);
 }
