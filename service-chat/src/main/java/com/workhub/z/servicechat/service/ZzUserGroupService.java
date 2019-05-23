@@ -1,6 +1,12 @@
 package com.workhub.z.servicechat.service;
 
+import com.github.pagehelper.PageInfo;
+import com.workhub.z.servicechat.VO.GroupListVo;
+import com.workhub.z.servicechat.VO.GroupUserListVo;
+import com.workhub.z.servicechat.VO.UserNewMsgVo;
 import com.workhub.z.servicechat.entity.ZzUserGroup;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 /**
@@ -52,4 +58,9 @@ public interface ZzUserGroupService {
      */
     boolean deleteById(String id);
 
+    PageInfo<GroupListVo> groupUserList(String id, int page, int size) throws Exception;
+
+    Long groupUserListTotal(String id) throws Exception;
+
+    List<UserNewMsgVo> getUserNewMsgList(@Param("id")String id);
 }

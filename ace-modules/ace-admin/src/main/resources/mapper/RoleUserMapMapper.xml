@@ -6,8 +6,8 @@
       WARNING - @mbg.generated
     -->
     <id column="ID" property="id" jdbcType="VARCHAR" />
-    <result column="ROLEID" property="roleid" jdbcType="VARCHAR" />
-    <result column="USERID" property="userid" jdbcType="VARCHAR" />
+    <result column="ROLE_ID" property="roleId" jdbcType="VARCHAR" />
+    <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
     <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
     <result column="CRT_USER" property="crtUser" jdbcType="VARCHAR" />
     <result column="CRT_NAME" property="crtName" jdbcType="VARCHAR" />

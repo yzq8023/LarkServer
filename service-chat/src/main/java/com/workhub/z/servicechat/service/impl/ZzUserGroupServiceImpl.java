@@ -1,8 +1,15 @@
 package com.workhub.z.servicechat.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.workhub.z.servicechat.VO.GroupListVo;
+import com.workhub.z.servicechat.VO.GroupUserListVo;
+import com.workhub.z.servicechat.VO.UserNewMsgVo;
 import com.workhub.z.servicechat.entity.ZzUserGroup;
 import com.workhub.z.servicechat.dao.ZzUserGroupDao;
 import com.workhub.z.servicechat.service.ZzUserGroupService;
+import jodd.util.StringUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,5 +86,33 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
     @Transactional
     public boolean deleteById(String id) {
         return this.zzUserGroupDao.deleteById(id) > 0;
+    }
+
+    @Override
+    public PageInfo<GroupListVo> groupUserList(String id, int page, int size) throws Exception {
+        if (StringUtil.isEmpty(id)) throw new NullPointerException("id is null");
+        Page<Object> pageMassage = PageHelper.startPage(page, size);
+        pageMassage.setTotal(this.zzUserGroupDao.groupListTotal(id));
+        int startRow = pageMassage.getStartRow();
+        int endRow = pageMassage.getEndRow();
+        PageInfo<GroupListVo> pageInfoGroupInfo = new PageInfo<GroupListVo>();
+        pageInfoGroupInfo.setList(this.zzUserGroupDao.groupList(id,startRow,endRow));
+        pageInfoGroupInfo.setTotal(pageMassage.getTotal());
+        pageInfoGroupInfo.setStartRow(startRow);
+        pageInfoGroupInfo.setEndRow(endRow);
+        pageInfoGroupInfo.setPages(pageMassage.getPages());
+        pageInfoGroupInfo.setPageNum(page);
+        pageInfoGroupInfo.setPageSize(size);
+        return pageInfoGroupInfo;
+    }
+
+    @Override
+    public Long groupUserListTotal(String id) throws Exception {
+        return this.zzUserGroupDao.groupListTotal(id);
+    }
+
+    @Override
+    public List<UserNewMsgVo> getUserNewMsgList(String id) {
+        return this.zzUserGroupDao.getUserNewMsgList(id);
     }
 }

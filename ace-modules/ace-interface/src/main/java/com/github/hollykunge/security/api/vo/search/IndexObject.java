@@ -119,7 +119,7 @@ public class IndexObject implements Comparable<IndexObject>,Serializable{
 		this.id = _id;
 		this.keywords = _keywords;
 		this.score = _score;
-		this.descripton=_descripton;
+		this.description=_descripton;
 		this.postDate=_postDate;
 	}
 	@Override

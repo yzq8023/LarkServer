@@ -8,16 +8,14 @@ import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
 import com.github.hollykunge.security.admin.entity.Role;
 import com.github.hollykunge.security.admin.vo.AuthorityMenuTree;
 import com.github.hollykunge.security.admin.vo.GroupUsers;
+import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.github.hollykunge.security.admin.biz.RoleBiz;
 import com.github.hollykunge.security.admin.vo.GroupTree;
@@ -129,5 +127,9 @@ public class RoleController extends BaseController<RoleBiz, Role> {
             trees.add(node);
         }
         return TreeUtil.bulid(trees,root) ;
+    }
+    @GetMapping("/roleList")
+    public ListRestResponse roleList(){
+        return null;
     }
 }

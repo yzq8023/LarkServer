@@ -101,7 +101,6 @@ public class ZzGroupFileServiceImpl implements ZzGroupFileService {
         pageMassage.setTotal(this.zzGroupFileDao.groupFileListTotal(id));
         int startRow = pageMassage.getStartRow();
         int endRow = pageMassage.getEndRow();
-        System.out.println(id+"------"+startRow+"------"+endRow);
         PageInfo<GroupInfoVO> pageInfoGroupInfo = new PageInfo<GroupInfoVO>();
         System.out.println(this.zzGroupFileDao.groupFileList(id,startRow,endRow));
         pageInfoGroupInfo.setList(this.zzGroupFileDao.groupFileList(id,startRow,endRow));

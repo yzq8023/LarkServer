@@ -22,6 +22,8 @@ public class UserInfo implements Serializable{
     private boolean canFork;
     private boolean canCreate;
 
+    private Integer demo;
+
     public Date getUpdTime() {
         return updTime;
     }
@@ -92,5 +94,13 @@ public class UserInfo implements Serializable{
 
     public void setCanCreate(boolean canCreate) {
         this.canCreate = canCreate;
+    }
+
+    public Integer getDemo() {
+        return demo;
+    }
+
+    public void setDemo(Integer demo) {
+        this.demo = demo;
     }
 }
