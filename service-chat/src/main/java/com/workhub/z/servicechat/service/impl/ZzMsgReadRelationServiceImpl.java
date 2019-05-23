@@ -5,6 +5,7 @@ import com.workhub.z.servicechat.entity.ZzMsgReadRelation;
 import com.workhub.z.servicechat.dao.ZzMsgReadRelationDao;
 import com.workhub.z.servicechat.service.ZzMsgReadRelationService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -50,6 +51,7 @@ public class ZzMsgReadRelationServiceImpl implements ZzMsgReadRelationService {
      * @return 实例对象
      */
     @Override
+    @Transactional
     public Integer insert(ZzMsgReadRelation zzMsgReadRelation) {
         int insert = this.zzMsgReadRelationDao.insert(zzMsgReadRelation);
         return insert;
@@ -62,6 +64,7 @@ public class ZzMsgReadRelationServiceImpl implements ZzMsgReadRelationService {
      * @return 实例对象
      */
     @Override
+    @Transactional
     public ZzMsgReadRelation update(ZzMsgReadRelation zzMsgReadRelation) {
         this.zzMsgReadRelationDao.update(zzMsgReadRelation);
         return this.queryById(zzMsgReadRelation.getId());
@@ -74,11 +77,13 @@ public class ZzMsgReadRelationServiceImpl implements ZzMsgReadRelationService {
      * @return 是否成功
      */
     @Override
+    @Transactional
     public boolean deleteById(String id) {
         return this.zzMsgReadRelationDao.deleteById(id) > 0;
     }
 
     @Override
+    @Transactional
     public boolean deleteByConsumerAndSender(String sender, String consumer,String sendType) {
         return this.zzMsgReadRelationDao.deleteByConsumerAndSender(sender,consumer,sendType);
     }

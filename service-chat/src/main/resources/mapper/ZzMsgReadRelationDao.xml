@@ -23,6 +23,10 @@
       SELECT SENDER,SEND_TYPE,CONSUMER,COUNT(*) AS MSG_COUNT FROM ZZ_MSG_READ_RELATION WHERE CONSUMER=#{consumer} GROUP BY CONSUMER,SEND_TYPE,SENDER
     </select>
 
+    <delete id="deleteByConsumerAndSender">
+        delete from WORKHUB_IWORK.ZZ_MSG_READ_RELATION where SENDER = #{sender} AND CONSUMER = #{consumer}
+    </delete>
+
     <!--查询单个-->
     <select id="queryById" resultMap="ZzMsgReadRelationMap">
         select
@@ -32,12 +36,12 @@
     </select>
 
     <!--查询指定行数据-->
-    <select id="queryAllByLimit" resultMap="ZzMsgReadRelationMap">
+    <!--<select id="queryAllByLimit" resultMap="ZzMsgReadRelationMap">
         select
           ID, SENDER, CONSUMER, SEND_TYPE
         from WORKHUB_IWORK.ZZ_MSG_READ_RELATION
         limit #{offset}, #{limit}
-    </select>
+    </select>-->
 
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="ZzMsgReadRelationMap">
