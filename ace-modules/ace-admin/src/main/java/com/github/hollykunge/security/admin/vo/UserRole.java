@@ -1,5 +1,7 @@
 package com.github.hollykunge.security.admin.vo;
 
+import lombok.Data;
+
 import java.util.List;
 
 /**
@@ -8,6 +10,7 @@ import java.util.List;
  * @author: holly
  * @since: 2019/4/29
  */
+@Data
 public class UserRole {
     /**
      * 角色id
@@ -18,89 +21,30 @@ public class UserRole {
      */
     private String name;
     /**
+     * describe->description
      * 角色描述
      */
-    private String describe;
+    private String description;
     /**
+     *
      * 角色状态
      */
     private Integer status;
     /**
+     * creatorId->crtUser
      * 创建人id
      */
-    private String creatorId;
+    private String crtUser;
     /**
+     * createTime->crtTime
      * 创建时间
      */
-    private Long createTime;
+    private Long crtTime;
     /**
+     *
      * 删除状态0未删除
      */
     private Integer deleted;
 
     private List<FrontPermission> frontPermissionList;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescribe() {
-        return describe;
-    }
-
-    public void setDescribe(String describe) {
-        this.describe = describe;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public String getCreatorId() {
-        return creatorId;
-    }
-
-    public void setCreatorId(String creatorId) {
-        this.creatorId = creatorId;
-    }
-
-    public Long getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Long createTime) {
-        this.createTime = createTime;
-    }
-
-    public Integer getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Integer deleted) {
-        this.deleted = deleted;
-    }
-
-    public List<FrontPermission> getPermissionInfos() {
-        return frontPermissionList;
-    }
-
-    public void setPermissionInfos(List<FrontPermission> frontPermissionList) {
-        this.frontPermissionList = frontPermissionList;
-    }
 }

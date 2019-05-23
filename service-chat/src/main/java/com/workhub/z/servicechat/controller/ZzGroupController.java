@@ -7,10 +7,13 @@ import com.workhub.z.servicechat.VO.GroupUserListVo;
 import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.entity.ZzGroup;
 import com.workhub.z.servicechat.service.ZzGroupService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 群组表(ZzGroup)表控制层
@@ -93,4 +96,5 @@ public class ZzGroupController {
                 groupUserListVoPageInfo.getTotal(),
                 groupUserListVoPageInfo.getList());
     }
+
 }
