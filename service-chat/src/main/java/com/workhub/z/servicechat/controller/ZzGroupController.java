@@ -97,21 +97,4 @@ public class ZzGroupController {
                 groupUserListVoPageInfo.getList());
     }
 
-    @Autowired
-    private RedisService redisService;
-
-    @PostMapping("/test")
-    public boolean test(){
-        Map<String, Object> map = new HashMap<>();
-
-        UserReadInfo userReadInfo = new UserReadInfo();
-        userReadInfo.setProducer("huangboyang");
-        userReadInfo.setConsumer("007");
-
-        boolean flag = redisService.add(RedisFinalBean.USER_READ_INFO_TABLE, userReadInfo);
-
-        return flag;
-    }
-
-
 }

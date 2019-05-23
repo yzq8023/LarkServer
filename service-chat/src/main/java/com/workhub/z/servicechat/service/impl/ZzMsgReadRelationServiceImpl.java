@@ -1,5 +1,6 @@
 package com.workhub.z.servicechat.service.impl;
 
+import com.workhub.z.servicechat.VO.NoReadVo;
 import com.workhub.z.servicechat.entity.ZzMsgReadRelation;
 import com.workhub.z.servicechat.dao.ZzMsgReadRelationDao;
 import com.workhub.z.servicechat.service.ZzMsgReadRelationService;
@@ -49,9 +50,9 @@ public class ZzMsgReadRelationServiceImpl implements ZzMsgReadRelationService {
      * @return 实例对象
      */
     @Override
-    public ZzMsgReadRelation insert(ZzMsgReadRelation zzMsgReadRelation) {
-        this.zzMsgReadRelationDao.insert(zzMsgReadRelation);
-        return zzMsgReadRelation;
+    public Integer insert(ZzMsgReadRelation zzMsgReadRelation) {
+        int insert = this.zzMsgReadRelationDao.insert(zzMsgReadRelation);
+        return insert;
     }
 
     /**
@@ -75,5 +76,20 @@ public class ZzMsgReadRelationServiceImpl implements ZzMsgReadRelationService {
     @Override
     public boolean deleteById(String id) {
         return this.zzMsgReadRelationDao.deleteById(id) > 0;
+    }
+
+    @Override
+    public boolean deleteByConsumerAndSender(String sender, String consumer,String sendType) {
+        return this.zzMsgReadRelationDao.deleteByConsumerAndSender(sender,consumer,sendType);
+    }
+
+    @Override
+    public Long queryNoReadCount(String consumer) {
+        return this.zzMsgReadRelationDao.queryNoReadCount(consumer);
+    }
+
+    @Override
+    public List<NoReadVo> queryNoReadCountList(String consumer) {
+        return this.zzMsgReadRelationDao.queryNoReadCountList(consumer);
     }
 }
