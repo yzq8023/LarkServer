@@ -11,9 +11,9 @@ import java.util.List;
 public class FrontPermission {
     //角色id
     private String roleId;
-    //菜单id
+    //菜单权限id
     private String permissionId;
-    //菜单名称
+    //菜单权限名称
     private String permissionName;
     //功能集合
     private String actions;

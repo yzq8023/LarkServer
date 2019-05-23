@@ -28,9 +28,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- *
- * @author 协同设计小组
- * @date 2017/9/12
+ * Created by 协同设计小组 on 2017/9/12.
  */
 @Service
 public class PermissionService {
@@ -45,11 +43,11 @@ public class PermissionService {
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
 
-    public UserInfo getUserByUserId(String userId) {
+    public UserInfo getUserByUsername(String username) {
         UserInfo info = new UserInfo();
-        User user = userBiz.getUserByUserId(userId);
+        User user = userBiz.getUserByUsername(username);
         BeanUtils.copyProperties(user, info);
-        info.setId(user.getId());
+        info.setId(user.getId().toString());
         return info;
     }
 
@@ -58,7 +56,7 @@ public class PermissionService {
         User user = userBiz.getUserByUsername(username);
         if (encoder.matches(password, user.getPassword())) {
             BeanUtils.copyProperties(user, info);
-            info.setId(user.getId());
+            info.setId(user.getId().toString());
         }
         return info;
     }
@@ -133,21 +131,21 @@ public class PermissionService {
     }
 
     public FrontUser getUserInfo(String token) throws Exception {
-        String userId = userAuthUtil.getInfoFromToken(token).getId();
-        if (userId == null) {
+        String username = userAuthUtil.getInfoFromToken(token).getUniqueName();
+        if (username == null) {
             return null;
         }
-        UserInfo user = this.getUserByUserId(userId);
+        UserInfo user = this.getUserByUsername(username);
         FrontUser frontUser = new FrontUser();
         BeanUtils.copyProperties(user, frontUser);
 
-        UserRole userRole = this.getUserRoleByUserId(userId);
+        UserRole userRole = this.getUserRoleByUserId(username);
         frontUser.setUserRole(userRole);
 
         return frontUser;
     }
 
-    public List<MenuTree> getMenusByUserId(String token) throws Exception {
+    public List<MenuTree> getMenusByUsername(String token) throws Exception {
         String username = userAuthUtil.getInfoFromToken(token).getUniqueName();
         if (username == null) {
             return null;
@@ -157,11 +155,11 @@ public class PermissionService {
         return getMenuTree(menus,AdminCommonConstant.ROOT);
     }
 
-    public UserRole getUserRoleByUserId(String userId) {
-        Role role = getRoleByUserId(userId);
+    public UserRole getUserRoleByUserId(String username) {
+        Role role = getRoleByUserId(username);
         UserRole userRole = new UserRole();
         BeanUtils.copyProperties(role, userRole);
-        List<PermissionInfo> permissionInfoList = this.getPermissionByUsername(userId);
+        List<PermissionInfo> permissionInfoList = this.getPermissionByUsername(username);
         userRole.setPermissionInfos(permissionInfoList);
         return userRole;
     }

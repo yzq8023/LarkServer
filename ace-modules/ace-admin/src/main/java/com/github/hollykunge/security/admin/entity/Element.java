@@ -4,9 +4,6 @@ import com.github.hollykunge.security.common.entity.BaseEntity;
 
 import javax.persistence.Column;
 
-/**
- * @author lark
- */
 public class Element extends BaseEntity {
 
     @Column(name = "CODE")
@@ -30,17 +27,11 @@ public class Element extends BaseEntity {
     @Column(name = "PATH")
     private String path;
 
-    /**
-     * method->action
-     */
-    @Column(name = "ACTION")
-    private String action;
+    @Column(name = "METHOD")
+    private String method;
 
-    /**
-     * description->describe
-     */
-    @Column(name = "DESCRIBE")
-    private String describe;
+    @Column(name = "DESCRIPTION")
+    private String description;
 
     /**
      * @return CODE

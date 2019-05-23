@@ -4,9 +4,7 @@ package com.github.hollykunge.security.auth.bean;
 import com.github.hollykunge.security.auth.common.util.jwt.IJWTInfo;
 
 /**
- *
- * @author 协同设计小组
- * @date 2017/9/10
+ * Created by 协同设计小组 on 2017/9/10.
  */
 public class ClientInfo implements IJWTInfo {
     String clientId;
