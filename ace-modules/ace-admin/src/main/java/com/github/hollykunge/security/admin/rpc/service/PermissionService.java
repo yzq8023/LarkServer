@@ -71,8 +71,8 @@ public class PermissionService {
         List<PermissionInfo> result = new ArrayList<PermissionInfo>();
         PermissionInfo info = null;
         menu2permission(menus, result);
-        List<Element> elements = elementBiz.getAllElementPermissions();
-        element2permission(result, elements);
+//        List<Element> elements = elementBiz.getAllElementPermissions();
+//        element2permission(result, elements);
         return result;
     }
 
@@ -104,8 +104,8 @@ public class PermissionService {
         List<PermissionInfo> result = new ArrayList<PermissionInfo>();
         PermissionInfo info = null;
         menu2permission(menus, result);
-        List<Element> elements = elementBiz.getAuthorityElementByUserId(user.getId());
-        element2permission(result, elements);
+//        List<Element> elements = elementBiz.getAuthorityElementByUserId(user.getId() + "");
+//        element2permission(result, elements);
         return result;
     }
 
@@ -157,15 +157,16 @@ public class PermissionService {
         }
         User user = userBiz.getUserByUsername(username);
         List<Menu> menus = menuBiz.getUserAuthorityMenuByUserId(user.getId());
-        return getMenuTree(menus,AdminCommonConstant.ROOT);
+        return getMenuTree(menus,Integer.parseInt(AdminCommonConstant.ROOT));
     }
 
-    public UserRole getUserRoleByUserId(String userId) {
-        Role role = roleBiz.getRoleByUserId(userId);
+
+    public UserRole getUserRoleByUserId(String username) {
+//        Role role = getRoleByUserId(username);
         UserRole userRole = new UserRole();
-        BeanUtils.copyProperties(role, userRole);
-        List<PermissionInfo> permissionInfoList = this.getPermissionByUserId(userId);
-        userRole.setPermissionInfos(permissionInfoList);
+//        BeanUtils.copyProperties(role, userRole);
+        List<PermissionInfo> permissionInfoList = this.getPermissionByUsername(username);
+//        userRole.setPermissionInfos(permissionInfoList);
         return userRole;
     }
 }

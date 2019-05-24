@@ -31,11 +31,11 @@ public class ElementController extends BaseController<ElementBiz, Element> {
     @Autowired
     private UserBiz userBiz;
 
-    @RequestMapping(value = "/user/menu", method = RequestMethod.GET)
-    @ResponseBody
-    public ObjectRestResponse<Element> getAuthorityElement() {
-        String userId = userBiz.getUserByUsername(getCurrentUserName()).getId();
-        List<Element> elements = baseBiz.getAuthorityElementByUserId(userId);
-        return new ObjectRestResponse<List<Element>>().data(elements);
-    }
+//    @RequestMapping(value = "/user/menu", method = RequestMethod.GET)
+//    @ResponseBody
+//    public ObjectRestResponse<Element> getAuthorityElement() {
+//        String userId = userBiz.getUserByUsername(getCurrentUserName()).getId();
+//        List<Element> elements = baseBiz.getAuthorityElementByUserId(userId);
+//        return new ObjectRestResponse<List<Element>>().data(elements);
+//    }
 }

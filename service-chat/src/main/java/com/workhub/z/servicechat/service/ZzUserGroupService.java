@@ -1,6 +1,7 @@
 package com.workhub.z.servicechat.service;
 
 import com.github.pagehelper.PageInfo;
+import com.workhub.z.servicechat.VO.ContactVO;
 import com.workhub.z.servicechat.VO.GroupListVo;
 import com.workhub.z.servicechat.VO.GroupUserListVo;
 import com.workhub.z.servicechat.VO.UserNewMsgVo;
@@ -62,5 +63,7 @@ public interface ZzUserGroupService {
 
     Long groupUserListTotal(String id) throws Exception;
 
-    List<UserNewMsgVo> getUserNewMsgList(@Param("id")String id);
+    List<UserNewMsgVo> getUserNewMsgList(String id);
+
+    List<ContactVO> getContactVOList(String id);
 }

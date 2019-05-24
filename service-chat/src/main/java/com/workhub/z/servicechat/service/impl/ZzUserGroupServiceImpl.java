@@ -3,18 +3,23 @@ package com.workhub.z.servicechat.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.workhub.z.servicechat.VO.GroupListVo;
-import com.workhub.z.servicechat.VO.GroupUserListVo;
-import com.workhub.z.servicechat.VO.UserNewMsgVo;
+import com.workhub.z.servicechat.VO.*;
 import com.workhub.z.servicechat.entity.ZzUserGroup;
 import com.workhub.z.servicechat.dao.ZzUserGroupDao;
+import com.workhub.z.servicechat.feign.IUserService;
+import com.workhub.z.servicechat.service.ZzGroupService;
+import com.workhub.z.servicechat.service.ZzMsgReadRelationService;
 import com.workhub.z.servicechat.service.ZzUserGroupService;
 import jodd.util.StringUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 用户群组映射表(ZzUserGroup)表服务实现类
@@ -27,6 +32,14 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
     @Resource
     private ZzUserGroupDao zzUserGroupDao;
 
+    @Autowired
+    private ZzMsgReadRelationService zzMsgReadRelationService;
+
+    @Autowired
+    private ZzGroupService zzGroupService;
+
+    @Autowired
+    private IUserService iUserService;
     /**
      * 通过ID查询单条数据
      *
@@ -114,5 +127,33 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
     @Override
     public List<UserNewMsgVo> getUserNewMsgList(String id) {
         return this.zzUserGroupDao.getUserNewMsgList(id);
+    }
+
+    @Override
+    public List<ContactVO> getContactVOList(String id) {
+        List<UserNewMsgVo> userNewMsgList = this.getUserNewMsgList(id);
+        List<ContactVO> list = new ArrayList<ContactVO>();
+        List<NoReadVo> noReadVos = zzMsgReadRelationService.queryNoReadCountList(id);
+        if (noReadVos == null|| noReadVos.isEmpty()) return list;
+        noReadVos.stream().forEach(n ->{
+            ContactVO contactVO = new ContactVO();
+            contactVO.setId(n.getSender());
+
+            if ("GROUP".equals(n.getSendType())){
+                contactVO.setName(this.zzGroupService.queryById(n.getSender()).getGroupName());
+            }else{
+                contactVO.setName(this.iUserService.info(Integer.parseInt(n.getSender())).getName());
+            }
+            contactVO.setIsGroup("GROUP".equals(n.getSendType()));
+            contactVO.setUnreadNum(n.getMsgCount());
+            userNewMsgList.stream()
+                    .filter(msg -> msg.getTableType().equals(n.getSendType()) && msg.getMsgSener().equals(n.getSender()))
+                    .forEach(m ->{
+                        contactVO.setTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(m.getSendTime()));
+                        contactVO.setLastMessage(m.getMsg());
+                    });
+            list.add(contactVO);
+        });
+        return list;
     }
 }
