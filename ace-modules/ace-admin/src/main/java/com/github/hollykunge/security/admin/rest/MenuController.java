@@ -32,15 +32,15 @@ public class MenuController extends BaseController<MenuBiz, Menu> {
     @Autowired
     private UserBiz userBiz;
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-    public List<Menu> list(String title) {
-        Example example = new Example(Menu.class);
-        if (StringUtils.isNotBlank(title)) {
-            example.createCriteria().andLike("title", "%" + title + "%");
-        }
-        return baseBiz.selectByExample(example);
-    }
+//    @RequestMapping(value = "/list", method = RequestMethod.GET)
+//    @ResponseBody
+//    public List<Menu> list(String title) {
+//        Example example = new Example(Menu.class);
+//        if (StringUtils.isNotBlank(title)) {
+//            example.createCriteria().andLike("title", "%" + title + "%");
+//        }
+//        return baseBiz.selectByExample(example);
+//    }
 
     @RequestMapping(value = "/tree", method = RequestMethod.GET)
     @ResponseBody
