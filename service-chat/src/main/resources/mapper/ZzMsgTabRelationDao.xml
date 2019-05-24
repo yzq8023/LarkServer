@@ -21,7 +21,6 @@
         select
           ID, TAB_ID, FILE_ID
         from WORKHUB_IWORK.ZZ_MSG_TAB_RELATION
-        limit #{offset}, #{limit}
     </select>
 
     <!--通过实体作为筛选条件查询-->
@@ -44,13 +43,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into WORKHUB_IWORK.ZZ_MSG_TAB_RELATION(TAB_ID, FILE_ID)
+        insert into ZZ_MSG_TAB_RELATION(TAB_ID, FILE_ID)
         values (#{tabId}, #{fileId})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update WORKHUB_IWORK.ZZ_MSG_TAB_RELATION
+        update ZZ_MSG_TAB_RELATION
         <set>
             <if test="tabId != null and tabId != ''">
                 TAB_ID = #{tabId},
@@ -64,7 +63,10 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from WORKHUB_IWORK.ZZ_MSG_TAB_RELATION where ID = #{id}
+        delete from ZZ_MSG_TAB_RELATION where ID = #{id}
     </delete>
 
+    <delete id="deleteByTabId">
+        delete from ZZ_MSG_TAB_RELATION where TAB_ID = #{tabId}
+    </delete>
 </mapper>

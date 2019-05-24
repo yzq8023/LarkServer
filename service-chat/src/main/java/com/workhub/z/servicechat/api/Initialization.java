@@ -2,10 +2,14 @@ package com.workhub.z.servicechat.api;
 
 //import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.github.hollykunge.security.common.msg.ListRestResponse;
+import com.workhub.z.servicechat.VO.ContactVO;
 import com.workhub.z.servicechat.feign.IUserService;
+import com.workhub.z.servicechat.service.ZzUserGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
 *@Description: 系统用户初始化类
@@ -19,6 +23,8 @@ public class Initialization {
     @Autowired
     private IUserService iUserService;
 
+    @Autowired
+    private ZzUserGroupService zzUserGroupService;
     /**
     *@Description: 查询user所在群组
     *@Param: userid
@@ -48,25 +54,11 @@ public class Initialization {
     *@Author: 忠
     *@date: 2019/3/21
     */
-    @RequestMapping("/getContact")
-    public ListRestResponse queryContactById(){
+    @GetMapping("/getContact")
+    @ResponseBody
+    public ListRestResponse queryContactById(@RequestParam("id")String id){
         //
-        // TODO: 2019/5/15  消息实体类Contact
-//
-//        {
-//            "id": "@id",
-//                "name": "@cname",
-//                "time": "10:20",
-//                "lastMessage": "ganshenmene",
-//                "avatar": "/avatar2.jpg",
-//                "sender": "王白",
-//                "unreadNum": 19,
-//                "atMe": false,
-//                "isTop": false,
-//                "isMute": true,
-//                "isGroup": true
-//        }
-//        return new ListRestResponse("",11,);
-        return null;
+        List<ContactVO> list = this.zzUserGroupService.getContactVOList(id);
+        return new ListRestResponse("处理完成",list.size(),list);
     }
 }

@@ -49,9 +49,9 @@ public class ZzMsgTabInfoServiceImpl implements ZzMsgTabInfoService {
      * @return 实例对象
      */
     @Override
-    public ZzMsgTabInfo insert(ZzMsgTabInfo zzMsgTabInfo) {
-        this.zzMsgTabInfoDao.insert(zzMsgTabInfo);
-        return zzMsgTabInfo;
+    public Integer insert(ZzMsgTabInfo zzMsgTabInfo) {
+        int insert = this.zzMsgTabInfoDao.insert(zzMsgTabInfo);
+        return insert;
     }
 
     /**
