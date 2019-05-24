@@ -2,6 +2,7 @@ package com.github.hollykunge.security.admin.rpc.service;
 
 import com.github.hollykunge.security.admin.biz.ElementBiz;
 import com.github.hollykunge.security.admin.biz.MenuBiz;
+import com.github.hollykunge.security.admin.biz.RoleBiz;
 import com.github.hollykunge.security.admin.biz.UserBiz;
 import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
 import com.github.hollykunge.security.admin.entity.Element;
@@ -28,10 +29,14 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Created by 协同设计小组 on 2017/9/12.
+ *
+ * @author 协同设计小组
+ * @date 2017/9/12
  */
 @Service
 public class PermissionService {
+    @Autowired
+    private RoleBiz roleBiz;
     @Autowired
     private UserBiz userBiz;
     @Autowired
@@ -93,8 +98,8 @@ public class PermissionService {
         }
     }
 
-    public List<PermissionInfo> getPermissionByUsername(String username) {
-        User user = userBiz.getUserByUsername(username);
+    public List<PermissionInfo> getPermissionByUserId(String userId) {
+        User user = userBiz.getUserByUsername(userId);
         List<Menu> menus = menuBiz.getUserAuthorityMenuByUserId(user.getId());
         List<PermissionInfo> result = new ArrayList<PermissionInfo>();
         PermissionInfo info = null;
@@ -154,6 +159,7 @@ public class PermissionService {
         List<Menu> menus = menuBiz.getUserAuthorityMenuByUserId(user.getId());
         return getMenuTree(menus,Integer.parseInt(AdminCommonConstant.ROOT));
     }
+
 
     public UserRole getUserRoleByUserId(String username) {
 //        Role role = getRoleByUserId(username);
