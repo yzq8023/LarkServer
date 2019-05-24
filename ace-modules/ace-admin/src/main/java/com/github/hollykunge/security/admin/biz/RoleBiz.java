@@ -194,8 +194,8 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
      * @return
      */
     @Cache(key = "admin:getElementByMenu")
-    public List<ActionEntitySet> getElement(int roleId){
-        List<ActionEntitySet> elementByRole = resourceRoleMapMapper.getElement(roleId + "", AdminCommonConstant.RESOURCE_TYPE_BTN);
+    public List<ActionEntitySet> getElement(String roleId){
+        List<ActionEntitySet> elementByRole = resourceRoleMapMapper.getElement(roleId, AdminCommonConstant.RESOURCE_TYPE_BTN);
         return elementByRole;
     }
 }

@@ -97,7 +97,7 @@ public class RoleController extends BaseController<RoleBiz, Role> {
     }
     @PostMapping("/element")
     public ListRestResponse getElement(@RequestParam("roleId") int roleId){
-        return new ListRestResponse("",0,baseBiz.getElement(roleId));
+        return new ListRestResponse("",0,baseBiz.getElement(roleId+""));
     }
 
     private List<GroupTree> getTree(List<Role> groups,String root) {
