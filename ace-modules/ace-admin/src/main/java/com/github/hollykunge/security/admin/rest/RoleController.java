@@ -6,8 +6,7 @@ import java.util.List;
 import com.github.hollykunge.security.admin.biz.ResourceRoleMapBiz;
 import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
 import com.github.hollykunge.security.admin.entity.Role;
-import com.github.hollykunge.security.admin.vo.AuthorityMenuTree;
-import com.github.hollykunge.security.admin.vo.GroupUsers;
+import com.github.hollykunge.security.admin.vo.*;
 import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import io.swagger.annotations.*;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import com.github.hollykunge.security.admin.biz.RoleBiz;
-import com.github.hollykunge.security.admin.vo.GroupTree;
 import com.github.hollykunge.security.common.rest.BaseController;
 import com.github.hollykunge.security.common.util.TreeUtil;
 
@@ -31,9 +29,18 @@ import tk.mybatis.mapper.entity.Example;
  * @create 2017-06-12 8:49
  */
 @Controller
-@RequestMapping("role")
+@RequestMapping("admin")
 @Api("角色模块")
 public class RoleController extends BaseController<RoleBiz, Role> {
+    /**
+     * 根据角色获取用户
+     * @param roleId 角色id
+     * @return
+     */
+    @GetMapping("/{id}/getUsers")
+    public ObjectRestResponse<List<AdminUser>> getUsers(@PathVariable int roleId){
+        return new ObjectRestResponse().data(baseBiz.getUsers(roleId)).rel(true);
+    }
 
     /**
      * 批量修改角色用户
@@ -73,34 +80,6 @@ public class RoleController extends BaseController<RoleBiz, Role> {
         return new ObjectRestResponse().data(baseBiz.getAuthorityMenu(id)).rel(true);
     }
 
-    /**
-     * 增加角色功能
-     * @param id 角色id
-     * @param menuId 菜单id
-     * @param elementId 功能id
-     * @return
-     */
-    @RequestMapping(value = "/{id}/authority/element/add", method = RequestMethod.POST)
-    @ResponseBody
-    public ObjectRestResponse addElementAuthority(@PathVariable  int id,int menuId, int elementId){
-        baseBiz.modifyAuthorityElement(id,menuId,elementId);
-        return new ObjectRestResponse().rel(true);
-    }
-
-    @RequestMapping(value = "/{id}/authority/element/remove", method = RequestMethod.POST)
-    @ResponseBody
-    public ObjectRestResponse removeElementAuthority(@PathVariable int id,int menuId, int elementId){
-        baseBiz.removeAuthorityElement(id,menuId,elementId);
-        return new ObjectRestResponse().rel(true);
-    }
-
-    @RequestMapping(value = "/{id}/authority/element", method = RequestMethod.GET)
-    @ResponseBody
-    public ObjectRestResponse<List<Integer>> getElementAuthority(@PathVariable  int id){
-        return new ObjectRestResponse().data(baseBiz.getAuthorityElement(id)).rel(true);
-    }
-
-
     @RequestMapping(value = "/tree", method = RequestMethod.GET)
     @ResponseBody
     public List<GroupTree> tree(String name,String groupType) {
@@ -116,8 +95,12 @@ public class RoleController extends BaseController<RoleBiz, Role> {
         }
         return  getTree(baseBiz.selectByExample(example), AdminCommonConstant.ROOT);
     }
+    @PostMapping("/element")
+    public ListRestResponse getElement(@RequestParam("roleId") int roleId){
+        return new ListRestResponse("",0,baseBiz.getElement(roleId));
+    }
 
-    private List<GroupTree> getTree(List<Role> groups,int root) {
+    private List<GroupTree> getTree(List<Role> groups,String root) {
         List<GroupTree> trees = new ArrayList<GroupTree>();
         GroupTree node = null;
         for (Role group : groups) {
@@ -128,8 +111,5 @@ public class RoleController extends BaseController<RoleBiz, Role> {
         }
         return TreeUtil.bulid(trees,root) ;
     }
-    @GetMapping("/roleList")
-    public ListRestResponse roleList(){
-        return null;
-    }
+
 }
