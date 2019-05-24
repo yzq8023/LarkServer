@@ -34,7 +34,7 @@ public interface ZzMsgTabRelationService {
      * @param zzMsgTabRelation 实例对象
      * @return 实例对象
      */
-    ZzMsgTabRelation insert(ZzMsgTabRelation zzMsgTabRelation);
+    Integer insert(ZzMsgTabRelation zzMsgTabRelation);
 
     /**
      * 修改数据
@@ -52,4 +52,5 @@ public interface ZzMsgTabRelationService {
      */
     boolean deleteById(String id);
 
+    boolean deleteByTabId(String tabId);
 }

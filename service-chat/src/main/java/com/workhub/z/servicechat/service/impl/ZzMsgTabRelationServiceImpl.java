@@ -49,9 +49,9 @@ public class ZzMsgTabRelationServiceImpl implements ZzMsgTabRelationService {
      * @return 实例对象
      */
     @Override
-    public ZzMsgTabRelation insert(ZzMsgTabRelation zzMsgTabRelation) {
-        this.zzMsgTabRelationDao.insert(zzMsgTabRelation);
-        return zzMsgTabRelation;
+    public Integer insert(ZzMsgTabRelation zzMsgTabRelation) {
+        int insert = this.zzMsgTabRelationDao.insert(zzMsgTabRelation);
+        return insert;
     }
 
     /**
@@ -75,5 +75,10 @@ public class ZzMsgTabRelationServiceImpl implements ZzMsgTabRelationService {
     @Override
     public boolean deleteById(String id) {
         return this.zzMsgTabRelationDao.deleteById(id) > 0;
+    }
+
+    @Override
+    public boolean deleteByTabId(String tabId) {
+        return this.zzMsgTabRelationDao.deleteByTabId(tabId) > 0;
     }
 }
