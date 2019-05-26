@@ -3,7 +3,9 @@ package com.github.hollykunge.security.admin.vo;
 import com.github.hollykunge.security.common.vo.TreeNode;
 
 public class OrgTree extends TreeNode {
-    String label;
+
+    private String label;
+    private String name;
 
     public String getLabel() {
         return label;
@@ -13,7 +15,7 @@ public class OrgTree extends TreeNode {
         this.label = label;
     }
 
-    String name;
+
 
     public String getName() {
         return name;

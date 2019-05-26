@@ -2,14 +2,10 @@ package com.github.hollykunge.security.admin.vo;
 
 import com.github.hollykunge.security.common.vo.TreeNode;
 
-/**
- * ${DESCRIPTION}
- *
- * @author 协同设计小组
- * @create 2017-06-17 15:21
- */
-public class GroupTree extends TreeNode {
-    String label;
+public class RoleTree extends TreeNode {
+
+    private String label;
+    private String name;
 
     public String getLabel() {
         return label;
@@ -19,7 +15,7 @@ public class GroupTree extends TreeNode {
         this.label = label;
     }
 
-    String name;
+
 
     public String getName() {
         return name;
