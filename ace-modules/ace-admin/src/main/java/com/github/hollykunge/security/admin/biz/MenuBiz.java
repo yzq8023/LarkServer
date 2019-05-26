@@ -64,7 +64,7 @@ public class MenuBiz extends BaseBiz<MenuMapper, Menu> {
     /**
      * 获取用户可以访问的菜单
      *
-     * @param id
+     * @param id 用户id
      * @return
      */
     @Cache(key = "permission:menu:u{1}")
