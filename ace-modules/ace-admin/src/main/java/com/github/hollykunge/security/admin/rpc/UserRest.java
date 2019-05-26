@@ -35,9 +35,9 @@ public class UserRest {
     }
 
     @Cache(key="permission:u{1}")
-    @RequestMapping(value = "/user/un/{username}/permissions", method = RequestMethod.GET)
-    public @ResponseBody List<PermissionInfo> getPermissionByUsername(@PathVariable("username") String username){
-        return permissionService.getPermissionByUsername(username);
+    @RequestMapping(value = "/user/un/{userId}/permissions", method = RequestMethod.GET)
+    public @ResponseBody List<PermissionInfo> getPermissionByUserId(@PathVariable("userId") String userId){
+        return permissionService.getPermissionByUserId(userId);
     }
 
     @RequestMapping(value = "/user/validate", method = RequestMethod.POST)
@@ -46,7 +46,7 @@ public class UserRest {
     }
 
     @RequestMapping(value = "/user/info", method = RequestMethod.POST)
-    public @ResponseBody UserInfo info(Integer userId){
+    public @ResponseBody UserInfo info(String userId){
         User user = userBiz.getUserByUserId(userId);
         UserInfo info = new UserInfo();
 

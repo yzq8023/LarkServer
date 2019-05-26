@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- *
+ * 初始化用户权限服务
  * @author 协同设计小组
  * @date 2017/9/12
  */
@@ -71,8 +71,8 @@ public class PermissionService {
         List<PermissionInfo> result = new ArrayList<PermissionInfo>();
         PermissionInfo info = null;
         menu2permission(menus, result);
-//        List<Element> elements = elementBiz.getAllElementPermissions();
-//        element2permission(result, elements);
+        List<Element> elements = elementBiz.getAllElementPermissions();
+        element2permission(result, elements);
         return result;
     }
 
@@ -99,13 +99,13 @@ public class PermissionService {
     }
 
     public List<PermissionInfo> getPermissionByUserId(String userId) {
-        User user = userBiz.getUserByUsername(userId);
-        List<Menu> menus = menuBiz.getUserAuthorityMenuByUserId(user.getId());
+//        User user = userBiz.getUserByUserId(userId);
+        List<Menu> menus = menuBiz.getUserAuthorityMenuByUserId(userId + "");
         List<PermissionInfo> result = new ArrayList<PermissionInfo>();
         PermissionInfo info = null;
         menu2permission(menus, result);
-//        List<Element> elements = elementBiz.getAuthorityElementByUserId(user.getId() + "");
-//        element2permission(result, elements);
+        List<Element> elements = elementBiz.getAuthorityElementByUserId(userId + "");
+        element2permission(result, elements);
         return result;
     }
 
@@ -162,11 +162,11 @@ public class PermissionService {
 
 
     public UserRole getUserRoleByUserId(String username) {
-//        Role role = getRoleByUserId(username);
+        Role role = getRoleByUserId(username);
         UserRole userRole = new UserRole();
-//        BeanUtils.copyProperties(role, userRole);
+        BeanUtils.copyProperties(role, userRole);
         List<PermissionInfo> permissionInfoList = this.getPermissionByUsername(username);
-//        userRole.setPermissionInfos(permissionInfoList);
+        userRole.setPermissionInfos(permissionInfoList);
         return userRole;
     }
 }
