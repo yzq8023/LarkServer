@@ -14,10 +14,5 @@ import java.util.Map;
  * @author zhhongyu
  */
 public interface RoleMapper extends Mapper<Role> {
-    /**
-     * 根据角色id批量删除用户
-     * @param groupId
-     * @return
-     */
-    int deleteUsersByRoleId (String groupId);
+
 }
