@@ -22,4 +22,14 @@ public interface ElementMapper extends Mapper<Element> {
      */
   List<Element> getMenusByRoleId(@Param("roleId") String roleId);
 
+    /**
+     * 根据角色id,菜单id获取ResourceMap中的element
+     * @param roleId  角色id
+     * @param menuId 查询类型
+     * @param type
+     * @return
+     */
+    List<Element> getAuthorityMenuElement(@Param("roleId")String roleId,@Param("menuId") String menuId,
+                             @Param("type")String type);
+
 }
