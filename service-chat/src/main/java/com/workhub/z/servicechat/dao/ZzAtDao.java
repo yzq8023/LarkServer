@@ -3,6 +3,7 @@ package com.workhub.z.servicechat.dao;
 import com.workhub.z.servicechat.entity.ZzAt;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
+import tk.mybatis.mapper.common.Mapper;
 
 /**
  * 提及（@）功能实现(ZzAt)表数据库访问层
@@ -10,7 +11,7 @@ import java.util.List;
  * @author 忠
  * @since 2019-05-10 14:22:30
  */
-public interface ZzAtDao {
+public interface ZzAtDao extends Mapper<ZzAt> {
 
     /**
      * 通过ID查询单条数据

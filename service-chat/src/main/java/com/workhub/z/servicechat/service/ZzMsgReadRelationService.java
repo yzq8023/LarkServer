@@ -35,7 +35,7 @@ public interface ZzMsgReadRelationService {
      * @param zzMsgReadRelation 实例对象
      * @return 实例对象
      */
-    Integer insert(ZzMsgReadRelation zzMsgReadRelation);
+    void insert(ZzMsgReadRelation zzMsgReadRelation);
 
     /**
      * 修改数据

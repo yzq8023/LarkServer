@@ -34,7 +34,7 @@ public interface ZzMsgTabInfoService {
      * @param zzMsgTabInfo 实例对象
      * @return 实例对象
      */
-    Integer insert(ZzMsgTabInfo zzMsgTabInfo);
+    void insert(ZzMsgTabInfo zzMsgTabInfo);
 
     /**
      * 修改数据

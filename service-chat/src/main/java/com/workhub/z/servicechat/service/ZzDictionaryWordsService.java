@@ -34,7 +34,7 @@ public interface ZzDictionaryWordsService {
      * @param zzDictionaryWords 实例对象
      * @return 实例对象
      */
-    Integer insert(ZzDictionaryWords zzDictionaryWords);
+    void insert(ZzDictionaryWords zzDictionaryWords);
 
     /**
      * 修改数据

@@ -34,7 +34,7 @@ public interface ZzMsgTabRelationService {
      * @param zzMsgTabRelation 实例对象
      * @return 实例对象
      */
-    Integer insert(ZzMsgTabRelation zzMsgTabRelation);
+    void insert(ZzMsgTabRelation zzMsgTabRelation);
 
     /**
      * 修改数据

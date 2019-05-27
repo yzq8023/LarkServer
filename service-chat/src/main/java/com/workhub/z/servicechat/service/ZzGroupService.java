@@ -37,7 +37,7 @@ public interface ZzGroupService {
      * @param zzGroup 实例对象
      * @return 实例对象
      */
-    Integer insert(ZzGroup zzGroup);
+    void insert(ZzGroup zzGroup);
 
     /**
      * 修改数据

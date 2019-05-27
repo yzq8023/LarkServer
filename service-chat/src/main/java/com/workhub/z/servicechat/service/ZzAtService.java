@@ -34,7 +34,7 @@ public interface ZzAtService {
      * @param zzAt 实例对象
      * @return 实例对象
      */
-    Integer insert(ZzAt zzAt);
+    void insert(ZzAt zzAt);
 
     /**
      * 修改数据

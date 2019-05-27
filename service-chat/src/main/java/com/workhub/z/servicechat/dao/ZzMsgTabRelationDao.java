@@ -2,6 +2,8 @@ package com.workhub.z.servicechat.dao;
 
 import com.workhub.z.servicechat.entity.ZzMsgTabRelation;
 import org.apache.ibatis.annotations.Param;
+import tk.mybatis.mapper.common.Mapper;
+
 import java.util.List;
 
 /**
@@ -10,7 +12,7 @@ import java.util.List;
  * @author makejava
  * @since 2019-05-23 16:12:40
  */
-public interface ZzMsgTabRelationDao {
+public interface ZzMsgTabRelationDao extends Mapper<ZzMsgTabRelation> {
 
     /**
      * 通过ID查询单条数据

@@ -34,7 +34,7 @@ public interface ZzGroupMsgService {
      * @param zzGroupMsg 实例对象
      * @return 实例对象
      */
-    Integer insert(ZzGroupMsg zzGroupMsg);
+    void insert(ZzGroupMsg zzGroupMsg);
 
     /**
      * 修改数据

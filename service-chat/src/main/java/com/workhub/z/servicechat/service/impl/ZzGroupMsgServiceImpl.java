@@ -1,5 +1,6 @@
 package com.workhub.z.servicechat.service.impl;
 
+import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.workhub.z.servicechat.entity.ZzGroupMsg;
 import com.workhub.z.servicechat.dao.ZzGroupMsgDao;
 import com.workhub.z.servicechat.service.ZzGroupMsgService;
@@ -16,7 +17,7 @@ import java.util.List;
  * @since 2019-05-10 11:38:02
  */
 @Service("zzGroupMsgService")
-public class ZzGroupMsgServiceImpl implements ZzGroupMsgService {
+public class ZzGroupMsgServiceImpl extends BaseBiz<ZzGroupMsgDao, ZzGroupMsg> implements ZzGroupMsgService {
     @Resource
     private ZzGroupMsgDao zzGroupMsgDao;
 
@@ -51,9 +52,14 @@ public class ZzGroupMsgServiceImpl implements ZzGroupMsgService {
      */
     @Override
     @Transactional
-    public Integer insert(ZzGroupMsg zzGroupMsg) {
+    public void insert(ZzGroupMsg zzGroupMsg) {
         int insert = this.zzGroupMsgDao.insert(zzGroupMsg);
-        return insert;
+//        return insert;
+    }
+
+    @Override
+    protected String getPageName() {
+        return null;
     }
 
     /**

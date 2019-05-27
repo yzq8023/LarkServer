@@ -1,10 +1,12 @@
 package com.workhub.z.servicechat.controller;
 
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
+import com.github.hollykunge.security.common.rest.BaseController;
 import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.entity.ZzAt;
 import com.workhub.z.servicechat.entity.ZzGroup;
 import com.workhub.z.servicechat.service.ZzAtService;
+import com.workhub.z.servicechat.service.impl.ZzAtServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -18,7 +20,7 @@ import java.util.Date;
  */
 @RestController
 @RequestMapping("/zzAt")
-public class ZzAtController {
+public class ZzAtController extends BaseController<ZzAtServiceImpl,ZzAt>{
     /**
      * 服务对象
      */
@@ -39,12 +41,12 @@ public class ZzAtController {
     @PostMapping("/create")
     public ObjectRestResponse insert(ZzAt zzAt){
         zzAt.setId(RandomId.getUUID());
-        Integer insert = this.zzAtService.insert(zzAt);
+//        Integer insert = this.zzAtService.insert(zzAt);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
-        if (insert == 0){
-            objectRestResponse.data("失败");
-            return objectRestResponse;
-        }
+//        if (insert == 0){
+//            objectRestResponse.data("失败");
+//            return objectRestResponse;
+//        }
         objectRestResponse.data("成功");
         return objectRestResponse;
     }
