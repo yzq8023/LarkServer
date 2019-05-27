@@ -17,14 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * ${DESCRIPTION}
- *
  * @author 协同设计小组
  * @create 2017-06-08 16:23
  */
+
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class UserBiz extends BaseBiz<UserMapper,User> {
+public class UserBiz extends BaseBiz<UserMapper, User> {
 
     @Override
     public void insertSelective(User entity) {
@@ -34,47 +33,25 @@ public class UserBiz extends BaseBiz<UserMapper,User> {
     }
 
     @Override
-    @CacheClear(pre="user{1.username}")
+    @CacheClear(pre = "user{1.username}")
     public void updateSelectiveById(User entity) {
         super.updateSelectiveById(entity);
     }
 
-    @Override
-    protected String getPageName() {
-        return null;
-    }
-
-    /**
-     * 根据用户名获取用户信息
-     * @param username
-     * @return
-     */
-    @Cache(key="user{1}")
-    public User getUserByUsername(String username){
-        User user = new User();
-        user.setUsername(username);
-        return mapper.selectOne(user);
-    }
-
-
-    /**
-     * 根据用户名获取用户信息
-     * @param userId
-     * @return
-     */
-    @Cache(key="user{1}")
-    public User getUserByUserId(String userId){
+    @Cache(key = "user{1}")
+    public User getUserByUserId(String userId) {
         User user = new User();
         user.setId(userId);
         return mapper.selectOne(user);
     }
 
-    /**
-     * 获取所有用户信息
-     * @return
-     */
-    @Cache(key="user")
-    public List<User> getUsers(){
+    @Cache(key = "user")
+    public List<User> getUsers() {
         return mapper.selectAll();
+    }
+
+    @Override
+    protected String getPageName() {
+        return null;
     }
 }

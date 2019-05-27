@@ -20,6 +20,6 @@ public class ResourceRoleMap extends BaseEntity {
     private String roleId;
 
     @Column(name = "DEFAULT_CHECKED")
-    private Integer defaultChecked;
+    private Integer defaultCheck;
 
 }

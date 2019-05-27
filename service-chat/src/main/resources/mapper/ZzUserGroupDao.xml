@@ -62,7 +62,7 @@
     <select id="getUserNewMsgList" resultMap="UserNewMsgVo">
         SELECT *
           FROM (SELECT PHPM.MSG_ID AS MSG_ID,
-                       'PRIVATE' AS TABLE_TYPE,
+                       'USER' AS TABLE_TYPE,
                        PHPM.MSG_SENDER AS MSG_SENDER,
                        PHPM.SEND_TIME AS SEND_TIME,
                        PHPM.MSG AS MSG,

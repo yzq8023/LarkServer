@@ -89,7 +89,7 @@ public class common {
     }
 
     /**
-     * 涉密检索(字符串对比，请满足字符串对比规则如1和11应写成01和11)
+     * 涉密检索
      * @param txt
      * @param zzDictionaryWordsList
      * @return
@@ -122,72 +122,4 @@ public class common {
         });
         return txt;
     }
-
-    public static void main(String[] args){
-        List<GroupInfoVO> list = new ArrayList<GroupInfoVO>();
-        GroupInfoVO groupInfoVO = new GroupInfoVO();
-        groupInfoVO.setId("1");
-        list.add(groupInfoVO);
-        groupInfoVO = new GroupInfoVO();
-        groupInfoVO.setId("2");
-        list.add(groupInfoVO);
-        groupInfoVO = new GroupInfoVO();
-        groupInfoVO.setId("4");
-        list.add(groupInfoVO);
-        groupInfoVO = new GroupInfoVO();
-        groupInfoVO.setId("3");
-        list.add(groupInfoVO);
-        System.out.println(JSONObject.toJSON(list));
-        groupInfoVO = new GroupInfoVO();
-        groupInfoVO.setId("0");
-        list.add(1,groupInfoVO);
-        List<GroupInfoVO> list1 = new ArrayList<GroupInfoVO>();
-        list1.add(new GroupInfoVO());
-        list1.add(new GroupInfoVO());
-        list1.add(new GroupInfoVO());
-        list1.add(new GroupInfoVO());
-        list1.add(new GroupInfoVO());
-        System.out.println(JSONObject.toJSON(list));
-        List<GroupInfoVO> result = list.stream().filter(listf -> listf.getId()!=null).sorted((b, a) -> Integer.parseInt(a.getId()) - Integer.parseInt(b.getId())).collect(Collectors.toList());
-        result.addAll(list1);
-        result.stream().forEach(as ->System.out.println(as.getId()));
-
-        List<GroupInfoVO> collect = list.stream().filter(li -> li.getId().equals("1")).collect(Collectors.toList());
-        System.out.println(collect);
-//        List<ZzDictionaryWords> zzDictionaryWordsList = new ArrayList<ZzDictionaryWords>();
-//        ZzDictionaryWords zzDictionaryWords = new ZzDictionaryWords();
-//        zzDictionaryWords.setWordName("机密");
-//        zzDictionaryWords.setWordCode("1");
-//        zzDictionaryWordsList.add(zzDictionaryWords);
-//        zzDictionaryWords = new ZzDictionaryWords();
-//        zzDictionaryWords.setWordName("非密");
-//        zzDictionaryWords.setWordCode("2");
-//        zzDictionaryWordsList.add(zzDictionaryWords);
-//        zzDictionaryWords = new ZzDictionaryWords();
-//        zzDictionaryWords.setWordName("秘密");
-//        zzDictionaryWords.setWordCode("3");
-//        zzDictionaryWordsList.add(zzDictionaryWords);
-//        zzDictionaryWords = new ZzDictionaryWords();
-//        zzDictionaryWords.setWordName("123");
-//        zzDictionaryWords.setWordCode("11");
-//        zzDictionaryWordsList.add(zzDictionaryWords);
-//        System.out.println(common.stringSearch("机密非密秘密12345揭穿你2内存浓c",zzDictionaryWordsList));
-
-//        Page<Object> pageMassage = PageHelper.startPage(1, 10);
-//        pageMassage.setTotal(100);
-//        System.out.println(pageMassage);
-//        PageInfo<GroupInfoVO> pageInfoGroupInfo = new PageInfo<GroupInfoVO>();
-//        pageInfoGroupInfo.setSize(10);
-//        pageInfoGroupInfo.setPageNum(2);
-//        List<GroupInfoVO> list = new ArrayList<GroupInfoVO>();
-//        for (int n=0;n<100;n++)list.add(new GroupInfoVO());
-////        pageInfoGroupInfo.setList(list);
-//        pageInfoGroupInfo.setTotal(10);
-//        System.out.println(pageInfoGroupInfo);
-//        System.out.println(common.stringSearch("阿里巴巴 哥斯拉 弗兰多路 蕾米莉亚 190拿分033奥巴马金正恩机-密密级.密"));
-//        System.out.println(common.convert("`0923870348934h2u20!@#$%^&*[]★()))>>PL'"));
-//        System.out.println(common.convert(convert("`0923870348934h2u20!@#$%^&*[]★()))>>PL'")));
-//        System.out.println(common.convert("陋醸嶀嶀T咑旛抽T彣億奮趛T蔊簇菽仮TEMD抋割DGG夑嶀騘醥欗思李Y宲宲结Z宲"));
-    }
-
 }

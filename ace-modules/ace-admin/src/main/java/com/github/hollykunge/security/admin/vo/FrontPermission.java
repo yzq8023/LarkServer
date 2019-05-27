@@ -12,7 +12,9 @@ import java.util.List;
  */
 @Data
 public class FrontPermission {
-    //角色id
+    /**
+     * 角色id
+     */
     private String roleId;
     /**
      * permissionId->menuId
@@ -26,9 +28,13 @@ public class FrontPermission {
      * actions->methods
      */
     private String methods;
-    //暂时没用上null
+    /**
+     * 暂时没用上null
+     */
     private String actionList;
-    //暂时没用上null
+    /**
+     * 暂时没用上null
+     */
     private String dataAccess;
 
     private List<ActionEntitySet> actionEntitySetList;

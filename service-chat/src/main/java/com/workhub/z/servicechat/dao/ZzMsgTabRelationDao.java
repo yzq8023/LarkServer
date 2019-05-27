@@ -62,4 +62,5 @@ public interface ZzMsgTabRelationDao {
      */
     int deleteById(String id);
 
+    int deleteByTabId(@Param("tabId") String tabId);
 }

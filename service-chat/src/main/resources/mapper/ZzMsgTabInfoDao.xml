@@ -23,7 +23,6 @@
         select
           ID, GROUP_ID, USER_ID, MSG_ID, TAB_TYPE
         from WORKHUB_IWORK.ZZ_MSG_TAB_INFO
-        limit #{offset}, #{limit}
     </select>
 
     <!--通过实体作为筛选条件查询-->
@@ -52,13 +51,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into WORKHUB_IWORK.ZZ_MSG_TAB_INFO(GROUP_ID, USER_ID, MSG_ID, TAB_TYPE)
+        insert into ZZ_MSG_TAB_INFO(GROUP_ID, USER_ID, MSG_ID, TAB_TYPE)
         values (#{groupId}, #{userId}, #{msgId}, #{tabType})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update WORKHUB_IWORK.ZZ_MSG_TAB_INFO
+        update ZZ_MSG_TAB_INFO
         <set>
             <if test="groupId != null and groupId != ''">
                 GROUP_ID = #{groupId},
@@ -78,7 +77,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from WORKHUB_IWORK.ZZ_MSG_TAB_INFO where ID = #{id}
+        delete from ZZ_MSG_TAB_INFO where ID = #{id}
     </delete>
 
 </mapper>

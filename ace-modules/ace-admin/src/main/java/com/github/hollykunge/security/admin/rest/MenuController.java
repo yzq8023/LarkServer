@@ -32,15 +32,15 @@ public class MenuController extends BaseController<MenuBiz, Menu> {
     @Autowired
     private UserBiz userBiz;
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-    public List<Menu> list(String title) {
-        Example example = new Example(Menu.class);
-        if (StringUtils.isNotBlank(title)) {
-            example.createCriteria().andLike("title", "%" + title + "%");
-        }
-        return baseBiz.selectByExample(example);
-    }
+//    @RequestMapping(value = "/list", method = RequestMethod.GET)
+//    @ResponseBody
+//    public List<Menu> list(String title) {
+//        Example example = new Example(Menu.class);
+//        if (StringUtils.isNotBlank(title)) {
+//            example.createCriteria().andLike("title", "%" + title + "%");
+//        }
+//        return baseBiz.selectByExample(example);
+//    }
 
     @RequestMapping(value = "/tree", method = RequestMethod.GET)
     @ResponseBody
@@ -95,7 +95,7 @@ public class MenuController extends BaseController<MenuBiz, Menu> {
     @RequestMapping(value = "/user/authorityTree", method = RequestMethod.GET)
     @ResponseBody
     public List<MenuTree> listUserAuthorityMenu(String parentId){
-        String userId = userBiz.getUserByUsername(getCurrentUserName()).getId();
+        String userId = userBiz.getUserByUserId(getCurrentUserName()).getId();
         try {
             if (parentId == null) {
                 parentId = this.getSystem().get(0).getId();
@@ -109,7 +109,7 @@ public class MenuController extends BaseController<MenuBiz, Menu> {
     @RequestMapping(value = "/user/system", method = RequestMethod.GET)
     @ResponseBody
     public List<Menu> listUserAuthoritySystem() {
-        String userId = userBiz.getUserByUsername(getCurrentUserName()).getId();
+        String userId = userBiz.getUserByUserId(getCurrentUserName()).getId();
         return baseBiz.getUserAuthoritySystemByUserId(userId);
     }
 
