@@ -1,5 +1,6 @@
 package com.workhub.z.servicechat.service.impl;
 
+import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.workhub.z.servicechat.entity.ZzAt;
 import com.workhub.z.servicechat.dao.ZzAtDao;
 import com.workhub.z.servicechat.service.ZzAtService;
@@ -16,7 +17,7 @@ import java.util.List;
  * @since 2019-05-10 14:22:34
  */
 @Service("zzAtService")
-public class ZzAtServiceImpl implements ZzAtService {
+public class ZzAtServiceImpl extends BaseBiz<ZzAtDao,ZzAt> implements ZzAtService  {
     @Resource
     private ZzAtDao zzAtDao;
 
@@ -51,9 +52,10 @@ public class ZzAtServiceImpl implements ZzAtService {
      */
     @Override
     @Transactional
-    public Integer insert(ZzAt zzAt) {
+    public void insert(ZzAt zzAt) {
+        super.insert(zzAt);
         int insert = this.zzAtDao.insert(zzAt);
-        return insert;
+//        return insert;
     }
 
     /**
@@ -79,5 +81,10 @@ public class ZzAtServiceImpl implements ZzAtService {
     @Transactional
     public boolean deleteById(String id) {
         return this.zzAtDao.deleteById(id) > 0;
+    }
+
+    @Override
+    protected String getPageName() {
+        return null;
     }
 }

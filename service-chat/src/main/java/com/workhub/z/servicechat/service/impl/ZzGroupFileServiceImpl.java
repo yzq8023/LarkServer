@@ -1,5 +1,6 @@
 package com.workhub.z.servicechat.service.impl;
 
+import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -21,7 +22,7 @@ import java.util.List;
  * @since 2019-05-13 10:59:08
  */
 @Service("zzGroupFileService")
-public class ZzGroupFileServiceImpl implements ZzGroupFileService {
+public class ZzGroupFileServiceImpl extends BaseBiz<ZzGroupFileDao,ZzGroupFile > implements ZzGroupFileService {
     @Resource
     private ZzGroupFileDao zzGroupFileDao;
 
@@ -56,9 +57,14 @@ public class ZzGroupFileServiceImpl implements ZzGroupFileService {
      */
     @Override
     @Transactional
-    public Integer insert(ZzGroupFile zzGroupFile) {
+    public void insert(ZzGroupFile zzGroupFile) {
         int insert = this.zzGroupFileDao.insert(zzGroupFile);
-        return insert;
+//        return insert;
+    }
+
+    @Override
+    protected String getPageName() {
+        return null;
     }
 
     /**

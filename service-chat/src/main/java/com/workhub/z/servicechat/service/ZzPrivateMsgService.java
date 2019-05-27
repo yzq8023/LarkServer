@@ -34,7 +34,7 @@ public interface ZzPrivateMsgService {
      * @param zzPrivateMsg 实例对象
      * @return 实例对象
      */
-    Integer insert(ZzPrivateMsg zzPrivateMsg);
+    void insert(ZzPrivateMsg zzPrivateMsg);
 
     /**
      * 修改数据

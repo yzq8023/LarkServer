@@ -1,8 +1,11 @@
 package com.workhub.z.servicechat.dao;
 
 import com.workhub.z.servicechat.VO.NoReadVo;
+import com.workhub.z.servicechat.entity.ZzAt;
 import com.workhub.z.servicechat.entity.ZzMsgReadRelation;
 import org.apache.ibatis.annotations.Param;
+import tk.mybatis.mapper.common.Mapper;
+
 import java.util.List;
 
 /**
@@ -11,7 +14,7 @@ import java.util.List;
  * @author makejava
  * @since 2019-05-23 13:27:22
  */
-public interface ZzMsgReadRelationDao {
+public interface ZzMsgReadRelationDao extends Mapper<ZzMsgReadRelation> {
 
     /**
      * 通过ID查询单条数据

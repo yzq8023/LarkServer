@@ -1,5 +1,6 @@
 package com.workhub.z.servicechat.service.impl;
 
+import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.workhub.z.servicechat.entity.ZzMsgTabInfo;
 import com.workhub.z.servicechat.dao.ZzMsgTabInfoDao;
 import com.workhub.z.servicechat.service.ZzMsgTabInfoService;
@@ -15,7 +16,7 @@ import java.util.List;
  * @since 2019-05-23 16:46:13
  */
 @Service("zzMsgTabInfoService")
-public class ZzMsgTabInfoServiceImpl implements ZzMsgTabInfoService {
+public class ZzMsgTabInfoServiceImpl extends BaseBiz<ZzMsgTabInfoDao, ZzMsgTabInfo> implements ZzMsgTabInfoService {
     @Resource
     private ZzMsgTabInfoDao zzMsgTabInfoDao;
 
@@ -49,9 +50,14 @@ public class ZzMsgTabInfoServiceImpl implements ZzMsgTabInfoService {
      * @return 实例对象
      */
     @Override
-    public Integer insert(ZzMsgTabInfo zzMsgTabInfo) {
+    public void insert(ZzMsgTabInfo zzMsgTabInfo) {
         int insert = this.zzMsgTabInfoDao.insert(zzMsgTabInfo);
-        return insert;
+//        return insert;
+    }
+
+    @Override
+    protected String getPageName() {
+        return null;
     }
 
     /**

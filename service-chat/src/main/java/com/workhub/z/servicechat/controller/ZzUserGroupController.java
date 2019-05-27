@@ -3,6 +3,7 @@ package com.workhub.z.servicechat.controller;
 import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
+import com.github.hollykunge.security.common.rest.BaseController;
 import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.VO.GroupListVo;
 import com.workhub.z.servicechat.VO.GroupUserListVo;
@@ -11,6 +12,7 @@ import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.entity.ZzAt;
 import com.workhub.z.servicechat.entity.ZzUserGroup;
 import com.workhub.z.servicechat.service.ZzUserGroupService;
+import com.workhub.z.servicechat.service.impl.ZzUserGroupServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -25,7 +27,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/zzUserGroup")
-public class ZzUserGroupController {
+public class ZzUserGroupController extends BaseController<ZzUserGroupServiceImpl,ZzUserGroup > {
     /**
      * 服务对象
      */
@@ -47,12 +49,12 @@ public class ZzUserGroupController {
     public ObjectRestResponse insert(ZzUserGroup zzUserGroup){
         zzUserGroup.setId(RandomId.getUUID());
         zzUserGroup.setCreatetime(new Date());
-        Integer insert = this.zzUserGroupService.insert(zzUserGroup);
+//        Integer insert = this.zzUserGroupService.insert(zzUserGroup);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
-        if (insert == null){
-            objectRestResponse.data("失败");
-            return objectRestResponse;
-        }
+//        if (insert == null){
+//            objectRestResponse.data("失败");
+//            return objectRestResponse;
+//        }
         objectRestResponse.data("成功");
         return objectRestResponse;
     }

@@ -71,7 +71,6 @@
         select
           GROUP_ID, GROUP_NAME, GROUP_DESCRIBE, ISDELETE, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, PNAME, SCOP, ISPUBLIC, LEVELS, ISCLOSE, GROUP_IMG
         from ZZ_GROUP order  by CREATE_TIME desc
-        limit #{offset}, #{limit}
     </select>
 
     <!--通过实体作为筛选条件查询-->

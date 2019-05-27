@@ -73,7 +73,6 @@
         select
           FILE_ID, FILE_NAME, FILE_EXT, FILE_TYPE, SIZES, PATH, READ_PATH, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, GROUP_ID, LEVELS
         from ZZ_GROUP_FILE
-        limit #{offset}, #{limit}
     </select>
 
     <!--通过实体作为筛选条件查询-->

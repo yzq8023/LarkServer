@@ -65,8 +65,8 @@ public class GroupServiceImpl implements GroupService {
         UserInfo info = this.iUserService.info(Integer.parseInt(groupTaskDto.getGroupId()));
         if (null == info) throw new RuntimeException("info is null");
         if (Integer.parseInt(zzGroup.getLevels())<1/*TODO 属性暂时未加 */) throw new RuntimeException("群创建等级必须小于或者等于创建人等级");
-        Integer insert = this.zzGroupService.insert(zzGroup);
-        if (insert == 0) throw  new RuntimeException("创群失败！");
+        this.zzGroupService.insert(zzGroup);
+//        if (insert == 0) throw  new RuntimeException("创群失败！");
         List<UserListDto> userList = groupTaskDto.getUserList();
         if (null == userList ||userList.isEmpty())throw new NullPointerException("userList is null");
         Date date = new Date();
@@ -78,8 +78,8 @@ public class GroupServiceImpl implements GroupService {
             if (StringUtil.isEmpty(userId)) throw new NullPointerException("userId is null");
             zzUserGroup.setUserId(userId);
             zzUserGroup.setCreatetime(date);
-            Integer count = zzUserGroupService.insert(zzUserGroup);
-            if (count == 0)new Error(JSONObject.toJSON(zzUserGroup)+"入群失败");
+            zzUserGroupService.insert(zzUserGroup);
+//            if (count == 0)new Error(JSONObject.toJSON(zzUserGroup)+"入群失败");
         });
         return true;
     }
@@ -108,8 +108,8 @@ public class GroupServiceImpl implements GroupService {
             if (StringUtil.isEmpty(userId)) throw new NullPointerException("userId is null");
             zzUserGroup.setUserId(userId);
             zzUserGroup.setCreatetime(date);
-            Integer insert = zzUserGroupService.insert(zzUserGroup);
-            if (insert == 0)new Error(JSONObject.toJSON(zzUserGroup)+"入群失败");
+            zzUserGroupService.insert(zzUserGroup);
+//            if (insert == 0)new Error(JSONObject.toJSON(zzUserGroup)+"入群失败");
         });
         return true;
     }

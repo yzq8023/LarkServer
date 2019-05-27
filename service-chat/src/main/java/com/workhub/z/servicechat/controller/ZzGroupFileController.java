@@ -3,11 +3,13 @@ package com.workhub.z.servicechat.controller;
 import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
+import com.github.hollykunge.security.common.rest.BaseController;
 import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.VO.GroupInfoVO;
 import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
 import com.workhub.z.servicechat.service.ZzGroupFileService;
+import com.workhub.z.servicechat.service.impl.ZzGroupFileServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +26,8 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/zzGroupFile")
-public class ZzGroupFileController {
+public class ZzGroupFileController
+        extends BaseController<ZzGroupFileServiceImpl,ZzGroupFile > {
 
     /**
      * 服务对象
@@ -87,13 +90,13 @@ public class ZzGroupFileController {
         zzGroupFile.setFileId(RandomId.getUUID());
         zzGroupFile.setCreator("登陆人id");//TODO
         zzGroupFile.setCreateTime(new Date());
-        Integer insert = this.zzGroupFileService.insert(zzGroupFile);
+//        Integer insert = this.zzGroupFileService.insert(zzGroupFile);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
-        if (insert == null){
-            objectRestResponse.data("失败");
-            return objectRestResponse;
-        }
-        objectRestResponse.data("成功");
+//        if (insert == null){
+//            objectRestResponse.data("失败");
+//            return objectRestResponse;
+//        }
+//        objectRestResponse.data("成功");
         return objectRestResponse;
     }
 

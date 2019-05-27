@@ -105,7 +105,6 @@
         select
           ID, USER_ID, GROUP_ID, CREATETIME
         from ZZ_USER_GROUP
-        limit #{offset}, #{limit}
     </select>
 
     <!--通过实体作为筛选条件查询-->
