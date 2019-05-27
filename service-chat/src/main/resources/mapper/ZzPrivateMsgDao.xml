@@ -29,7 +29,6 @@
         select
           MSG_ID, MSG_SENDER, MSG_RECEIVER, SEND_TIME, RECEIVER_TIME, IS_READ, MSG, MSG_TYPE, MSG_PATH, IS_DELETE, LEVELS
         from ZZ_PRIVATE_MSG
-        limit #{offset}, #{limit}
     </select>
 
     <!--通过实体作为筛选条件查询-->

@@ -28,7 +28,6 @@
         select
           MSG_ID, MSG_SENDER, MSG_RECEIVER, SEND_TIME, MSG, MSG_TYPE, MSG_PATH, IS_DELETE, IS_IMPORTANT, LEVELS
         from ZZ_GROUP_MSG
-        limit #{offset}, #{limit}
     </select>
 
     <!--通过实体作为筛选条件查询-->
