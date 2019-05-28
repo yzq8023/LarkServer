@@ -191,4 +191,26 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
         return menuElemnt;
     }
 
+    /**
+     * 通过用户id查询用户角色
+     * @param userId 用户id
+     * @return 角色实体类
+     */
+    public List<Role> getRoleByUserId(String userId){
+        RoleUserMap roleUserParams = new RoleUserMap();
+        roleUserParams.setUserId(userId);
+        List<RoleUserMap> roleList = roleUserMapMapper.select(roleUserParams);
+        Role role = null;
+        List<Role> resultRole = new ArrayList<>();
+        if(roleList.size()>0){
+            for (RoleUserMap roleUserMap:roleList) {
+                role = new Role();
+                role.setId(roleUserMap.getRoleId());
+                role = mapper.selectOne(role);
+                resultRole.add(role);
+            }
+        }
+        return resultRole;
+    }
 }
+
