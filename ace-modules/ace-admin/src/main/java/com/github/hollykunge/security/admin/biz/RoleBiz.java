@@ -6,13 +6,8 @@ import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
 import com.github.hollykunge.security.admin.entity.*;
 import com.github.hollykunge.security.admin.mapper.*;
 import com.github.hollykunge.security.admin.vo.*;
-import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.exception.BaseException;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.github.pagehelper.util.StringUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,10 +15,7 @@ import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.lang.reflect.ParameterizedType;
 import java.util.*;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 /**
  * @author 协同设计小组
@@ -64,8 +56,10 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
     }
 
     @CacheClear(pre = "permission")
-    public void modifyRoleUsers(int roleId, String users) {
-        int deleteCount = userMapper.deleteUsersByRoleId(roleId + "");
+    public void modifyRoleUsers(String roleId, String users) {
+        RoleUserMap roleParams = new RoleUserMap();
+        roleParams.setRoleId(roleId);
+        int deleteCount =  roleUserMapMapper.delete(roleParams);
         if (deleteCount < 0) {
             throw new BaseException("系统异常错误...");
         }
@@ -83,8 +77,7 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
     @CacheClear(keys = {"permission:menu", "permission:u","role:adminPermission"})
     public void modifyAuthorityMenu(String roleId, List<AdminPermission> permissionList) {
         //用roleId删除所有与角色相关的资源
-        Class<ResourceRoleMapMapper> clazz = (Class<ResourceRoleMapMapper>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-        Example resourceRoleExample = new Example(clazz);
+        Example resourceRoleExample = new Example(ResourceRoleMap.class);
         resourceRoleExample.createCriteria().andEqualTo("roleId",roleId);
         int deleteCount = resourceRoleMapMapper.deleteByExample(resourceRoleExample);
         if (deleteCount < 0) {
@@ -198,22 +191,26 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
         return menuElemnt;
     }
 
-
-    //    @CacheClear(keys = {"permission:ele", "permission:u"})
-//    public void modifyAuthorityElement(int roleId, int menuId, int elementId) {
-//        //TODO: 数据库那感觉有些问题添加element时少menuId
-//        ResourceRoleMap authority = new ResourceRoleMap();
-//        authority.setRoleId(roleId + "");
-//        authority.setResourceId(elementId + "");
-//        resourceRoleMapMapper.insertSelective(authority);
-//    }
-//
-//    @CacheClear(keys = {"permission:ele", "permission:u"})
-//    public void removeAuthorityElement(int roleId, int elementId) {
-//        ResourceRoleMap authority = new ResourceRoleMap();
-//        authority.setRoleId(roleId + "");
-//        authority.setResourceId(elementId + "");
-//        resourceRoleMapMapper.delete(authority);
-//    }
-
+    /**
+     * 通过用户id查询用户角色
+     * @param userId 用户id
+     * @return 角色实体类
+     */
+    public List<Role> getRoleByUserId(String userId){
+        RoleUserMap roleUserParams = new RoleUserMap();
+        roleUserParams.setUserId(userId);
+        List<RoleUserMap> roleList = roleUserMapMapper.select(roleUserParams);
+        Role role = null;
+        List<Role> resultRole = new ArrayList<>();
+        if(roleList.size()>0){
+            for (RoleUserMap roleUserMap:roleList) {
+                role = new Role();
+                role.setId(roleUserMap.getRoleId());
+                role = mapper.selectOne(role);
+                resultRole.add(role);
+            }
+        }
+        return resultRole;
+    }
 }
+
