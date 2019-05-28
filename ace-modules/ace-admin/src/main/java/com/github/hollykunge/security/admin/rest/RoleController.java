@@ -50,7 +50,7 @@ public class RoleController extends BaseController<RoleBiz, Role> {
     @RequestMapping(value = "/{id}/user", method = RequestMethod.PUT)
     @ResponseBody
     public ObjectRestResponse modifyUsers(@PathVariable String id, String users) {
-        baseBiz.modifyRoleUsers(Integer.parseInt(id), users);
+        baseBiz.modifyRoleUsers(id, users);
         return new ObjectRestResponse().rel(true);
     }
 
