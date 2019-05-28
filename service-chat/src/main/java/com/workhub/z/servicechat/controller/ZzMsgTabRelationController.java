@@ -1,7 +1,9 @@
 package com.workhub.z.servicechat.controller;
 
+import com.github.hollykunge.security.common.rest.BaseController;
 import com.workhub.z.servicechat.entity.ZzMsgTabRelation;
 import com.workhub.z.servicechat.service.ZzMsgTabRelationService;
+import com.workhub.z.servicechat.service.impl.ZzMsgTabRelationServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -14,7 +16,8 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("zzMsgTabRelation")
-public class ZzMsgTabRelationController {
+public class ZzMsgTabRelationController
+        extends BaseController<ZzMsgTabRelationServiceImpl, ZzMsgTabRelation> {
     /**
      * 服务对象
      */

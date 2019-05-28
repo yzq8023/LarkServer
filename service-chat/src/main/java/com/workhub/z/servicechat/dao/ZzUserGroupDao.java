@@ -5,6 +5,8 @@ import com.workhub.z.servicechat.VO.GroupUserListVo;
 import com.workhub.z.servicechat.VO.UserNewMsgVo;
 import com.workhub.z.servicechat.entity.ZzUserGroup;
 import org.apache.ibatis.annotations.Param;
+import tk.mybatis.mapper.common.Mapper;
+
 import java.util.List;
 
 /**
@@ -13,7 +15,7 @@ import java.util.List;
  * @author 忠
  * @since 2019-05-10 14:22:54
  */
-public interface ZzUserGroupDao {
+public interface ZzUserGroupDao extends Mapper<ZzUserGroup> {
 
     /**
      * 通过ID查询单条数据

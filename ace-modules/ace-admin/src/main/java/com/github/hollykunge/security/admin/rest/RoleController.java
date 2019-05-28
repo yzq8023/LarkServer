@@ -3,13 +3,15 @@ package com.github.hollykunge.security.admin.rest;
 import com.github.hollykunge.security.admin.biz.RoleBiz;
 import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
 import com.github.hollykunge.security.admin.entity.Role;
+import com.github.hollykunge.security.admin.vo.AdminPermission;
 import com.github.hollykunge.security.admin.vo.AdminUser;
-import com.github.hollykunge.security.admin.vo.MenuTree;
 import com.github.hollykunge.security.admin.vo.RoleTree;
-import com.github.hollykunge.security.common.msg.ListRestResponse;
+import com.github.hollykunge.security.admin.vo.UserRole;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
+import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.hollykunge.security.common.rest.BaseController;
 import com.github.hollykunge.security.common.util.TreeUtil;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
@@ -35,8 +37,8 @@ public class RoleController extends BaseController<RoleBiz, Role> {
      */
     @RequestMapping(value = "/{id}/user", method = RequestMethod.GET)
     @ResponseBody
-    public ObjectRestResponse<List<AdminUser>> getUsers(@PathVariable int id) {
-        return new ObjectRestResponse<List<AdminUser>>().data(baseBiz.getRoleUsers(id)).rel(true);
+    public ObjectRestResponse<List<AdminUser>> getUsers(@PathVariable String id) {
+        return new ObjectRestResponse<List<AdminUser>>().data(baseBiz.getRoleUsers(Integer.parseInt(id))).rel(true);
     }
 
     /**
@@ -47,8 +49,8 @@ public class RoleController extends BaseController<RoleBiz, Role> {
      */
     @RequestMapping(value = "/{id}/user", method = RequestMethod.PUT)
     @ResponseBody
-    public ObjectRestResponse modifyUsers(@PathVariable int id, String users) {
-        baseBiz.modifyRoleUsers(id, users);
+    public ObjectRestResponse modifyUsers(@PathVariable String id, String users) {
+        baseBiz.modifyRoleUsers(Integer.parseInt(id), users);
         return new ObjectRestResponse().rel(true);
     }
 
@@ -56,13 +58,12 @@ public class RoleController extends BaseController<RoleBiz, Role> {
      * 批量修改角色菜单，TODO：参数形式？
      *
      * @param id        角色id
-     * @param menuTrees 以逗号分隔的菜单
+     * @param permissionList 被勾选的权限Element和Element所对应的菜单信息
      */
     @RequestMapping(value = "/{id}/menu", method = RequestMethod.POST)
     @ResponseBody
-    public ObjectRestResponse modifyMenuAuthority(@PathVariable int id, String menuTrees) {
-        String[] menus = menuTrees.split(",");
-        baseBiz.modifyAuthorityMenu(id, menus);
+    public ObjectRestResponse modifyMenuAuthority(@PathVariable String id, List<AdminPermission> permissionList) {
+        baseBiz.modifyAuthorityMenu(id, permissionList);
         return new ObjectRestResponse().rel(true);
     }
 
@@ -73,17 +74,10 @@ public class RoleController extends BaseController<RoleBiz, Role> {
      */
     @RequestMapping(value = "/{id}/authority/menu", method = RequestMethod.GET)
     @ResponseBody
-    public ObjectRestResponse<List<MenuTree>> getMenuAuthority(@PathVariable int id) {
+    public ObjectRestResponse<List<AdminPermission>> getMenuAuthority(@PathVariable String id) {
         return new ObjectRestResponse().data(baseBiz.getAuthorityMenu(id)).rel(true);
     }
 
-    /**
-     * TODO：这是干嘛的?
-     */
-    @PostMapping("/element")
-    public ListRestResponse getElement(@RequestParam("roleId") int roleId) {
-        return new ListRestResponse("", 0, baseBiz.getElement(roleId + ""));
-    }
 
     /**
      * 获取角色树

@@ -28,7 +28,6 @@
         select
           ID, WORD_TYPE, WORD_CODE, WORD_NAME, REPLACE_WORD, CREATE_TIME, CREATE_USER, UPDATE_TIME, UPDATE_USER, IS_USE
         from WORKHUB_IWORK.ZZ_DICTIONARY_WORDS
-        limit #{offset}, #{limit}
     </select>
 
     <!--通过实体作为筛选条件查询-->

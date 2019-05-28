@@ -1,10 +1,12 @@
 package com.workhub.z.servicechat.controller;
 
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
+import com.github.hollykunge.security.common.rest.BaseController;
 import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.entity.ZzGroupMsg;
 import com.workhub.z.servicechat.entity.ZzPrivateMsg;
 import com.workhub.z.servicechat.service.ZzPrivateMsgService;
+import com.workhub.z.servicechat.service.impl.ZzPrivateMsgServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -17,7 +19,8 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/zzPrivateMsg")
-public class ZzPrivateMsgController {
+public class ZzPrivateMsgController
+        extends BaseController<ZzPrivateMsgServiceImpl, ZzPrivateMsg> {
     /**
      * 服务对象
      */
@@ -56,12 +59,12 @@ public class ZzPrivateMsgController {
     @PostMapping("/create")
     public ObjectRestResponse insert(ZzPrivateMsg zzPrivateMsg){
         zzPrivateMsg.setMsgId(RandomId.getUUID());
-        Integer insert = this.zzPrivateMsgService.insert(zzPrivateMsg);
+//        Integer insert = this.zzPrivateMsgService.insert(zzPrivateMsg);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
-        if (insert == null){
-            objectRestResponse.data("失败");
-            return objectRestResponse;
-        }
+//        if (insert == null){
+//            objectRestResponse.data("失败");
+//            return objectRestResponse;
+//        }
         objectRestResponse.data("成功");
         return objectRestResponse;
     }

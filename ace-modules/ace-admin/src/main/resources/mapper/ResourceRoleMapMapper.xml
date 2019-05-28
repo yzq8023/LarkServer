@@ -41,22 +41,4 @@
   <delete id="deleteByAuthorityIdAndResourceType">
     DELETE ADMIN_RESOURCEROLEMAP WHERE ROLE_ID = #{roleId} AND RESOURCE_TYPE = #{type}
   </delete>
-  <!-- 根据角色id获取所有的角色下的element -->
-  <select id="getElement" resultMap="ElementResultMap">
-    SELECT
-	resour.DEFAULT_CHECKED,
-	ELE.DESCRIPTION,
-	ele. METHOD
-    FROM
-        ADMIN_RESOURCEROLEMAP resour,
-        ADMIN_ELEMENT ele
-    WHERE
-        RESOUR.RESOURCE_ID = ELE. ID
-    <if test="resourceType != null and resourceType != ''">
-      AND RESOUR.RESOURCE_TYPE = #{resourceType}
-    </if>
-    <if test="roleId != null and roleId!=''">
-      AND RESOUR.ROLE_ID = #{roleId}
-    </if>
-  </select>
 </mapper>

@@ -1,5 +1,6 @@
 package com.workhub.z.servicechat.service.impl;
 
+import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -28,7 +29,7 @@ import java.util.stream.Collectors;
  * @since 2019-05-10 14:22:54
  */
 @Service("zzUserGroupService")
-public class ZzUserGroupServiceImpl implements ZzUserGroupService {
+public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup> implements ZzUserGroupService {
     @Resource
     private ZzUserGroupDao zzUserGroupDao;
 
@@ -71,9 +72,14 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
      */
     @Override
     @Transactional
-    public Integer insert(ZzUserGroup zzUserGroup) {
+    public void insert(ZzUserGroup zzUserGroup) {
         int insert = this.zzUserGroupDao.insert(zzUserGroup);
-        return insert;
+//        return insert;
+    }
+
+    @Override
+    protected String getPageName() {
+        return null;
     }
 
     /**

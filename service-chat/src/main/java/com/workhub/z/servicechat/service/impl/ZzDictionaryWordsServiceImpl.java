@@ -1,7 +1,9 @@
 package com.workhub.z.servicechat.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.workhub.z.servicechat.config.common;
+import com.workhub.z.servicechat.entity.ZzAt;
 import com.workhub.z.servicechat.entity.ZzDictionaryWords;
 import com.workhub.z.servicechat.dao.ZzDictionaryWordsDao;
 import com.workhub.z.servicechat.service.ZzDictionaryWordsService;
@@ -19,7 +21,7 @@ import java.util.Set;
  * @since 2019-05-17 14:56:57
  */
 @Service("zzDictionaryWordsService")
-public class ZzDictionaryWordsServiceImpl implements ZzDictionaryWordsService {
+public class ZzDictionaryWordsServiceImpl extends BaseBiz<ZzDictionaryWordsDao, ZzDictionaryWords> implements ZzDictionaryWordsService {
     @Resource
     private ZzDictionaryWordsDao zzDictionaryWordsDao;
 
@@ -53,9 +55,14 @@ public class ZzDictionaryWordsServiceImpl implements ZzDictionaryWordsService {
      * @return 实例对象
      */
     @Override
-    public Integer insert(ZzDictionaryWords zzDictionaryWords) {
+    public void insert(ZzDictionaryWords zzDictionaryWords) {
         int insert = this.zzDictionaryWordsDao.insert(zzDictionaryWords);
-        return insert;
+//        return insert;
+    }
+
+    @Override
+    protected String getPageName() {
+        return null;
     }
 
     /**

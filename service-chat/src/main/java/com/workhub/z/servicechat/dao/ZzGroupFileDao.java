@@ -1,8 +1,11 @@
 package com.workhub.z.servicechat.dao;
 
 import com.workhub.z.servicechat.VO.GroupInfoVO;
+import com.workhub.z.servicechat.entity.ZzAt;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
 import org.apache.ibatis.annotations.Param;
+import tk.mybatis.mapper.common.Mapper;
+
 import java.util.List;
 
 /**
@@ -11,7 +14,7 @@ import java.util.List;
  * @author 忠
  * @since 2019-05-13 10:59:08
  */
-public interface ZzGroupFileDao {
+public interface ZzGroupFileDao extends Mapper<ZzGroupFile> {
 
     /**
      * 通过ID查询单条数据

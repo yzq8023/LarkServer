@@ -2,11 +2,15 @@ package com.workhub.z.servicechat.controller;
 
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
+import com.github.hollykunge.security.common.rest.BaseController;
 import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.VO.GroupUserListVo;
 import com.workhub.z.servicechat.config.RandomId;
+import com.workhub.z.servicechat.entity.ZzDictionaryWords;
 import com.workhub.z.servicechat.entity.ZzGroup;
 import com.workhub.z.servicechat.service.ZzGroupService;
+import com.workhub.z.servicechat.service.impl.ZzDictionaryWordsServiceImpl;
+import com.workhub.z.servicechat.service.impl.ZzGroupServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +27,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/zzGroup")
-public class ZzGroupController {
+public class ZzGroupController extends BaseController<ZzGroupServiceImpl, ZzGroup> {
     /**
      * 服务对象
      */
@@ -47,12 +51,12 @@ public class ZzGroupController {
         zzGroup.setGroupId(RandomId.getUUID());
         zzGroup.setCreator("");//TODO token 拿登陆人信息
         zzGroup.setCreateTime(new Date());
-        Integer insert = this.zzGroupService.insert(zzGroup);
+//        Integer insert = this.zzGroupService.insert(zzGroup);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
-        if (insert == 0){
-            objectRestResponse.data("失败");
-            return objectRestResponse;
-        }
+//        if (insert == 0){
+//            objectRestResponse.data("失败");
+//            return objectRestResponse;
+//        }
         objectRestResponse.data("成功");
         return objectRestResponse;
     }
