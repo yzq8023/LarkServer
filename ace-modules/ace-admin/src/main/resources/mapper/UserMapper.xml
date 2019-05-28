@@ -85,13 +85,12 @@
     <result column="ATTR7" property="attr7" jdbcType="VARCHAR" />
     <result column="ATTR8" property="attr8" jdbcType="VARCHAR" />
   </resultMap>
-
-  <select id="getUsersByRoleId" resultMap="BaseResultMap">
+  <select id="selectUsersByRoleId" resultMap="BaseResultMap">
     select AU.* from ADMIN_USER AU
     left join ADMIN_ROLEUSERMAP ARU on AU.ID = ARU.USER_ID
     where ARU.ROLE_ID = #{roleId}
   </select>
-  <select id="getUsersByOrgId" resultMap="BaseResultMap">
+  <select id="selectUsersByOrgId" resultMap="BaseResultMap">
     select AU.* from ADMIN_USER AU
     left join ADMIN_ORGUSERMAP AOU on AU.ID = AOU.USER_ID
     where AOU.ORG_ID = #{orgId}
