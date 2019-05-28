@@ -3,11 +3,14 @@ package com.github.hollykunge.security.admin.biz;
 import com.ace.cache.annotation.Cache;
 import com.ace.cache.annotation.CacheClear;
 import com.github.hollykunge.security.admin.entity.Element;
+import com.github.hollykunge.security.admin.entity.Role;
 import com.github.hollykunge.security.admin.mapper.ElementMapper;
 import com.github.hollykunge.security.common.biz.BaseBiz;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,6 +22,8 @@ import java.util.List;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class ElementBiz extends BaseBiz<ElementMapper,Element> {
+    @Autowired
+    private RoleBiz roleBiz;
 //    @Cache(key="permission:ele:u{1}")
 //    public List<Element> getAuthorityElementByUserId(String userId){
 //       return mapper.selectAuthorityElementByUserId(userId);
@@ -47,5 +52,20 @@ public class ElementBiz extends BaseBiz<ElementMapper,Element> {
     @Override
     protected String getPageName() {
         return null;
+    }
+
+    /**
+     * 通过userId获取权限下的Element
+     * @param userId
+     * @return
+     */
+    public List<Element> getElemntByUserId(String userId){
+        List<Element> result = new ArrayList<>();
+        List<Role> roleList = roleBiz.getRoleByUserId(userId);
+        roleList.stream().forEach(roleEntity ->{
+            List<Element> roleElemet = mapper.getElemntByRoleId(roleEntity.getId());
+            result.addAll(roleElemet);
+        });
+        return result;
     }
 }

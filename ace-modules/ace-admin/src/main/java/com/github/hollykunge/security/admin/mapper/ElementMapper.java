@@ -22,4 +22,11 @@ public interface ElementMapper extends Mapper<Element> {
      */
     List<Element> getAuthorityMenuElement(@Param("roleId") String roleId, @Param("menuId") String menuId,
                                           @Param("type") String type);
+
+    /**
+     * 根据角色Id获取权限下的Element
+     * @param roleId 角色Id
+     * @return
+     */
+    List<Element> getElemntByRoleId(@Param("roleId")String roleId);
 }
