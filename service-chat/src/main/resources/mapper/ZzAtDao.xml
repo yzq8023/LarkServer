@@ -21,7 +21,6 @@
         select
           ID, GROUPID, RECEIVERID
         from WORKHUB_IWORK.ZZ_AT
-        limit #{offset}, #{limit}
     </select>
 
     <!--通过实体作为筛选条件查询-->

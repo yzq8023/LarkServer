@@ -1,5 +1,6 @@
 package com.workhub.z.servicechat.service.impl;
 
+import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.workhub.z.servicechat.entity.ZzMsgTabRelation;
 import com.workhub.z.servicechat.dao.ZzMsgTabRelationDao;
 import com.workhub.z.servicechat.service.ZzMsgTabRelationService;
@@ -15,7 +16,7 @@ import java.util.List;
  * @since 2019-05-23 16:12:40
  */
 @Service("zzMsgTabRelationService")
-public class ZzMsgTabRelationServiceImpl implements ZzMsgTabRelationService {
+public class ZzMsgTabRelationServiceImpl extends BaseBiz<ZzMsgTabRelationDao, ZzMsgTabRelation> implements ZzMsgTabRelationService {
     @Resource
     private ZzMsgTabRelationDao zzMsgTabRelationDao;
 
@@ -49,9 +50,14 @@ public class ZzMsgTabRelationServiceImpl implements ZzMsgTabRelationService {
      * @return 实例对象
      */
     @Override
-    public Integer insert(ZzMsgTabRelation zzMsgTabRelation) {
+    public void insert(ZzMsgTabRelation zzMsgTabRelation) {
         int insert = this.zzMsgTabRelationDao.insert(zzMsgTabRelation);
-        return insert;
+//        return insert;
+    }
+
+    @Override
+    protected String getPageName() {
+        return null;
     }
 
     /**

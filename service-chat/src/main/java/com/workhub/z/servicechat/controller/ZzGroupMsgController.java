@@ -1,10 +1,12 @@
 package com.workhub.z.servicechat.controller;
 
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
+import com.github.hollykunge.security.common.rest.BaseController;
 import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
 import com.workhub.z.servicechat.entity.ZzGroupMsg;
 import com.workhub.z.servicechat.service.ZzGroupMsgService;
+import com.workhub.z.servicechat.service.impl.ZzGroupMsgServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -18,7 +20,8 @@ import java.util.Date;
  */
 @RestController
 @RequestMapping("/zzGroupMsg")
-public class ZzGroupMsgController {
+public class ZzGroupMsgController
+        extends BaseController<ZzGroupMsgServiceImpl, ZzGroupMsg> {
     /**
      * 服务对象
      */
@@ -57,12 +60,12 @@ public class ZzGroupMsgController {
     @PostMapping("/create")
     public ObjectRestResponse insert(ZzGroupMsg zzGroupMsg){
         zzGroupMsg.setMsgId(RandomId.getUUID());
-        Integer insert = this.zzGroupMsgService.insert(zzGroupMsg);
+//        Integer insert = this.zzGroupMsgService.insert(zzGroupMsg);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
-        if (insert == 0){
-            objectRestResponse.data("失败");
-            return objectRestResponse;
-        }
+//        if (insert == 0){
+//            objectRestResponse.data("失败");
+//            return objectRestResponse;
+//        }
         objectRestResponse.data("成功");
         return objectRestResponse;
     }

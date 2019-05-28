@@ -36,7 +36,7 @@ public interface ZzGroupFileService {
      * @param zzGroupFile 实例对象
      * @return 实例对象
      */
-    Integer insert(ZzGroupFile zzGroupFile);
+    void insert(ZzGroupFile zzGroupFile);
 
     /**
      * 修改数据

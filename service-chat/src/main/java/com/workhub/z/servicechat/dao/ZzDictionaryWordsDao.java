@@ -1,7 +1,10 @@
 package com.workhub.z.servicechat.dao;
 
+import com.workhub.z.servicechat.entity.ZzAt;
 import com.workhub.z.servicechat.entity.ZzDictionaryWords;
 import org.apache.ibatis.annotations.Param;
+import tk.mybatis.mapper.common.Mapper;
+
 import java.util.List;
 
 /**
@@ -10,7 +13,7 @@ import java.util.List;
  * @author makejava
  * @since 2019-05-17 14:56:57
  */
-public interface ZzDictionaryWordsDao {
+public interface ZzDictionaryWordsDao extends Mapper<ZzDictionaryWords> {
 
     /**
      * 通过ID查询单条数据

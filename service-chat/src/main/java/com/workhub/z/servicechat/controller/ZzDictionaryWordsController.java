@@ -1,10 +1,14 @@
 package com.workhub.z.servicechat.controller;
 
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
+import com.github.hollykunge.security.common.rest.BaseController;
 import com.workhub.z.servicechat.config.RandomId;
+import com.workhub.z.servicechat.entity.ZzAt;
 import com.workhub.z.servicechat.entity.ZzDictionaryWords;
 import com.workhub.z.servicechat.entity.ZzGroup;
 import com.workhub.z.servicechat.service.ZzDictionaryWordsService;
+import com.workhub.z.servicechat.service.impl.ZzAtServiceImpl;
+import com.workhub.z.servicechat.service.impl.ZzDictionaryWordsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +23,7 @@ import java.util.Date;
  */
 @RestController
 @RequestMapping("/zzDictionaryWords")
-public class ZzDictionaryWordsController {
+public class ZzDictionaryWordsController extends BaseController<ZzDictionaryWordsServiceImpl, ZzDictionaryWords> {
     /**
      * 服务对象
      */
@@ -39,15 +43,15 @@ public class ZzDictionaryWordsController {
 
     @PostMapping("/create")
     public ObjectRestResponse insert(ZzDictionaryWords zzDictionaryWords,@RequestParam("token")String token){
-        zzDictionaryWords.setId(RandomId.getUUID());
-        zzDictionaryWords.setCreateUser("");//TODO token 拿登陆人信息
-        zzDictionaryWords.setCreateTime(new Date());
-        Integer insert = this.zzDictionaryWordsService.insert(zzDictionaryWords);
+//        zzDictionaryWords.setId(RandomId.getUUID());
+//        zzDictionaryWords.setCreateUser("");//TODO token 拿登陆人信息
+//        zzDictionaryWords.setCreateTime(new Date());
+//        Integer insert = this.zzDictionaryWordsService.insert(zzDictionaryWords);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
-        if (insert == 0){
-            objectRestResponse.data("失败");
-            return objectRestResponse;
-        }
+//        if (insert == 0){
+//            objectRestResponse.data("失败");
+//            return objectRestResponse;
+//        }
         objectRestResponse.data("成功");
         return objectRestResponse;
     }
