@@ -23,11 +23,4 @@ public interface UserMapper extends Mapper<User> {
      * @return 用户列表
      */
     List<User> selectUsersByRoleId(@Param("roleId") String roleId);
-
-    /**
-     * 根据角色id批量删除用户
-     * @param roleId 角色ID
-     * @return 数量
-     */
-    int deleteUsersByRoleId (String roleId);
 }
