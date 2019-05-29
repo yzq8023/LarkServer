@@ -41,7 +41,7 @@
     left join ADMIN_RESOURCEROLEMAP ARR
     on AE.ID = ARR.RESOURCE_ID
     where  ARR.ROLE_ID = #{roleId}
-    and ARR.RESOURCE_TYPE = 'element'
+    and ARR.RESOURCE_TYPE = 'button'
   </select>
   <!--<select id="selectAuthorityElementByUserId" resultMap="BaseResultMap">-->
     <!--select distinct t.code,t.type,t.name,t.uri,t.method,m.title as menu_id from base_resource_authority ra-->
