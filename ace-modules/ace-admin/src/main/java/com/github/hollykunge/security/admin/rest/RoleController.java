@@ -1,5 +1,6 @@
 package com.github.hollykunge.security.admin.rest;
 
+import com.alibaba.fastjson.JSON;
 import com.github.hollykunge.security.admin.biz.RoleBiz;
 import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
 import com.github.hollykunge.security.admin.entity.Role;
@@ -15,6 +16,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -49,7 +51,7 @@ public class RoleController extends BaseController<RoleBiz, Role> {
      */
     @RequestMapping(value = "/{id}/user", method = RequestMethod.PUT)
     @ResponseBody
-    public ObjectRestResponse modifyUsers(@PathVariable String id, String users) {
+    public ObjectRestResponse modifyUsers(@PathVariable String id, @RequestParam("users") String users) {
         baseBiz.modifyRoleUsers(id, users);
         return new ObjectRestResponse().rel(true);
     }
@@ -62,7 +64,7 @@ public class RoleController extends BaseController<RoleBiz, Role> {
      */
     @RequestMapping(value = "/{id}/menu", method = RequestMethod.POST)
     @ResponseBody
-    public ObjectRestResponse modifyMenuAuthority(@PathVariable String id, List<AdminPermission> permissionList) {
+    public ObjectRestResponse modifyMenuAuthority(@PathVariable String id, @RequestBody List<AdminPermission> permissionList) {
         baseBiz.modifyAuthorityMenu(id, permissionList);
         return new ObjectRestResponse().rel(true);
     }
@@ -84,10 +86,11 @@ public class RoleController extends BaseController<RoleBiz, Role> {
      */
     @RequestMapping(value = "/tree", method = RequestMethod.GET)
     @ResponseBody
-    public List<RoleTree> tree(String name) {
-        Role role = new Role();
-        role.setName(name);
-        return getTree(baseBiz.selectList(role), AdminCommonConstant.ROOT);
+    public List<RoleTree> tree(@RequestParam("parentTreeId") String parentTreeId) {
+        if(StringUtils.isEmpty(parentTreeId)){
+            parentTreeId = AdminCommonConstant.ROOT;
+        }
+        return getTree(baseBiz.selectListAll(), parentTreeId);
     }
 
     private List<RoleTree> getTree(List<Role> roles, String root) {
@@ -96,7 +99,8 @@ public class RoleController extends BaseController<RoleBiz, Role> {
         for (Role role : roles) {
             node = new RoleTree();
             node.setLabel(role.getName());
-            BeanUtils.copyProperties(role, node);
+            String jsonNode = JSON.toJSONString(role);
+            node = JSON.parseObject(jsonNode,RoleTree.class);
             trees.add(node);
         }
         return TreeUtil.bulid(trees, root);
