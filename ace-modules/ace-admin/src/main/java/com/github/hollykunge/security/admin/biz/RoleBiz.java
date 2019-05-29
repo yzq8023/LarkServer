@@ -169,15 +169,15 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
     }
 
     /**
-     * 将菜单下Element处理为，有权限的element中defaultcheck字段赋值为true
+     * 将菜单下Element处理为，有权限的element中defaultCheck字段赋值为true
      * 返回参数统一数据格式，供前台页面使用
      * @param allElement  所有的Element
      * @param resourceElement  按角色下的Element
      * @return
      */
-    private List<AdminElement> setDefaultCheck(List<Element> allElement,List<Element> resourceElement){
+    public List<AdminElement> setDefaultCheck(List<Element> allElement,List<Element> resourceElement){
         //menu对应的element接受参数
-        List<AdminElement> menuElemnt = new ArrayList<>();
+        List<AdminElement> menuElement = new ArrayList<>();
         //两种Element进行比对，如果根据角色id获取的Element在所有的Element下
         //则defaultcheck至为true，否则为false
         allElement.stream().forEach(aElement ->{
@@ -186,9 +186,9 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
                 rAdminElement.setDefaultCheck(true);
             }
             BeanUtils.copyProperties(aElement,rAdminElement);
-            menuElemnt.add(rAdminElement);
+            menuElement.add(rAdminElement);
         });
-        return menuElemnt;
+        return menuElement;
     }
 
     /**
