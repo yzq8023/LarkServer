@@ -27,7 +27,7 @@ public class FrontPermission {
     /**
      * actions->methods
      */
-    private String methods;
+//    private String methods;
     /**
      * 暂时没用上null
      */

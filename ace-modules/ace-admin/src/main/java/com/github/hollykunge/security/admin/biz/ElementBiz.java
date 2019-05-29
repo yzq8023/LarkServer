@@ -59,7 +59,7 @@ public class ElementBiz extends BaseBiz<ElementMapper,Element> {
      * @param userId
      * @return
      */
-    public List<Element> getElemntByUserId(String userId){
+    public List<Element> getElementByUserId(String userId){
         List<Element> result = new ArrayList<>();
         List<Role> roleList = roleBiz.getRoleByUserId(userId);
         roleList.stream().forEach(roleEntity ->{
