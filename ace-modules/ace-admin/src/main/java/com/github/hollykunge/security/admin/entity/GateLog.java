@@ -5,7 +5,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
 
-@Table(name = "GATE_LOG")
+@Table(name = "ADMIN_GATELOG")
 public class GateLog {
     @Id
     @Column(name = "ID")
