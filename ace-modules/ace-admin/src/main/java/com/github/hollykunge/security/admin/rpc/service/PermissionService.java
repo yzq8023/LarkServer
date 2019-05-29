@@ -97,7 +97,7 @@ public class PermissionService {
 
         List<Element> elements = elementBiz.getElementByUserId(userId + "");
         List<ActionEntitySet> actionEntitySets = new ArrayList<ActionEntitySet>();
-        element2permission(actionEntitySets, elements);
+        element2permission(result, elements);
 
 
         return result;
@@ -108,18 +108,29 @@ public class PermissionService {
      * @param result
      * @param elements
      */
-    private void element2permission(List<ActionEntitySet> result, List<Element> elements) {
-        ActionEntitySet info;
-        for (Element element : elements) {
+    private void element2permission(List<FrontPermission> result, List<Element> elements) {
 
-            info = new ActionEntitySet();
+        for(FrontPermission frontPermission : result){
 
-            info.setDefaultCheck(true);
-            info.setDescription(element.getDescription());
-            info.setMethod(element.getMethod());
+            List<Element> tempElement = elements.stream()
+                    .filter((Element e) -> frontPermission.getMenuId().contains(e.getMenuId()))
+                    .collect(Collectors.toList());
+            ActionEntitySet info;
+            List<ActionEntitySet> actionEntitySets = new ArrayList<>();
+            for (Element element : tempElement) {
 
-            result.add(info);
+
+                info = new ActionEntitySet();
+
+                info.setDefaultCheck(true);
+                info.setDescription(element.getDescription());
+                info.setMethod(element.getMethod());
+
+                actionEntitySets.add(info);
+            }
+            frontPermission.setActionEntitySetList(actionEntitySets);
         }
+
     }
 
     public FrontUser getUserInfo(String token) throws Exception {
