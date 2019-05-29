@@ -31,8 +31,6 @@
     <!-- element表中要展示的字段 -->
     <result column="METHOD" property="method" jdbcType="VARCHAR" />
     <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
-    <!-- resourceMap表中待展示的字段 -->
-    <result column="DEFAULT_CHECKED" property="defaultChecked" jdbcType="NUMBER" />
   </resultMap>
    <!-- 是不是换表了，这块删除的表换了 -->
   <!--<delete id="deleteByAuthorityIdAndResourceType">-->
