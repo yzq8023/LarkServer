@@ -28,13 +28,20 @@
     <result column="ATTR7" property="attr7" jdbcType="VARCHAR" />
     <result column="ATTR8" property="attr8" jdbcType="VARCHAR" />
   </resultMap>
-    <select id="getAuthorityMenuElement" resultMap="BaseResultMap">
+  <select id="getAuthorityMenuElement" resultMap="BaseResultMap">
     select AE.* from ADMIN_ELEMENT AE
     left join ADMIN_RESOURCEROLEMAP ARR
     on AE.ID = ARR.RESOURCE_ID
     where AE.MENU_ID = #{menuId}
     and ARR.ROLE_ID = #{roleId}
     and ARR.RESOURCE_TYPE = #{type}
+  </select>
+  <select id="getElemntByRoleId" resultMap="BaseResultMap">
+    select AE.* from ADMIN_ELEMENT AE
+    left join ADMIN_RESOURCEROLEMAP ARR
+    on AE.ID = ARR.RESOURCE_ID
+    where  ARR.ROLE_ID = #{roleId}
+    and ARR.RESOURCE_TYPE = 'element'
   </select>
   <!--<select id="selectAuthorityElementByUserId" resultMap="BaseResultMap">-->
     <!--select distinct t.code,t.type,t.name,t.uri,t.method,m.title as menu_id from base_resource_authority ra-->
