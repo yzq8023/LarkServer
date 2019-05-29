@@ -9,9 +9,7 @@ import com.github.hollykunge.security.admin.entity.Element;
 import com.github.hollykunge.security.admin.entity.Menu;
 import com.github.hollykunge.security.admin.entity.Role;
 import com.github.hollykunge.security.admin.entity.User;
-import com.github.hollykunge.security.admin.vo.FrontUser;
-import com.github.hollykunge.security.admin.vo.MenuTree;
-import com.github.hollykunge.security.admin.vo.UserRole;
+import com.github.hollykunge.security.admin.vo.*;
 import com.github.hollykunge.security.api.vo.authority.PermissionInfo;
 import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.github.hollykunge.security.auth.client.jwt.UserAuthUtil;
@@ -48,125 +46,105 @@ public class PermissionService {
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
 
-    public UserInfo getUserByUsername(String username) {
+    public UserInfo getUserByUserId(String userId) {
         UserInfo info = new UserInfo();
-        User user = userBiz.getUserByUsername(username);
+        User user = userBiz.getUserByUserId(userId);
         BeanUtils.copyProperties(user, info);
-        info.setId(user.getId().toString());
+        info.setId(user.getId());
         return info;
     }
 
-    public UserInfo validate(String username,String password){
+    public UserInfo validate(String userId,String password){
         UserInfo info = new UserInfo();
-        User user = userBiz.getUserByUsername(username);
+        User user = userBiz.getUserByUserId(userId);
         if (encoder.matches(password, user.getPassword())) {
             BeanUtils.copyProperties(user, info);
-            info.setId(user.getId().toString());
+            info.setId(user.getId());
         }
         return info;
     }
 
-    public List<PermissionInfo> getAllPermission() {
+    public List<FrontPermission> getAllPermission() {
         List<Menu> menus = menuBiz.selectListAll();
-        List<PermissionInfo> result = new ArrayList<PermissionInfo>();
+        List<FrontPermission> result = new ArrayList<FrontPermission>();
         PermissionInfo info = null;
         menu2permission(menus, result);
-        List<Element> elements = elementBiz.getAllElementPermissions();
+        List<Element> elements = elementBiz.selectListAll();
         element2permission(result, elements);
         return result;
     }
 
-    private void menu2permission(List<Menu> menus, List<PermissionInfo> result) {
-        PermissionInfo info;
+    private void menu2permission(List<Menu> menus, List<FrontPermission> result) {
+        FrontPermission info;
         for (Menu menu : menus) {
-            if (StringUtils.isBlank(menu.getHref())) {
-                menu.setHref("/" + menu.getCode());
-            }
-            info = new PermissionInfo();
-            info.setCode(menu.getCode());
-            info.setType(AdminCommonConstant.RESOURCE_TYPE_MENU);
-            info.setName(AdminCommonConstant.RESOURCE_ACTION_VISIT);
-            String uri = menu.getHref();
-            if (!uri.startsWith("/")) {
-                uri = "/" + uri;
-            }
-            info.setUri(uri);
-            info.setMethod(AdminCommonConstant.RESOURCE_REQUEST_METHOD_GET);
-            result.add(info
-            );
-            info.setMenu(menu.getTitle());
-        }
-    }
-
-    public List<PermissionInfo> getPermissionByUserId(String userId) {
-//        User user = userBiz.getUserByUserId(userId);
-        List<Menu> menus = menuBiz.getUserAuthorityMenuByUserId(userId + "");
-        List<PermissionInfo> result = new ArrayList<PermissionInfo>();
-        PermissionInfo info = null;
-        menu2permission(menus, result);
-        List<Element> elements = elementBiz.getAuthorityElementByUserId(userId + "");
-        element2permission(result, elements);
-        return result;
-    }
-
-    private void element2permission(List<PermissionInfo> result, List<Element> elements) {
-        PermissionInfo info;
-        for (Element element : elements) {
-            info = new PermissionInfo();
-            info.setCode(element.getCode());
-            info.setType(element.getType());
-            info.setUri(element.getUri());
-            info.setMethod(element.getMethod());
-            info.setName(element.getName());
-            info.setMenu(element.getMenuId());
+            info = new FrontPermission();
+            info.setMenuId(menu.getId());
+            info.setTitle(menu.getTitle());
             result.add(info);
         }
     }
 
+    /**
+     * 根据userId获取角色所属菜单功能
+     * @param userId
+     * @return
+     */
+    public List<FrontPermission> getPermissionByUserId(String userId) {
 
-    private List<MenuTree> getMenuTree(List<Menu> menus, int root) {
-        List<MenuTree> trees = new ArrayList<MenuTree>();
-        MenuTree node = null;
-        for (Menu menu : menus) {
-            node = new MenuTree();
-            BeanUtils.copyProperties(menu, node);
-            trees.add(node);
+        List<Menu> menus = menuBiz.getUserAuthorityMenuByUserId(userId + "");
+        List<FrontPermission> result = new ArrayList<FrontPermission>();
+        menu2permission(menus, result);
+
+        List<Element> elements = elementBiz.getElementByUserId(userId + "");
+        List<ActionEntitySet> actionEntitySets = new ArrayList<ActionEntitySet>();
+        element2permission(actionEntitySets, elements);
+
+
+        return result;
+    }
+
+    /**
+     * 菜单功能-》操作权限
+     * @param result
+     * @param elements
+     */
+    private void element2permission(List<ActionEntitySet> result, List<Element> elements) {
+        ActionEntitySet info;
+        for (Element element : elements) {
+
+            info = new ActionEntitySet();
+
+            info.setDefaultCheck(true);
+            info.setDescription(element.getDescription());
+            info.setMethod(element.getMethod());
+
+            result.add(info);
         }
-        return TreeUtil.bulid(trees, root);
     }
 
     public FrontUser getUserInfo(String token) throws Exception {
-        String username = userAuthUtil.getInfoFromToken(token).getUniqueName();
-        if (username == null) {
+        String userId = userAuthUtil.getInfoFromToken(token).getId();
+        if (userId == null) {
             return null;
         }
-        UserInfo user = this.getUserByUsername(username);
+        UserInfo user = this.getUserByUserId(userId);
         FrontUser frontUser = new FrontUser();
         BeanUtils.copyProperties(user, frontUser);
 
-        UserRole userRole = this.getUserRoleByUserId(username);
+        UserRole userRole = this.getUserRoleByUserId(userId);
         frontUser.setUserRole(userRole);
 
         return frontUser;
     }
 
-    public List<MenuTree> getMenusByUsername(String token) throws Exception {
-        String username = userAuthUtil.getInfoFromToken(token).getUniqueName();
-        if (username == null) {
-            return null;
-        }
-        User user = userBiz.getUserByUsername(username);
-        List<Menu> menus = menuBiz.getUserAuthorityMenuByUserId(user.getId());
-        return getMenuTree(menus,Integer.parseInt(AdminCommonConstant.ROOT));
-    }
 
-
-    public UserRole getUserRoleByUserId(String username) {
-        Role role = getRoleByUserId(username);
+    public UserRole getUserRoleByUserId(String userId) {
+        List<Role> roleList = roleBiz.getRoleByUserId(userId);
         UserRole userRole = new UserRole();
-        BeanUtils.copyProperties(role, userRole);
-        List<PermissionInfo> permissionInfoList = this.getPermissionByUsername(username);
-        userRole.setPermissionInfos(permissionInfoList);
+        //使用list可能有点不太对劲
+        BeanUtils.copyProperties(roleList.get(0), userRole);
+        List<FrontPermission> frontPermissionList = this.getPermissionByUserId(userId);
+        userRole.setFrontPermissionList(frontPermissionList);
         return userRole;
     }
 }

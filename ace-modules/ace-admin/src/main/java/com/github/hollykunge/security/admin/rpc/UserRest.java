@@ -4,6 +4,7 @@ import com.ace.cache.annotation.Cache;
 import com.github.hollykunge.security.admin.biz.UserBiz;
 import com.github.hollykunge.security.admin.entity.User;
 import com.github.hollykunge.security.admin.rpc.service.PermissionService;
+import com.github.hollykunge.security.admin.vo.FrontPermission;
 import com.github.hollykunge.security.api.vo.authority.PermissionInfo;
 import com.github.hollykunge.security.api.vo.user.UserInfo;
 import org.springframework.beans.BeanUtils;
@@ -30,13 +31,13 @@ public class UserRest {
     @Cache(key="permission")
     @RequestMapping(value = "/permissions", method = RequestMethod.GET)
     public @ResponseBody
-    List<PermissionInfo> getAllPermission(){
+    List<FrontPermission> getAllPermission(){
         return permissionService.getAllPermission();
     }
 
     @Cache(key="permission:u{1}")
     @RequestMapping(value = "/user/un/{userId}/permissions", method = RequestMethod.GET)
-    public @ResponseBody List<PermissionInfo> getPermissionByUserId(@PathVariable("userId") String userId){
+    public @ResponseBody List<FrontPermission> getPermissionByUserId(@PathVariable("userId") String userId){
         return permissionService.getPermissionByUserId(userId);
     }
 
