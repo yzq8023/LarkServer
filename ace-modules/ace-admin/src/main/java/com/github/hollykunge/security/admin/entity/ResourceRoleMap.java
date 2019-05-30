@@ -5,9 +5,11 @@ import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 @Data
+@Table(name = "ADMIN_RESOURCEROLEMAP")
 public class ResourceRoleMap extends BaseEntity {
 
     @Column(name = "RESOURCE_ID")

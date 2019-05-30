@@ -4,8 +4,10 @@ import com.github.hollykunge.security.common.entity.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.Column;
+import javax.persistence.Table;
 
 @Data
+@Table(name = "ADMIN_ELEMENT")
 public class Element extends BaseEntity {
 
     @Column(name = "CODE")

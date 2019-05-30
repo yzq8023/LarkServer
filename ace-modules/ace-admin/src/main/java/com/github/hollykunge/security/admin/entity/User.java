@@ -4,9 +4,11 @@ import com.github.hollykunge.security.common.entity.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.Column;
+import javax.persistence.Table;
 import java.util.Date;
 
 @Data
+@Table(name = "ADMIN_USER")
 public class User extends BaseEntity {
 
     @Column(name = "H_ID")
