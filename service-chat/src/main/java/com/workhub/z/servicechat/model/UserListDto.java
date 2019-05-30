@@ -2,9 +2,9 @@ package com.workhub.z.servicechat.model;
 
 public class UserListDto {
 
-    private String userId;
+    private String userId;//人id
 
-    private String userLevels;
+    private String userLevels;//人等级
 
     public String getUserId() {
         return userId;
