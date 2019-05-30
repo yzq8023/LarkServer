@@ -33,4 +33,8 @@ public class CommonConstants {
 
     //密级判断
     public static final Integer EX_LEVELS = 40000;
+
+    public static final String WEB_USERHOST = "userHost";
+    public static final String WEB_USERNAME = "userName";
+    public static final String WEB_USERID = "userId";
 }

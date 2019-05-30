@@ -57,7 +57,7 @@ public class RoleController extends BaseController<RoleBiz, Role> {
     }
 
     /**
-     * 批量修改角色菜单，TODO：参数形式？
+     * 批量修改角色菜单
      *
      * @param id        角色id
      * @param permissionList 被勾选的权限Element和Element所对应的菜单信息
