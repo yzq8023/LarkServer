@@ -12,7 +12,7 @@
     <result column="HREF" property="href" jdbcType="VARCHAR" />
     <result column="ICON" property="icon" jdbcType="VARCHAR" />
     <result column="TYPE" property="type" jdbcType="CHAR" />
-    <result column="ORDER_NUM" property="orderNum" jdbcType="DECIMAL" />
+    <result column="ORDER_NUM" property="orderNum" jdbcType="NUMERIC" />
     <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
     <result column="PATH" property="path" jdbcType="VARCHAR" />
     <result column="ENABLED" property="enabled" jdbcType="CHAR" />
