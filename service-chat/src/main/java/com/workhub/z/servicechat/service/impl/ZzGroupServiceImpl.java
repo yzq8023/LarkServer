@@ -146,6 +146,11 @@ public class ZzGroupServiceImpl extends BaseBiz<ZzGroupDao,ZzGroup > implements 
         return this.zzGroupDao.groupUserListTotal(id);
     }
 
+    @Override
+    public List<ZzGroup> queryGroupListByUserId(String id) throws Exception {
+        return this.zzGroupDao.queryGroupListByUserId(id);
+    }
+
     private List<GroupUserListVo> orderByGroupUser(List<GroupUserListVo> groupUserListVos,String creator) throws RuntimeException{
         List<GroupUserListVo> resultList = groupUserListVos.stream()
                 .filter(listf -> !listf.getUserId().equals(creator)&&listf.getVip()!=0)
