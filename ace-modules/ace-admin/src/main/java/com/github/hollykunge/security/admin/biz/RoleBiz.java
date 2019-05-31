@@ -8,6 +8,7 @@ import com.github.hollykunge.security.admin.mapper.*;
 import com.github.hollykunge.security.admin.vo.*;
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.exception.BaseException;
+import com.github.hollykunge.security.common.util.EntityUtils;
 import com.github.hollykunge.security.common.util.UUIDUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -71,7 +72,8 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
                 roleUserMapDo = new RoleUserMap();
                 roleUserMapDo.setRoleId(roleId);
                 roleUserMapDo.setUserId(m);
-                roleUserMapDo.setId(UUIDUtils.generateShortUuid());
+                //给基类赋值
+                EntityUtils.setCreatAndUpdatInfo(roleUserMapDo);
                 roleUserMapMapper.insertSelective(roleUserMapDo);
             }
         }
@@ -104,8 +106,7 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
             authority.setRoleId(roleId + "");
             authority.setResourceId(menuId);
             authority.setResourceType(AdminCommonConstant.RESOURCE_TYPE_MENU);
-            //todo:自定义Uuid，后期想一下能不能抽出来做拦截固定赋值基类
-            authority.setId(UUIDUtils.generateShortUuid());
+            EntityUtils.setCreatAndUpdatInfo(authority);
             resourceRoleMapMapper.insertSelective(authority);
         }
         //并行添加element到resourceRoleMap中
@@ -115,8 +116,7 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
                 resourceRoleMap.setResourceId(element.getId());
                 resourceRoleMap.setResourceType(AdminCommonConstant.RESOURCE_TYPE_BTN);
                 resourceRoleMap.setRoleId(roleId);
-                //todo:自定义Uuid，后期想一下能不能抽出来做拦截固定赋值基类
-                resourceRoleMap.setId(UUIDUtils.generateShortUuid());
+                EntityUtils.setCreatAndUpdatInfo(resourceRoleMap);
                 resourceRoleMapMapper.insertSelective(resourceRoleMap);
             });
         });
@@ -168,8 +168,9 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
             //添加AdminPermission参数
             AdminPermission adminPermission = new AdminPermission();
             BeanUtils.copyProperties(menu,adminPermission);
-            //单独处理menuid
+            //单独处理menuid,roleId
             adminPermission.setMenuId(menu.getId());
+            adminPermission.setRoleId(roleId);
             //给菜单赋值所有的Element
             adminPermission.setActionEntitySetList(menuElemnt);
             resultPermission.add(adminPermission);

@@ -2,13 +2,13 @@ package com.workhub.z.servicechat.VO;
 
 public class NoReadVo {
 
-    private String consumer;
+    private String consumer;//消费人id
 
-    private String sender;
+    private String sender;//发送人id
 
-    private String sendType;
+    private String sendType;//消息来源类型
 
-    private Integer msgCount;
+    private Integer msgCount;//消息数量
 
     public String getConsumer() {
         return consumer;

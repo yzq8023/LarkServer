@@ -59,11 +59,12 @@ public interface ZzUserGroupService {
      */
     boolean deleteById(String id);
 
+    //获取群组信息分页
     PageInfo<GroupListVo> groupUserList(String id, int page, int size) throws Exception;
-
+    //总记录数
     Long groupUserListTotal(String id) throws Exception;
-
+    //获取最新消息列表
     List<UserNewMsgVo> getUserNewMsgList(String id);
-
+    //获取最新联系人列表
     List<ContactVO> getContactVOList(String id);
 }

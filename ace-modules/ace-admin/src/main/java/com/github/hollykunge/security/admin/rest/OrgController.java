@@ -1,20 +1,20 @@
 package com.github.hollykunge.security.admin.rest;
 
+import com.alibaba.fastjson.JSON;
 import com.github.hollykunge.security.admin.biz.OrgBiz;
 import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
 import com.github.hollykunge.security.admin.entity.Org;
 import com.github.hollykunge.security.admin.vo.AdminUser;
 import com.github.hollykunge.security.admin.vo.OrgTree;
+import com.github.hollykunge.security.admin.vo.RoleTree;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.rest.BaseController;
 import com.github.hollykunge.security.common.util.TreeUtil;
 import io.swagger.annotations.Api;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,31 +47,36 @@ public class OrgController extends BaseController<OrgBiz, Org> {
      */
     @RequestMapping(value = "/{id}/user", method = RequestMethod.PUT)
     @ResponseBody
-    public ObjectRestResponse modifyUsers(@PathVariable String id, String users) {
+    public ObjectRestResponse modifyUsers(@PathVariable String id,@RequestParam("users") String users) {
         baseBiz.modifyOrgUsers(id, users);
         return new ObjectRestResponse().rel(true);
     }
 
     /**
-     * 获取组织树
+     * 根据父级id取下面的org
+     * ps：如果parent为null时默认取root下的组织
+     * @param parentTreeId 父级id
+     * @return
      */
     @RequestMapping(value = "/tree", method = RequestMethod.GET)
     @ResponseBody
-    public List<OrgTree> tree(String name) {
-        Org org = new Org();
-        org.setOrgName(name);
-        return getTree(baseBiz.selectList(org), AdminCommonConstant.ROOT);
+    public List<OrgTree> tree(@RequestParam("parentTreeId") String parentTreeId) {
+        if(StringUtils.isEmpty(parentTreeId)){
+            parentTreeId = AdminCommonConstant.ROOT;
+        }
+        return getTree(baseBiz.selectListAll(), parentTreeId);
     }
 
-    private List<OrgTree> getTree(List<Org> orgs, String root) {
+    private List<OrgTree> getTree(List<Org> orgs, String parentTreeId) {
         List<OrgTree> trees = new ArrayList<OrgTree>();
         OrgTree node;
         for (Org org : orgs) {
             node = new OrgTree();
             node.setLabel(org.getOrgName());
-            BeanUtils.copyProperties(org, node);
+            String jsonNode = JSON.toJSONString(org);
+            node = JSON.parseObject(jsonNode, OrgTree.class);
             trees.add(node);
         }
-        return TreeUtil.bulid(trees, root);
+        return TreeUtil.bulid(trees, parentTreeId);
     }
 }

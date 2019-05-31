@@ -52,5 +52,6 @@ public interface ZzMsgTabRelationService {
      */
     boolean deleteById(String id);
 
+    //删除记录
     boolean deleteByTabId(String tabId);
 }
