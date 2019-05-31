@@ -58,4 +58,13 @@ public interface ZzGroupService {
     PageInfo<GroupUserListVo> groupUserList(String id, int page, int size) throws Exception;
 
     Long groupUserListTotal(String id) throws Exception;
+
+    /**
+    *@Description: 根据用户id查询用户所在群组
+    *@Param: userId
+    *@return: list<zzGroup>
+    *@Author: 忠
+    *@date: 2019/5/29
+    */
+    List<ZzGroup> queryGroupListByUserId(String id) throws Exception;
 }
