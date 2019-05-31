@@ -12,7 +12,7 @@
     <result column="PATH" property="path" jdbcType="VARCHAR" />
 
     <result column="TYPE" property="type" jdbcType="CHAR" />
-    <result column="GROUP_TYPE" property="groupType" jdbcType="DECIMAL" />
+    <result column="GROUP_TYPE" property="groupType" jdbcType="NUMERIC" />
     <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
     <result column="ORG_ID" property="orgId" jdbcType="VARCHAR" />
     <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
