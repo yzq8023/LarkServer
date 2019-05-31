@@ -101,5 +101,11 @@ public class User extends BaseEntity {
     @Column(name = "DESCRIPTION")
     private String description;
 
+    /**
+     * 密码
+     */
+    @Column(name = "PASSWORD")
+    private String password;
+
 
 }
