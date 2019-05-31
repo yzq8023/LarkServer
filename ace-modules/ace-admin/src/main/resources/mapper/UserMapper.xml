@@ -40,6 +40,7 @@
     <result column="ATTR6" jdbcType="VARCHAR" property="attr6" />
     <result column="ATTR7" jdbcType="VARCHAR" property="attr7" />
     <result column="ATTR8" jdbcType="VARCHAR" property="attr8" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
   </resultMap>
   <select id="selectUsersByRoleId" resultMap="BaseResultMap">
     select AU.* from ADMIN_USER AU
