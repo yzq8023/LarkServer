@@ -22,7 +22,7 @@
     <result column="DELETED" jdbcType="VARCHAR" property="deleted" />
     <result column="REFA" jdbcType="VARCHAR" property="refa" />
     <result column="REFB" jdbcType="VARCHAR" property="refb" />
-    <result column="AVATOR" jdbcType="VARCHAR" property="avator" />
+    <result column="AVATAR" jdbcType="VARCHAR" property="avatar" />
     <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
     <result column="CRT_TIME" jdbcType="TIMESTAMP" property="crtTime" />
     <result column="CRT_USER" jdbcType="VARCHAR" property="crtUser" />

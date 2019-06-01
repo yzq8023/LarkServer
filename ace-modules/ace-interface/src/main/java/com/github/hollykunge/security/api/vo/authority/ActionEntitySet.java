@@ -1,12 +1,11 @@
-package com.github.hollykunge.security.admin.vo;
+package com.github.hollykunge.security.api.vo.authority;
 
 import lombok.Data;
 
 /**
- * 菜单内部功能控制实体
- *
- * @author: holly
- * @since: 2019/5/9
+ * @description: 菜单功能权限
+ * @author: dd
+ * @since: 2019-06-01
  */
 @Data
 public class ActionEntitySet {
