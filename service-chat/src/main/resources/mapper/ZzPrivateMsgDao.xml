@@ -75,8 +75,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="msgId" useGeneratedKeys="true">
-        insert into ZZ_PRIVATE_MSG(MSG_SENDER, MSG_RECEIVER, SEND_TIME, RECEIVER_TIME, IS_READ, MSG, MSG_TYPE, MSG_PATH, IS_DELETE, LEVELS)
-        values (#{msgSender}, #{msgReceiver}, #{sendTime}, #{receiverTime}, #{isRead}, #{msg}, #{msgType}, #{msgPath}, #{isDelete}, #{levels})
+        insert into ZZ_PRIVATE_MSG(MSG_ID,MSG_SENDER, MSG_RECEIVER, SEND_TIME, RECEIVER_TIME, IS_READ, MSG, MSG_TYPE, MSG_PATH, IS_DELETE, LEVELS)
+        values (#{msgId},#{msgSender}, #{msgReceiver}, #{sendTime}, #{receiverTime}, #{isRead}, #{msg}, #{msgType}, #{msgPath}, #{isDelete}, #{levels})
     </insert>
 
     <!--通过主键修改数据-->

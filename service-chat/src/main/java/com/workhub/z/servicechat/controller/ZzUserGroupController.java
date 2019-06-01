@@ -102,4 +102,6 @@ public class ZzUserGroupController extends BaseController<ZzUserGroupServiceImpl
         List<UserNewMsgVo> userNewMsgList = this.zzUserGroupService.getUserNewMsgList(id);
         return new ListRestResponse("成功",0,userNewMsgList);
     }
+
+
 }

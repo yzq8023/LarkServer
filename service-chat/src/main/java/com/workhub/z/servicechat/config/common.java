@@ -6,6 +6,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.VO.GroupInfoVO;
 import com.workhub.z.servicechat.entity.ZzDictionaryWords;
+import org.tio.core.ChannelContext;
+import org.tio.core.Tio;
+import org.tio.utils.lock.SetWithLock;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -94,7 +97,8 @@ public class common {
      * @param zzDictionaryWordsList
      * @return
      */
-    public static String stringSearch(String txt, List<ZzDictionaryWords> zzDictionaryWordsList) {
+    public static String stringSearch(String txt,List<ZzDictionaryWords> zzDictionaryWordsList) {
+        // TODO: 2019/5/31 获取涉密词汇列表
         if(null == txt) throw new NullPointerException("txt is null");
         if(null == zzDictionaryWordsList||zzDictionaryWordsList.isEmpty()) throw new NullPointerException("zzDictionaryWordsList is null");
         Set<String> strSet = new HashSet<String>();
@@ -121,5 +125,31 @@ public class common {
             txt.replace(list.getWordName(),list.getReplaceWord());
         });
         return txt;
+    }
+    /**
+    *@Description: 判断用户是否在线
+    *@Param: 上下文ChannelContext
+    *@return: boolean
+    *@Author: 忠
+    *@date: 2019/5/30
+    */
+    public static boolean checkUserOnline(ChannelContext channelContext,String userId){
+        ChannelContext checkChannelContext =
+
+                Tio.getChannelContextByBsId(channelContext.getGroupContext(),userId);
+        //检查是否在线
+        boolean isOnline = checkChannelContext != null && !checkChannelContext.isClosed;
+        return isOnline;
+    }
+
+    /**
+    *@Description: 判断msg数据体是否正确
+    *@Param: string 接收的消息
+    *@return: boolean
+    *@Author: 忠
+    *@date: 2019/5/30
+    */
+    public static boolean isJson(String text){
+        return false;
     }
 }
