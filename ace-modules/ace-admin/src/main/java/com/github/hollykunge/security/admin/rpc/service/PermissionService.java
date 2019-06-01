@@ -4,18 +4,16 @@ import com.github.hollykunge.security.admin.biz.ElementBiz;
 import com.github.hollykunge.security.admin.biz.MenuBiz;
 import com.github.hollykunge.security.admin.biz.RoleBiz;
 import com.github.hollykunge.security.admin.biz.UserBiz;
-import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
 import com.github.hollykunge.security.admin.entity.Element;
 import com.github.hollykunge.security.admin.entity.Menu;
 import com.github.hollykunge.security.admin.entity.Role;
 import com.github.hollykunge.security.admin.entity.User;
 import com.github.hollykunge.security.admin.vo.*;
-import com.github.hollykunge.security.api.vo.authority.PermissionInfo;
+import com.github.hollykunge.security.api.vo.authority.ActionEntitySet;
+import com.github.hollykunge.security.api.vo.authority.FrontPermission;
 import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.github.hollykunge.security.auth.client.jwt.UserAuthUtil;
-import com.github.hollykunge.security.common.constant.CommonConstants;
-import com.github.hollykunge.security.common.util.TreeUtil;
-import org.apache.commons.lang3.StringUtils;
+import com.github.hollykunge.security.common.util.StringHelper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,7 +22,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * 初始化用户权限服务
@@ -64,10 +61,13 @@ public class PermissionService {
         return info;
     }
 
+    /**
+     * 获取所有的资源权限，包括菜单和按钮
+     * @return
+     */
     public List<FrontPermission> getAllPermission() {
         List<Menu> menus = menuBiz.selectListAll();
         List<FrontPermission> result = new ArrayList<FrontPermission>();
-        PermissionInfo info = null;
         menu2permission(menus, result);
         List<Element> elements = elementBiz.selectListAll();
         element2permission(result, elements);
@@ -96,9 +96,7 @@ public class PermissionService {
         menu2permission(menus, result);
 
         List<Element> elements = elementBiz.getElementByUserId(userId + "");
-        List<ActionEntitySet> actionEntitySets = new ArrayList<ActionEntitySet>();
         element2permission(result, elements);
-
 
         return result;
     }
@@ -129,6 +127,7 @@ public class PermissionService {
                 actionEntitySets.add(info);
             }
             frontPermission.setActionEntitySetList(actionEntitySets);
+            frontPermission.setMethods(StringHelper.getObjectValue(actionEntitySets));
         }
 
     }

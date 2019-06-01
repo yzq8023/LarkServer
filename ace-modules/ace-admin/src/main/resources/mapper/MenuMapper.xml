@@ -9,7 +9,7 @@
     <result column="CODE" property="code" jdbcType="VARCHAR" />
     <result column="TITLE" property="title" jdbcType="VARCHAR" />
     <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
-    <result column="HREF" property="href" jdbcType="VARCHAR" />
+    <result column="URI" property="uri" jdbcType="VARCHAR" />
     <result column="ICON" property="icon" jdbcType="VARCHAR" />
     <result column="TYPE" property="type" jdbcType="CHAR" />
     <result column="ORDER_NUM" property="orderNum" jdbcType="NUMERIC" />

@@ -1,7 +1,7 @@
 package com.github.hollykunge.security.gate.filter;
 
 import com.alibaba.fastjson.JSON;
-import com.github.hollykunge.security.api.vo.authority.PermissionInfo;
+import com.github.hollykunge.security.api.vo.authority.FrontPermission;
 import com.github.hollykunge.security.api.vo.log.LogInfo;
 import com.github.hollykunge.security.auth.client.config.ServiceAuthConfig;
 import com.github.hollykunge.security.auth.client.config.UserAuthConfig;
@@ -101,11 +101,11 @@ public class AdminAccessFilter extends ZuulFilter {
             return null;
         }
         //获取所有的资源信息，包括menu和element
-        List<PermissionInfo> permissionIfs = userService.getAllPermissionInfo();
+        List<FrontPermission> permissionIfs = userService.getAllPermissionInfo();
         // 判断当前资源是否属于权限资源
-        Stream<PermissionInfo> stream = getPermissionIfs(requestUri, method, permissionIfs);
-        List<PermissionInfo> result = stream.collect(Collectors.toList());
-        PermissionInfo[] permissions = result.toArray(new PermissionInfo[]{});
+        Stream<FrontPermission> stream = getPermissionIfs(requestUri, method, permissionIfs);
+        List<FrontPermission> result = stream.collect(Collectors.toList());
+        FrontPermission[] permissions = result.toArray(new FrontPermission[]{});
 
         if (permissions.length > 0) {
             //判断用户是否有当前资源访问权限
@@ -124,15 +124,14 @@ public class AdminAccessFilter extends ZuulFilter {
      * @param serviceInfo
      * @return
      */
-    private Stream<PermissionInfo> getPermissionIfs(final String requestUri, final String method, List<PermissionInfo> serviceInfo) {
-        return serviceInfo.parallelStream().filter(new Predicate<PermissionInfo>() {
+    private Stream<FrontPermission> getPermissionIfs(final String requestUri, final String method, List<FrontPermission> serviceInfo) {
+        return serviceInfo.parallelStream().filter(new Predicate<FrontPermission>() {
             @Override
-            public boolean test(PermissionInfo permissionInfo) {
-                String url = permissionInfo.getUri();
-                String uri = url.replaceAll("\\{\\*\\}", "[a-zA-Z\\\\d]+");
+            public boolean test(FrontPermission permissionInfo) {
+                String uriTemp = permissionInfo.getUri();
+                String uri = uriTemp.replaceAll("\\{\\*\\}", "[a-zA-Z\\\\d]+");
                 String regEx = "^" + uri + "$";
-                return (Pattern.compile(regEx).matcher(requestUri).find() || requestUri.startsWith(url + "/"))
-                        && method.equals(permissionInfo.getMethod());
+                return Pattern.compile(regEx).matcher(requestUri).find() && method.equals(permissionInfo.getMethods());
             }
         });
     }
@@ -140,12 +139,12 @@ public class AdminAccessFilter extends ZuulFilter {
     /**
      * 在上下文中设置当前用户信息和操作日志
      */
-    private void setCurrentUserInfoAndLog(RequestContext ctx, IJWTInfo user, PermissionInfo pm) {
+    private void setCurrentUserInfoAndLog(RequestContext ctx, IJWTInfo user, FrontPermission pm) {
         String host = ClientUtil.getClientIp(ctx.getRequest());
         ctx.addZuulRequestHeader("userId", user.getId());
         ctx.addZuulRequestHeader("userName", URLEncoder.encode(user.getName()));
         ctx.addZuulRequestHeader("userHost", ClientUtil.getClientIp(ctx.getRequest()));
-        LogInfo logInfo = new LogInfo(pm.getMenu(), pm.getName(), pm.getUri(), new Date(), user.getId(), user.getName(), host);
+        LogInfo logInfo = new LogInfo(pm.getMenuId(), pm.getTitle(), pm.getUri(), new Date(), user.getId(), user.getName(), host);
         DBLog.getInstance().setLogService(logService).offerQueue(logInfo);
     }
 
@@ -173,15 +172,15 @@ public class AdminAccessFilter extends ZuulFilter {
      * @param ctx
      * @param user
      */
-    private void checkUserPermission(PermissionInfo[] permissions, RequestContext ctx, IJWTInfo user) {
+    private void checkUserPermission(FrontPermission[] permissions, RequestContext ctx, IJWTInfo user) {
         //根据用户id获取资源列表，包括菜单和菜单功能
-        List<PermissionInfo> permissionInfos = userService.getPermissionByUsername(user.getUniqueName());
-        PermissionInfo current = null;
-        for (PermissionInfo info : permissions) {
-            boolean anyMatch = permissionInfos.parallelStream().anyMatch(new Predicate<PermissionInfo>() {
+        List<FrontPermission> permissionInfos = userService.getPermissionByUserId(user.getId());
+        FrontPermission current = null;
+        for (FrontPermission info : permissions) {
+            boolean anyMatch = permissionInfos.parallelStream().anyMatch(new Predicate<FrontPermission>() {
                 @Override
-                public boolean test(PermissionInfo permissionInfo) {
-                    return permissionInfo.getCode().equals(info.getCode());
+                public boolean test(FrontPermission permissionInfo) {
+                    return permissionInfo.getMenuId().equals(info.getMenuId());
                 }
             });
             if (anyMatch) {
@@ -192,9 +191,10 @@ public class AdminAccessFilter extends ZuulFilter {
         if (current == null) {
             setFailedRequest(JSON.toJSONString(new TokenForbiddenResponse("Token Forbidden!")), 200);
         } else {
-            if (!RequestMethod.GET.toString().equals(current.getMethod())) {
-                setCurrentUserInfoAndLog(ctx, user, current);
-            }
+            setCurrentUserInfoAndLog(ctx, user, current);
+//            if (!RequestMethod.GET.toString().equals(current.get)) {
+//                setCurrentUserInfoAndLog(ctx, user, current);
+//            }
         }
     }
 

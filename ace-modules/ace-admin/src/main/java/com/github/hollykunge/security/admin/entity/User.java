@@ -93,8 +93,8 @@ public class User extends BaseEntity {
     /**
      * 头像
      */
-    @Column(name = "AVATOR")
-    private String avator;
+    @Column(name = "AVATAR")
+    private String avatar;
     /**
      * 描述
      */
