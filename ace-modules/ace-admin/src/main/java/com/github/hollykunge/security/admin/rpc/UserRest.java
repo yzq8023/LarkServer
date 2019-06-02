@@ -51,7 +51,7 @@ public class UserRest {
         UserInfo info = new UserInfo();
 
         BeanUtils.copyProperties(user, info);
-        info.setId(user.getId().toString());
+        info.setId(user.getId());
         return info;
     }
 

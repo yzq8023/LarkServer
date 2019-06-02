@@ -39,4 +39,7 @@ public class Menu extends BaseEntity {
 
     @Column(name = "ENABLED")
     private String enabled;
+
+    @Column(name = "PERMISSION_ID")
+    private String permissionId;
 }

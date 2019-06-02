@@ -16,21 +16,24 @@ public class FrontPermission {
      */
     private String roleId;
     /**
+     * 菜单id
      * permissionId->menuId
      */
     private String menuId;
     /**
+     * 权限标识
+     */
+    private String permissionId;
+    /**
+     * 菜单名称
      * permissionName->title
      */
     private String title;
     /**
+     * 方法列表
      * actions->methods
      */
     private String methods;
-    /**
-     * 暂时没用上null
-     */
-    private String actionList;
     /**
      * 权限资源路径
      */

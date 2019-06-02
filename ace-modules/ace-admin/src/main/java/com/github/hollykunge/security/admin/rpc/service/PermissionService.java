@@ -43,6 +43,11 @@ public class PermissionService {
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
 
+    /**
+     * 获取用户信息
+     * @param userId
+     * @return
+     */
     public UserInfo getUserByUserId(String userId) {
         UserInfo info = new UserInfo();
         User user = userBiz.getUserByUserId(userId);
@@ -51,6 +56,12 @@ public class PermissionService {
         return info;
     }
 
+    /**
+     * 验证用户
+     * @param userId
+     * @param password
+     * @return
+     */
     public UserInfo validate(String userId,String password){
         UserInfo info = new UserInfo();
         User user = userBiz.getUserByUserId(userId);
@@ -74,6 +85,11 @@ public class PermissionService {
         return result;
     }
 
+    /**
+     * 菜单权限
+     * @param menus
+     * @param result
+     */
     private void menu2permission(List<Menu> menus, List<FrontPermission> result) {
         FrontPermission info;
         for (Menu menu : menus) {
@@ -102,7 +118,7 @@ public class PermissionService {
     }
 
     /**
-     * 菜单功能-》操作权限
+     * 元素权限
      * @param result
      * @param elements
      */
@@ -132,6 +148,12 @@ public class PermissionService {
 
     }
 
+    /**
+     * 获取前端用户信息
+     * @param token
+     * @return
+     * @throws Exception
+     */
     public FrontUser getUserInfo(String token) throws Exception {
         String userId = userAuthUtil.getInfoFromToken(token).getId();
         if (userId == null) {
@@ -147,7 +169,11 @@ public class PermissionService {
         return frontUser;
     }
 
-
+    /**
+     * 获取用户角色信息
+     * @param userId
+     * @return
+     */
     public UserRole getUserRoleByUserId(String userId) {
         List<Role> roleList = roleBiz.getRoleByUserId(userId);
         UserRole userRole = new UserRole();
