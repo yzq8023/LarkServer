@@ -30,7 +30,7 @@ import java.util.List;
  * @create 2017-06-12 8:49
  */
 @Controller
-@RequestMapping("menu")
+@RequestMapping("/admin/menu")
 public class MenuController extends BaseController<MenuBiz, Menu> {
     @Autowired
     private UserBiz userBiz;
@@ -42,7 +42,7 @@ public class MenuController extends BaseController<MenuBiz, Menu> {
      * @param menuId
      * @return
      */
-    @RequestMapping(value = "/menuElement",method = RequestMethod.GET)
+    @RequestMapping(value = "/element",method = RequestMethod.GET)
     @ResponseBody
     public ObjectRestResponse<List<AdminElement>> listMenuElement(@RequestParam("menuId") String menuId){
         return new ObjectRestResponse<List<AdminElement>>().data(elementBiz.listMenuElement(menuId)).rel(true);
@@ -53,9 +53,9 @@ public class MenuController extends BaseController<MenuBiz, Menu> {
      * @param elementList 要绑定的element
      * @return
      */
-    @RequestMapping(value = "/{menuId}/modifyMenuElement",method = RequestMethod.POST)
+    @RequestMapping(value = "/element",method = RequestMethod.PUT)
     @ResponseBody
-    public ObjectRestResponse modifyMenuElement(@PathVariable String menuId, @RequestBody List<AdminElement> elementList){
+    public ObjectRestResponse modifyMenuElement(@RequestParam("menuId") String menuId, @RequestBody List<AdminElement> elementList){
         elementBiz.modifyMenuElement(menuId,elementList);
         return new ObjectRestResponse().rel(true);
     }

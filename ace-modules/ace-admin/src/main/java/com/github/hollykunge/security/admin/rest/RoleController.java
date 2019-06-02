@@ -28,7 +28,7 @@ import java.util.List;
  */
 
 @Controller
-@RequestMapping("admin")
+@RequestMapping("/admin/role")
 @Api("角色模块")
 public class RoleController extends BaseController<RoleBiz, Role> {
 
@@ -37,9 +37,9 @@ public class RoleController extends BaseController<RoleBiz, Role> {
      *
      * @param id 角色id
      */
-    @RequestMapping(value = "/{id}/user", method = RequestMethod.GET)
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
     @ResponseBody
-    public ObjectRestResponse<List<AdminUser>> getUsers(@PathVariable String id) {
+    public ObjectRestResponse<List<AdminUser>> getUsers(@RequestParam("roleId") String id) {
         return new ObjectRestResponse<List<AdminUser>>().data(baseBiz.getRoleUsers(Integer.parseInt(id))).rel(true);
     }
 
@@ -49,9 +49,9 @@ public class RoleController extends BaseController<RoleBiz, Role> {
      * @param id    角色id
      * @param users 用户ids
      */
-    @RequestMapping(value = "/{id}/user", method = RequestMethod.PUT)
+    @RequestMapping(value = "/user", method = RequestMethod.PUT)
     @ResponseBody
-    public ObjectRestResponse modifyUsers(@PathVariable String id, @RequestParam("users") String users) {
+    public ObjectRestResponse modifyUsers(@RequestParam("roleId") String id, @RequestParam("users") String users) {
         baseBiz.modifyRoleUsers(id, users);
         return new ObjectRestResponse().rel(true);
     }
@@ -62,9 +62,9 @@ public class RoleController extends BaseController<RoleBiz, Role> {
      * @param id        角色id
      * @param permissionList 被勾选的权限Element和Element所对应的菜单信息
      */
-    @RequestMapping(value = "/{id}/menu", method = RequestMethod.POST)
+    @RequestMapping(value = "/permission", method = RequestMethod.PUT)
     @ResponseBody
-    public ObjectRestResponse modifyMenuAuthority(@PathVariable String id, @RequestBody List<AdminPermission> permissionList) {
+    public ObjectRestResponse modifyMenuAuthority(@RequestParam("roleId") String id, @RequestBody List<AdminPermission> permissionList) {
         baseBiz.modifyAuthorityMenu(id, permissionList);
         return new ObjectRestResponse().rel(true);
     }
@@ -74,9 +74,9 @@ public class RoleController extends BaseController<RoleBiz, Role> {
      *
      * @param id 角色id
      */
-    @RequestMapping(value = "/{id}/authority/menu", method = RequestMethod.GET)
+    @RequestMapping(value = "/permission", method = RequestMethod.GET)
     @ResponseBody
-    public ObjectRestResponse<List<AdminPermission>> getMenuAuthority(@PathVariable String id) {
+    public ObjectRestResponse<List<AdminPermission>> getMenuAuthority(@RequestParam("roleId") String id) {
         return new ObjectRestResponse().data(baseBiz.getAuthorityMenu(id)).rel(true);
     }
 

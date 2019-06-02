@@ -13,7 +13,13 @@ import com.github.hollykunge.security.api.vo.authority.ActionEntitySet;
 import com.github.hollykunge.security.api.vo.authority.FrontPermission;
 import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.github.hollykunge.security.auth.client.jwt.UserAuthUtil;
-import com.github.hollykunge.security.common.util.StringHelper;
+
+import com.github.hollykunge.security.common.constant.CommonConstants;
+import com.github.hollykunge.security.common.constant.UserConstant;
+import com.github.hollykunge.security.common.exception.BaseException;
+import com.github.hollykunge.security.common.util.TreeUtil;
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -40,7 +46,7 @@ public class PermissionService {
     private ElementBiz elementBiz;
     @Autowired
     private UserAuthUtil userAuthUtil;
-    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(UserConstant.PW_ENCORDER_SALT);
 
 
     /**
@@ -65,10 +71,14 @@ public class PermissionService {
     public UserInfo validate(String userId,String password){
         UserInfo info = new UserInfo();
         User user = userBiz.getUserByUserId(userId);
-        if (encoder.matches(password, user.getPassword())) {
-            BeanUtils.copyProperties(user, info);
-            info.setId(user.getId());
+        if(user==null){
+            throw new BaseException("没有该用户...");
         }
+        if (!encoder.matches(password, user.getPassword())) {
+            throw new BaseException("密码错误...");
+        }
+        BeanUtils.copyProperties(user, info);
+        info.setId(user.getId());
         return info;
     }
 
