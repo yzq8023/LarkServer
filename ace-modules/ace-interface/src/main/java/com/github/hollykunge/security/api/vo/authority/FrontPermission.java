@@ -1,14 +1,13 @@
-package com.github.hollykunge.security.admin.vo;
+package com.github.hollykunge.security.api.vo.authority;
 
 import lombok.Data;
 
 import java.util.List;
 
 /**
- * 角色所属功能
- *
- * @author: holly
- * @since: 2019/5/9
+ * @description: 权限业务实体
+ * @author: dd
+ * @since: 2019-06-01
  */
 @Data
 public class FrontPermission {
@@ -17,25 +16,28 @@ public class FrontPermission {
      */
     private String roleId;
     /**
+     * 菜单id
      * permissionId->menuId
      */
     private String menuId;
     /**
+     * 权限标识
+     */
+    private String permissionId;
+    /**
+     * 菜单名称
      * permissionName->title
      */
     private String title;
     /**
+     * 方法列表
      * actions->methods
      */
-//    private String methods;
+    private String methods;
     /**
-     * 暂时没用上null
+     * 权限资源路径
      */
-    private String actionList;
-    /**
-     * 暂时没用上null
-     */
-    private String dataAccess;
+    private String uri;
 
     private List<ActionEntitySet> actionEntitySetList;
 

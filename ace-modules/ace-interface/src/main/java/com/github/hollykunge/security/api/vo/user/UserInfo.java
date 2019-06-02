@@ -1,36 +1,22 @@
 package com.github.hollykunge.security.api.vo.user;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
 import java.io.Serializable;
-import java.util.Date;
 
 /**
- * ${DESCRIPTION}
+ * rpc对外获取用户信息接口使用
  *
  * @author 协同设计小组
  * @create 2017-06-21 8:12
  */
 public class UserInfo implements Serializable{
     private String id;
-    private String username;
-    private String password;
+    private String pId;
     private String name;
+    private String password;
+    private String secretLevel;
+    private String avatar;
     private String description;
-    private Date updTime;
-    private boolean canAdmin;
-    private boolean canFork;
-    private boolean canCreate;
-
     private Integer demo;
-
-    public Date getUpdTime() {
-        return updTime;
-    }
-    @JsonDeserialize(using = CustomJsonDateDeserializer.class)
-    public void setUpdTime(Date updTime) {
-        this.updTime = updTime;
-    }
 
     public String getId() {
         return id;
@@ -38,14 +24,6 @@ public class UserInfo implements Serializable{
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {
@@ -72,35 +50,35 @@ public class UserInfo implements Serializable{
         this.description = description;
     }
 
-    public boolean isCanAdmin() {
-        return canAdmin;
-    }
-
-    public void setCanAdmin(boolean canAdmin) {
-        this.canAdmin = canAdmin;
-    }
-
-    public boolean isCanFork() {
-        return canFork;
-    }
-
-    public void setCanFork(boolean canFork) {
-        this.canFork = canFork;
-    }
-
-    public boolean isCanCreate() {
-        return canCreate;
-    }
-
-    public void setCanCreate(boolean canCreate) {
-        this.canCreate = canCreate;
-    }
-
     public Integer getDemo() {
         return demo;
     }
 
     public void setDemo(Integer demo) {
         this.demo = demo;
+    }
+
+    public String getpId() {
+        return pId;
+    }
+
+    public void setpId(String pId) {
+        this.pId = pId;
+    }
+
+    public String getSecretLevel() {
+        return secretLevel;
+    }
+
+    public void setSecretLevel(String secretLevel) {
+        this.secretLevel = secretLevel;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

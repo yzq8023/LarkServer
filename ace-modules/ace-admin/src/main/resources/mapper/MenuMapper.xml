@@ -9,13 +9,14 @@
     <result column="CODE" property="code" jdbcType="VARCHAR" />
     <result column="TITLE" property="title" jdbcType="VARCHAR" />
     <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
-    <result column="HREF" property="href" jdbcType="VARCHAR" />
+    <result column="URI" property="uri" jdbcType="VARCHAR" />
     <result column="ICON" property="icon" jdbcType="VARCHAR" />
     <result column="TYPE" property="type" jdbcType="CHAR" />
     <result column="ORDER_NUM" property="orderNum" jdbcType="NUMERIC" />
     <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
     <result column="PATH" property="path" jdbcType="VARCHAR" />
     <result column="ENABLED" property="enabled" jdbcType="CHAR" />
+    <result column="PERMISSION_ID" property="permissionId" jdbcType="VARCHAR" />
     <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
     <result column="CRT_USER" property="crtUser" jdbcType="VARCHAR" />
     <result column="CRT_NAME" property="crtName" jdbcType="VARCHAR" />

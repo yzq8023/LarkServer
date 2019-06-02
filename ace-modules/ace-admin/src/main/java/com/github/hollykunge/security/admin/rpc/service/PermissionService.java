@@ -4,20 +4,22 @@ import com.github.hollykunge.security.admin.biz.ElementBiz;
 import com.github.hollykunge.security.admin.biz.MenuBiz;
 import com.github.hollykunge.security.admin.biz.RoleBiz;
 import com.github.hollykunge.security.admin.biz.UserBiz;
-import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
 import com.github.hollykunge.security.admin.entity.Element;
 import com.github.hollykunge.security.admin.entity.Menu;
 import com.github.hollykunge.security.admin.entity.Role;
 import com.github.hollykunge.security.admin.entity.User;
 import com.github.hollykunge.security.admin.vo.*;
-import com.github.hollykunge.security.api.vo.authority.PermissionInfo;
+import com.github.hollykunge.security.api.vo.authority.ActionEntitySet;
+import com.github.hollykunge.security.api.vo.authority.FrontPermission;
 import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.github.hollykunge.security.auth.client.jwt.UserAuthUtil;
+
 import com.github.hollykunge.security.common.constant.CommonConstants;
 import com.github.hollykunge.security.common.constant.UserConstant;
 import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.hollykunge.security.common.util.TreeUtil;
 import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,7 +28,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * 初始化用户权限服务
@@ -48,6 +49,11 @@ public class PermissionService {
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(UserConstant.PW_ENCORDER_SALT);
 
 
+    /**
+     * 获取用户信息
+     * @param userId
+     * @return
+     */
     public UserInfo getUserByUserId(String userId) {
         UserInfo info = new UserInfo();
         User user = userBiz.getUserByUserId(userId);
@@ -56,6 +62,12 @@ public class PermissionService {
         return info;
     }
 
+    /**
+     * 验证用户
+     * @param userId
+     * @param password
+     * @return
+     */
     public UserInfo validate(String userId,String password){
         UserInfo info = new UserInfo();
         User user = userBiz.getUserByUserId(userId);
@@ -70,16 +82,24 @@ public class PermissionService {
         return info;
     }
 
+    /**
+     * 获取所有的资源权限，包括菜单和按钮
+     * @return
+     */
     public List<FrontPermission> getAllPermission() {
         List<Menu> menus = menuBiz.selectListAll();
         List<FrontPermission> result = new ArrayList<FrontPermission>();
-        PermissionInfo info = null;
         menu2permission(menus, result);
         List<Element> elements = elementBiz.selectListAll();
         element2permission(result, elements);
         return result;
     }
 
+    /**
+     * 菜单权限
+     * @param menus
+     * @param result
+     */
     private void menu2permission(List<Menu> menus, List<FrontPermission> result) {
         FrontPermission info;
         for (Menu menu : menus) {
@@ -102,15 +122,13 @@ public class PermissionService {
         menu2permission(menus, result);
 
         List<Element> elements = elementBiz.getElementByUserId(userId + "");
-        List<ActionEntitySet> actionEntitySets = new ArrayList<ActionEntitySet>();
         element2permission(result, elements);
-
 
         return result;
     }
 
     /**
-     * 菜单功能-》操作权限
+     * 元素权限
      * @param result
      * @param elements
      */
@@ -135,10 +153,17 @@ public class PermissionService {
                 actionEntitySets.add(info);
             }
             frontPermission.setActionEntitySetList(actionEntitySets);
+            frontPermission.setMethods(StringHelper.getObjectValue(actionEntitySets));
         }
 
     }
 
+    /**
+     * 获取前端用户信息
+     * @param token
+     * @return
+     * @throws Exception
+     */
     public FrontUser getUserInfo(String token) throws Exception {
         String userId = userAuthUtil.getInfoFromToken(token).getId();
         if (userId == null) {
@@ -154,7 +179,11 @@ public class PermissionService {
         return frontUser;
     }
 
-
+    /**
+     * 获取用户角色信息
+     * @param userId
+     * @return
+     */
     public UserRole getUserRoleByUserId(String userId) {
         List<Role> roleList = roleBiz.getRoleByUserId(userId);
         UserRole userRole = new UserRole();
