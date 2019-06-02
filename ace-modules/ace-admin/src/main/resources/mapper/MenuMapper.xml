@@ -16,6 +16,7 @@
     <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
     <result column="PATH" property="path" jdbcType="VARCHAR" />
     <result column="ENABLED" property="enabled" jdbcType="CHAR" />
+    <result column="PERMISSION_ID" property="permissionId" jdbcType="VARCHAR" />
     <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
     <result column="CRT_USER" property="crtUser" jdbcType="VARCHAR" />
     <result column="CRT_NAME" property="crtName" jdbcType="VARCHAR" />
