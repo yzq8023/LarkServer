@@ -239,7 +239,7 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
                     getAuthorityMenuElement(roleId,menu.getId(), AdminCommonConstant.RESOURCE_TYPE_BTN);
             List<Element> elementList = resourceElement.stream().filter((Element e) -> menu.getId().contains(e.getMenuId())).collect(Collectors.toList());
             if(elementList.size() > 0){
-                FrontPermission frontPermission = this.transferAdminPermission(menu, roleId, elementList);
+                FrontPermission frontPermission = this.transferFrontPermission(menu, roleId, elementList);
                 resultPermission.add(frontPermission);
             }
         });
@@ -253,7 +253,7 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
      * @param elements 功能集
      * @return AdminPermission供前端显示
      */
-    private FrontPermission transferAdminPermission(Menu menu,String roleId,List<Element> elements){
+    private FrontPermission transferFrontPermission(Menu menu,String roleId,List<Element> elements){
         //添加AdminPermission参数
         FrontPermission frontPermission = new FrontPermission();
         BeanUtils.copyProperties(menu,frontPermission);
