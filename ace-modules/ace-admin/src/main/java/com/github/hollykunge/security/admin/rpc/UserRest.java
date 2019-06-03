@@ -41,8 +41,8 @@ public class UserRest {
     }
 
     @RequestMapping(value = "/user/validate", method = RequestMethod.POST)
-    public @ResponseBody UserInfo validate(String username,String password){
-        return permissionService.validate(username,password);
+    public @ResponseBody UserInfo validate(String pid,String password){
+        return permissionService.validate(pid,password);
     }
 
     @RequestMapping(value = "/user/info", method = RequestMethod.POST)
