@@ -24,7 +24,7 @@ import java.util.List;
  */
 
 @Controller
-@RequestMapping("org")
+@RequestMapping("/admin/org")
 @Api("组织管理")
 public class OrgController extends BaseController<OrgBiz, Org> {
 
@@ -33,9 +33,9 @@ public class OrgController extends BaseController<OrgBiz, Org> {
      *
      * @param id 组织id
      */
-    @RequestMapping(value = "/{id}/user", method = RequestMethod.GET)
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
     @ResponseBody
-    public ObjectRestResponse<List<AdminUser>> getUsers(@PathVariable String id) {
+    public ObjectRestResponse<List<AdminUser>> getUsers(@RequestParam("orgId") String id) {
         return new ObjectRestResponse<List<AdminUser>>().rel(true).data(baseBiz.getOrgUsers(id));
     }
 
@@ -45,9 +45,9 @@ public class OrgController extends BaseController<OrgBiz, Org> {
      * @param id    组织id
      * @param users 以逗号分隔的userId
      */
-    @RequestMapping(value = "/{id}/user", method = RequestMethod.PUT)
+    @RequestMapping(value = "/user", method = RequestMethod.PUT)
     @ResponseBody
-    public ObjectRestResponse modifyUsers(@PathVariable String id,@RequestParam("users") String users) {
+    public ObjectRestResponse modifyUsers(@RequestParam("orgId") String id,@RequestParam("users") String users) {
         baseBiz.modifyOrgUsers(id, users);
         return new ObjectRestResponse().rel(true);
     }
@@ -72,9 +72,9 @@ public class OrgController extends BaseController<OrgBiz, Org> {
         OrgTree node;
         for (Org org : orgs) {
             node = new OrgTree();
-            node.setLabel(org.getOrgName());
             String jsonNode = JSON.toJSONString(org);
             node = JSON.parseObject(jsonNode, OrgTree.class);
+            node.setLabel(org.getOrgName());
             trees.add(node);
         }
         return TreeUtil.bulid(trees, parentTreeId);

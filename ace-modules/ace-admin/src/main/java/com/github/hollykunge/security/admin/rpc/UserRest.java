@@ -4,8 +4,7 @@ import com.ace.cache.annotation.Cache;
 import com.github.hollykunge.security.admin.biz.UserBiz;
 import com.github.hollykunge.security.admin.entity.User;
 import com.github.hollykunge.security.admin.rpc.service.PermissionService;
-import com.github.hollykunge.security.admin.vo.FrontPermission;
-import com.github.hollykunge.security.api.vo.authority.PermissionInfo;
+import com.github.hollykunge.security.api.vo.authority.FrontPermission;
 import com.github.hollykunge.security.api.vo.user.UserInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +51,7 @@ public class UserRest {
         UserInfo info = new UserInfo();
 
         BeanUtils.copyProperties(user, info);
-        info.setId(user.getId().toString());
+        info.setId(user.getId());
         return info;
     }
 

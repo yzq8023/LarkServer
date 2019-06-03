@@ -41,7 +41,10 @@ public class UserBiz extends BaseBiz<UserMapper, User> {
     @Cache(key = "user{1}")
     public User getUserByUserId(String userId) {
         User user = new User();
-        user.setId(userId);
+
+        //用户登录时通过身份证号当做用户名登录
+        user.setPId(userId);
+//        user.setId(userId);
         return mapper.selectOne(user);
     }
 
