@@ -2,10 +2,13 @@ package com.github.hollykunge.security.admin.biz;
 
 import com.ace.cache.annotation.Cache;
 import com.ace.cache.annotation.CacheClear;
+import com.alibaba.fastjson.JSON;
 import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
 import com.github.hollykunge.security.admin.entity.*;
 import com.github.hollykunge.security.admin.mapper.*;
 import com.github.hollykunge.security.admin.vo.*;
+import com.github.hollykunge.security.api.vo.authority.ActionEntitySet;
+import com.github.hollykunge.security.api.vo.authority.FrontPermission;
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.hollykunge.security.common.util.EntityUtils;
@@ -217,6 +220,50 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
             resultRole.addAll(allRole.stream().filter((Role role) -> roleUserMap.getRoleId().contains(role.getId())) .collect(Collectors.toList()));
         }
         return resultRole;
+    }
+
+    /**
+     * 根据角色id获取角色所拥有的菜单和菜单element
+     * ps：提供给远程服务
+     * @param roleId 角色id
+     * @return 
+     */
+    public List<FrontPermission> frontAuthorityMenu(String roleId) {
+        //定义固定返回参数
+        List<FrontPermission> resultPermission = new ArrayList<>();
+        //获取权限下的menu
+        List<Menu> menus = menuMapper.selectAll();
+        menus.parallelStream().forEach(menu -> {
+            //roleId下的element
+            List<Element> resourceElement = elementMapper.
+                    getAuthorityMenuElement(roleId,menu.getId(), AdminCommonConstant.RESOURCE_TYPE_BTN);
+            List<Element> elementList = resourceElement.stream().filter((Element e) -> menu.getId().contains(e.getMenuId())).collect(Collectors.toList());
+            if(elementList.size() > 0){
+                FrontPermission frontPermission = this.transferAdminPermission(menu, roleId, elementList);
+                resultPermission.add(frontPermission);
+            }
+        });
+        return resultPermission;
+    }
+
+    /**
+     * 将elements赋值给菜单
+     * @param menu 菜单实体类
+     * @param roleId 角色
+     * @param elements 功能集
+     * @return AdminPermission供前端显示
+     */
+    private FrontPermission transferAdminPermission(Menu menu,String roleId,List<Element> elements){
+        //添加AdminPermission参数
+        FrontPermission frontPermission = new FrontPermission();
+        BeanUtils.copyProperties(menu,frontPermission);
+        //单独处理menuid,roleId
+        frontPermission.setMenuId(menu.getId());
+        frontPermission.setRoleId(roleId);
+        List<ActionEntitySet> actionEntitySet = JSON.parseArray(JSON.toJSONString(elements),ActionEntitySet.class);
+        //给菜单赋值所有的Element
+        frontPermission.setActionEntitySetList(actionEntitySet);
+        return frontPermission;
     }
 }
 
