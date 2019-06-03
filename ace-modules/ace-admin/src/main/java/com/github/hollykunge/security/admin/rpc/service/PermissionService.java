@@ -17,6 +17,7 @@ import com.github.hollykunge.security.auth.client.jwt.UserAuthUtil;
 import com.github.hollykunge.security.common.constant.CommonConstants;
 import com.github.hollykunge.security.common.constant.UserConstant;
 import com.github.hollykunge.security.common.exception.BaseException;
+import com.github.hollykunge.security.common.util.StringHelper;
 import com.github.hollykunge.security.common.util.TreeUtil;
 import org.apache.commons.lang3.StringUtils;
 
