@@ -21,8 +21,8 @@
         <!--</jdbcConnection>-->
 
         <jdbcConnection driverClass="oracle.jdbc.OracleDriver"
-                        connectionURL="jdbc:oracle:thin:@localhost:1521:WORKHUB"
-                        userId="admin_demo"
+                        connectionURL="jdbc:oracle:thin:@10.12.97.30:1521:arltr"
+                        userId="lark_auth"
                         password="123456">
         </jdbcConnection>
 
@@ -61,10 +61,10 @@
 
         <!--<table tableName="roleUserMap" domainObjectName="RoleUserMap">-->
         <!--</table>-->
-        <table tableName="admin_user" domainObjectName="User">
+        <table tableName="auth_client" domainObjectName="Client">
         </table>
 
-        <table tableName="admin_org" domainObjectName="Org">
+        <table tableName="auth_client_service" domainObjectName="ClientService">
         </table>
         <!--<table tableName="orgUserMap" domainObjectName="OrgUserMap">-->
         <!--</table>-->
