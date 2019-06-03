@@ -25,11 +25,11 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String login(String username, String password) throws Exception {
-        UserInfo info = userService.validate(username,password);
+    public String login(String pid, String password) throws Exception {
+        UserInfo info = userService.validate(pid,password);
         String token = "";
         if (!StringUtils.isEmpty(info.getId())) {
-            token = jwtTokenUtil.generateToken(new JWTInfo(info.getUsername(), info.getId() + "", info.getName()));
+            token = jwtTokenUtil.generateToken(new JWTInfo(info.getpId(), info.getId() + "", info.getName()));
         }
         return token;
     }
