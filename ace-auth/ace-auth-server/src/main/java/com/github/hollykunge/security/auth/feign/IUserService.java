@@ -17,5 +17,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(value = "ace-admin",configuration = FeignConfiguration.class)
 public interface IUserService {
   @RequestMapping(value = "/api/user/validate", method = RequestMethod.POST)
-  public UserInfo validate(@RequestParam("username") String username, @RequestParam("password") String password);
+  public UserInfo validate(@RequestParam("pid") String pid, @RequestParam("password") String password);
 }
