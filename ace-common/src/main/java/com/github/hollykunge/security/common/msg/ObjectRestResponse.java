@@ -7,7 +7,7 @@ package com.github.hollykunge.security.common.msg;
  */
 public class ObjectRestResponse<T> extends BaseResponse {
 
-    T data;
+    T result;
     boolean rel;
 
     public boolean isRel() {
@@ -26,16 +26,15 @@ public class ObjectRestResponse<T> extends BaseResponse {
 
 
     public ObjectRestResponse data(T data) {
-        this.setData(data);
+        this.setResult(data);
         return this;
     }
-    public T getData() {
-        return data;
+
+    public T getResult() {
+        return result;
     }
 
-    public void setData(T data) {
-        this.data = data;
+    public void setResult(T result) {
+        this.result = result;
     }
-
-
 }

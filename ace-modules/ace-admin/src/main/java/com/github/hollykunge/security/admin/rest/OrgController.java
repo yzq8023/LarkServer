@@ -61,11 +61,11 @@ public class OrgController extends BaseController<OrgBiz, Org> {
      */
     @RequestMapping(value = "/tree", method = RequestMethod.GET)
     @ResponseBody
-    public ListRestResponse<List<OrgTree>> tree(@RequestParam("parentTreeId") String parentTreeId) {
+    public ObjectRestResponse<List<OrgTree>> tree(@RequestParam("parentTreeId") String parentTreeId) {
         if(StringUtils.isEmpty(parentTreeId)){
             parentTreeId = AdminCommonConstant.ROOT;
         }
-        return new ListRestResponse("",0, getTree(baseBiz.selectListAll(), parentTreeId));
+        return new ObjectRestResponse<List<OrgTree>>().rel(true).data(getTree(baseBiz.selectListAll(), parentTreeId));
     }
 
     private List<OrgTree> getTree(List<Org> orgs, String parentTreeId) {

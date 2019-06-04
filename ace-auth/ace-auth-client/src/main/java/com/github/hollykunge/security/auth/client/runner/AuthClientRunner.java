@@ -49,7 +49,7 @@ public class AuthClientRunner implements CommandLineRunner {
         BaseResponse resp = serviceAuthFeign.getUserPublicKey(serviceAuthConfig.getClientId(), serviceAuthConfig.getClientSecret());
         if (resp.getStatus() == HttpStatus.OK.value()) {
             ObjectRestResponse<byte[]> userResponse = (ObjectRestResponse<byte[]>) resp;
-            this.userAuthConfig.setPubKeyByte(userResponse.getData());
+            this.userAuthConfig.setPubKeyByte(userResponse.getResult());
         }
     }
     @Scheduled(cron = "0 0/1 * * * ?")
@@ -57,7 +57,7 @@ public class AuthClientRunner implements CommandLineRunner {
         BaseResponse resp = serviceAuthFeign.getServicePublicKey(serviceAuthConfig.getClientId(), serviceAuthConfig.getClientSecret());
         if (resp.getStatus() == HttpStatus.OK.value()) {
             ObjectRestResponse<byte[]> userResponse = (ObjectRestResponse<byte[]>) resp;
-            this.serviceAuthConfig.setPubKeyByte(userResponse.getData());
+            this.serviceAuthConfig.setPubKeyByte(userResponse.getResult());
         }
     }
 
