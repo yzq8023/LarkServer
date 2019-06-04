@@ -7,6 +7,7 @@ import com.github.hollykunge.security.admin.entity.Org;
 import com.github.hollykunge.security.admin.vo.AdminUser;
 import com.github.hollykunge.security.admin.vo.OrgTree;
 import com.github.hollykunge.security.admin.vo.RoleTree;
+import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.rest.BaseController;
 import com.github.hollykunge.security.common.util.TreeUtil;
@@ -24,7 +25,7 @@ import java.util.List;
  */
 
 @Controller
-@RequestMapping("/admin/org")
+@RequestMapping("org")
 @Api("组织管理")
 public class OrgController extends BaseController<OrgBiz, Org> {
 
@@ -60,11 +61,11 @@ public class OrgController extends BaseController<OrgBiz, Org> {
      */
     @RequestMapping(value = "/tree", method = RequestMethod.GET)
     @ResponseBody
-    public List<OrgTree> tree(@RequestParam("parentTreeId") String parentTreeId) {
+    public ListRestResponse<List<OrgTree>> tree(@RequestParam("parentTreeId") String parentTreeId) {
         if(StringUtils.isEmpty(parentTreeId)){
             parentTreeId = AdminCommonConstant.ROOT;
         }
-        return getTree(baseBiz.selectListAll(), parentTreeId);
+        return new ListRestResponse("",0, getTree(baseBiz.selectListAll(), parentTreeId));
     }
 
     private List<OrgTree> getTree(List<Org> orgs, String parentTreeId) {
