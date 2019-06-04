@@ -28,7 +28,7 @@ import java.util.List;
  */
 
 @Controller
-@RequestMapping("/admin/role")
+@RequestMapping("role")
 @Api("角色模块")
 public class RoleController extends BaseController<RoleBiz, Role> {
 
