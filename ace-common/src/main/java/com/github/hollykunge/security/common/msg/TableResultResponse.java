@@ -21,6 +21,7 @@ public class TableResultResponse<T> extends BaseResponse {
         this.pageSize = pageSize;
         this.pageNo = pageNo;
         this.totalPage = totalPage;
+        this.totalCount = totalCount;
         this.data = new TableData<T>(rows);
     }
 
@@ -70,10 +71,6 @@ public class TableResultResponse<T> extends BaseResponse {
         this.totalCount = totalCount;
     }
 
-    public List<T> getRows() {
-        return data.getRows();
-    }
-
     public TableData<T> getData() {
         return data;
     }
@@ -84,7 +81,7 @@ public class TableResultResponse<T> extends BaseResponse {
 
     class TableData<T> {
 
-        List<T> rows;
+        private List<T> rows;
 
         public TableData(List<T> rows) {
             this.rows = rows;
