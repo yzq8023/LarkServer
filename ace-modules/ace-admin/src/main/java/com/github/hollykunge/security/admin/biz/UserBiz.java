@@ -38,13 +38,30 @@ public class UserBiz extends BaseBiz<UserMapper, User> {
         super.updateSelectiveById(entity);
     }
 
+    /**
+     * 通过userId，主键获取用户
+     * @param userId
+     * @return
+     */
     @Cache(key = "user{1}")
     public User getUserByUserId(String userId) {
         User user = new User();
 
+        user.setId(userId);
+        return mapper.selectOne(user);
+    }
+
+    /**
+     * 用户登录通过身份证号获取用户
+     * @param pid
+     * @return
+     */
+    @Cache(key = "userByPid{1}")
+    public  User getUserByUserPid(String pid){
+        User user = new User();
+
         //用户登录时通过身份证号当做用户名登录
-        user.setPId(userId);
-//        user.setId(userId);
+        user.setPId(pid);
         return mapper.selectOne(user);
     }
 

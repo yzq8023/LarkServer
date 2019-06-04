@@ -14,17 +14,15 @@ import com.github.hollykunge.security.api.vo.authority.FrontPermission;
 import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.github.hollykunge.security.auth.client.jwt.UserAuthUtil;
 
-import com.github.hollykunge.security.common.constant.CommonConstants;
 import com.github.hollykunge.security.common.constant.UserConstant;
 import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.hollykunge.security.common.util.StringHelper;
-import com.github.hollykunge.security.common.util.TreeUtil;
-import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +34,7 @@ import java.util.stream.Collectors;
  * @date 2017/9/12
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class PermissionService {
     @Autowired
     private RoleBiz roleBiz;
@@ -65,13 +64,13 @@ public class PermissionService {
 
     /**
      * 验证用户
-     * @param userId
+     * @param userPid
      * @param password
      * @return
      */
-    public UserInfo validate(String userId,String password){
+    public UserInfo validate(String userPid,String password){
         UserInfo info = new UserInfo();
-        User user = userBiz.getUserByUserId(userId);
+        User user = userBiz.getUserByUserPid(userPid);
         if(user==null){
             throw new BaseException("没有该用户...");
         }
@@ -107,6 +106,8 @@ public class PermissionService {
             info = new FrontPermission();
             info.setMenuId(menu.getId());
             info.setTitle(menu.getTitle());
+            info.setUri(menu.getUri());
+            info.setPermissionId(menu.getPermissionId());
             result.add(info);
         }
     }
@@ -117,15 +118,9 @@ public class PermissionService {
      * @return
      */
     public List<FrontPermission> getPermissionByUserId(String userId) {
-
-        List<Menu> menus = menuBiz.getUserAuthorityMenuByUserId(userId + "");
-        List<FrontPermission> result = new ArrayList<FrontPermission>();
-        menu2permission(menus, result);
-
-        List<Element> elements = elementBiz.getElementByUserId(userId + "");
-        element2permission(result, elements);
-
-        return result;
+        List<Role> roleByUserId = roleBiz.getRoleByUserId(userId);
+        List<FrontPermission> authorityMenu = roleBiz.frontAuthorityMenu(roleByUserId.get(0).getId());
+        return authorityMenu;
     }
 
     /**
