@@ -25,23 +25,22 @@ public class AuthController {
 
     @RequestMapping(value = "token", method = RequestMethod.POST)
     @ResponseBody
-    public ListRestResponse<?> createAuthenticationToken(
+    public ObjectRestResponse<?> createAuthenticationToken(
             @RequestBody JwtAuthenticationRequest authenticationRequest) throws Exception {
         final String token = authService.login(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-        return new ListRestResponse("",0,new JwtAuthenticationResponse(token));
+        return new ObjectRestResponse().data(new JwtAuthenticationResponse(token)).msg("获取token成功");
     }
 
     @RequestMapping(value = "refresh", method = RequestMethod.GET)
     @ResponseBody
-    public ListRestResponse<?> refreshAndGetAuthenticationToken(
+    public ObjectRestResponse<?> refreshAndGetAuthenticationToken(
             HttpServletRequest request) {
         String token = request.getHeader(tokenHeader);
         String refreshedToken = authService.refresh(token);
         if(refreshedToken == null) {
-//            return ResponseEntity.badRequest().body(null);
-            return new ListRestResponse("",0,null);
+            return new ObjectRestResponse().data(null).msg("刷新token失败...");
         } else {
-            return new ListRestResponse("",0,new JwtAuthenticationResponse(refreshedToken));
+            return new ObjectRestResponse().data(new JwtAuthenticationResponse(refreshedToken)).msg("刷新token成功...");
         }
     }
 
