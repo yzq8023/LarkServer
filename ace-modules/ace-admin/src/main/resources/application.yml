@@ -132,3 +132,7 @@ redis:
     sysName: ace-admin
     enable: true
     database: 0
+####新增用户时的默认密码
+admin:
+  create-user:
+      defaultPassword: 123456
