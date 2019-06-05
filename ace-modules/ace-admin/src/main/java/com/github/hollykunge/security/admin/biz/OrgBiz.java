@@ -35,7 +35,7 @@ public class OrgBiz extends BaseBiz<OrgMapper, Org> {
     private UserMapper userMapper;
 
     public List<AdminUser> getOrgUsers(String orgId) {
-        List<User> users = userMapper.selectUsersByOrgId(orgId);
+        List<User> users = userMapper.selectUsersByOrgCode(orgId);
         List<AdminUser> userList = new ArrayList<AdminUser>();
         AdminUser au = new AdminUser();
         for (User user : users) {
