@@ -47,7 +47,7 @@
     left join ADMIN_ROLEUSERMAP ARU on AU.ID = ARU.USER_ID
     where ARU.ROLE_ID = #{roleId}
   </select>
-  <select id="selectUsersByOrgId" resultMap="BaseResultMap">
+  <select id="selectUsersByOrgCode" resultMap="BaseResultMap">
     select AU.* from ADMIN_USER AU
     left join ADMIN_ORGUSERMAP AOU on AU.ID = AOU.USER_ID
     where AOU.ORG_ID in (
