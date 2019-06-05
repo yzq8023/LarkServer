@@ -51,4 +51,10 @@ public class Org extends BaseEntity {
      */
     @Column(name = "DESCRIPTION")
     private String description;
+
+    /**
+     * 组织code
+     */
+    @Column(name = "ORG_CODE")
+    private String orgCode;
 }
