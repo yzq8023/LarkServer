@@ -30,5 +30,6 @@
     <result column="ATTR6" jdbcType="VARCHAR" property="attr6" />
     <result column="ATTR7" jdbcType="VARCHAR" property="attr7" />
     <result column="ATTR8" jdbcType="VARCHAR" property="attr8" />
+    <result column="ORG_CODE" jdbcType="VARCHAR" property="orgCode" />
   </resultMap>
 </mapper>
