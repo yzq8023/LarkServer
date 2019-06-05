@@ -56,7 +56,6 @@ mybatis:
 server:
     port: 8762
 
-
 eureka:
     instance:
         statusPageUrlPath: /actuator/info
