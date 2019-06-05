@@ -36,8 +36,9 @@ public class OrgController extends BaseController<OrgBiz, Org> {
      */
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     @ResponseBody
-    public ObjectRestResponse<List<AdminUser>> getUsers(@RequestParam("orgId") String id) {
-        return new ObjectRestResponse<List<AdminUser>>().rel(true).data(baseBiz.getOrgUsers(id));
+    public ListRestResponse<List<AdminUser>> getUsers(@RequestParam("orgId") String id) {
+        List<AdminUser> orgUsers = baseBiz.getOrgUsers(id);
+        return new ListRestResponse("",orgUsers.size(),orgUsers);
     }
 
     /**
@@ -50,7 +51,7 @@ public class OrgController extends BaseController<OrgBiz, Org> {
     @ResponseBody
     public ObjectRestResponse modifyUsers(@RequestParam("orgId") String id,@RequestParam("users") String users) {
         baseBiz.modifyOrgUsers(id, users);
-        return new ObjectRestResponse().rel(true);
+        return new ObjectRestResponse().rel(true).msg("");
     }
 
     /**
@@ -61,11 +62,12 @@ public class OrgController extends BaseController<OrgBiz, Org> {
      */
     @RequestMapping(value = "/tree", method = RequestMethod.GET)
     @ResponseBody
-    public ObjectRestResponse<List<OrgTree>> tree(@RequestParam("parentTreeId") String parentTreeId) {
+    public ListRestResponse<List<OrgTree>> tree(@RequestParam("parentTreeId") String parentTreeId) {
         if(StringUtils.isEmpty(parentTreeId)){
             parentTreeId = AdminCommonConstant.ROOT;
         }
-        return new ObjectRestResponse<List<OrgTree>>().rel(true).data(getTree(baseBiz.selectListAll(), parentTreeId));
+        List<OrgTree> tree = getTree(baseBiz.selectListAll(), parentTreeId);
+        return new ListRestResponse("",tree.size(),tree);
     }
 
     private List<OrgTree> getTree(List<Org> orgs, String parentTreeId) {
