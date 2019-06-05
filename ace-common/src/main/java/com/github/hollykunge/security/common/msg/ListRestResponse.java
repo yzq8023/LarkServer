@@ -8,7 +8,7 @@ package com.github.hollykunge.security.common.msg;
  */
 public class ListRestResponse<T> extends BaseResponse {
     String msg;
-    T result;
+    T data;
     int count;
 
 
@@ -21,12 +21,12 @@ public class ListRestResponse<T> extends BaseResponse {
         this.msg = msg;
     }
 
-    public T getResult() {
-        return result;
+    public T getData() {
+        return data;
     }
 
-    public void setResult(T result) {
-        this.result = result;
+    public void setData(T data) {
+        this.data = data;
     }
 
     public int getCount() {
@@ -52,14 +52,14 @@ public class ListRestResponse<T> extends BaseResponse {
         return this;
     }
 
-    public ListRestResponse result(T result) {
-        this.setResult(result);
+    public ListRestResponse result(T data) {
+        this.setData(data);
         return this;
     }
 
-    public ListRestResponse(String msg, int count,T result){
+    public ListRestResponse(String msg, int count,T data){
         this.count = count;
         this.msg = msg;
-        this.result = result;
+        this.data = data;
     }
 }
