@@ -1,6 +1,7 @@
 package com.github.hollykunge.security.admin.biz;
 
 import com.ace.cache.annotation.CacheClear;
+import com.alibaba.fastjson.JSON;
 import com.github.hollykunge.security.admin.entity.Org;
 import com.github.hollykunge.security.admin.entity.OrgUserMap;
 import com.github.hollykunge.security.admin.entity.User;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import sun.plugin.util.UIUtil;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -34,16 +36,14 @@ public class OrgBiz extends BaseBiz<OrgMapper, Org> {
     @Resource
     private UserMapper userMapper;
 
-    public List<AdminUser> getOrgUsers(String orgId) {
-        List<User> users = userMapper.selectUsersByOrgCode(orgId);
-        List<AdminUser> userList = new ArrayList<AdminUser>();
-        AdminUser au = new AdminUser();
-        for (User user : users) {
-//            BeanUtils.copyProperties(userMapper.selectOne(user), au);
-            //TODO:adminUser实体类中和user对应不上，其中包含name（看着像user表中的operatorName），头像
-            BeanUtils.copyProperties(user, au);
-            userList.add(au);
-        }
+    public List<AdminUser> getOrgUsers(String orgCode) {
+        User userParams = new User();
+        userParams.setOrgCode(orgCode);
+        Example userExample = new Example(User.class);
+        userExample.createCriteria().andLike("orgCode","%"+orgCode+"%");
+        List<User> users = userMapper.selectByExample(userExample);
+        List<AdminUser> userList;
+        userList = JSON.parseArray(JSON.toJSONString(users),AdminUser.class);
         return userList;
     }
 
