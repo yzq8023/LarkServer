@@ -84,6 +84,9 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
 
     @CacheClear(keys = {"permission:menu", "permission:u"})
     public void modifyAuthorityMenu(String roleId, List<AdminPermission> permissionList) {
+        if(StringUtils.isEmpty(roleId)||permissionList.isEmpty()){
+            throw new BaseException("args is null...");
+        }
         //用roleId删除所有与角色相关的资源
         Example resourceRoleExample = new Example(ResourceRoleMap.class);
         resourceRoleExample.createCriteria().andEqualTo("roleId",roleId);
