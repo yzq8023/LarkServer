@@ -8,7 +8,7 @@
     <id column="ID" jdbcType="VARCHAR" property="id" />
     <result column="NAME" jdbcType="VARCHAR" property="name" />
     <result column="P_ID" jdbcType="VARCHAR" property="pId" />
-    <result column="ORG_ID" jdbcType="VARCHAR" property="orgId" />
+    <result column="ORG_CODE" jdbcType="VARCHAR" property="orgCode" />
     <result column="ORG_NAME" jdbcType="VARCHAR" property="orgName" />
     <result column="SECRET_LEVEL" jdbcType="VARCHAR" property="secretLevel" />
     <result column="GENDER" jdbcType="VARCHAR" property="gender" />
@@ -46,12 +46,5 @@
     select AU.* from ADMIN_USER AU
     left join ADMIN_ROLEUSERMAP ARU on AU.ID = ARU.USER_ID
     where ARU.ROLE_ID = #{roleId}
-  </select>
-  <select id="selectUsersByOrgCode" resultMap="BaseResultMap">
-    select AU.* from ADMIN_USER AU
-    left join ADMIN_ORGUSERMAP AOU on AU.ID = AOU.USER_ID
-    where AOU.ORG_ID in (
-    select AO.ID from ADMIN_ORG AO where AO.ORG_CODE LIKE '%'||#{orgCode}||'%'
-    )
   </select>
 </mapper>
