@@ -8,58 +8,34 @@ package com.github.hollykunge.security.common.msg;
  */
 public class ListRestResponse<T> extends BaseResponse {
     String msg;
-    T data;
-    int count;
+
+    ListData<T> result;
 
 
-
-    public String getMsg() {
-        return msg;
+    public ListData<T> getResult() {
+        return result;
     }
 
-    public void setMsg(String msg) {
+    public ListRestResponse(String msg, int count, T data){
+        this.setMessage(msg);
         this.msg = msg;
+        this.result = new ListData<>(data,count);
     }
 
-    public T getData() {
-        return data;
-    }
+    class ListData<T>{
+        private T data;
+        private int count;
+        public ListData(T data,int count){
+            this.data = data;
+            this.count = count;
+        }
 
-    public void setData(T data) {
-        this.data = data;
-    }
+        public T getData() {
+            return data;
+        }
 
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public ListRestResponse count(int count) {
-        this.setCount(count);
-        return this;
-    }
-
-    public ListRestResponse count(Long count) {
-        this.setCount(count.intValue());
-        return this;
-    }
-
-    public ListRestResponse msg(String msg) {
-        this.setMsg(msg);
-        return this;
-    }
-
-    public ListRestResponse result(T data) {
-        this.setData(data);
-        return this;
-    }
-
-    public ListRestResponse(String msg, int count,T data){
-        this.count = count;
-        this.msg = msg;
-        this.data = data;
+        public int getCount() {
+            return count;
+        }
     }
 }
