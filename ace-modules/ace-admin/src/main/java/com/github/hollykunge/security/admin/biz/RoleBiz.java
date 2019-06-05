@@ -116,14 +116,16 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
             resourceRoleMapMapper.insertSelective(authority);
         }
         //并行添加element到resourceRoleMap中
-        permissionList.parallelStream().forEach(adminPermission -> {
+        permissionList.stream().forEach(adminPermission -> {
             adminPermission.getActionEntitySetList().stream().forEach(element ->{
-                ResourceRoleMap resourceRoleMap = new ResourceRoleMap();
-                resourceRoleMap.setResourceId(element.getId());
-                resourceRoleMap.setResourceType(AdminCommonConstant.RESOURCE_TYPE_BTN);
-                resourceRoleMap.setRoleId(roleId);
-                EntityUtils.setCreatAndUpdatInfo(resourceRoleMap);
-                resourceRoleMapMapper.insertSelective(resourceRoleMap);
+                if(element.getDefaultCheck()){
+                    ResourceRoleMap resourceRoleMap = new ResourceRoleMap();
+                    resourceRoleMap.setResourceId(element.getId());
+                    resourceRoleMap.setResourceType(AdminCommonConstant.RESOURCE_TYPE_BTN);
+                    resourceRoleMap.setRoleId(roleId);
+                    EntityUtils.setCreatAndUpdatInfo(resourceRoleMap);
+                    resourceRoleMapMapper.insertSelective(resourceRoleMap);
+                }
             });
         });
     }
@@ -200,6 +202,8 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
             AdminElement rAdminElement = new AdminElement();
             if(resourceElement.stream().anyMatch(matchEntity -> aElement.getId().equals(matchEntity.getId()))){
                 rAdminElement.setDefaultCheck(true);
+            }else{
+                rAdminElement.setDefaultCheck(false);
             }
             BeanUtils.copyProperties(aElement,rAdminElement);
             menuElement.add(rAdminElement);
