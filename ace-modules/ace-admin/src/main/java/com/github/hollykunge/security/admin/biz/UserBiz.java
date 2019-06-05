@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -30,14 +31,15 @@ public class UserBiz extends BaseBiz<UserMapper, User> {
     @Value("${admin.create-user.defaultPassword}")
     private String defaultPassword;
 
-    @Autowired
+    @Resource
     private RoleUserMapMapper roleUserMapMapper;
 
-    @Override
-    public void insertSelective(User entity) {
+    public User addUser(User entity) {
         String password = new BCryptPasswordEncoder(UserConstant.PW_ENCORDER_SALT).encode(defaultPassword);
         entity.setPassword(password);
-        super.insertSelective(entity);
+        EntityUtils.setCreatAndUpdatInfo(entity);
+        mapper.insertSelective(entity);
+        return entity;
     }
 
     @Override
@@ -89,18 +91,20 @@ public class UserBiz extends BaseBiz<UserMapper, User> {
      * @param roles
      */
     public void modifyRoles(String userId,String roles){
-        if(StringUtils.isEmpty(userId)||StringUtils.isEmpty(roles)){
-            throw new BaseException("userId或者roles的参数为null...");
+        if(StringUtils.isEmpty(userId)){
+            throw new BaseException("userId参数为null...");
         }
         RoleUserMap roleUserMap = new RoleUserMap();
         roleUserMap.setUserId(userId);
         //删除用户角色
         roleUserMapMapper.delete(roleUserMap);
-        String[] roleArray = roles.split(",");
-        for (String role:roleArray) {
-            roleUserMap.setRoleId(role);
-            EntityUtils.setCreatAndUpdatInfo(roleUserMap);
-            roleUserMapMapper.insertSelective(roleUserMap);
+        if(!StringUtils.isEmpty(roles)){
+            String[] roleArray = roles.split(",");
+            for (String role:roleArray) {
+                roleUserMap.setRoleId(role);
+                EntityUtils.setCreatAndUpdatInfo(roleUserMap);
+                roleUserMapMapper.insertSelective(roleUserMap);
+            }
         }
 
     }
