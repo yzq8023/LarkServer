@@ -30,7 +30,7 @@ import java.util.List;
 public class OrgController extends BaseController<OrgBiz, Org> {
 
     /**
-     * 通过orgId获取所属用户
+     * 通过orgCode获取所属用户
      *
      * @param orgCode 组织机构代码
      */
