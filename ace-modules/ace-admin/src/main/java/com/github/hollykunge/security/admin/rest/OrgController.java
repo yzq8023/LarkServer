@@ -32,12 +32,12 @@ public class OrgController extends BaseController<OrgBiz, Org> {
     /**
      * 通过orgId获取所属用户
      *
-     * @param id 组织id
+     * @param orgCode 组织机构代码
      */
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     @ResponseBody
-    public ListRestResponse<List<AdminUser>> getUsers(@RequestParam("orgId") String id) {
-        List<AdminUser> orgUsers = baseBiz.getOrgUsers(id);
+    public ListRestResponse<List<AdminUser>> getUsers(@RequestParam("orgCode") String orgCode) {
+        List<AdminUser> orgUsers = baseBiz.getOrgUsers(orgCode);
         return new ListRestResponse("",orgUsers.size(),orgUsers);
     }
 
