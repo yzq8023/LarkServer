@@ -33,6 +33,17 @@ import java.util.Map;
 @RequestMapping("role")
 @Api("角色模块")
 public class RoleController extends BaseController<RoleBiz, Role> {
+    /**
+     * 根据用户id获取用户角色接口
+     * @param userId 用户id
+     * @return 角色
+     */
+    @RequestMapping(value = "/userRole", method = RequestMethod.GET)
+    @ResponseBody
+    public ListRestResponse<List<Role>> getUserRoles(@RequestParam("id") String userId) {
+        List<Role> roleList = baseBiz.getRoleByUserId(userId);
+        return new ListRestResponse<>("",roleList.size(),roleList);
+    }
 
     /**
      * 根据角色获取用户
@@ -67,7 +78,9 @@ public class RoleController extends BaseController<RoleBiz, Role> {
     @ResponseBody
     public ObjectRestResponse modifyMenuAuthority(@RequestBody Map<String,Object> permissionMap) {
         String id =(String)permissionMap.get("id");
-        List<AdminPermission> permissionList = (List<AdminPermission>)permissionMap.get("permissionList");
+        List<AdminPermission> permissionList;
+        JSON.toJSONString(permissionMap.get("permissionList"));
+        permissionList = JSON.parseArray(JSON.toJSONString(permissionMap.get("permissionList")),AdminPermission.class);
         baseBiz.modifyAuthorityMenu(id, permissionList);
         return new ObjectRestResponse().rel(true);
     }
