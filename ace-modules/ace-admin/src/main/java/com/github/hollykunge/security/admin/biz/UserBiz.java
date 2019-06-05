@@ -2,18 +2,20 @@ package com.github.hollykunge.security.admin.biz;
 
 import com.ace.cache.annotation.Cache;
 import com.ace.cache.annotation.CacheClear;
+import com.github.hollykunge.security.admin.entity.RoleUserMap;
 import com.github.hollykunge.security.admin.entity.User;
-import com.github.hollykunge.security.admin.mapper.MenuMapper;
+import com.github.hollykunge.security.admin.mapper.RoleUserMapMapper;
 import com.github.hollykunge.security.admin.mapper.UserMapper;
-import com.github.hollykunge.security.api.vo.user.UserInfo;
-import com.github.hollykunge.security.auth.client.jwt.UserAuthUtil;
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.constant.UserConstant;
+import com.github.hollykunge.security.common.exception.BaseException;
+import com.github.hollykunge.security.common.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -27,6 +29,9 @@ import java.util.List;
 public class UserBiz extends BaseBiz<UserMapper, User> {
     @Value("${admin.create-user.defaultPassword}")
     private String defaultPassword;
+
+    @Autowired
+    private RoleUserMapMapper roleUserMapMapper;
 
     @Override
     public void insertSelective(User entity) {
@@ -76,5 +81,27 @@ public class UserBiz extends BaseBiz<UserMapper, User> {
     @Override
     protected String getPageName() {
         return null;
+    }
+
+    /**
+     * 修改用户的角色或添加用户角色
+     * @param userId
+     * @param roles
+     */
+    public void modifyRoles(String userId,String roles){
+        if(StringUtils.isEmpty(userId)||StringUtils.isEmpty(roles)){
+            throw new BaseException("userId或者roles的参数为null...");
+        }
+        RoleUserMap roleUserMap = new RoleUserMap();
+        roleUserMap.setUserId(userId);
+        //删除用户角色
+        roleUserMapMapper.delete(roleUserMap);
+        String[] roleArray = roles.split(",");
+        for (String role:roleArray) {
+            roleUserMap.setRoleId(role);
+            EntityUtils.setCreatAndUpdatInfo(roleUserMap);
+            roleUserMapMapper.insertSelective(roleUserMap);
+        }
+
     }
 }
