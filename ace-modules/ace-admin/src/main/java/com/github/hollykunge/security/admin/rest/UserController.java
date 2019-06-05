@@ -5,6 +5,7 @@ import com.github.hollykunge.security.admin.entity.User;
 import com.github.hollykunge.security.admin.rpc.service.PermissionService;
 import com.github.hollykunge.security.admin.vo.FrontUser;
 import com.github.hollykunge.security.common.msg.ListRestResponse;
+import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.rest.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,12 +29,25 @@ public class UserController extends BaseController<UserBiz,User> {
     private PermissionService permissionService;
     @RequestMapping(value = "/front/info", method = RequestMethod.GET)
     @ResponseBody
-    public ListRestResponse<?> getUserInfo(String token, HttpServletRequest request) throws Exception {
+    public ObjectRestResponse<?> getUserInfo(String token, HttpServletRequest request) throws Exception {
         if(StringUtils.isEmpty(token)){
             token = request.getHeader(headerName);
         }
         FrontUser userInfo = permissionService.getUserInfo(token);
-        return new ListRestResponse("",0,userInfo);
+        return new ObjectRestResponse().data(userInfo).msg("").rel(true);
+    }
+
+    /**
+     * 给用户设置角色接口
+     * @param userId 用户id
+     * @param roles 角色集（以“，”隔开的字符串）
+     * @return
+     */
+    @RequestMapping(value = "/roles",method = RequestMethod.GET)
+    @ResponseBody
+    public ObjectRestResponse modifyUserRoles(@RequestParam("userId")String userId, @RequestParam("roles")String roles){
+        baseBiz.modifyRoles(userId,roles);
+        return new ObjectRestResponse().rel(true).msg("");
     }
 
 //    @RequestMapping(value = "/front/menus", method = RequestMethod.GET)
