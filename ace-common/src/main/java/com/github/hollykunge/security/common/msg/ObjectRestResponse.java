@@ -30,6 +30,11 @@ public class ObjectRestResponse<T> extends BaseResponse {
         return this;
     }
 
+    public ObjectRestResponse msg(String msg) {
+        this.setMessage(msg);
+        return this;
+    }
+
     public T getResult() {
         return result;
     }

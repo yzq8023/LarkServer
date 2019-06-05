@@ -11,10 +11,10 @@ public interface UserMapper extends Mapper<User> {
     /**
      * 通过组织ID查询用户列表，关联表中查询
      *
-     * @param orgId 组织ID
+     * @param orgCode 组织编码
      * @return 用户列表
      */
-    List<User> selectUsersByOrgId(@Param("orgId") String orgId);
+    List<User> selectUsersByOrgCode(@Param("orgCode") String orgCode);
 
     /**
      * 通过角色ID查询用户列表，关联表中查询

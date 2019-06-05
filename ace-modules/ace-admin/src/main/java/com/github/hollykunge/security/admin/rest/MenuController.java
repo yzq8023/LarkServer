@@ -9,6 +9,7 @@ import com.github.hollykunge.security.admin.vo.AdminElement;
 import com.github.hollykunge.security.admin.vo.AuthorityMenuTree;
 import com.github.hollykunge.security.admin.vo.MenuTree;
 import com.github.hollykunge.security.admin.vo.OrgTree;
+import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.rest.BaseController;
 import com.github.hollykunge.security.common.util.TreeUtil;
@@ -44,8 +45,9 @@ public class MenuController extends BaseController<MenuBiz, Menu> {
      */
     @RequestMapping(value = "/element",method = RequestMethod.GET)
     @ResponseBody
-    public ObjectRestResponse<List<AdminElement>> listMenuElement(@RequestParam("menuId") String menuId){
-        return new ObjectRestResponse<List<AdminElement>>().data(elementBiz.listMenuElement(menuId)).rel(true);
+    public ListRestResponse<List<AdminElement>> listMenuElement(@RequestParam("menuId") String menuId){
+        List<AdminElement> adminElements = elementBiz.listMenuElement(menuId);
+        return new ListRestResponse<>("",adminElements.size(),adminElements);
     }
 
     /**
@@ -67,11 +69,12 @@ public class MenuController extends BaseController<MenuBiz, Menu> {
      */
     @RequestMapping(value = "/tree", method = RequestMethod.GET)
     @ResponseBody
-    public List<MenuTree> getTree(@RequestParam("parentTreeId") String parentTreeId) {
+    public ListRestResponse<List<MenuTree>> getTree(@RequestParam("parentTreeId") String parentTreeId) {
         if(StringUtils.isEmpty(parentTreeId)){
             parentTreeId = AdminCommonConstant.ROOT;
         }
-        return getMenuTree(baseBiz.selectListAll(), parentTreeId);
+        List<MenuTree> menuTree = getMenuTree(baseBiz.selectListAll(), parentTreeId);
+        return new ListRestResponse<>("",menuTree.size(),menuTree);
     }
 
     private List<MenuTree> getMenuTree(List<Menu> menus,String root) {
