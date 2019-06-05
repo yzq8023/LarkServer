@@ -10,6 +10,7 @@ import com.github.hollykunge.security.auth.client.jwt.UserAuthUtil;
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.constant.UserConstant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,16 +25,18 @@ import java.util.List;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class UserBiz extends BaseBiz<UserMapper, User> {
+    @Value("${admin.create-user.defaultPassword}")
+    private String defaultPassword;
 
     @Override
     public void insertSelective(User entity) {
-        String password = new BCryptPasswordEncoder(UserConstant.PW_ENCORDER_SALT).encode(entity.getPassword());
+        String password = new BCryptPasswordEncoder(UserConstant.PW_ENCORDER_SALT).encode(defaultPassword);
         entity.setPassword(password);
         super.insertSelective(entity);
     }
 
     @Override
-    @CacheClear(pre = "user{1.username}")
+    @CacheClear(pre = "user{1.pId}")
     public void updateSelectiveById(User entity) {
         super.updateSelectiveById(entity);
     }
