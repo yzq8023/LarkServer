@@ -44,9 +44,9 @@ public class ProcessEditGroup extends AbstractMsgProcessor{
                 joinGroup(channelContext,groupTaskDto);
 //                groupTaskDto.
                 break;
-            case GROUP_CREATE_MSG:
+            case GROUP_INVITE_MSG:
                 // TODO: 2019/6/4 1.生成群组头像 2.存入数据库 3.向用户分发加入群组消息
-                createGroup(channelContext,message);
+//                createGroup(channelContext,message);
                 break;
             case GROUP_EXIT_MSG:
                 // TODO: 2019/6/4 退出群组
@@ -54,44 +54,6 @@ public class ProcessEditGroup extends AbstractMsgProcessor{
             case GROUP_CLOSE_MSG:
                 break;
         }
-    }
-
-
-    public boolean createGroup(ChannelContext channelContext,String message) throws IOException {
-        ZzGroup zzGroup = new ZzGroup();
-        JSONObject groupJson = JSONObject.parseObject(message);
-        zzGroup.setGroupId(getUUID());
-        zzGroup.setGroupName(groupJson.getString("groupName"));
-        zzGroup.setCreator(groupJson.getString("creator"));
-        zzGroup.setGroupDescribe(groupJson.getString("groupDescribe"));
-        zzGroup.setUpdator(groupJson.getString("updator"));
-        zzGroup.setPname(groupJson.getString("pname"));
-        zzGroup.setScop(groupJson.getString("scop"));
-        zzGroup.setLevels(groupJson.getString("levels"));
-
-        ArrayList<String> picUrls = new ArrayList<>();
-        List<UserListDto> userList = new ArrayList<UserListDto>();
-        JSONArray userJsonArray = JSONObject.parseArray(groupJson.getString("userList"));
-        for (int i = 0; i < userJsonArray.size(); i++) {
-            JSONObject userJson = JSONObject.parseObject(userJsonArray.getString(i));
-            picUrls.add(userJson.getString("img"));
-            ZzUserGroup zzUserGroup = new ZzUserGroup();
-            zzUserGroup.setId(UUIDUtils.generateShortUuid());
-            zzUserGroup.setGroupId(zzGroup.getGroupId());
-            zzUserGroup.setUserId(userJson.getString("userId"));
-            userGroupService.insert(zzUserGroup);
-            UserListDto userListDto = new UserListDto();
-            userListDto.setUserId(userJson.getString("userId"));
-            userListDto.setUserLevels(userJson.getString("userLevels"));
-            userListDto.setImg(userJson.getString("img"));
-            userList.add(userListDto);
-        }
-        String newPath = "C:\\Users\\Public\\Pictures\\Sample Pictures\\"+zzGroup.getGroupId()+".jpg";
-        ImageUtil.generate(picUrls, newPath);
-        zzGroup.setGroupImg(newPath);
-        groupService.insert(zzGroup);//创建讨论组
-        // TODO: 2019/6/3 群头像生成
-        return true;
     }
 
     public boolean joinGroup(ChannelContext channelContext,GroupTaskDto groupTaskDto){
