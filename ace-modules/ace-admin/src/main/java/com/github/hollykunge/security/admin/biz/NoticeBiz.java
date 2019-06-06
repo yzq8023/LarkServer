@@ -4,6 +4,8 @@ import com.github.hollykunge.security.admin.entity.Notice;
 import com.github.hollykunge.security.admin.entity.OrgUserMap;
 import com.github.hollykunge.security.admin.mapper.NoticeMapper;
 import com.github.hollykunge.security.admin.mapper.OrgUserMapMapper;
+import com.github.hollykunge.security.admin.mapper.UserMapper;
+
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

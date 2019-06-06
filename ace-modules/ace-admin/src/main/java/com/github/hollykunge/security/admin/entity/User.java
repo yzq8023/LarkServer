@@ -21,7 +21,7 @@ public class User extends BaseEntity {
     @Column(name = "P_ID")
     private String pId;
     /**
-     * 组织ID
+     * 组织机构编码
      */
     @Column(name = "ORG_CODE")
     private String orgCode;

@@ -50,6 +50,10 @@ public class AdminUser {
      * 用户组织id
      */
     private String orgId;
+    /**
+     *密级
+     */
+    private String secretLevel;
 
 //    private UserRole userRole;
 }
