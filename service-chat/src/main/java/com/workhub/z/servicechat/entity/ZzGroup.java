@@ -153,4 +153,24 @@ public class ZzGroup implements Serializable {
         this.groupImg = groupImg;
     }
 
+    @Override
+    public String toString() {
+        return "ZzGroup{" +
+                "groupId='" + groupId + '\'' +
+                ", groupName='" + groupName + '\'' +
+                ", groupDescribe='" + groupDescribe + '\'' +
+                ", isdelete='" + isdelete + '\'' +
+                ", createTime=" + createTime +
+                ", creator='" + creator + '\'' +
+                ", updateTime=" + updateTime +
+                ", updator='" + updator + '\'' +
+                ", pname='" + pname + '\'' +
+                ", scop='" + scop + '\'' +
+                ", ispublic='" + ispublic + '\'' +
+                ", levels='" + levels + '\'' +
+                ", isclose='" + isclose + '\'' +
+                ", groupImg='" + groupImg + '\'' +
+                '}';
+    }
+
 }

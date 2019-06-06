@@ -1,5 +1,7 @@
 package com.workhub.z.servicechat.config;
 
+import com.github.hollykunge.security.common.util.UUIDUtils;
+
 import java.util.UUID;
 /**
 *@Description: 随机ID生成
@@ -9,10 +11,7 @@ import java.util.UUID;
 public class RandomId {
 
     public static String getUUID() {
-        UUID uuid = UUID.randomUUID();
-        String str = uuid.toString();
-        String uuidStr = str.replace("-", "");
-        return uuidStr;
+       return UUIDUtils.generateShortUuid();
     }
 
 }

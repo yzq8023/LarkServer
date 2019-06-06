@@ -121,7 +121,7 @@ public class ZzGroupServiceImpl extends BaseBiz<ZzGroupDao,ZzGroup > implements 
         groupUserListVos.stream().forEach(groupUserListVosList ->{
             userInfos.stream().filter(userInfosFilter ->userInfosFilter.getId().equals(groupUserListVosList.getUserId())).forEach(userInfosList ->{
                 groupUserListVosList.setLevels("1"/*TODO*/);
-                groupUserListVosList.setFullName(userInfosList.getUsername());
+                groupUserListVosList.setFullName(userInfosList.getName());
                 groupUserListVosList.setPassword(userInfosList.getPassword());
                 groupUserListVosList.setVip(userInfosList.getDemo());//TODO
             });

@@ -1,51 +1,32 @@
+/**
+  * Copyright 2019 bejson.com 
+  */
 package com.workhub.z.servicechat.VO;
-import java.util.List;
+
+import com.workhub.z.servicechat.model.GroupTaskDto;
 
 /**
-*@Description: 群组编辑交互实体类
-*@Author: 忠
-*@date: 2019/5/15
-*/
+ * Auto-generated: 2019-06-04 17:23:52
+ *
+ * @author bejson.com (i@bejson.com)
+ * @website http://www.bejson.com/java2pojo/
+ */
 public class GroupEditVO {
 
-    private String groupId;
-    private String timestamp;
-    private String reviser;
-    private String type;
-    private List<UserInfoVO> userInfos;
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
-    }
-    public String getGroupId() {
-        return groupId;
-    }
+    private int code;
+    private GroupTaskDto data;
+    public void setCode(int code) {
+         this.code = code;
+     }
+     public int getCode() {
+         return code;
+     }
 
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
-    }
-    public String getTimestamp() {
-        return timestamp;
-    }
+    public void setData(GroupTaskDto data) {
+         this.data = data;
+     }
+     public GroupTaskDto getData() {
+         return data;
+     }
 
-    public void setReviser(String reviser) {
-        this.reviser = reviser;
-    }
-    public String getReviser() {
-        return reviser;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-    public String getType() {
-        return type;
-    }
-
-    public List<UserInfoVO> getUserInfos() {
-        return userInfos;
-    }
-
-    public void setUserInfos(List<UserInfoVO> userInfos) {
-        this.userInfos = userInfos;
-    }
 }

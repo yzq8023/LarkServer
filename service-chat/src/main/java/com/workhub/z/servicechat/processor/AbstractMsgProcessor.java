@@ -4,6 +4,8 @@ import com.workhub.z.servicechat.entity.ZzDictionaryWords;
 import com.workhub.z.servicechat.server.IworkServerConfig;
 import com.workhub.z.servicechat.service.ZzDictionaryWordsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.tio.core.ChannelContext;
 import org.tio.core.Tio;
 import org.tio.websocket.common.WsResponse;
@@ -11,11 +13,12 @@ import org.tio.websocket.common.WsResponse;
 import java.util.List;
 
 import static com.workhub.z.servicechat.config.common.*;
-
+@Service
 public class AbstractMsgProcessor {
 
     @Autowired
     ZzDictionaryWordsService dictionaryWordsService;
+
     public WsResponse getWsResponse(String msg){
         return WsResponse.fromText(msg, IworkServerConfig.CHARSET);
     }
@@ -35,6 +38,4 @@ public class AbstractMsgProcessor {
         boolean isOnline = checkChannelContext != null && !checkChannelContext.isClosed;
         return isOnline;
     }
-
-
 }
