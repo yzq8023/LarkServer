@@ -16,7 +16,7 @@ public class GroupTaskDto {
     private String reviser;
 
     //操作类型，1，加入群组；2，退出群组；3.关闭群组；4.删除群组
-    private String type;
+    private int type;
 
     // 用户列表
     private List<UserListDto> userList;
@@ -48,11 +48,11 @@ public class GroupTaskDto {
         this.reviser = reviser;
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 

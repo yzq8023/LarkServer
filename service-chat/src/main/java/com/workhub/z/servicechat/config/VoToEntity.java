@@ -1,9 +1,20 @@
 package com.workhub.z.servicechat.config;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.github.hollykunge.security.common.util.UUIDUtils;
+import com.workhub.z.servicechat.entity.ZzGroup;
 import com.workhub.z.servicechat.entity.ZzGroupMsg;
 import com.workhub.z.servicechat.entity.ZzPrivateMsg;
+import com.workhub.z.servicechat.entity.ZzUserGroup;
+import com.workhub.z.servicechat.model.GroupTaskDto;
+import com.workhub.z.servicechat.model.UserListDto;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import static com.workhub.z.servicechat.config.RandomId.getUUID;
 
@@ -57,5 +68,33 @@ public abstract class VoToEntity {
         return zpm;
     }
 
+    /**
+    *@Description: 群操作转换实体GroupTaskDto
+    *@Param: 群操作msg
+    *@return: GroupTaskDto
+    *@Author: 忠
+    *@date: 2019/6/4
+    */
+    public static GroupTaskDto toGroupTaskDto (String msg) {
+        GroupTaskDto groupTaskDto = new GroupTaskDto();
+        JSONObject groupJson = JSONObject.parseObject(msg);
 
+        groupTaskDto.setGroupId(getUUID());
+//        groupTaskDto.setGroupId(groupJson.getString("groupId"));
+        groupTaskDto.setReviser(groupJson.getString("reviser1"));
+        groupTaskDto.setTimestamp(groupJson.getTimestamp("timestamp"));
+        groupTaskDto.setType(Integer.parseInt(groupJson.getString("type")));
+        List<UserListDto> uList = new ArrayList();
+        JSONArray userJsonArray = JSONObject.parseArray(groupJson.getString("userList"));
+        for (int i = 0; i < userJsonArray.size(); i++) {
+            JSONObject userJson = JSONObject.parseObject(userJsonArray.getString(i));
+            UserListDto user = new UserListDto();
+            user.setUserId(userJson.getString("userId"));
+            user.setUserLevels(userJson.getString("userLevels"));
+            user.setImg(userJson.getString("img"));
+            uList.add(user);
+        }
+        groupTaskDto.setUserList(uList);
+        return groupTaskDto;
+    }
 }

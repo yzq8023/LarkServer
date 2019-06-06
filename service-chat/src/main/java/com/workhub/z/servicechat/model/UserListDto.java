@@ -6,6 +6,16 @@ public class UserListDto {
 
     private String userLevels;//人等级
 
+    private String img;//头像
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
     public String getUserId() {
         return userId;
     }

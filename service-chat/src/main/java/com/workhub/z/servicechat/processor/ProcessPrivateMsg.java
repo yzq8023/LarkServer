@@ -1,38 +1,50 @@
 package com.workhub.z.servicechat.processor;
 
+import com.alibaba.fastjson.JSONObject;
+import com.workhub.z.servicechat.VO.GroupEditVO;
 import com.workhub.z.servicechat.entity.ZzPrivateMsg;
 import com.workhub.z.servicechat.server.IworkServerConfig;
 import com.workhub.z.servicechat.service.ZzPrivateMsgService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.tio.core.ChannelContext;
 import org.tio.core.Tio;
 
-
+import static com.workhub.z.servicechat.config.MessageType.*;
 import static com.workhub.z.servicechat.config.VoToEntity.*;
 
+@Service
 public class ProcessPrivateMsg extends AbstractMsgProcessor{
 
-    private ZzPrivateMsg privateMsg;
     @Autowired
     protected ZzPrivateMsgService privateMsgService;
-
-    ProcessPrivateMsg(ChannelContext channelContext, String message) throws Exception {
-        this.privateMsg = (ZzPrivateMsg)MsgVOToModel(message);
-        sendMsg(channelContext, message);
-        saveMsg();
-    }
 
     // TODO: 2019/5/31 判断对方是否在线
 
     // TODO: 2019/5/31 消息发送
-    public void sendMsg(ChannelContext channelContext, String message){
-        Tio.sendToUser(channelContext.getGroupContext(),privateMsg.getMsgReceiver(),this.getWsResponse(message));
+
+    public boolean sendMsg(ChannelContext channelContext, String msg){
+        JSONObject jsonObject = JSONObject.parseObject(msg);
+//        String code = jsonObject.getString("code");
+        String message = jsonObject.getString("data");
+        ZzPrivateMsg privateMsg = (ZzPrivateMsg)MsgVOToModel(message);
+        Boolean temp =  Tio.sendToUser(channelContext.getGroupContext(),privateMsg.getMsgReceiver(),this.getWsResponse(msg));
+//        Boolean temp =  Tio.sendToUser(channelContext.getGroupContext(),privateMsg.getMsgSender(),this.getWsResponse(message));
+        if (temp) {
+            saveMsg(privateMsg);
+        }else {
+
+        }
+        return true;
     }
-    // TODO: 2019/5/31 存储到数据库 
-    public void saveMsg(){
-        privateMsgService.insert(this.privateMsg);
+    // TODO: 2019/5/31 存储到数据库
+    public void saveMsg(ZzPrivateMsg privateMsg){
+        privateMsgService.insert(privateMsg);
     }
-    //
+
     
 
 }
