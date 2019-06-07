@@ -130,8 +130,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into ZZ_USER_GROUP(USER_ID, GROUP_ID, CREATETIME)
-        values (#{userId}, #{groupId}, #{createtime})
+        insert into ZZ_USER_GROUP(ID,USER_ID, GROUP_ID, CREATETIME)
+        values (#{id},#{userId}, #{groupId}, #{createtime})
     </insert>
 
     <!--通过主键修改数据-->

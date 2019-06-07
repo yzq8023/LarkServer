@@ -14,6 +14,7 @@ import com.workhub.z.servicechat.feign.IValidateService;
 import com.workhub.z.servicechat.model.GroupTaskDto;
 import com.workhub.z.servicechat.model.UserGroupDto;
 import com.workhub.z.servicechat.model.UserListDto;
+import com.workhub.z.servicechat.processor.ProcessMsg;
 import com.workhub.z.servicechat.service.ZzGroupMsgService;
 import com.workhub.z.servicechat.service.ZzGroupService;
 import com.workhub.z.servicechat.service.ZzPrivateMsgService;
@@ -45,6 +46,8 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
     private static Logger log = LoggerFactory.getLogger(IworkWsMsgHandler.class);
     private static AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AsyncTaskConfig.class);
     private static AsyncTaskService asyncTaskService = context.getBean(AsyncTaskService.class);
+    @Autowired
+    protected ProcessMsg processMsg;
 
     @Autowired
     protected ZzGroupService groupService;
@@ -61,6 +64,7 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
         serverHandler.groupService = this.groupService;
         serverHandler.privateMsgService = this.privateMsgService;
         serverHandler.iValidateService = this.iValidateService;
+        serverHandler.processMsg = this.processMsg;
         // 初使化时将已静态化的Service实例化
     }
 
@@ -77,7 +81,7 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
     public HttpResponse handshake(HttpRequest request, HttpResponse httpResponse, ChannelContext channelContext) throws Exception {
         String clientip = request.getClientIp();
         String token = request.getParam("token");
-        String userid=request.getParam("userid");
+        String userid=request.getParam("userId");
         // 获取用户在线信息，如在线，踢掉他
         if(checkUserOnline(channelContext,userid)){
             Tio.unbindUser(channelContext.getGroupContext(),userid);
@@ -133,10 +137,15 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
         WsSessionContext wsSessionContext = (WsSessionContext) channelContext.getAttribute();
         HttpRequest httpRequest = wsSessionContext.getHandshakeRequest();//获取websocket握手包
         try{
-            JSONObject jsonObject = JSONObject.parseObject(text);
-            String code = jsonObject.getString("code");
-            String msg = jsonObject.getString("data");
-            processMsg(channelContext,msg,Integer.parseInt(code));
+//            JSONObject jsonObject = JSONObject.parseObject(text);
+//            String code = jsonObject.getString("
+//
+// code");
+            if (Objects.equals("心跳内容", text)) {
+                return null;
+            }
+//            String msg = jsonObject.getString("data");
+            serverHandler.processMsg.process(channelContext,text);
 
 
 
@@ -152,69 +161,23 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
         String t = String.valueOf(text);
 //        JSONObject jsonObject = JSON.parseObject(text);
 
-        if (Objects.equals("心跳内容", text)) {
-            return null;
-        }
+
         System.out.println(t);
 //      String msg = channelContext.getClientNode().toString() + " 说：" + text;
 //        String msg = t;
         //用tio-websocket，服务器发送到客户端的Packet都是WsResponse
-        WsResponse wsResponse = WsResponse.fromText(msg, IworkServerConfig.CHARSET);
-        //群发
-        Tio.bSendToGroup(channelContext.getGroupContext(), Const.GROUP_SYS, wsResponse);
+        WsResponse wsResponse = WsResponse.fromText(text, IworkServerConfig.CHARSET);
+//            Tio.sendToAll(channelContext.getGroupContext(),wsResponse);
+//        //群发
+//        Tio.bSendToGroup(channelContext.getGroupContext(), Const.GROUP_SYS, wsResponse);
         }catch (Exception e){
             log.error("发的是什么鬼东西"+text);
             return false;
         }
         //系统消息
-//      Aio.sendToAll(channelContext.getGroupContext(),wsResponse);
-//      Aio.sendToUser(channelContext.getGroupContext(),"123",wsResponse);
+
+//        Tio.sendToUser(channelContext.getGroupContext(),"123",wsResponse);
         //返回值是要发送给客户端的内容，一般都是返回null
         return null;
-    }
-    
-    /**
-    *@Description: 消息处理方法
-    *@Param: 
-    *@return: 
-    *@Author: 忠
-    *@date: 2019/5/28
-    */
-    boolean processMsg(ChannelContext channelContext,String msg,int code){
-        WsResponse wsResponse = WsResponse.fromText(msg, IworkServerConfig.CHARSET);
-        // TODO: 2019/5/28 判断
-        // TODO: 2019/5/28
-        switch (code){
-            case SYS_MSG:
-                Tio.sendToAll(channelContext.getGroupContext(),wsResponse);
-                break;
-            case GROUP_MSG:
-                ZzGroupMsg groupMsg = (ZzGroupMsg)GroupMsgVOToModel(msg);
-                serverHandler.groupMsgService.insert(groupMsg);
-                Tio.bSendToGroup(channelContext.getGroupContext(), Const.GROUP_SYS, wsResponse);
-                break;
-            case PRIVATE_MSG:
-                ZzPrivateMsg privateMsg = (ZzPrivateMsg)MsgVOToModel(msg);
-                serverHandler.privateMsgService.insert(privateMsg);
-                Tio.sendToUser(channelContext.getGroupContext(),privateMsg.getMsgReceiver(),wsResponse);
-                break;
-            case GROUP_JOIN_MSG:
-                UserGroupDto userGroupDto = JSON.parseObject(msg, UserGroupDto.class);
-                Tio.bindGroup(channelContext,userGroupDto.getGroupId());
-                break;
-            case GROUP_INVITE_MSG:
-                // TODO: 2019/5/30 通用方法 
-                GroupTaskDto groupTaskDto = JSON.parseObject(msg, GroupTaskDto.class);
-                List<UserListDto> listDtos = groupTaskDto.getUserList();
-                // TODO: 2019/5/30 定义通知格式 
-                for (int i = 0; i < listDtos.size(); i++) {
-                    Tio.sendToUser(channelContext.getGroupContext(),listDtos.get(i).getUserId(),wsResponse);
-                }
-                break;
-            default:
-                System.out.println("你说的什么鬼");
-                break;
-        }
-        return true;
     }
 }

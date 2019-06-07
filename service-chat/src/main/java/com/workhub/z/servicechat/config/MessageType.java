@@ -9,22 +9,25 @@ package com.workhub.z.servicechat.config;
 */
 public class MessageType {
 
-    //系统消息
-    public static final int SYS_MSG = 1;
-    //群消息
-    public static final int GROUP_MSG = 2;
     //个人消息
-    public static final int PRIVATE_MSG = 3;
+    public static final int PRIVATE_MSG = 0;
+    //群消息
+    public static final int GROUP_MSG = 1;
+    //系统消息
+    public static final int SYS_MSG = 2;
 
+    //群创建
+    public static final int GROUP_CREATE = 3;
     //群组操作
+    public static final int GROUP_EDIT = 4;
     //加入群组
-    public static final int GROUP_JOIN_MSG = 4;
+    public static final int GROUP_JOIN_MSG = 5;
     //邀请加入群组
-    public static final int GROUP_INVITE_MSG = 5;
+    public static final int GROUP_INVITE_MSG = 6;
     //退出群组
-    public static final int GROUP_EXIT_MSG = 6;
+    public static final int GROUP_EXIT_MSG = 7;
     //关闭群组
-    public static final int GROUP_CLOSE_MSG = 7;
+    public static final int GROUP_CLOSE_MSG = 8;
 
     //返回码 boolean
 
