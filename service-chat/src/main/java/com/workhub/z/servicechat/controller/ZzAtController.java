@@ -34,8 +34,8 @@ public class ZzAtController extends BaseController<ZzAtServiceImpl,ZzAt>{
      * @return 单条数据
      */
     @GetMapping("/selectOne")
-    public ZzAt selectOne(@RequestParam("id") String id) {
-        return this.zzAtService.queryById(id);
+    public ObjectRestResponse<ZzAt> selectOne(@RequestParam("id") String id) {
+        return new ObjectRestResponse().data(this.zzAtService.queryById(id)).msg("").rel(true);
     }
 
     @PostMapping("/create")

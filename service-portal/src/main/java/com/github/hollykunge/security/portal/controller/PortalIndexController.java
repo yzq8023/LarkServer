@@ -17,7 +17,7 @@ import org.tio.server.ServerGroupContext;
 import org.tio.websocket.common.WsResponse;
 
 @RestController
-@RequestMapping("/api/portal")
+@RequestMapping("portal")
 @RefreshScope
 public class PortalIndexController {
     @Value("${rpc}")
@@ -51,7 +51,7 @@ public class PortalIndexController {
             taskVO.setColor("红色");
             produceSenderConfig.send(UUIDUtils.generateShortUuid(),taskVO);
         }
-        return new ObjectRestResponse<String>().data("success");
+        return new ObjectRestResponse<String>().rel(true);
     }
     @GetMapping("/sent")
     public ObjectRestResponse<Boolean> send(@RequestParam("msg") String msg){
@@ -60,7 +60,6 @@ public class PortalIndexController {
         WsResponse wsResponse = WsResponse.fromText(msg, charset);
         //群发
         Tio.sendToGroup(context,Constants.GROUP_ID,wsResponse);
-        return new ObjectRestResponse<Boolean>().data(true);
+        return new ObjectRestResponse<Boolean>().rel(true);
     }
-
 }
