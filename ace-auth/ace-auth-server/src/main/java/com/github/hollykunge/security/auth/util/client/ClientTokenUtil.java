@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Created by 协同设计小组 on 2017/9/10.
+ *
+ * @author 协同设计小组
+ * @date 2017/9/10
  */
 @Configuration
 public class ClientTokenUtil {

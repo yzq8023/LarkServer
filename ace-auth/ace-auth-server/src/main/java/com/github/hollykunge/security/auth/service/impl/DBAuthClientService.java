@@ -17,7 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by 协同设计小组 on 2017/9/10.
+ *
+ * @author 协同设计小组
+ * @date 2017/9/10
  */
 @Service
 public class DBAuthClientService implements AuthClientService {
@@ -37,7 +39,7 @@ public class DBAuthClientService implements AuthClientService {
     @Override
     public String apply(String clientId, String secret) throws Exception {
         Client client = getClient(clientId, secret);
-        return clientTokenUtil.generateToken(new ClientInfo(client.getCode(),client.getName(),client.getId().toString()));
+        return clientTokenUtil.generateToken(new ClientInfo(client.getCode(),client.getName(),client.getId()));
     }
 
     private Client getClient(String clientId, String secret) {
