@@ -34,7 +34,6 @@ public class UserRest {
         return permissionService.getAllPermission();
     }
 
-    @Cache(key="permission:u{1}")
     @RequestMapping(value = "/user/un/{userId}/permissions", method = RequestMethod.GET)
     public @ResponseBody List<FrontPermission> getPermissionByUserId(@PathVariable("userId") String userId){
         return permissionService.getPermissionByUserId(userId);
