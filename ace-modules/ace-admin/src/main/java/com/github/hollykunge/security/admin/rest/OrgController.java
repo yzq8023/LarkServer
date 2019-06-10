@@ -6,6 +6,7 @@ import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
 import com.github.hollykunge.security.admin.entity.Org;
 import com.github.hollykunge.security.admin.vo.AdminUser;
 import com.github.hollykunge.security.admin.vo.OrgTree;
+import com.github.hollykunge.security.admin.vo.OrgUser;
 import com.github.hollykunge.security.admin.vo.RoleTree;
 import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
@@ -82,4 +83,20 @@ public class OrgController extends BaseController<OrgBiz, Org> {
         }
         return TreeUtil.bulid(trees, parentTreeId);
     }
+
+    /**
+     * 组织用户树枝包含用户接口
+     * @param parentTreeId 默认root
+     * @return
+     */
+    @RequestMapping(value = "/orgUsers", method = RequestMethod.GET)
+    @ResponseBody
+    public ListRestResponse<List<OrgUser>> orgUsers(@RequestParam("parentTreeId") String parentTreeId) {
+        if(StringUtils.isEmpty(parentTreeId)){
+            parentTreeId = AdminCommonConstant.ROOT;
+        }
+        List<OrgUser> tree = baseBiz.getOrg(baseBiz.selectListAll(), parentTreeId);
+        return new ListRestResponse("",tree.size(),tree);
+    }
+
 }
