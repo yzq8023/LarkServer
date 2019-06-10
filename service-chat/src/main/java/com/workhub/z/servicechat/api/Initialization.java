@@ -1,6 +1,7 @@
 package com.workhub.z.servicechat.api;
 
 //import com.github.hollykunge.security.api.vo.user.UserInfo;
+import com.alibaba.fastjson.JSONObject;
 import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.workhub.z.servicechat.VO.ContactVO;
 import com.workhub.z.servicechat.feign.IUserService;
@@ -32,7 +33,11 @@ public class Initialization {
     *@Author: 忠
     *@date: 2019/3/21
     */
+    public JSONObject queryGroupByUserId(String userId){
 
+
+        return null;
+    }
     /**
     *@Description: 群文件
     *@Param: 
@@ -45,7 +50,7 @@ public class Initialization {
     *@Description: 查询用户详细信息
     *@Param: userid
     *@return: usermodel
-    *@Author: 忠
+    *@Author: 忠0
     *@date: 2019/3/21
     */
     @RequestMapping("/getInfo")

@@ -1,5 +1,6 @@
 package com.workhub.z.servicechat.controller;
 
+import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.hollykunge.security.common.rest.BaseController;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -101,4 +103,11 @@ public class ZzGroupController extends BaseController<ZzGroupServiceImpl, ZzGrou
                 groupUserListVoPageInfo.getList());
     }
 
+
+    @PostMapping("/queryGroupListByUserId")
+    public ListRestResponse queryGroupListByUserId(@RequestParam("userId")String userId) throws Exception {
+        List<ZzGroup> groups = this.zzGroupService.queryGroupListByUserId(userId);
+
+        return new ListRestResponse("200",groups.size(),groups);
+    }
 }
