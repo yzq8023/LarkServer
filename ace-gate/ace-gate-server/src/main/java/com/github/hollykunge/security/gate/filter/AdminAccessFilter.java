@@ -9,6 +9,7 @@ import com.github.hollykunge.security.auth.client.jwt.ServiceAuthUtil;
 import com.github.hollykunge.security.auth.client.jwt.UserAuthUtil;
 import com.github.hollykunge.security.auth.common.util.jwt.IJWTInfo;
 import com.github.hollykunge.security.common.context.BaseContextHandler;
+import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.hollykunge.security.common.msg.auth.TokenErrorResponse;
 import com.github.hollykunge.security.common.msg.auth.TokenForbiddenResponse;
 import com.github.hollykunge.security.common.util.ClientUtil;
@@ -87,7 +88,6 @@ public class AdminAccessFilter extends ZuulFilter {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
         final String requestUri = request.getRequestURI().substring(zuulPrefix.length());
-        final String method = request.getMethod();
         BaseContextHandler.setToken(null);
         // 不进行拦截的地址
         if (isStartWith(requestUri)) {
@@ -101,15 +101,20 @@ public class AdminAccessFilter extends ZuulFilter {
             return null;
         }
         //获取所有的资源信息，包括menu和element
-        List<FrontPermission> permissionIfs = userService.getAllPermissionInfo();
-        // 判断当前资源是否属于权限资源
-        Stream<FrontPermission> stream = getPermissionIfs(requestUri, method, permissionIfs);
-        List<FrontPermission> result = stream.collect(Collectors.toList());
-        FrontPermission[] permissions = result.toArray(new FrontPermission[]{});
+//        List<FrontPermission> permissionIfs = userService.getAllPermissionInfo();
+//        // 判断当前资源是否属于权限资源
+//        Stream<FrontPermission> stream = getPermissionIfs(requestUri, method, permissionIfs);
+//        List<FrontPermission> result = stream.collect(Collectors.toList());
+//        FrontPermission[] permissions = result.toArray(new FrontPermission[]{});
 
-        if (permissions.length > 0) {
-            //判断用户是否有当前资源访问权限
-            checkUserPermission(permissions, ctx, user);
+//        if (permissions.length > 0) {
+//            //判断用户是否有当前资源访问权限
+//            checkUserPermission(permissions, ctx, user);
+//        }
+        //根据用户id获取资源列表，包括菜单和菜单功能
+        List<FrontPermission> permissionInfos = userService.getPermissionByUserId(user.getId());
+        if(permissionInfos.size()>0){
+            checkUserPermission(requestUri,permissionInfos, ctx, user);
         }
         // 申请客户端密钥头，加到header里传递到下方服务
         ctx.addZuulRequestHeader(serviceAuthConfig.getTokenHeader(), serviceAuthUtil.getClientToken());
@@ -125,7 +130,7 @@ public class AdminAccessFilter extends ZuulFilter {
      * @return
      */
     private Stream<FrontPermission> getPermissionIfs(final String requestUri, final String method, List<FrontPermission> serviceInfo) {
-        return serviceInfo.parallelStream().filter(new Predicate<FrontPermission>() {
+        return serviceInfo.stream().filter(new Predicate<FrontPermission>() {
             @Override
             public boolean test(FrontPermission permissionInfo) {
                 String uriTemp = permissionInfo.getUri();
@@ -227,7 +232,34 @@ public class AdminAccessFilter extends ZuulFilter {
         ctx.setResponseStatusCode(code);
         if (ctx.getResponseBody() == null) {
             ctx.setResponseBody(body);
+            ctx.getResponse().setContentType("text/json;charset=UTF-8");
             ctx.setSendZuulResponse(false);
+        }
+    }
+
+    /**
+     * 优化查询该请求资源是否在用户所拥有的权限中
+     * @param ctx
+     * @param user
+     */
+    private void checkUserPermission(String requestUri,List<FrontPermission> permissionInfos, RequestContext ctx, IJWTInfo user) {
+        if(StringUtils.isEmpty(requestUri)){
+            throw new BaseException("requestUri 参数异常...");
+        }
+        boolean anyMatch = permissionInfos.stream()
+                .filter(permissionInfo ->requestUri.contains(permissionInfo.getUri()))
+                .anyMatch(new Predicate<FrontPermission>() {
+                    @Override
+                    public boolean test(FrontPermission permissionInfo) {
+                        return permissionInfo.getActionEntitySetList().stream().anyMatch(actionEntitySet ->
+                                ctx.getRequest().getMethod().equals(actionEntitySet.getMethod()));
+                    }
+                });
+        if (anyMatch) {
+            //该用户有访问路径权限
+            setCurrentUserInfoAndLog(ctx, user, permissionInfos.get(0));
+        } else {
+            setFailedRequest(JSON.toJSONString(new TokenForbiddenResponse("Token Forbidden!")), 200);
         }
     }
 
