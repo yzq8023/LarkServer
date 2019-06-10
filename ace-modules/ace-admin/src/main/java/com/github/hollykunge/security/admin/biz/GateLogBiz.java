@@ -3,6 +3,8 @@ package com.github.hollykunge.security.admin.biz;
 import com.github.hollykunge.security.admin.entity.GateLog;
 import com.github.hollykunge.security.admin.mapper.GateLogMapper;
 import com.github.hollykunge.security.common.biz.BaseBiz;
+import com.github.hollykunge.security.common.util.EntityUtils;
+import com.github.hollykunge.security.common.util.UUIDUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,7 @@ public class GateLogBiz extends BaseBiz<GateLogMapper,GateLog> {
 
     @Override
     public void insertSelective(GateLog entity) {
+        entity.setId(UUIDUtils.generateShortUuid());
         mapper.insertSelective(entity);
     }
 
