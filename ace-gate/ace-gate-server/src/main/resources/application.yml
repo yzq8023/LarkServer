@@ -53,6 +53,9 @@ zuul:
       path: /auth/**
       serviceId: ace-auth
 
+    workplace:
+      path:
+
 ribbon:
   eureka:
     enabled: true
