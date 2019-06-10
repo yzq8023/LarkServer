@@ -34,6 +34,14 @@ public class Initialization {
     */
 
     /**
+    *@Description: 群文件
+    *@Param: 
+    *@return: 
+    *@Author: 忠
+    *@date: 2019/6/10
+    */
+    
+    /**
     *@Description: 查询用户详细信息
     *@Param: userid
     *@return: usermodel

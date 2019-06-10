@@ -31,10 +31,13 @@ public class ProcessPrivateMsg extends AbstractMsgProcessor{
 //        String code = jsonObject.getString("code");
         String message = jsonObject.getString("data");
         ZzPrivateMsg privateMsg = (ZzPrivateMsg)MsgVOToModel(message);
-        Boolean temp =  Tio.sendToUser(channelContext.getGroupContext(),privateMsg.getMsgReceiver(),this.getWsResponse(msg));
+        saveMsg(privateMsg);
+//        如果不在线则不发
+        Boolean temp =  checkUserOnline(channelContext,privateMsg.getMsgReceiver());
 //        Boolean temp =  Tio.sendToUser(channelContext.getGroupContext(),privateMsg.getMsgSender(),this.getWsResponse(message));
         if (temp) {
-            saveMsg(privateMsg);
+            Tio.sendToUser(channelContext.getGroupContext(),privateMsg.getMsgReceiver(),this.getWsResponse(msg));
+
         }else {
 
         }

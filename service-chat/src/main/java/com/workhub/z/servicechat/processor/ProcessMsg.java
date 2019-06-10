@@ -67,15 +67,6 @@ public class ProcessMsg {
 //                     });
 //                     Tio.bindGroup(channelContext,groupEditVO.getGroupId());
                     break;
-//                case GROUP_INVITE_MSG:
-//                    // TODO: 2019/5/30 通用方法
-//                    GroupTaskDto groupTaskDto = JSON.parseObject(msg, GroupTaskDto.class);
-//                    List<UserListDto> listDtos = groupTaskDto.getUserList();
-//                    // TODO: 2019/5/30 定义通知格式
-//                    for (int i = 0; i < listDtos.size(); i++) {
-//                        Tio.sendToUser(channelContext.getGroupContext(),listDtos.get(i).getUserId(),wsResponse);
-//                    }
-//                    break;
                 case GROUP_CREATE:
                     return createGroup(channelContext,message);
 
@@ -84,7 +75,7 @@ public class ProcessMsg {
                     break;
             }
         }catch (Exception e){
-            System.out.println("你说错了");
+            System.out.println("别提了又错了"+ e.getMessage());
             return null;
         }
         return null;

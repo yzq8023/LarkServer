@@ -18,7 +18,7 @@ public class ProcessGroupMsg extends AbstractMsgProcessor {
 
     public boolean sendMsg(ChannelContext channelContext, String msg){
         JSONObject jsonObject = JSONObject.parseObject(msg);
-//        String code = jsonObject.getString("code");
+//      String code = jsonObject.getString("code");
         String message = jsonObject.getString("data");
         ZzGroupMsg zzGroupMsg = (ZzGroupMsg)GroupMsgVOToModel(message);
         Tio.sendToGroup(channelContext.getGroupContext(),zzGroupMsg.getMsgReceiver(),this.getWsResponse(msg));

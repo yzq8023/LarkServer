@@ -1,19 +1,8 @@
 package com.workhub.z.servicechat.server;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.workhub.z.servicechat.VO.MessageVO;
 import com.workhub.z.servicechat.config.AsyncTaskConfig;
 import com.workhub.z.servicechat.config.AsyncTaskService;
-import com.workhub.z.servicechat.config.MessageType;
-import com.workhub.z.servicechat.entity.ZzGroup;
-import com.workhub.z.servicechat.entity.ZzGroupMsg;
-import com.workhub.z.servicechat.entity.ZzPrivateMsg;
 import com.workhub.z.servicechat.feign.IValidateService;
-import com.workhub.z.servicechat.model.GroupTaskDto;
-import com.workhub.z.servicechat.model.UserGroupDto;
-import com.workhub.z.servicechat.model.UserListDto;
 import com.workhub.z.servicechat.processor.ProcessMsg;
 import com.workhub.z.servicechat.service.ZzGroupMsgService;
 import com.workhub.z.servicechat.service.ZzGroupService;
@@ -33,12 +22,7 @@ import org.tio.websocket.common.WsSessionContext;
 import org.tio.websocket.server.handler.IWsMsgHandler;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
 import java.util.Objects;
-
-import static com.workhub.z.servicechat.config.MessageType.*;
-import static com.workhub.z.servicechat.config.VoToEntity.GroupMsgVOToModel;
-import static com.workhub.z.servicechat.config.VoToEntity.MsgVOToModel;
 import static com.workhub.z.servicechat.config.common.checkUserOnline;
 
 @Component
@@ -86,6 +70,7 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
         if(checkUserOnline(channelContext,userid)){
             Tio.unbindUser(channelContext.getGroupContext(),userid);
         }
+//      获取用户群组信息,组织机构
 //      用户token验证
 //      iValidateService.validate(token);
         Tio.bindToken(channelContext,token);
