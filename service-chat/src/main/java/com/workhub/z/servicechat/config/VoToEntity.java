@@ -8,6 +8,7 @@ import com.workhub.z.servicechat.entity.ZzGroup;
 import com.workhub.z.servicechat.entity.ZzGroupMsg;
 import com.workhub.z.servicechat.entity.ZzPrivateMsg;
 import com.workhub.z.servicechat.entity.ZzUserGroup;
+import com.workhub.z.servicechat.model.CreateGroupDto;
 import com.workhub.z.servicechat.model.GroupTaskDto;
 import com.workhub.z.servicechat.model.UserListDto;
 
@@ -80,8 +81,8 @@ public abstract class VoToEntity {
         JSONObject groupJson = JSONObject.parseObject(msg);
 
         groupTaskDto.setGroupId(getUUID());
-//        groupTaskDto.setGroupId(groupJson.getString("groupId"));
-        groupTaskDto.setReviser(groupJson.getString("reviser1"));
+//      groupTaskDto.setGroupId(groupJson.getString("groupId"));
+        groupTaskDto.setReviser(groupJson.getString("reviser"));
         groupTaskDto.setTimestamp(groupJson.getTimestamp("timestamp"));
         groupTaskDto.setType(Integer.parseInt(groupJson.getString("type")));
         List<UserListDto> uList = new ArrayList();
@@ -97,4 +98,18 @@ public abstract class VoToEntity {
         groupTaskDto.setUserList(uList);
         return groupTaskDto;
     }
+
+    /**
+    *@Description: 创建群组实体转换
+    *@Param: String
+    *@return: CreateGroupDto
+    *@Author: 忠
+    *@date: 2019/6/10
+    */
+    public static Object CreateGroupVOToModel(String text) {
+        CreateGroupDto createGroupDto =new CreateGroupDto();
+
+        return createGroupDto;
+    }
+
 }

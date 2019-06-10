@@ -35,18 +35,19 @@ public class ProcessEditGroup extends AbstractMsgProcessor{
     ZzGroupService groupService;
 
     // TODO: 2019/6/4 分类处理群组编辑
-    public void processManage(ChannelContext channelContext, String message) throws IOException {
+    public boolean processManage(ChannelContext channelContext, String message) throws IOException {
         GroupTaskDto groupTaskDto = toGroupTaskDto(message);
         switch (groupTaskDto.getType()){
             case GROUP_JOIN_MSG:
                 // TODO: 2019/6/4 处理加入群组消息，1绑定用户到群组
-                Tio.bindGroup(channelContext,groupTaskDto.getGroupId());
-                joinGroup(channelContext,groupTaskDto);
+//                Tio.bindGroup(channelContext,groupTaskDto.getGroupId());
+               return joinGroup(channelContext,groupTaskDto);
 //                groupTaskDto.
-                break;
+
             case GROUP_INVITE_MSG:
                 // TODO: 2019/6/4 1.生成群组头像 2.存入数据库 3.向用户分发加入群组消息
 //                createGroup(channelContext,message);
+                Tio.bindGroup(channelContext,groupTaskDto.getGroupId());
                 break;
             case GROUP_EXIT_MSG:
                 // TODO: 2019/6/4 退出群组
@@ -54,6 +55,7 @@ public class ProcessEditGroup extends AbstractMsgProcessor{
             case GROUP_CLOSE_MSG:
                 break;
         }
+        return true;
     }
 
     public boolean joinGroup(ChannelContext channelContext,GroupTaskDto groupTaskDto){
@@ -66,7 +68,7 @@ public class ProcessEditGroup extends AbstractMsgProcessor{
             userGroupService.insert(userGroup);
 
             GroupEditVO groupEditVO = new GroupEditVO();
-            groupTaskDto.setType(GROUP_JOIN_MSG);
+            groupTaskDto.setType(GROUP_INVITE_MSG);
             groupEditVO.setCode(GROUP_EDIT);
             groupTaskDto.setUserList(null);
             groupEditVO.setData(groupTaskDto);
