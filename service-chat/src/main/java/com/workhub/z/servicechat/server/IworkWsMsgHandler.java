@@ -1,7 +1,10 @@
 package com.workhub.z.servicechat.server;
 
+import com.ace.cache.annotation.Cache;
+import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.workhub.z.servicechat.config.AsyncTaskConfig;
 import com.workhub.z.servicechat.config.AsyncTaskService;
+import com.workhub.z.servicechat.feign.IUserService;
 import com.workhub.z.servicechat.feign.IValidateService;
 import com.workhub.z.servicechat.processor.ProcessMsg;
 import com.workhub.z.servicechat.service.ZzGroupMsgService;
@@ -36,6 +39,8 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
     @Autowired
     protected ZzGroupService groupService;
     @Autowired
+    protected IUserService userService;
+    @Autowired
     protected ZzPrivateMsgService privateMsgService;
     @Autowired
     protected ZzGroupMsgService groupMsgService;
@@ -46,6 +51,7 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
     public void init() {
         serverHandler = this;
         serverHandler.groupService = this.groupService;
+        serverHandler.userService = this.userService;
         serverHandler.privateMsgService = this.privateMsgService;
         serverHandler.iValidateService = this.iValidateService;
         serverHandler.processMsg = this.processMsg;
@@ -62,6 +68,7 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
      * 握手时走这个方法，业务可以在这里获取cookie，request参数等
      */
     @Override
+//    @Cache(key = "user")
     public HttpResponse handshake(HttpRequest request, HttpResponse httpResponse, ChannelContext channelContext) throws Exception {
         String clientip = request.getClientIp();
         String token = request.getParam("token");
@@ -71,9 +78,10 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
             Tio.unbindUser(channelContext.getGroupContext(),userid);
         }
 //      获取用户群组信息,组织机构
+        UserInfo userInfo = serverHandler.userService.info(userid);
 //      用户token验证
 //      iValidateService.validate(token);
-        Tio.bindToken(channelContext,token);
+//      Tio.bindToken(channelContext,token);
 //      前端 参数 绑定信息
         Tio.bindUser(channelContext,userid);
 //      加入系统消息组

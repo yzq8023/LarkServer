@@ -184,7 +184,7 @@
 
 
     <!--通过userId返回用户所在群组信息集合 -->
-    <select id="queryGroupListByUserId" resultMap="ZzGroupMap">
-        SELECT  E.* FROM zz_group E JOIN zz_user_group D ON(E.GROUP_ID = D.GROUP_ID AND d.user_id = #{id)
+    <select id="queryGroupListByUserId" resultMap="ZzGroupMap" parameterType="String">
+        SELECT  E.* FROM zz_group E JOIN zz_user_group D ON(E.GROUP_ID = D.GROUP_ID) AND D.user_id = #{id}
     </select>
 </mapper>

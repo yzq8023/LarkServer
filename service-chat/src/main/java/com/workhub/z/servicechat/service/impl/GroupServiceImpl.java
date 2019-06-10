@@ -62,7 +62,7 @@ public class GroupServiceImpl implements GroupService {
         if (null == groupTaskDto) throw new NullPointerException("GroupTaskDto is null");
         ZzGroup zzGroup = groupTaskDto.getZzGroup();
         if (null == zzGroup) throw new NullPointerException("zzGroup is null");
-        UserInfo info = this.iUserService.info(Integer.parseInt(groupTaskDto.getGroupId()));
+        UserInfo info = this.iUserService.info(groupTaskDto.getGroupId());
         if (null == info) throw new RuntimeException("info is null");
         if (Integer.parseInt(zzGroup.getLevels())<1/*TODO 属性暂时未加 */) throw new RuntimeException("群创建等级必须小于或者等于创建人等级");
         this.zzGroupService.insert(zzGroup);
