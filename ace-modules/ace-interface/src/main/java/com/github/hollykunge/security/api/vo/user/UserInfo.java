@@ -16,6 +16,7 @@ public class UserInfo implements Serializable{
     private String secretLevel;
     private String avatar;
     private String description;
+    private String orgCode;
     private Integer demo;
 
     public String getId() {
@@ -80,5 +81,14 @@ public class UserInfo implements Serializable{
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+
+    public String getOrgCode() {
+        return orgCode;
+    }
+
+    public void setOrgCode(String orgCode) {
+        this.orgCode = orgCode;
     }
 }
