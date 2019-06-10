@@ -44,7 +44,7 @@ public interface ZzGroupFileService {
      * @param zzGroupFile 实例对象
      * @return 实例对象
      */
-    Integer update(ZzGroupFile zzGroupFile);
+    void update(ZzGroupFile zzGroupFile);
 
     /**
      * 通过主键删除数据
@@ -52,7 +52,7 @@ public interface ZzGroupFileService {
      * @param fileId 主键
      * @return 是否成功
      */
-    boolean deleteById(String fileId);
+    void deleteById(String fileId);
 
     /**
      * 查询群组的文件信息

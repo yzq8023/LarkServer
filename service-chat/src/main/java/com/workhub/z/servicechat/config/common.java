@@ -1,17 +1,12 @@
 package com.workhub.z.servicechat.config;
 
-import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.workhub.z.servicechat.VO.GroupInfoVO;
 import com.workhub.z.servicechat.entity.ZzDictionaryWords;
 import org.tio.core.ChannelContext;
 import org.tio.core.Tio;
-import org.tio.utils.lock.SetWithLock;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
 *@Description: 通用方法
@@ -141,15 +136,93 @@ public class common {
         boolean isOnline = checkChannelContext != null && !checkChannelContext.isClosed;
         return isOnline;
     }
-
     /**
-    *@Description: 判断msg数据体是否正确
-    *@Param: string 接收的消息
-    *@return: boolean
-    *@Author: 忠
-    *@date: 2019/5/30
-    */
+     *@Description: 判断msg数据体是否正确
+     *@Param: string 接收的消息
+     *@return: boolean
+     *@Author: 忠
+     *@date: 2019/5/30
+     */
     public static boolean isJson(String text){
         return false;
+    }
+    /**
+     *@Description: 把entity null 转换成空字符串,时间转换成当前时间，long转换成0L
+     *@Param: string 接收的实体
+     *@return: boolean
+     *@Author: zhuqz
+     *@date: 2019/06/10
+     */
+    public static<T> void putEntityNullToEmptyString (T enity) throws Exception{
+        //遍历enity类 成员为String类型 属性为空的全部替换为“”
+        Field[] fields = enity.getClass().getDeclaredFields();
+        for (int i = 0; i < fields.length; i++) {
+            // 获取属性的名字
+            String name = fields[i].getName();
+            // 将属性的首字符大写，方便构造get，set方法
+            name = name.substring(0, 1).toUpperCase() + name.substring(1);
+            // 获取属性的类型
+            String type = fields[i].getGenericType().toString();
+            // 如果type是类类型，则前面包含"class "，后面跟类名
+            if (type.equals("class java.lang.String")) {
+                Method m = enity.getClass().getMethod("get" + name);
+                // 调用getter方法获取属性值
+                String value = (String) m.invoke(enity);
+                //System.out.println("数据类型为：String");
+                if (value == null) {
+                    //set值
+                    Class[] parameterTypes = new Class[1];
+                    parameterTypes[0] = fields[i].getType();
+                    m = enity.getClass().getMethod("set" + name, parameterTypes);
+                    String string = new String("");
+                    Object[] objects = new Object[1];
+                    objects[0] = string;
+                    m.invoke(enity, objects);
+                }
+            }
+            // 如果type是类类型，则前面包含"class "，后面跟类名
+            if (type.equals("class java.util.Date")) {
+                Method m = enity.getClass().getMethod("get" + name);
+                // 调用getter方法获取属性值
+                Date value = (Date) m.invoke(enity);
+                //System.out.println("数据类型为：String");
+                if (value == null) {
+                    //set值
+                    Class[] parameterTypes = new Class[1];
+                    parameterTypes[0] = fields[i].getType();
+                    m = enity.getClass().getMethod("set" + name, parameterTypes);
+                    Date date = new Date();
+                    Object[] objects = new Object[1];
+                    objects[0] = date;
+                    m.invoke(enity, objects);
+                }
+            }
+            // 如果type是类类型，则前面包含"class "，后面跟类名
+            if (type.equals("long")) {
+                boolean hasFun = true;
+                Method m = null;
+                try{
+                    m = enity.getClass().getMethod("get" + name);
+                }catch (NoSuchMethodException e){//可能是序列化的long
+                    hasFun=false;
+                }
+                if(!hasFun){
+                    continue;
+                }
+                // 调用getter方法获取属性值
+                Long value = (Long) m.invoke(enity);
+                //System.out.println("数据类型为：String");
+                if (value == null) {
+                    //set值
+                    Class[] parameterTypes = new Class[1];
+                    parameterTypes[0] = fields[i].getType();
+                    m = enity.getClass().getMethod("set" + name, parameterTypes);
+                    long data = 0L;
+                    Object[] objects = new Object[1];
+                    objects[0] = data;
+                    m.invoke(enity, objects);
+                }
+            }
+        }
     }
 }

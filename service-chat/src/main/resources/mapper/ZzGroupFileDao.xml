@@ -125,8 +125,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="fileId" useGeneratedKeys="true">
-        insert into ZZ_GROUP_FILE(FILE_NAME, FILE_EXT, FILE_TYPE, SIZES, PATH, READ_PATH, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, GROUP_ID, LEVELS)
-        values (#{fileName}, #{fileExt}, #{fileType}, #{sizes}, #{path}, #{readPath}, #{createTime}, #{creator}, #{updateTime}, #{updator}, #{groupId}, #{levels})
+        insert into ZZ_GROUP_FILE(FILE_ID, FILE_NAME, FILE_EXT, FILE_TYPE, SIZES, PATH, READ_PATH, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, GROUP_ID, LEVELS)
+        values (#{fileId},#{fileName}, #{fileExt}, #{fileType}, #{sizes}, #{path}, #{readPath}, #{createTime}, #{creator}, #{updateTime}, #{updator}, #{groupId}, #{levels})
     </insert>
 
     <!--通过主键修改数据-->

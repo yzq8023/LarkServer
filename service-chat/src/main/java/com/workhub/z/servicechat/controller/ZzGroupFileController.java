@@ -1,22 +1,19 @@
 package com.workhub.z.servicechat.controller;
 
-import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.hollykunge.security.common.rest.BaseController;
 import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.VO.GroupInfoVO;
 import com.workhub.z.servicechat.config.RandomId;
+import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
 import com.workhub.z.servicechat.service.ZzGroupFileService;
 import com.workhub.z.servicechat.service.impl.ZzGroupFileServiceImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 群文件(ZzGroupFile)表控制层
@@ -43,7 +40,9 @@ public class ZzGroupFileController
      */
     @GetMapping("/selectOne")
     public ZzGroupFile selectOne(@RequestParam("id") String id) {
+
         return this.zzGroupFileService.queryById(id);
+
     }
 
     /**
@@ -74,9 +73,12 @@ public class ZzGroupFileController
      */
     @PostMapping("/delete")
     public ObjectRestResponse delFileInfo(@RequestParam("id") String id){
-        boolean flag = this.zzGroupFileService.deleteById(id);
+        //boolean flag = this.zzGroupFileService.deleteById(id);
+        //ObjectRestResponse objectRestResponse = new ObjectRestResponse();
+        //objectRestResponse.data(flag);
+        this.zzGroupFileService.deleteById(id);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
-        objectRestResponse.data(flag);
+        objectRestResponse.data("成功");
         return objectRestResponse;
     }
 
@@ -86,10 +88,15 @@ public class ZzGroupFileController
      * @return
      */
     @PostMapping("/create")
-    public ObjectRestResponse insert(@RequestParam("zzGroupFile")ZzGroupFile zzGroupFile){
+    public ObjectRestResponse insert(ZzGroupFile zzGroupFile){
         zzGroupFile.setFileId(RandomId.getUUID());
         zzGroupFile.setCreator("登陆人id");//TODO
         zzGroupFile.setCreateTime(new Date());
+        try{
+            common.putEntityNullToEmptyString(zzGroupFile);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 //        Integer insert = this.zzGroupFileService.insert(zzGroupFile);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
 //        if (insert == null){
@@ -106,15 +113,24 @@ public class ZzGroupFileController
      * @return
      */
     @PostMapping("/update")
-    public ObjectRestResponse update(@RequestParam("zzGroupFile")ZzGroupFile zzGroupFile){
+    public ObjectRestResponse update(ZzGroupFile zzGroupFile){
         zzGroupFile.setUpdator("登陆人id");//TODO
         zzGroupFile.setUpdateTime(new Date());
-        Integer update = this.zzGroupFileService.update(zzGroupFile);
+        zzGroupFile.setFileId("1");
+        /*Integer update = this.zzGroupFileService.update(zzGroupFile);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
         if (update == 0){
             objectRestResponse.data("失败");
             return objectRestResponse;
         }
+        objectRestResponse.data("成功");*/
+        try{
+            common.putEntityNullToEmptyString(zzGroupFile);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        this.zzGroupFileService.update(zzGroupFile);
+        ObjectRestResponse objectRestResponse = new ObjectRestResponse();
         objectRestResponse.data("成功");
         return objectRestResponse;
     }
