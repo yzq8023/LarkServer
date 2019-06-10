@@ -42,7 +42,7 @@ public interface ZzDictionaryWordsService {
      * @param zzDictionaryWords 实例对象
      * @return 实例对象
      */
-    Integer update(ZzDictionaryWords zzDictionaryWords);
+    void update(ZzDictionaryWords zzDictionaryWords);
 
     /**
      * 通过主键删除数据
@@ -50,7 +50,7 @@ public interface ZzDictionaryWordsService {
      * @param id 主键
      * @return 是否成功
      */
-    boolean deleteById(String id);
+    void deleteById(String id);
 
     /**
      * 检索文本是否涉密（涉密类型）

@@ -34,7 +34,12 @@ public class ZzGroupFileServiceImpl extends BaseBiz<ZzGroupFileDao,ZzGroupFile >
      */
     @Override
     public ZzGroupFile queryById(String fileId) {
-        return this.zzGroupFileDao.queryById(fileId);
+
+        //return this.zzGroupFileDao.queryById(fileId);
+        ZzGroupFile entity = new ZzGroupFile();
+        entity.setFileId(fileId);
+        return super.selectOne(entity);
+
     }
 
     /**
@@ -58,8 +63,9 @@ public class ZzGroupFileServiceImpl extends BaseBiz<ZzGroupFileDao,ZzGroupFile >
     @Override
     @Transactional
     public void insert(ZzGroupFile zzGroupFile) {
-        int insert = this.zzGroupFileDao.insert(zzGroupFile);
+       // int insert = this.zzGroupFileDao.insert(zzGroupFile);
 //        return insert;
+        super.insert(zzGroupFile);
     }
 
     @Override
@@ -75,9 +81,10 @@ public class ZzGroupFileServiceImpl extends BaseBiz<ZzGroupFileDao,ZzGroupFile >
      */
     @Override
     @Transactional
-    public Integer update(ZzGroupFile zzGroupFile) {
-        int update = this.zzGroupFileDao.update(zzGroupFile);
-        return update;
+    public void update(ZzGroupFile zzGroupFile) {
+        /*int update = this.zzGroupFileDao.update(zzGroupFile);
+        return update;*/
+        super.updateById(zzGroupFile);
     }
 
     /**
@@ -88,8 +95,12 @@ public class ZzGroupFileServiceImpl extends BaseBiz<ZzGroupFileDao,ZzGroupFile >
      */
     @Override
     @Transactional
-    public boolean deleteById(String fileId) {
-        return this.zzGroupFileDao.deleteById(fileId) > 0;
+    public void deleteById(String fileId) {
+
+        //return this.zzGroupFileDao.deleteById(fileId) > 0;
+        ZzGroupFile entity = new ZzGroupFile();
+        entity.setFileId(fileId);
+        super.delete(entity);
     }
 
     /**
