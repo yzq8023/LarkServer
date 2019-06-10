@@ -82,7 +82,7 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
         }
     }
 
-    @CacheClear(keys = {"permission:menu", "permission:u"})
+    @CacheClear(keys = {"permission:menu", "permission:u","frontPermission{1}"})
     public void modifyAuthorityMenu(String roleId, List<AdminPermission> permissionList) {
         if(StringUtils.isEmpty(roleId)||permissionList.isEmpty()){
             throw new BaseException("args is null...");
@@ -235,6 +235,7 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
      * @param roleId 角色id
      * @return 
      */
+    @Cache(key = "frontPermission{1}")
     public List<FrontPermission> frontAuthorityMenu(String roleId) {
         //定义固定返回参数
         List<FrontPermission> resultPermission = new ArrayList<>();
@@ -268,6 +269,9 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
         frontPermission.setMenuId(menu.getId());
         frontPermission.setRoleId(roleId);
         List<ActionEntitySet> actionEntitySet = JSON.parseArray(JSON.toJSONString(elements),ActionEntitySet.class);
+        actionEntitySet.parallelStream().forEach(actionEntitySetEntity ->{
+            actionEntitySetEntity.setDefaultCheck(true);
+        });
         //给菜单赋值所有的Element
         frontPermission.setActionEntitySetList(actionEntitySet);
         return frontPermission;
