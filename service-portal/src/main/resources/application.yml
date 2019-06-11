@@ -36,7 +36,7 @@ spring:
     poolPreparedStatements: true
     maxOpenPreparedStatements: 20
   rabbitmq:
-    host: 10.12.97.34
+    host: 10.12.97.150
     port: 5672
     username: guest
     password: guest
@@ -139,6 +139,12 @@ logging:
   level:
     root: info
   file: ${user.home}/logs/portal/portal.log
+
+####卡片宽度，高度
+portal:
+  card:
+    w: 1
+    h: 5
 
 
 
