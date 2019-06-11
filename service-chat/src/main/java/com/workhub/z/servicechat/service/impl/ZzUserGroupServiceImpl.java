@@ -148,7 +148,7 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
             if ("GROUP".equals(n.getSendType())){
                 contactVO.setName(this.zzGroupService.queryById(n.getSender()).getGroupName());
             }else{
-                contactVO.setName(this.iUserService.info(Integer.parseInt(n.getSender())).getName());
+                contactVO.setName(this.iUserService.info(n.getSender()).getName());
             }
             contactVO.setIsGroup("GROUP".equals(n.getSendType()));
             contactVO.setUnreadNum(n.getMsgCount());

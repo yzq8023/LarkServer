@@ -1,18 +1,14 @@
 package com.workhub.z.servicechat.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.workhub.z.servicechat.config.common;
-import com.workhub.z.servicechat.entity.ZzAt;
-import com.workhub.z.servicechat.entity.ZzDictionaryWords;
 import com.workhub.z.servicechat.dao.ZzDictionaryWordsDao;
+import com.workhub.z.servicechat.entity.ZzDictionaryWords;
 import com.workhub.z.servicechat.service.ZzDictionaryWordsService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 字典词汇表(ZzDictionaryWords)表服务实现类
@@ -33,7 +29,10 @@ public class ZzDictionaryWordsServiceImpl extends BaseBiz<ZzDictionaryWordsDao, 
      */
     @Override
     public ZzDictionaryWords queryById(String id) {
-        return this.zzDictionaryWordsDao.queryById(id);
+        //return this.zzDictionaryWordsDao.queryById(id);
+        ZzDictionaryWords entity = new ZzDictionaryWords();
+        entity.setId(id);
+        return  super.selectOne(entity);
     }
 
     /**
@@ -54,10 +53,11 @@ public class ZzDictionaryWordsServiceImpl extends BaseBiz<ZzDictionaryWordsDao, 
      * @param zzDictionaryWords 实例对象
      * @return 实例对象
      */
-    @Override
+
     public void insert(ZzDictionaryWords zzDictionaryWords) {
-        int insert = this.zzDictionaryWordsDao.insert(zzDictionaryWords);
-//        return insert;
+        //int insert = this.zzDictionaryWordsDao.insert(zzDictionaryWords);
+        //return insert;
+        super.insert(zzDictionaryWords);
     }
 
     @Override
@@ -72,9 +72,10 @@ public class ZzDictionaryWordsServiceImpl extends BaseBiz<ZzDictionaryWordsDao, 
      * @return 实例对象
      */
     @Override
-    public Integer update(ZzDictionaryWords zzDictionaryWords) {
-        int update = this.zzDictionaryWordsDao.update(zzDictionaryWords);
-        return update;
+    public void update(ZzDictionaryWords zzDictionaryWords) {
+        //int update = this.zzDictionaryWordsDao.update(zzDictionaryWords);
+        //return update;
+        super.updateById(zzDictionaryWords);
     }
 
     /**
@@ -84,8 +85,11 @@ public class ZzDictionaryWordsServiceImpl extends BaseBiz<ZzDictionaryWordsDao, 
      * @return 是否成功
      */
     @Override
-    public boolean deleteById(String id) {
-        return this.zzDictionaryWordsDao.deleteById(id) > 0;
+    public void deleteById(String id) {
+        //return this.zzDictionaryWordsDao.deleteById(id) > 0;
+        ZzDictionaryWords entity = new ZzDictionaryWords();
+        entity.setId(id);
+        super.delete(entity);
     }
 
 

@@ -42,7 +42,7 @@ public interface ZzGroupMsgService {
      * @param zzGroupMsg 实例对象
      * @return 实例对象
      */
-    Integer update(ZzGroupMsg zzGroupMsg);
+    void update(ZzGroupMsg zzGroupMsg);
 
     /**
      * 通过主键删除数据
@@ -50,6 +50,6 @@ public interface ZzGroupMsgService {
      * @param msgId 主键
      * @return 是否成功
      */
-    boolean deleteById(String msgId);
+    void deleteById(String msgId);
 
 }

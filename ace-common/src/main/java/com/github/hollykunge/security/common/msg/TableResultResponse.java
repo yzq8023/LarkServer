@@ -23,8 +23,6 @@ public class TableResultResponse<T> extends BaseResponse {
         this.result = new TableData<T>();
     }
 
-
-
     class TableData<T> {
         private List<T> data;
         private int pageSize;

@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Set;
 
 @FeignClient(value = "ace-admin")
 @Repository
+
 public interface IUserService {
     /**
     *@Description: 根据user身份证查询用户信息
@@ -35,6 +37,6 @@ public interface IUserService {
     @RequestMapping(value = "/user/all", method = RequestMethod.POST)
     public List<UserInfo> all();
 
-    @RequestMapping(value = "/user/info", method = RequestMethod.POST)
-    public UserInfo info(Integer userId);
+    @RequestMapping(value = "api/user/info", method = RequestMethod.POST)
+    public UserInfo info(@RequestParam("userId") String userId);
 }

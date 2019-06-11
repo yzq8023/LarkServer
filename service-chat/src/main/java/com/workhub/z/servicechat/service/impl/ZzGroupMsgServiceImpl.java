@@ -29,7 +29,10 @@ public class ZzGroupMsgServiceImpl extends BaseBiz<ZzGroupMsgDao, ZzGroupMsg> im
      */
     @Override
     public ZzGroupMsg queryById(String msgId) {
-        return this.zzGroupMsgDao.queryById(msgId);
+        //return this.zzGroupMsgDao.queryById(msgId);
+        ZzGroupMsg entity = new ZzGroupMsg();
+        entity.setMsgId(msgId);
+        return super.selectOne(entity);
     }
 
     /**
@@ -53,8 +56,9 @@ public class ZzGroupMsgServiceImpl extends BaseBiz<ZzGroupMsgDao, ZzGroupMsg> im
     @Override
     @Transactional
     public void insert(ZzGroupMsg zzGroupMsg) {
-        int insert = this.zzGroupMsgDao.insert(zzGroupMsg);
+        //int insert = this.zzGroupMsgDao.insert(zzGroupMsg);
 //        return insert;
+        super.insert(zzGroupMsg);
     }
 
     @Override
@@ -70,9 +74,10 @@ public class ZzGroupMsgServiceImpl extends BaseBiz<ZzGroupMsgDao, ZzGroupMsg> im
      */
     @Override
     @Transactional
-    public Integer update(ZzGroupMsg zzGroupMsg) {
-        int update = this.zzGroupMsgDao.update(zzGroupMsg);
-        return update;
+    public void update(ZzGroupMsg zzGroupMsg) {
+        /*int update = this.zzGroupMsgDao.update(zzGroupMsg);
+        return update;*/
+        super.updateById(zzGroupMsg);
     }
 
     /**
@@ -83,7 +88,10 @@ public class ZzGroupMsgServiceImpl extends BaseBiz<ZzGroupMsgDao, ZzGroupMsg> im
      */
     @Override
     @Transactional
-    public boolean deleteById(String msgId) {
-        return this.zzGroupMsgDao.deleteById(msgId) > 0;
+    public void deleteById(String msgId) {
+       // return this.zzGroupMsgDao.deleteById(msgId) > 0;
+        ZzGroupMsg entity = new ZzGroupMsg();
+        entity.setMsgId(msgId);
+        super.delete(entity);
     }
 }
