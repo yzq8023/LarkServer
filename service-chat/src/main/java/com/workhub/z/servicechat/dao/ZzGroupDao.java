@@ -1,7 +1,6 @@
 package com.workhub.z.servicechat.dao;
 
 import com.workhub.z.servicechat.VO.GroupUserListVo;
-import com.workhub.z.servicechat.entity.ZzAt;
 import com.workhub.z.servicechat.entity.ZzGroup;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
@@ -71,4 +70,13 @@ public interface ZzGroupDao extends Mapper<ZzGroup> {
     Long groupUserListTotal(@Param("id")String id);
 
     List<ZzGroup> queryGroupListByUserId(@Param("id") String id);
+
+    /**
+     * 逻辑删除群
+     * @param groupId 群id
+     * @return  受影响行数
+     * @author zhuqz
+     * @since 2019-06-11
+     */
+    int deleteGroupLogic(@Param("groupId") String groupId, @Param("delFlg") String delFlg);
 }

@@ -185,6 +185,21 @@
 
     <!--通过userId返回用户所在群组信息集合 -->
     <select id="queryGroupListByUserId" resultMap="ZzGroupMap" parameterType="String">
-        SELECT  E.* FROM zz_group E JOIN zz_user_group D ON(E.GROUP_ID = D.GROUP_ID) AND D.user_id = #{id}
+        SELECT
+            E .*
+        FROM
+            zz_group E
+        JOIN zz_user_group D ON (E . GROUP_ID = D . GROUP_ID)
+        AND D .user_id = #{id}
+        AND E.ISDELETE = '0'
+        ORDER BY  d.is_top desc,d.createtime desc
+
     </select>
+
+    <!--逻辑删除群-->
+    <update id="deleteGroupLogic">
+        update ZZ_GROUP
+           set ISDELETE = #{delFlg}
+        where GROUP_ID = #{groupId}
+    </update>
 </mapper>

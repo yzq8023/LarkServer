@@ -7,19 +7,14 @@ import com.github.hollykunge.security.common.rest.BaseController;
 import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.VO.GroupUserListVo;
 import com.workhub.z.servicechat.config.RandomId;
-import com.workhub.z.servicechat.entity.ZzDictionaryWords;
 import com.workhub.z.servicechat.entity.ZzGroup;
 import com.workhub.z.servicechat.service.ZzGroupService;
-import com.workhub.z.servicechat.service.impl.ZzDictionaryWordsServiceImpl;
 import com.workhub.z.servicechat.service.impl.ZzGroupServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 群组表(ZzGroup)表控制层
@@ -109,5 +104,32 @@ public class ZzGroupController extends BaseController<ZzGroupServiceImpl, ZzGrou
         List<ZzGroup> groups = this.zzGroupService.queryGroupListByUserId(userId);
 
         return new ListRestResponse("200",groups.size(),groups);
+    }
+
+    /**
+     * 逻辑删除群
+     * @param groupId 群id;delFlg：删除标记位，1删除，0 不删
+     * @return  1成功；-1失败；
+     * @author zhuqz
+     * @since 2019-06-11
+     */
+    @PostMapping("/deleteGroupLogic")
+    public ObjectRestResponse deleteGroupLogic(@RequestParam("groupId")String groupId,@RequestParam("delFlg")String delFlg) {
+        ObjectRestResponse objectRestResponse = new ObjectRestResponse();
+        String oppRes = "1";
+        try {
+            this.zzGroupService.deleteGroupLogic(groupId,delFlg);
+        }catch (Exception e){
+            e.printStackTrace();
+            oppRes="-1";
+        }
+        if("1".equals(oppRes)){
+            objectRestResponse.data("1");//成功
+            objectRestResponse.msg("成功");
+        }else{
+            objectRestResponse.data("-1");//失败
+            objectRestResponse.msg("失败");
+        }
+        return objectRestResponse;
     }
 }
