@@ -246,8 +246,13 @@ public class AdminAccessFilter extends ZuulFilter {
         if(StringUtils.isEmpty(requestUri)){
             throw new BaseException("requestUri 参数异常...");
         }
-        boolean anyMatch = permissionInfos.stream()
-                .filter(permissionInfo ->requestUri.contains(permissionInfo.getUri()))
+        permissionInfos =  permissionInfos.parallelStream()
+                .filter(permissionInfo ->requestUri.contains(permissionInfo.getUri())).collect(Collectors.toList());
+        if(permissionInfos.size()==0){
+            setFailedRequest(JSON.toJSONString(new TokenForbiddenResponse("Token Forbidden!request url no permission...")), 200);
+        }
+        boolean anyMatch =
+                permissionInfos.parallelStream()
                 .anyMatch(new Predicate<FrontPermission>() {
                     @Override
                     public boolean test(FrontPermission permissionInfo) {
@@ -259,7 +264,7 @@ public class AdminAccessFilter extends ZuulFilter {
             //该用户有访问路径权限
             setCurrentUserInfoAndLog(ctx, user, permissionInfos.get(0));
         } else {
-            setFailedRequest(JSON.toJSONString(new TokenForbiddenResponse("Token Forbidden!")), 200);
+            setFailedRequest(JSON.toJSONString(new TokenForbiddenResponse("Token Forbidden!request method no permission...")), 200);
         }
     }
 
