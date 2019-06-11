@@ -11,5 +11,6 @@
     <result column="URL" property="url" jdbcType="VARCHAR" />
     <result column="STATUS" property="status" jdbcType="CHAR" />
     <result column="DELETED" property="deleted" jdbcType="CHAR" />
+    <result column="ICON" property="icon" jdbcType="VARCHAR" />
   </resultMap>
 </mapper>

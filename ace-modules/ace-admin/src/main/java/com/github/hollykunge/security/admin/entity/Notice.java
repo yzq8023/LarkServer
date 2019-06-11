@@ -1,5 +1,6 @@
 package com.github.hollykunge.security.admin.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.github.hollykunge.security.common.entity.BaseEntity;
 import lombok.Data;
 
@@ -8,6 +9,7 @@ import javax.persistence.Table;
 
 @Data
 @Table(name = "ADMIN_NOTICE")
+//@JsonInclude(JsonInclude.Include.ALWAYS)
 public class Notice extends BaseEntity {
     /**
      * 标题

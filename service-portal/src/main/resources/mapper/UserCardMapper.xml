@@ -8,7 +8,11 @@
     <id column="ID" property="id" jdbcType="VARCHAR" />
     <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
     <result column="CARD_ID" property="cardId" jdbcType="VARCHAR" />
-    <result column="IS_SHOW" property="isShow" jdbcType="CHAR" />
     <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="X" property="x" jdbcType="NUMERIC" />
+    <result column="Y" property="y" jdbcType="NUMERIC" />
+    <result column="W" property="w" jdbcType="NUMERIC" />
+    <result column="H" property="h" jdbcType="NUMERIC" />
+    <result column="I" property="i" jdbcType="VARCHAR" />
   </resultMap>
 </mapper>
