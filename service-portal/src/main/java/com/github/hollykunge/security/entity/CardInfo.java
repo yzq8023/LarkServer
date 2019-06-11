@@ -1,9 +1,9 @@
 package com.github.hollykunge.security.entity;
 
 import lombok.Data;
-import org.nutz.dao.entity.annotation.Table;
 
 import javax.persistence.Column;
+import javax.persistence.Table;
 
 /**
  * @description: 卡片设置- 卡片信息主表
@@ -11,7 +11,7 @@ import javax.persistence.Column;
  * @since 2019年06月1日
  */
 @Data
-@Table("PORTAL_CARD_INFO")
+@Table(name = "PORTAL_CARD_INFO")
 public class CardInfo {
     @Column(name = "ID")
     private String id;
