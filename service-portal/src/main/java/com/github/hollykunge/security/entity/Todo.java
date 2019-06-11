@@ -3,6 +3,7 @@ package com.github.hollykunge.security.entity;
 import lombok.Data;
 
 import javax.persistence.Column;
+import javax.persistence.Table;
 import java.util.Date;
 /**
  * @description: 工作台-待办
@@ -10,6 +11,7 @@ import java.util.Date;
  * @since: 2019-06-07
  */
 @Data
+@Table(name = "PORTAL_TODO")
 public class Todo {
     @Column(name = "ID")
     private String id;
@@ -22,5 +24,5 @@ public class Todo {
     @Column(name = "TYPE")
     private String type;
     @Column(name = "DONE")
-    private Boolean done;
+    private String done;
 }

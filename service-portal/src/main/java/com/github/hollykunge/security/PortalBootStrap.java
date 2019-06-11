@@ -1,6 +1,7 @@
 package com.github.hollykunge.security;
 
 import com.github.hollykunge.security.common.annotation.EnableTioWebsocket;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -13,6 +14,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableTioWebsocket
+@MapperScan("com.github.hollykunge.security.mapper")
 public class PortalBootStrap {
 
     public static void main(String[] args) {

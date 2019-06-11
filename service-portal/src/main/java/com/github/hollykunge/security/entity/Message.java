@@ -3,6 +3,7 @@ package com.github.hollykunge.security.entity;
 import lombok.Data;
 
 import javax.persistence.Column;
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
@@ -11,6 +12,7 @@ import java.util.Date;
  * @since: 2019-06-07
  */
 @Data
+@Table(name = "PORTAL_MESSAGE")
 public class Message {
     @Column(name = "ID")
     private String id;
