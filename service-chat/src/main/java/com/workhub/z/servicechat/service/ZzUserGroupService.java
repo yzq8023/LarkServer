@@ -65,4 +65,21 @@ public interface ZzUserGroupService {
     List<UserNewMsgVo> getUserNewMsgList(String id);
     //获取最新联系人列表
     List<ContactVO> getContactVOList(String id);
+    /**
+     * 修改用户群个性化信息--是否置顶
+     * @param userId 用户id；groupId 群id；topFlg 1置顶，0不置顶
+     * @return  1成功；0用户不在组内或者组已经不存在；-1错误
+     * @author zhuqz
+     * @since 2019-06-11
+     */
+    String setUserGroupTop(String userId,String gourpId,String topFlg) throws Exception;
+    /**
+     * 修改用户群个性化信息--是否免打扰
+     * @param userId 用户id；groupId 群id；muteFlg 1免打扰，0否
+     * @return  1成功；0用户不在组内或者组已经不存在；-1错误
+     * @author zhuqz
+     * @since 2019-06-11
+     */
+    String setUserGroupMute(String userId,String gourpId,String topFlg) throws Exception;
+
 }

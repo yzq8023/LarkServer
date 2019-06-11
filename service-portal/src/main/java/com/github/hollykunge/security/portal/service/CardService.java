@@ -1,19 +1,19 @@
 package com.github.hollykunge.security.portal.service;
 
 import com.github.hollykunge.security.common.biz.BaseBiz;
-import com.github.hollykunge.security.entity.Notice;
-import com.github.hollykunge.security.mapper.NoticeMapper;
+import com.github.hollykunge.security.entity.CardInfo;
+import com.github.hollykunge.security.mapper.CardMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * @description: 工作台
- * @author: dd
- * @since: 2019-06-08
+ * 卡片主表信息业务类
+ * @author zhhongyu
+ * @since 2019-06-11
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class NoticeService extends BaseBiz<NoticeMapper, Notice> {
+public class CardService extends BaseBiz<CardMapper, CardInfo> {
     @Override
     protected String getPageName() {
         return null;

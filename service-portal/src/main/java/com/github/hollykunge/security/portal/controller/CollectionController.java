@@ -25,9 +25,9 @@ public class CollectionController extends BaseController<CollectionService, Coll
      * @param id 用户id
      * @return
      */
-    @GetMapping("/{id}")
-    public ListRestResponse<Collection> getUserCollections(@PathVariable String id){
-        List<Collection> collectionList = baseBiz.selectLastFive(id);
-        return new ListRestResponse("", collectionList.size(), collectionList);
-    }
+//    @GetMapping("/{id}")
+//    public ListRestResponse<Collection> getUserCollections(@PathVariable String id){
+//        List<Collection> collectionList = baseBiz.selectLastFive(id);
+//        return new ListRestResponse("", collectionList.size(), collectionList);
+//    }
 }

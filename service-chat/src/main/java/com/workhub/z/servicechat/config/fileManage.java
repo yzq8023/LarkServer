@@ -18,7 +18,7 @@ import java.util.*;
 */
 public class fileManage {
 
-    private static final Long FILE_SIZE = 2*1024*1024*1024L;
+    private static final Long FILE_SIZE = 300 * 1024 * 1024L;
 
     private static final String PATH = "D:/file-management-center/upload/";
     // TODO: 2019/5/14 文件上传
@@ -34,7 +34,7 @@ public class fileManage {
             throw new NullPointerException();
         }
         if (FILE_SIZE<file.getSize()){
-            throw new RuntimeException("上传文件超过2G");
+            throw new RuntimeException("上传文件超过" + FILE_SIZE / 1024 + "M");
         }
         file.transferTo(new File(path));
     }
@@ -61,7 +61,7 @@ public class fileManage {
      */
     public static HttpServletResponse downloadFile(HttpServletResponse response,
                                                    String filePath, String fileName) throws Exception {
-        File file = new File(filePath);
+        File file = new File(PATH + "/" + filePath);
         response.setContentType("application/x-download");
         response.setHeader("Pragma", "public");
         response.setHeader("Cache-Control",
@@ -104,20 +104,51 @@ public class fileManage {
             throw new NullPointerException();
         }
         if (FILE_SIZE<file.getSize()){
-            throw new RuntimeException("上传文件超过2G");
+            throw new RuntimeException("上传文件超过" + FILE_SIZE / 1024 + "M");
         }
         file.transferTo(new File(PATH));
+    }
+    //上传文件，包含名称
+    public static void uploadFile(MultipartFile file, String path, String filename) throws Exception {
+        if (file == null) {
+            throw new NullPointerException();
+        }
+        if (FILE_SIZE < file.getSize()) {
+            throw new RuntimeException("上传文件超过" + FILE_SIZE / 1024 + "M");
+        }
+        createFolder(PATH + "/" + path);
+        file.transferTo(new File(PATH + "/" + path + "/" + filename));
+    }
+
+    //创建文件夹
+    public static void createFolder(String path) {
+        File folderPath = new File(path);
+        if (!folderPath.exists()) {
+            try {
+                folderPath.mkdirs();
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw e;
+            }
+
+        }
     }
 
     /**
      * 删除文件(不能有子目录)
      * @param url
      */
-    public static void delFile(String url){
+/*    public static void delFile(String url){
         File file=new File(url);
         if(file.exists()&&file.isFile())
             file.delete();
+    }*/
+    public static void delFile(String url) {
+        File file = new File(PATH + "/" + url);
+        if (file.exists() && file.isFile())
+            file.delete();
     }
+
 
     /**
      * 删除目录(递归删除子目录以及文件)

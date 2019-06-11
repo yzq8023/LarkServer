@@ -56,6 +56,10 @@ zuul:
     workplace:
       path:
 
+    portal:
+      path: /portal/**
+      serviceId: service-portal
+
 ribbon:
   eureka:
     enabled: true

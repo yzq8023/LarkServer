@@ -3,6 +3,7 @@ package com.github.hollykunge.security.entity;
 import lombok.Data;
 
 import javax.persistence.Column;
+import javax.persistence.Table;
 
 /**
  * @description: 工作台-我的收藏
@@ -10,6 +11,7 @@ import javax.persistence.Column;
  * @since: 2019-06-07
  */
 @Data
+@Table(name = "PORTAL_COLLECTION")
 public class Collection {
     @Column(name = "ID")
     private String id;
