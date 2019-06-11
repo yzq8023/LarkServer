@@ -26,18 +26,18 @@ public class UserCard {
     @Column(name = "STATUS")
     private String status;
 
-    @Column(name = "x")
+    @Column(name = "X")
     private Integer x;
 
-    @Column(name = "y")
+    @Column(name = "Y")
     private Integer y;
 
-    @Column(name = "w")
+    @Column(name = "W")
     private Integer w;
 
-    @Column(name = "h")
+    @Column(name = "H")
     private Integer h;
 
-    @Column(name = "i")
+    @Column(name = "I")
     private String i;
 }

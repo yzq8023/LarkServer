@@ -30,4 +30,11 @@
     <result column="ATTR7" property="attr7" jdbcType="VARCHAR" />
     <result column="ATTR8" property="attr8" jdbcType="VARCHAR" />
   </resultMap>
+  <select id="getNoticeByUserIdTopSix" resultMap="BaseResultMap">
+    select * from (select AN.* from ADMIN_NOTICE AN
+    left join ADMIN_USER AU on AN.ORG_ID = AU.ORG_CODE
+    where AU.ID = #{userId}
+    order by AN.CRT_TIME desc)
+    where ROWNUM  &lt;= 6
+  </select>
 </mapper>
