@@ -4,9 +4,12 @@ import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.workhub.z.servicechat.VO.*;
-import com.workhub.z.servicechat.entity.ZzUserGroup;
+import com.workhub.z.servicechat.VO.ContactVO;
+import com.workhub.z.servicechat.VO.GroupListVo;
+import com.workhub.z.servicechat.VO.NoReadVo;
+import com.workhub.z.servicechat.VO.UserNewMsgVo;
 import com.workhub.z.servicechat.dao.ZzUserGroupDao;
+import com.workhub.z.servicechat.entity.ZzUserGroup;
 import com.workhub.z.servicechat.feign.IUserService;
 import com.workhub.z.servicechat.service.ZzGroupService;
 import com.workhub.z.servicechat.service.ZzMsgReadRelationService;
@@ -20,7 +23,6 @@ import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 用户群组映射表(ZzUserGroup)表服务实现类
@@ -161,5 +163,35 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
             list.add(contactVO);
         });
         return list;
+    }
+    /**
+     * 修改用户群个性化信息--是否置顶
+     * @param userId 用户id；groupId 群id；topFlg 1置顶，0不置顶
+     * @return  1成功；0用户不在组内或者组已经不存在；-1错误
+     * @author zhuqz
+     * @since 2019-06-11
+     */
+   public String setUserGroupTop(String userId,String gourpId,String topFlg) throws Exception{
+        String res="1";
+        int i=this.zzUserGroupDao.setUserGroupTop( userId, gourpId, topFlg);
+        if(i==0){
+            res = "0";
+        }
+        return  res;
+    }
+    /**
+     * 修改用户群个性化信息--是否置顶
+     * @param userId 用户id；groupId 群id；muteFlg 1免打扰，0否
+     * @return  1成功；0用户不在组内或者组已经不存在；-1错误
+     * @author zhuqz
+     * @since 2019-06-11
+     */
+    public String setUserGroupMute(String userId,String gourpId,String topFlg) throws Exception{
+        String res="1";
+        int i=this.zzUserGroupDao.setUserGroupMute( userId, gourpId, topFlg);
+        if(i==0){
+            res = "0";
+        }
+        return  res;
     }
 }
