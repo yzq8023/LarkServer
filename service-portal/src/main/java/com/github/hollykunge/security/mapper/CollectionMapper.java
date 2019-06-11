@@ -12,5 +12,5 @@ import java.util.List;
  * @since: 2019-06-08
  */
 public interface CollectionMapper extends Mapper<Collection> {
-    List<Collection> selectLastFiveByUserId(@Param("pId") String pId);
+//    List<Collection> selectLastFiveByUserId(@Param("pId") String pId);
 }
