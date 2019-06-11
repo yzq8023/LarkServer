@@ -1,4 +1,4 @@
-package com.workhub.z.servicechat.VO;
+package com.github.hollykunge.security.common.vo.rpcvo;
 
 /**
 *@Description: 最近联系人前端交互实体类

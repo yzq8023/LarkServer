@@ -1,7 +1,7 @@
 package com.workhub.z.servicechat.service;
 
+import com.github.hollykunge.security.common.vo.rpcvo.ContactVO;
 import com.github.pagehelper.PageInfo;
-import com.workhub.z.servicechat.VO.ContactVO;
 import com.workhub.z.servicechat.VO.GroupListVo;
 import com.workhub.z.servicechat.VO.UserNewMsgVo;
 import com.workhub.z.servicechat.entity.ZzUserGroup;

@@ -4,11 +4,16 @@ import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.hollykunge.security.common.rest.BaseController;
+import com.github.hollykunge.security.common.vo.rpcvo.ContactVO;
 import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.VO.GroupUserListVo;
 import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.entity.ZzGroup;
 import com.workhub.z.servicechat.service.ZzGroupService;
+
+import com.workhub.z.servicechat.service.ZzUserGroupService;
+import com.workhub.z.servicechat.service.impl.ZzDictionaryWordsServiceImpl;
+
 import com.workhub.z.servicechat.service.impl.ZzGroupServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +35,9 @@ public class ZzGroupController extends BaseController<ZzGroupServiceImpl, ZzGrou
      */
     @Resource
     private ZzGroupService zzGroupService;
+
+    @Resource
+    private ZzUserGroupService userGroupService;
 
     /**
      * 通过主键查询单条数据
@@ -79,7 +87,13 @@ public class ZzGroupController extends BaseController<ZzGroupServiceImpl, ZzGrou
         objectRestResponse.data(flag);
         return objectRestResponse;
     }
-
+    /**
+    *@Description:
+    *@Param:
+    *@return:
+    *@Author: 忠
+    *@date: 2019/6/11
+    */
     @PostMapping("/querygroupuser")
     public TableResultResponse queryGroupUserList(@RequestParam("id")String id,
                                                   @RequestParam(value = "page",defaultValue = "1")Integer page,
@@ -98,13 +112,24 @@ public class ZzGroupController extends BaseController<ZzGroupServiceImpl, ZzGrou
                 groupUserListVoPageInfo.getList());
     }
 
-
+    /**
+    *@Description: 根据用户id查询用户所在群组信息
+    *@Param: 用户id
+    *@return: 群组列表
+    *@Author: 忠
+    *@date: 2019/6/11
+    */
     @PostMapping("/queryGroupListByUserId")
     public ListRestResponse queryGroupListByUserId(@RequestParam("userId")String userId) throws Exception {
         List<ZzGroup> groups = this.zzGroupService.queryGroupListByUserId(userId);
-
         return new ListRestResponse("200",groups.size(),groups);
     }
+
+    @PostMapping("/queryTest")
+    public ListRestResponse queryTest(@RequestParam("userId")String userId) throws Exception {
+        List<ContactVO>  contactVOS=  userGroupService.getContactVOList(userId);
+//        List<ZzGroup> groups = this.zzGroupService.queryGroupListByUserId(userId);
+        return new ListRestResponse("200",contactVOS.size(),contactVOS);
 
     /**
      * 逻辑删除群

@@ -54,9 +54,9 @@
         <result property="TABLE_TYPE" column="tableType" jdbcType="VARCHAR"></result>
         <result property="MSG_SENDER" column="msgSener" jdbcType="VARCHAR"></result>
         <result property="SEND_TIME" column="sendTime" jdbcType="TIMESTAMP"></result>
-        <result property="MSG" column="msg" jdbcType="VARCHAR"></result>
+        <result property="MSG_CONTENT" column="msg" jdbcType="VARCHAR"></result>
         <result property="MSG_TYPE" column="msgType" jdbcType="VARCHAR"></result>
-        <result property="LEVELS" column="levels" jdbcType="VARCHAR"></result>
+        <result property="LEVELS_USER" column="levels" jdbcType="VARCHAR"></result>
     </resultMap>
 
     <select id="getUserNewMsgList" resultMap="UserNewMsgVo">
@@ -65,11 +65,11 @@
                        'USER' AS TABLE_TYPE,
                        PHPM.MSG_SENDER AS MSG_SENDER,
                        PHPM.SEND_TIME AS SEND_TIME,
-                       PHPM.MSG AS MSG,
+                       PHPM.MSG AS MSG_CONTENT,
                        PHPM.MSG_TYPE AS MSG_TYPE,
-                       PHPM.LEVELS AS LEVELS
+                       PHPM.LEVELS AS LEVELS_USER
                   FROM ZZ_PRIVATE_MSG PHPM
-                 WHERE PHPM.MSG_RECEIVER = #{id}
+                 WHERE PHPM.MSG_RECEIVER = #{id,jdbcType=VARCHAR}
                    AND ROWID IN (SELECT MAX(ROWID)
                                    FROM ZZ_PRIVATE_MSG SP
                                   GROUP BY SP.MSG_SENDER)
@@ -78,11 +78,11 @@
                        'GROUP' AS TABLE_TYPE,
                        PHGM.MSG_SENDER AS MSG_SENDER,
                        PHGM.SEND_TIME AS SND_TIME,
-                       PHGM.MSG AS MSG,
+                       PHGM.MSG AS MSG_CONTENT,
                        PHGM.MSG_TYPE AS MSG_TYPE,
-                       PHGM.LEVELS AS LEVELS
+                       PHGM.LEVELS AS LEVELS_USER
                   FROM ZZ_GROUP_MSG PHGM
-                 WHERE PHGM.MSG_RECEIVER = #{id}
+                 WHERE PHGM.MSG_RECEIVER = #{id,jdbcType=VARCHAR}
                    AND ROWID IN
                        (SELECT MAX(ROWID) FROM ZZ_GROUP_MSG SG GROUP BY SG.MSG_SENDER)) VO
          ORDER BY VO.SEND_TIME DESC

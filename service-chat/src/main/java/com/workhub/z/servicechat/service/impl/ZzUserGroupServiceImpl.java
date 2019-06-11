@@ -1,6 +1,7 @@
 package com.workhub.z.servicechat.service.impl;
 
 import com.github.hollykunge.security.common.biz.BaseBiz;
+import com.github.hollykunge.security.common.vo.rpcvo.ContactVO;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
