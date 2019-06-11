@@ -5,11 +5,9 @@ import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.netflix.discovery.converters.Auto;
-import com.workhub.z.servicechat.VO.GroupInfoVO;
 import com.workhub.z.servicechat.VO.GroupUserListVo;
-import com.workhub.z.servicechat.entity.ZzGroup;
 import com.workhub.z.servicechat.dao.ZzGroupDao;
+import com.workhub.z.servicechat.entity.ZzGroup;
 import com.workhub.z.servicechat.feign.IUserService;
 import com.workhub.z.servicechat.service.ZzGroupService;
 import jodd.util.StringUtil;
@@ -168,5 +166,16 @@ public class ZzGroupServiceImpl extends BaseBiz<ZzGroupDao,ZzGroup > implements 
                 .filter(listf -> !listf.getUserId().equals(creator) && listf.getVip() != 0)
                 .collect(Collectors.toList()));
         return resultList;
+    }
+    /**
+     * 逻辑删除群
+     * @param groupId 群id
+     * @return  1成功；-1错误
+     * @author zhuqz
+     * @since 2019-06-11
+     */
+    public String deleteGroupLogic(String groupId, String delFlg) throws Exception{
+        int i=this.zzGroupDao.deleteGroupLogic( groupId, delFlg);
+        return  "1";
     }
 }

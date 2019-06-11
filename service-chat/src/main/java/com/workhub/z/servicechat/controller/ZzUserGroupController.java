@@ -6,10 +6,8 @@ import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.hollykunge.security.common.rest.BaseController;
 import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.VO.GroupListVo;
-import com.workhub.z.servicechat.VO.GroupUserListVo;
 import com.workhub.z.servicechat.VO.UserNewMsgVo;
 import com.workhub.z.servicechat.config.RandomId;
-import com.workhub.z.servicechat.entity.ZzAt;
 import com.workhub.z.servicechat.entity.ZzUserGroup;
 import com.workhub.z.servicechat.service.ZzUserGroupService;
 import com.workhub.z.servicechat.service.impl.ZzUserGroupServiceImpl;
@@ -102,6 +100,64 @@ public class ZzUserGroupController extends BaseController<ZzUserGroupServiceImpl
         List<UserNewMsgVo> userNewMsgList = this.zzUserGroupService.getUserNewMsgList(id);
         return new ListRestResponse("成功",0,userNewMsgList);
     }
+    /**
+     * 修改用户群个性化信息--是否置顶
+     * @param userId 用户id；groupId 群id；topFlg 1置顶，0不置顶
+     * @return  1成功；0用户不在组内或者组已经不存在；-1错误
+     * @author zhuqz
+     * @since 2019-06-11
+     */
+    @PostMapping("/setUserGroupTop")
+    public ObjectRestResponse setUserGroupTop(@RequestParam("userId") String userId, @RequestParam("groupId") String groupId, @RequestParam("topFlg") String topFlg){
+        ObjectRestResponse objectRestResponse = new ObjectRestResponse();
 
+        String oppRes = "1";
+        try{
+            oppRes = this.zzUserGroupService.setUserGroupTop(userId,groupId,topFlg);
+        }catch(Exception e){
+            e.printStackTrace();
+            oppRes="-1";
+        }
+        if("1".equals(oppRes)){
+            objectRestResponse.data("1");//成功
+            objectRestResponse.msg("成功");
+        }else if("-1".equals(oppRes)){
+            objectRestResponse.data("-1");//失败
+            objectRestResponse.msg("失败");
+        }else{
+            objectRestResponse.data("0");//失败
+            objectRestResponse.msg("用户群不存在，或者用户已经不在群中");
+        }
+        return  objectRestResponse;
+    }
+    /**
+     * 修改用户群个性化信息--是否置顶
+     * @param userId 用户id；groupId 群id；topFlg 1置顶，0不置顶
+     * @return  1成功；0用户不在组内或者组已经不存在；-1错误
+     * @author zhuqz
+     * @since 2019-06-11
+     */
+    @PostMapping("/setUserGroupMute")
+    public ObjectRestResponse setUserGroupMute(@RequestParam("userId") String userId, @RequestParam("groupId") String groupId, @RequestParam("muteFlg") String muteFlg){
+        ObjectRestResponse objectRestResponse = new ObjectRestResponse();
 
+        String oppRes = "1";
+        try{
+            oppRes = this.zzUserGroupService.setUserGroupMute(userId,groupId,muteFlg);
+        }catch(Exception e){
+            e.printStackTrace();
+            oppRes="-1";
+        }
+        if("1".equals(oppRes)){
+            objectRestResponse.data("1");//成功
+            objectRestResponse.msg("成功");
+        }else if("-1".equals(oppRes)){
+            objectRestResponse.data("-1");//失败
+            objectRestResponse.msg("失败");
+        }else{
+            objectRestResponse.data("0");//失败
+            objectRestResponse.msg("用户群不存在，或者用户已经不在群中");
+        }
+        return  objectRestResponse;
+    }
 }

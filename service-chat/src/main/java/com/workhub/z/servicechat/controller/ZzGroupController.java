@@ -4,22 +4,22 @@ import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.hollykunge.security.common.rest.BaseController;
+import com.github.hollykunge.security.common.vo.rpcvo.ContactVO;
 import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.VO.GroupUserListVo;
 import com.workhub.z.servicechat.config.RandomId;
-import com.workhub.z.servicechat.entity.ZzDictionaryWords;
 import com.workhub.z.servicechat.entity.ZzGroup;
 import com.workhub.z.servicechat.service.ZzGroupService;
+
+import com.workhub.z.servicechat.service.ZzUserGroupService;
 import com.workhub.z.servicechat.service.impl.ZzDictionaryWordsServiceImpl;
+
 import com.workhub.z.servicechat.service.impl.ZzGroupServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 群组表(ZzGroup)表控制层
@@ -35,6 +35,9 @@ public class ZzGroupController extends BaseController<ZzGroupServiceImpl, ZzGrou
      */
     @Resource
     private ZzGroupService zzGroupService;
+
+    @Resource
+    private ZzUserGroupService userGroupService;
 
     /**
      * 通过主键查询单条数据
@@ -84,7 +87,13 @@ public class ZzGroupController extends BaseController<ZzGroupServiceImpl, ZzGrou
         objectRestResponse.data(flag);
         return objectRestResponse;
     }
-
+    /**
+    *@Description:
+    *@Param:
+    *@return:
+    *@Author: 忠
+    *@date: 2019/6/11
+    */
     @PostMapping("/querygroupuser")
     public TableResultResponse queryGroupUserList(@RequestParam("id")String id,
                                                   @RequestParam(value = "page",defaultValue = "1")Integer page,
@@ -103,11 +112,49 @@ public class ZzGroupController extends BaseController<ZzGroupServiceImpl, ZzGrou
                 groupUserListVoPageInfo.getList());
     }
 
-
+    /**
+    *@Description: 根据用户id查询用户所在群组信息
+    *@Param: 用户id
+    *@return: 群组列表
+    *@Author: 忠
+    *@date: 2019/6/11
+    */
     @PostMapping("/queryGroupListByUserId")
     public ListRestResponse queryGroupListByUserId(@RequestParam("userId")String userId) throws Exception {
         List<ZzGroup> groups = this.zzGroupService.queryGroupListByUserId(userId);
-
         return new ListRestResponse("200",groups.size(),groups);
+    }
+
+    @PostMapping("/queryTest")
+    public ListRestResponse queryTest(@RequestParam("userId")String userId) throws Exception {
+        List<ContactVO>  contactVOS=  userGroupService.getContactVOList(userId);
+//        List<ZzGroup> groups = this.zzGroupService.queryGroupListByUserId(userId);
+        return new ListRestResponse("200",contactVOS.size(),contactVOS);
+
+    /**
+     * 逻辑删除群
+     * @param groupId 群id;delFlg：删除标记位，1删除，0 不删
+     * @return  1成功；-1失败；
+     * @author zhuqz
+     * @since 2019-06-11
+     */
+    @PostMapping("/deleteGroupLogic")
+    public ObjectRestResponse deleteGroupLogic(@RequestParam("groupId")String groupId,@RequestParam("delFlg")String delFlg) {
+        ObjectRestResponse objectRestResponse = new ObjectRestResponse();
+        String oppRes = "1";
+        try {
+            this.zzGroupService.deleteGroupLogic(groupId,delFlg);
+        }catch (Exception e){
+            e.printStackTrace();
+            oppRes="-1";
+        }
+        if("1".equals(oppRes)){
+            objectRestResponse.data("1");//成功
+            objectRestResponse.msg("成功");
+        }else{
+            objectRestResponse.data("-1");//失败
+            objectRestResponse.msg("失败");
+        }
+        return objectRestResponse;
     }
 }

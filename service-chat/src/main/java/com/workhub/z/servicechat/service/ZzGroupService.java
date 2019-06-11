@@ -1,9 +1,9 @@
 package com.workhub.z.servicechat.service;
 
 import com.github.pagehelper.PageInfo;
-import com.workhub.z.servicechat.VO.GroupInfoVO;
 import com.workhub.z.servicechat.VO.GroupUserListVo;
 import com.workhub.z.servicechat.entity.ZzGroup;
+
 import java.util.List;
 
 /**
@@ -68,4 +68,13 @@ public interface ZzGroupService {
     *@date: 2019/5/29
     */
     List<ZzGroup> queryGroupListByUserId(String id) throws Exception;
+
+    /**
+     * 逻辑删除群
+     * @param groupId 群id
+     * @return  1成功；-1错误
+     * @author zhuqz
+     * @since 2019-06-11
+     */
+    String deleteGroupLogic(String groupId, String delFlg) throws Exception;
 }

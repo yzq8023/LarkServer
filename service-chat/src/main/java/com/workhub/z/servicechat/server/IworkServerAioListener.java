@@ -23,18 +23,15 @@ public class IworkServerAioListener extends WsServerAioListener {
     private IworkServerAioListener() {
 
     }
-
+    //连接后
     @Override
     public void onAfterConnected(ChannelContext channelContext, boolean isConnected, boolean isReconnect) throws Exception {
-
-//      UserModel user = (UserModel) session.getAttribute("userSessionItems");
         super.onAfterConnected(channelContext, isConnected, isReconnect);
         if (log.isInfoEnabled()) {
             log.info("onAfterConnected\r\n{}", channelContext);
         }
-        //绑定到群组，后面会有群发
     }
-
+    //第二次
     @Override
     public void onAfterSent(ChannelContext channelContext, Packet packet, boolean isSentSuccess) throws Exception {
         super.onAfterSent(channelContext, packet, isSentSuccess);
@@ -42,16 +39,16 @@ public class IworkServerAioListener extends WsServerAioListener {
             log.info("onAfterSent\r\n{}\r\n{}", packet.logstr(), channelContext);
         }
     }
-
+    //关闭前
     @Override
     public void onBeforeClose(ChannelContext channelContext, Throwable throwable, String remark, boolean isRemove) throws Exception {
         super.onBeforeClose(channelContext, throwable, remark, isRemove);
-        System.out.println(1111);
+        System.out.println("close"+channelContext);
         if (log.isInfoEnabled()) {
             log.info("onBeforeClose\r\n{}", channelContext);
         }
     }
-
+//    解码后
     @Override
     public void onAfterDecoded(ChannelContext channelContext, Packet packet, int packetSize) throws Exception {
         super.onAfterDecoded(channelContext, packet, packetSize);
@@ -59,7 +56,7 @@ public class IworkServerAioListener extends WsServerAioListener {
             log.info("onAfterDecoded\r\n{}\r\n{}", packet.logstr(), channelContext);
         }
     }
-
+//    收到字节消息后
     @Override
     public void onAfterReceivedBytes(ChannelContext channelContext, int receivedBytes) throws Exception {
         super.onAfterReceivedBytes(channelContext, receivedBytes);
@@ -67,7 +64,7 @@ public class IworkServerAioListener extends WsServerAioListener {
             log.info("onAfterReceivedBytes\r\n{}", channelContext);
         }
     }
-
+//    handled处理后
     @Override
     public void onAfterHandled(ChannelContext channelContext, Packet packet, long cost) throws Exception {
         super.onAfterHandled(channelContext, packet, cost);
