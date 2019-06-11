@@ -50,13 +50,13 @@
     </select>
 
     <resultMap id="UserNewMsgVo" type="com.workhub.z.servicechat.VO.UserNewMsgVo">
-        <result property="MSG_ID" column="msgId" jdbcType="VARCHAR"></result>
-        <result property="TABLE_TYPE" column="tableType" jdbcType="VARCHAR"></result>
-        <result property="MSG_SENDER" column="msgSener" jdbcType="VARCHAR"></result>
-        <result property="SEND_TIME" column="sendTime" jdbcType="TIMESTAMP"></result>
-        <result property="MSG_CONTENT" column="msg" jdbcType="VARCHAR"></result>
-        <result property="MSG_TYPE" column="msgType" jdbcType="VARCHAR"></result>
-        <result property="LEVELS_USER" column="levels" jdbcType="VARCHAR"></result>
+        <result column="MSG_ID" property="msgId" jdbcType="VARCHAR"></result>
+        <result column="TABLE_TYPE" property="tableType" jdbcType="VARCHAR"></result>
+        <result column="MSG_SENDER" property="msgSener" jdbcType="VARCHAR"></result>
+        <result column="SEND_TIME" property="sendTime" jdbcType="TIMESTAMP"></result>
+        <result column="MSG_CONTENT" property="msg" jdbcType="VARCHAR"></result>
+        <result column="MSG_TYPE" property="msgType" jdbcType="VARCHAR"></result>
+        <result column="LEVELS_USER" property="levels" jdbcType="VARCHAR"></result>
     </resultMap>
 
     <select id="getUserNewMsgList" resultMap="UserNewMsgVo">
