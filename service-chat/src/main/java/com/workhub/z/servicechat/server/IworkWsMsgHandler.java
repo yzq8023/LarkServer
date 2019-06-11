@@ -1,9 +1,9 @@
 package com.workhub.z.servicechat.server;
 
-import com.ace.cache.annotation.Cache;
 import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.workhub.z.servicechat.config.AsyncTaskConfig;
 import com.workhub.z.servicechat.config.AsyncTaskService;
+import com.workhub.z.servicechat.entity.ZzGroup;
 import com.workhub.z.servicechat.feign.IUserService;
 import com.workhub.z.servicechat.feign.IValidateService;
 import com.workhub.z.servicechat.processor.ProcessMsg;
@@ -25,6 +25,7 @@ import org.tio.websocket.common.WsSessionContext;
 import org.tio.websocket.server.handler.IWsMsgHandler;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 import java.util.Objects;
 import static com.workhub.z.servicechat.config.common.checkUserOnline;
 
@@ -78,7 +79,9 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
             Tio.unbindUser(channelContext.getGroupContext(),userid);
         }
 //      获取用户群组信息,组织机构
-        UserInfo userInfo = serverHandler.userService.info(userid);
+//        UserInfo userInfo = serverHandler.userService.info(userid);
+//      加入组织
+//        Tio.bindGroup(channelContext, userInfo.getOrgCode());
 //      用户token验证
 //      iValidateService.validate(token);
 //      Tio.bindToken(channelContext,token);
@@ -88,14 +91,14 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
         Tio.bindGroup(channelContext, Const.GROUP_SYS);
 //       根据握手信息，将用户绑定到群组
         // TODO: 2019/5/13 获取当前登录用户所有群组 绑定群组
-//        List<ZzGroup> listGroupModel =  serverHandler.groupService.queryGroupListByUserId("11");
-//        for (int i = 0; i < listGroupModel.size() ; i++) {
-//            String groupid  =listGroupModel.get(i).getGroupId();
-//            Aio.bindGroup(channelContext,groupid);
-//            System.out.println("join group "+ listGroupModel.get(i).getGroupName());
-//        }
+        List<ZzGroup> listGroupModel =  serverHandler.groupService.queryGroupListByUserId(userid);
+        for (int i = 0; i < listGroupModel.size() ; i++) {
+            String groupId  =listGroupModel.get(i).getGroupId();
+            Tio.bindGroup(channelContext,groupId);
+            System.out.println("join group +"+ listGroupModel.get(i).getGroupName());
+        }
 
-        log.info("收到来自{}的ws握手包\r\n{}", clientip, request.toString());
+//      log.info("收到来自{}的ws握手包\r\n{}", clientip, request.toString());
         return httpResponse;
     }
 
@@ -118,8 +121,7 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
     @Override
     public Object onClose(WsRequest wsRequest, byte[] bytes, ChannelContext channelContext) throws Exception {
         Tio.remove(channelContext, "receive close flag");
-        return
-                null;
+        return null;
     }
 
     /*
@@ -130,20 +132,10 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
         WsSessionContext wsSessionContext = (WsSessionContext) channelContext.getAttribute();
         HttpRequest httpRequest = wsSessionContext.getHandshakeRequest();//获取websocket握手包
         try{
-//            JSONObject jsonObject = JSONObject.parseObject(text);
-//            String code = jsonObject.getString("
-//
-// code");
             if (Objects.equals("心跳内容", text)) {
                 return null;
             }
-//            String msg = jsonObject.getString("data");
             serverHandler.processMsg.process(channelContext,text);
-
-
-
-//      Aio.bindUser(channelContext,userid);
-//      Aio.bindGroup(channelContext, Const.GROUP_ID);
 
         //获取前端消息 展示
         if (log.isDebugEnabled()) {
@@ -158,10 +150,10 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
         System.out.println(t);
 //      String msg = channelContext.getClientNode().toString() + " 说：" + text;
 //        String msg = t;
-        //用tio-websocket，服务器发送到客户端的Packet都是WsResponse
-        WsResponse wsResponse = WsResponse.fromText(text, IworkServerConfig.CHARSET);
-//            Tio.sendToAll(channelContext.getGroupContext(),wsResponse);
-//        //群发
+//        用tio-websocket，服务器发送到客户端的Packet都是WsResponse
+          WsResponse wsResponse = WsResponse.fromText(text, IworkServerConfig.CHARSET);
+//        Tio.sendToAll(channelContext.getGroupContext(),wsResponse);
+//        群发
 //        Tio.bSendToGroup(channelContext.getGroupContext(), Const.GROUP_SYS, wsResponse);
         }catch (Exception e){
             log.error("发的是什么鬼东西"+text);
