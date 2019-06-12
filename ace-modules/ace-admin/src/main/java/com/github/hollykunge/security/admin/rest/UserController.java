@@ -31,7 +31,7 @@ public class UserController extends BaseController<UserBiz,User> {
     private PermissionService permissionService;
     @RequestMapping(value = "/front/info", method = RequestMethod.GET)
     @ResponseBody
-    public ObjectRestResponse<?> getUserInfo(String token, HttpServletRequest request) throws Exception {
+    public ObjectRestResponse<?> getUserInfo(@RequestParam("token") String token, HttpServletRequest request) throws Exception {
         if(StringUtils.isEmpty(token)){
             token = request.getHeader(headerName);
         }
