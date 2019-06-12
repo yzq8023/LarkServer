@@ -2,6 +2,7 @@ package com.github.hollykunge.security.common.rest;
 
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.context.BaseContextHandler;
+import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.hollykunge.security.common.util.Query;
@@ -58,8 +59,9 @@ public class BaseController<Biz extends BaseBiz, Entity> {
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseBody
-    public List<Entity> all() {
-        return baseBiz.selectListAll();
+    public ListRestResponse<List<Entity>> all() {
+        List list = baseBiz.selectListAll();
+        return new ListRestResponse<>("",list.size(),list);
     }
 
     @RequestMapping(value = "/page", method = RequestMethod.GET)
