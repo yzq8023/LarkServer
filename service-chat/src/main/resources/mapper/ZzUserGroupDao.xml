@@ -10,12 +10,12 @@
     </resultMap>
 
     <resultMap id="GroupListVo" type="com.workhub.z.servicechat.VO.GroupListVo">
-        <result property="GROUP_ID" column="groupId" jdbcType="VARCHAR"></result>
-        <result property="GROUP_NAME" column="groupName" jdbcType="VARCHAR"></result>
-        <result property="CREATE_TIME" column="createTime" jdbcType="TIMESTAMP"></result>
-        <result property="CREATOR" column="creator" jdbcType="VARCHAR"></result>
-        <result property="LEVELS" column="levels" jdbcType="VARCHAR"></result>
-        <result property="GROUP_IMG" column="groupImg" jdbcType="VARCHAR"></result>
+        <result column="GROUP_ID" property="groupId" jdbcType="VARCHAR"></result>
+        <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR"></result>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"></result>
+        <result column="CREATOR" property="creator" jdbcType="VARCHAR"></result>
+        <result column="LEVELS" property="levels" jdbcType="VARCHAR"></result>
+        <result column="GROUP_IMG" property="groupImg" jdbcType="VARCHAR"></result>
     </resultMap>
 
     <select id="groupList" resultMap="GroupListVo">
