@@ -3,6 +3,7 @@ package com.github.hollykunge.security.entity;
 import lombok.Data;
 
 import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -15,6 +16,7 @@ import javax.persistence.Table;
 public class UserCard {
 
     @Column(name = "ID")
+    @Id
     private String id;
 
     @Column(name = "USER_ID ")
