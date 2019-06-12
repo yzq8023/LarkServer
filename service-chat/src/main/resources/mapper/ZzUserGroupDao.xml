@@ -17,7 +17,8 @@
         <result column="LEVELS" property="levels" jdbcType="VARCHAR"></result>
         <result column="GROUP_IMG" property="groupImg" jdbcType="VARCHAR"></result>
     </resultMap>
-
+    <!--以前写的分页有问题，下面重写一个-->
+    <!--
     <select id="groupList" resultMap="GroupListVo">
         SELECT *
         FROM (SELECT VO.*, ROWNUM AS RN
@@ -37,6 +38,21 @@
         ) VO
         WHERE ROWNUM &lt;= #{end})
         WHERE RN > #{start}
+    </select>
+    -->
+    <select id="groupList" resultMap="GroupListVo">
+        SELECT ZG.GROUP_ID    AS GROUP_ID,
+        ZG.GROUP_NAME  AS GROUP_NAME,
+        ZG.CREATE_TIME AS CREATE_TIME,
+        ZG.CREATOR     AS CREATOR,
+        ZG.LEVELS      AS LEVELS,
+        ZG.GROUP_IMG   AS GROUP_IMG
+        FROM ZZ_USER_GROUP ZUG
+        LEFT JOIN ZZ_GROUP ZG
+        ON ZG.GROUP_ID = ZUG.GROUP_ID
+        WHERE ZG.ISCLOSE = '0'
+        AND ZG.ISDELETE = '0'
+        AND ZUG.USER_ID = #{id}
     </select>
 
     <select id="groupListTotal" resultType="java.lang.Long">

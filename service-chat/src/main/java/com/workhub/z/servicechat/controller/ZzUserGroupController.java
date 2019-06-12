@@ -78,6 +78,7 @@ public class ZzUserGroupController extends BaseController<ZzUserGroupServiceImpl
     }
 
     @PostMapping("/querygroup")
+    //id参数是userid
     public TableResultResponse queryGroupList(@RequestParam("id")String id,
                                                   @RequestParam(value = "page",defaultValue = "1")Integer page,
                                                   @RequestParam(value = "size",defaultValue = "10")Integer size){
@@ -131,8 +132,8 @@ public class ZzUserGroupController extends BaseController<ZzUserGroupServiceImpl
         return  objectRestResponse;
     }
     /**
-     * 修改用户群个性化信息--是否置顶
-     * @param userId 用户id；groupId 群id；topFlg 1置顶，0不置顶
+     * 修改用户群个性化信息--是否免打扰
+     * @param userId 用户id；groupId 群id；muteFlg 1免打扰，0否
      * @return  1成功；0用户不在组内或者组已经不存在；-1错误
      * @author zhuqz
      * @since 2019-06-11
@@ -160,4 +161,5 @@ public class ZzUserGroupController extends BaseController<ZzUserGroupServiceImpl
         }
         return  objectRestResponse;
     }
+
 }
