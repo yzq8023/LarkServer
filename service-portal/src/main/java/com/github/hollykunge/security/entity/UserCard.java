@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * @description: 卡片设置- 用户卡片表
@@ -27,19 +28,12 @@ public class UserCard {
 
     @Column(name = "STATUS")
     private String status;
-
-    @Column(name = "X")
-    private Integer x;
-
-    @Column(name = "Y")
-    private Integer y;
-
-    @Column(name = "W")
-    private Integer w;
-
-    @Column(name = "H")
-    private Integer h;
-
+    /**
+     * 第几个卡片
+     */
     @Column(name = "I")
     private String i;
+
+    @Column(name = "POSITION")
+    private Integer position;
 }
