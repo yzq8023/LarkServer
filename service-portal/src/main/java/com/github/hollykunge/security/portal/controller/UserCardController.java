@@ -1,14 +1,17 @@
 package com.github.hollykunge.security.portal.controller;
 
 import com.github.hollykunge.security.common.context.BaseContextHandler;
+import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.rest.BaseController;
 import com.github.hollykunge.security.entity.UserCard;
 import com.github.hollykunge.security.portal.service.UserCardService;
 import com.github.hollykunge.security.vo.UserCardVO;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -28,6 +31,11 @@ public class UserCardController extends BaseController<UserCardService, UserCard
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
     public ObjectRestResponse<UserCard> add(@RequestBody UserCard userCard) {
+        String userID = request.getHeader("userId");
+        if(StringUtils.isEmpty(userID)){
+            throw new BaseException("request contains no user...");
+        }
+        userCard.setUserId(userID);
        if(baseBiz.selectCount(userCard) > 0){
            return new ObjectRestResponse<>().rel(false).msg("设置卡片失败，已经添加过了...");
        }
@@ -41,12 +49,15 @@ public class UserCardController extends BaseController<UserCardService, UserCard
      */
     @RequestMapping(value = "/remove", method = RequestMethod.DELETE)
     @ResponseBody
-    public ObjectRestResponse<Boolean> modifyUserCard(@RequestBody UserCard userCard) {
-        if(baseBiz.selectCount(userCard) == 0){
-           return new ObjectRestResponse<>().msg("用户不显示该卡片...");
+    public ObjectRestResponse<Boolean> removeUserCard(@RequestBody UserCard userCard) {
+        String userID =  request.getHeader("userId");
+        if(StringUtils.isEmpty(userID)){
+            throw new BaseException("request contains no user...");
         }
-        String userID = BaseContextHandler.getUserID();
         userCard.setUserId(userID);
+        if(baseBiz.selectCount(userCard) == 0){
+            return new ObjectRestResponse<>().msg("用户不显示该卡片,不需要移除...");
+        }
         baseBiz.delete(userCard);
         return new ObjectRestResponse<>().msg("移除成功..").rel(true);
     }
@@ -57,9 +68,15 @@ public class UserCardController extends BaseController<UserCardService, UserCard
      */
     @RequestMapping(value = "/showCards", method = RequestMethod.GET)
     @ResponseBody
-    public ListRestResponse<List<UserCardVO>> userCards() {
-        String userID = BaseContextHandler.getUserID();
+    public ListRestResponse<List<UserCardVO>> userCards(HttpServletRequest request) {
+        String userID =  request.getHeader("userId");
+        if(StringUtils.isEmpty(userID)){
+            throw new BaseException("request contains no user...");
+        }
         List<UserCardVO> userCardVOS = baseBiz.userCards(userID);
         return new ListRestResponse<>("",userCardVOS.size(),userCardVOS);
     }
+    /**
+     * todo:用户修改卡片位置暂留
+     */
 }

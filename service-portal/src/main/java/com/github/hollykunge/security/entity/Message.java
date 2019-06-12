@@ -3,6 +3,7 @@ package com.github.hollykunge.security.entity;
 import lombok.Data;
 
 import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
 
@@ -15,6 +16,7 @@ import java.util.Date;
 @Table(name = "PORTAL_MESSAGE")
 public class Message {
     @Column(name = "ID")
+    @Id
     private String id;
     @Column(name = "MSG")
     private String msg;
@@ -30,4 +32,8 @@ public class Message {
     private String msgType;
     @Column(name = "LEVELS")
     private String levels;
+    @Column(name = "AVATAR")
+    private String avatar;
+    @Column(name = "USER_ID")
+    private String userId;
 }
