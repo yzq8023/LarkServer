@@ -32,4 +32,6 @@ public class Message {
     private String msgType;
     @Column(name = "LEVELS")
     private String levels;
+    @Column(name = "AVATAR")
+    private String avatar;
 }
