@@ -2,7 +2,7 @@ package com.github.hollykunge.security.portal.service;
 
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.entity.CardInfo;
-import com.github.hollykunge.security.mapper.CardMapper;
+import com.github.hollykunge.security.mapper.CardInfoMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class CardService extends BaseBiz<CardMapper, CardInfo> {
+public class CardService extends BaseBiz<CardInfoMapper, CardInfo> {
     @Override
     protected String getPageName() {
         return null;

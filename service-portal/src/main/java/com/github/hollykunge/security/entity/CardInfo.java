@@ -3,6 +3,7 @@ package com.github.hollykunge.security.entity;
 import lombok.Data;
 
 import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -14,9 +15,10 @@ import javax.persistence.Table;
 @Table(name = "PORTAL_CARD_INFO")
 public class CardInfo {
     @Column(name = "ID")
+    @Id
     private String id;
 
-    @Column(name = "TITLE ")
+    @Column(name = "TITLE")
     private String title;
 
     @Column(name = "DESCRIPTION")
@@ -33,5 +35,8 @@ public class CardInfo {
 
     @Column(name = "ICON")
     private String icon;
+
+    @Column(name = "TYPE")
+    private String type;
 
 }

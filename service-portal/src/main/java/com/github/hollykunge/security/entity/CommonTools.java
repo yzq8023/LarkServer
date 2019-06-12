@@ -3,6 +3,7 @@ package com.github.hollykunge.security.entity;
 import lombok.Data;
 
 import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -14,5 +15,6 @@ import javax.persistence.Table;
 @Table(name = "PORTAL_COMMONTOOLS")
 public class CommonTools {
     @Column(name = "ID")
+    @Id
     private String id;
 }
