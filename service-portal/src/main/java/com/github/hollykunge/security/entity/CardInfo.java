@@ -36,4 +36,7 @@ public class CardInfo {
     @Column(name = "ICON")
     private String icon;
 
+    @Column(name = "TYPE")
+    private String type;
+
 }
