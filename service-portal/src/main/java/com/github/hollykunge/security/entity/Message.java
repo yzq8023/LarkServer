@@ -34,4 +34,6 @@ public class Message {
     private String levels;
     @Column(name = "AVATAR")
     private String avatar;
+    @Column(name = "USER_ID")
+    private String userId;
 }
