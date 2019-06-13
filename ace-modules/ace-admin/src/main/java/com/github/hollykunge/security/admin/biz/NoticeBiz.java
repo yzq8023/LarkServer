@@ -22,20 +22,20 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class)
 public class NoticeBiz extends BaseBiz<NoticeMapper,Notice>{
 
-    @Resource
-    private UserMapper userMapper;
-
-    public List<Notice> listNoticeTopSix(String userId){
-        List<Notice> noticeByUserIdTopSix = mapper.getNoticeByUserIdTopSix(userId);
-        return noticeByUserIdTopSix;
-    }
-
-    public String getOrgIdByUserId(String userId) {
-        Example example = new Example(User.class);
-        example.createCriteria().andEqualTo("userId", userId);
-        List<User> orgUserMaps = userMapper.selectByExample(example);
-        return orgUserMaps.get(0).getOrgCode();
-    }
+//    @Resource
+//    private UserMapper userMapper;
+//
+//    public List<Notice> listNoticeTopSix(String userId){
+//        List<Notice> noticeByUserIdTopSix = mapper.getNoticeByUserIdTopSix(userId);
+//        return noticeByUserIdTopSix;
+//    }
+//
+//    public String getOrgIdByUserId(String userId) {
+//        Example example = new Example(User.class);
+//        example.createCriteria().andEqualTo("id", userId);
+//        List<User> orgUserMaps = userMapper.selectByExample(example);
+//        return orgUserMaps.get(0).getOrgCode();
+//    }
     @Override
     protected String getPageName() {
         return null;
