@@ -76,31 +76,32 @@
     </resultMap>
 
     <select id="getUserNewMsgList" resultMap="UserNewMsgVo">
-        SELECT *
-          FROM (SELECT PHPM.MSG_ID AS MSG_ID,
-                       'USER' AS TABLE_TYPE,
-                       PHPM.MSG_SENDER AS MSG_SENDER,
-                       PHPM.SEND_TIME AS SEND_TIME,
-                       PHPM.MSG AS MSG_CONTENT,
-                       PHPM.MSG_TYPE AS MSG_TYPE,
-                       PHPM.LEVELS AS LEVELS_USER
-                  FROM ZZ_PRIVATE_MSG PHPM
-                 WHERE PHPM.MSG_RECEIVER = #{id,jdbcType=VARCHAR}
-                   AND ROWID IN (SELECT MAX(ROWID)
-                                   FROM ZZ_PRIVATE_MSG SP
-                                  GROUP BY SP.MSG_SENDER)
-                UNION ALL
-                SELECT PHGM.MSG_ID AS MSG_ID,
-                       'GROUP' AS TABLE_TYPE,
-                       PHGM.MSG_SENDER AS MSG_SENDER,
-                       PHGM.SEND_TIME AS SND_TIME,
-                       PHGM.MSG AS MSG_CONTENT,
-                       PHGM.MSG_TYPE AS MSG_TYPE,
-                       PHGM.LEVELS AS LEVELS_USER
-                  FROM ZZ_GROUP_MSG PHGM
-                 WHERE PHGM.MSG_RECEIVER = #{id,jdbcType=VARCHAR}
-                   AND ROWID IN
-                       (SELECT MAX(ROWID) FROM ZZ_GROUP_MSG SG GROUP BY SG.MSG_SENDER)) VO
+     SELECT * FROM (
+           SELECT * FROM (
+                     SELECT ROW_NUMBER() OVER(PARTITION BY MSG_SENDER ORDER BY SEND_TIME DESC) RN ,t.*
+                          FROM (
+                                SELECT PHPM.MSG_ID AS MSG_ID,
+                                      'USER' AS TABLE_TYPE,
+                                       PHPM.MSG_SENDER AS MSG_SENDER,
+                                       PHPM.SEND_TIME AS SEND_TIME,
+                                       PHPM.MSG AS MSG_CONTENT,
+                                       PHPM.MSG_TYPE AS MSG_TYPE,
+                                       PHPM.LEVELS AS LEVELS_USER
+                                FROM ZZ_PRIVATE_MSG PHPM
+                                WHERE PHPM.MSG_RECEIVER = #{id,jdbcType=VARCHAR}
+           UNION ALL
+                     SELECT PHGM.MSG_ID AS MSG_ID,
+                                           'GROUP' AS TABLE_TYPE,
+                                           PHGM.MSG_SENDER AS MSG_SENDER,
+                                           PHGM.SEND_TIME AS SEND_TIME,
+                                           PHGM.MSG AS MSG_CONTENT,
+                                           PHGM.MSG_TYPE AS MSG_TYPE,
+                                           PHGM.LEVELS AS LEVELS_USER
+                                FROM ZZ_GROUP_MSG PHGM LEFT JOIN ZZ_USER_GROUP ZU ON PHGM.MSG_RECEIVER = ZU.GROUP_ID
+                                WHERE ZU.USER_ID = #{id,jdbcType=VARCHAR}
+                                ) t
+                       )
+                ) VO where rn =1
          ORDER BY VO.SEND_TIME DESC
     </select>
 

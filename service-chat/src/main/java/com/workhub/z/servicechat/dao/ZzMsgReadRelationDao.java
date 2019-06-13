@@ -66,9 +66,11 @@ public interface ZzMsgReadRelationDao extends Mapper<ZzMsgReadRelation> {
      */
     int deleteById(String id);
 
-    boolean deleteByConsumerAndSender(@Param("sender") String sender, @Param("consumer") String consumer,@Param("sendType")String sendType);
+    boolean deleteByConsumerAndSender(@Param("sender") String sender, @Param("consumer") String consumer);
 
     Long queryNoReadCount(@Param("consumer")String consumer);
 
     List<NoReadVo> queryNoReadCountList(@Param("consumer")String consumer);
+
+    int queryNoReadMsgBySenderAndReceiver(@Param("sender") String sender, @Param("receiver") String receiver);
 }

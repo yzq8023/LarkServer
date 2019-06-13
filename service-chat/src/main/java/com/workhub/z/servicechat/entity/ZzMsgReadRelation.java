@@ -15,7 +15,7 @@ public class ZzMsgReadRelation implements Serializable {
     //发送人id
     private String sender;
     //接收人id
-    private String consumer;
+    private String receiver;
     //消息来源类型
     private String sendType;
 
@@ -36,12 +36,12 @@ public class ZzMsgReadRelation implements Serializable {
         this.sender = sender;
     }
 
-    public String getConsumer() {
-        return consumer;
+    public String getReceiver() {
+        return receiver;
     }
 
-    public void setConsumer(String consumer) {
-        this.consumer = consumer;
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 
     public String getSendType() {

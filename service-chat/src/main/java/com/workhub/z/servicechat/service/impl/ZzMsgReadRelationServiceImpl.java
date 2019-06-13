@@ -54,8 +54,7 @@ public class ZzMsgReadRelationServiceImpl extends BaseBiz<ZzMsgReadRelationDao,Z
     @Override
     @Transactional
     public void insert(ZzMsgReadRelation zzMsgReadRelation) {
-        int insert = this.zzMsgReadRelationDao.insert(zzMsgReadRelation);
-//        return insert;
+        zzMsgReadRelationDao.insert(zzMsgReadRelation);
     }
 
     @Override
@@ -90,8 +89,8 @@ public class ZzMsgReadRelationServiceImpl extends BaseBiz<ZzMsgReadRelationDao,Z
 
     @Override
     @Transactional
-    public boolean deleteByConsumerAndSender(String sender, String consumer,String sendType) {
-        return this.zzMsgReadRelationDao.deleteByConsumerAndSender(sender,consumer,sendType);
+    public boolean deleteByConsumerAndSender(String sender, String consumer) {
+        return this.zzMsgReadRelationDao.deleteByConsumerAndSender(sender,consumer);
     }
 
     @Override
@@ -102,5 +101,10 @@ public class ZzMsgReadRelationServiceImpl extends BaseBiz<ZzMsgReadRelationDao,Z
     @Override
     public List<NoReadVo> queryNoReadCountList(String consumer) {
         return this.zzMsgReadRelationDao.queryNoReadCountList(consumer);
+    }
+
+    @Override
+    public int queryNoReadMsgBySenderAndReceiver(String sender, String receiver) {
+        return this.zzMsgReadRelationDao.queryNoReadMsgBySenderAndReceiver(sender,receiver);
     }
 }

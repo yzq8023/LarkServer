@@ -66,8 +66,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into WORKHUB_IWORK.ZZ_MSG_READ_RELATION(SENDER, CONSUMER, SEND_TYPE)
-        values (#{sender}, #{consumer}, #{sendType})
+        insert into WORKHUB_IWORK.ZZ_MSG_READ_RELATION(ID,SENDER, CONSUMER, SEND_TYPE)
+        values (#{id},#{sender}, #{receiver}, #{sendType})
     </insert>
 
     <!--通过主键修改数据-->
@@ -92,4 +92,8 @@
         delete from WORKHUB_IWORK.ZZ_MSG_READ_RELATION where ID = #{id}
     </delete>
 
+    <!--查询未读消息条数-->
+    <select id="queryNoReadMsgBySenderAndReceiver" resultType="java.lang.Long">
+        select COUNT(*) from ZZ_MSG_READ_RELATION t where t.CONSUMER = #{receiver} and t.SENDER =#{sender}
+    </select>
 </mapper>
