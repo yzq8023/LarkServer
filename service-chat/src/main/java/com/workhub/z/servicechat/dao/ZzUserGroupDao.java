@@ -67,6 +67,8 @@ public interface ZzUserGroupDao extends Mapper<ZzUserGroup> {
     int deleteById(String id);
 
     List<GroupListVo> groupList(@Param("id")String id, @Param("start")Integer start, @Param("end")Integer end);
+    //以前的分页查询有问题，这里重载一个方法
+    List<GroupListVo> groupList(@Param("id")String id);
 
     Long groupListTotal(@Param("id")String id);
 

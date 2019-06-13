@@ -20,14 +20,14 @@
     </resultMap>
 
     <resultMap id="GroupUserListVo" type="com.workhub.z.servicechat.VO.GroupUserListVo">
-        <result property="CREATE_TIME" column="createTime" jdbcType="TIMESTAMP"></result>
-        <result property="USER_ID" column="userId" jdbcType="VARCHAR"></result>
-        <!--<result property="FULL_NAME" column="fullName" jdbcType="VARCHAR"></result>
-        <result property="ACCOUNT" column="account" jdbcType="VARCHAR"></result>
-        <result property="PASSWORD" column="password" jdbcType="VARCHAR"></result>
-        <result property="LEVELS" column="levels" jdbcType="VARCHAR"></result>
-        <result property="SEX" column="sex" jdbcType="VARCHAR"></result>
-        <result property="HEAD" column="head" jdbcType="VARCHAR"></result>-->
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"></result>
+        <result column="USER_ID" property="userId" jdbcType="VARCHAR"></result>
+        <!--<result column="FULL_NAME" property="fullName" jdbcType="VARCHAR"></result>
+        <result column="ACCOUNT" property="account" jdbcType="VARCHAR"></result>
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR"></result>
+        <result column="LEVELS" property="levels" jdbcType="VARCHAR"></result>
+        <result column="SEX" property="sex" jdbcType="VARCHAR"></result>
+        <result column="HEAD" property="head" jdbcType="VARCHAR"></result>-->
     </resultMap>
 
     <select id="groupUserList" resultMap="GroupUserListVo">
