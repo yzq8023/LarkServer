@@ -23,6 +23,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * ${DESCRIPTION}
@@ -31,12 +32,20 @@ import java.util.List;
  * @create 2017-06-12 8:49
  */
 @Controller
-@RequestMapping("/admin/menu")
+@RequestMapping("menu")
 public class MenuController extends BaseController<MenuBiz, Menu> {
     @Autowired
     private UserBiz userBiz;
     @Autowired
     private ElementBiz elementBiz;
+
+    @Override
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    @ResponseBody
+    public ObjectRestResponse<Menu> add(@RequestBody Menu menu) {
+        baseBiz.insertSelective(menu);
+        return new ObjectRestResponse<>().data(menu);
+    }
 
     /**
      * 根据menuId获取element
@@ -52,12 +61,13 @@ public class MenuController extends BaseController<MenuBiz, Menu> {
 
     /**
      * 给menu添加element或修改element
-     * @param elementList 要绑定的element
      * @return
      */
-    @RequestMapping(value = "/element",method = RequestMethod.PUT)
+    @RequestMapping(value = "/element",method = RequestMethod.POST)
     @ResponseBody
-    public ObjectRestResponse modifyMenuElement(@RequestParam("menuId") String menuId, @RequestBody List<AdminElement> elementList){
+    public ObjectRestResponse modifyMenuElement(@RequestBody Map<String,Object> map){
+        String menuId = (String) map.get("menuId");
+        List<AdminElement> elementList = JSON.parseArray(JSON.toJSONString(map.get("elements")),AdminElement.class) ;
         elementBiz.modifyMenuElement(menuId,elementList);
         return new ObjectRestResponse().rel(true);
     }
@@ -67,28 +77,28 @@ public class MenuController extends BaseController<MenuBiz, Menu> {
      * @param parentTreeId 父级treeId
      * @return 父级下的子菜单列表
      */
-    @RequestMapping(value = "/tree", method = RequestMethod.GET)
-    @ResponseBody
-    public ListRestResponse<List<MenuTree>> getTree(@RequestParam("parentTreeId") String parentTreeId) {
-        if(StringUtils.isEmpty(parentTreeId)){
-            parentTreeId = AdminCommonConstant.ROOT;
-        }
-        List<MenuTree> menuTree = getMenuTree(baseBiz.selectListAll(), parentTreeId);
-        return new ListRestResponse<>("",menuTree.size(),menuTree);
-    }
-
-    private List<MenuTree> getMenuTree(List<Menu> menus,String root) {
-        List<MenuTree> trees = new ArrayList<MenuTree>();
-        MenuTree node = null;
-        for (Menu menu : menus) {
-            node = new MenuTree();
-            node.setLabel(menu.getTitle());
-            String jsonNode = JSON.toJSONString(menu);
-            node = JSON.parseObject(jsonNode, MenuTree.class);
-            trees.add(node);
-        }
-        return TreeUtil.bulid(trees,root) ;
-    }
+//    @RequestMapping(value = "/tree", method = RequestMethod.GET)
+//    @ResponseBody
+//    public ListRestResponse<List<MenuTree>> getTree(@RequestParam("parentTreeId") String parentTreeId) {
+//        if(StringUtils.isEmpty(parentTreeId)){
+//            parentTreeId = AdminCommonConstant.ROOT;
+//        }
+//        List<MenuTree> menuTree = getMenuTree(baseBiz.selectListAll(), parentTreeId);
+//        return new ListRestResponse<>("",menuTree.size(),menuTree);
+//    }
+//
+//    private List<MenuTree> getMenuTree(List<Menu> menus,String root) {
+//        List<MenuTree> trees = new ArrayList<MenuTree>();
+//        MenuTree node = null;
+//        for (Menu menu : menus) {
+//            node = new MenuTree();
+//            node.setLabel(menu.getTitle());
+//            String jsonNode = JSON.toJSONString(menu);
+//            node = JSON.parseObject(jsonNode, MenuTree.class);
+//            trees.add(node);
+//        }
+//        return TreeUtil.bulid(trees,root) ;
+//    }
 //    @RequestMapping(value = "/list", method = RequestMethod.GET)
 //    @ResponseBody
 //    public List<Menu> list(String title) {

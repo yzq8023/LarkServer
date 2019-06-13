@@ -162,7 +162,7 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
         List<AdminPermission> resultPermission = new ArrayList<>();
         //获取所有的menu和所有的menu下的所有的Element
         List<Menu> menus = menuMapper.selectAll();
-        menus.parallelStream().forEach(menu -> {
+        menus.stream().forEach(menu -> {
             //根据menuid获取所有的Menu下的Element
             Element params = new Element();
             params.setMenuId(menu.getId());
