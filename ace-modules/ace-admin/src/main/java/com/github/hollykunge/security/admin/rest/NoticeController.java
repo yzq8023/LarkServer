@@ -26,23 +26,24 @@ import java.util.Map;
 @RequestMapping("notice")
 @Api("公告模块")
 public class NoticeController extends BaseController<NoticeBiz,Notice> {
-    @Override
-    @RequestMapping(value = "/page", method = RequestMethod.GET)
-    @ResponseBody
-    public TableResultResponse<Notice> page(@RequestParam Map<String, Object> params){
-        String userId = getCurrentUserId();
-        String orgId = baseBiz.getOrgIdByUserId(userId);
-        if (!params.containsKey("orgId")) {
-            params.put("orgId", orgId);
-        }
-        return super.page(params);
-    }
+//    @Override
+//    @RequestMapping(value = "/page", method = RequestMethod.GET)
+//    @ResponseBody
+//    public TableResultResponse<Notice> page(@RequestParam Map<String, Object> params){
+//        String userId =(String) params.get("userId");
+//        String orgId = baseBiz.getOrgIdByUserId(userId);
+//        params.remove("userId");
+//        if (!params.containsKey("orgId")) {
+//            params.put("orgId", orgId);
+//        }
+//        return super.page(params);
+//    }
 
-    @RequestMapping(value = "/no-page", method = RequestMethod.GET)
-    @ResponseBody
-    public ListRestResponse<Notice> noPage(@RequestParam("userId") String userId){
-        List<Notice> listNoticeTopSix = baseBiz.listNoticeTopSix(userId);
-
-        return new ListRestResponse("",listNoticeTopSix.size(),listNoticeTopSix);
-    }
+//    @RequestMapping(value = "/no-page", method = RequestMethod.GET)
+//    @ResponseBody
+//    public ListRestResponse<Notice> noPage(@RequestParam("userId") String userId){
+//        List<Notice> listNoticeTopSix = baseBiz.listNoticeTopSix(userId);
+//
+//        return new ListRestResponse("",listNoticeTopSix.size(),listNoticeTopSix);
+//    }
 }
