@@ -28,5 +28,6 @@ public class ProcessGroupMsg extends AbstractMsgProcessor {
 
     public void saveMsg(ZzGroupMsg zzGroupMsg){
         groupMsgService.insert(zzGroupMsg);
+        super.saveNoReadMsg(zzGroupMsg.getMsgSender(),zzGroupMsg.getMsgReceiver());
     }
 }

@@ -2,7 +2,7 @@ package com.workhub.z.servicechat.VO;
 
 public class NoReadVo {
 
-    private String consumer;//消费人id
+    private String receiver;//接收人id
 
     private String sender;//发送人id
 
@@ -10,12 +10,12 @@ public class NoReadVo {
 
     private Integer msgCount;//消息数量
 
-    public String getConsumer() {
-        return consumer;
+    public String getReceiver() {
+        return receiver;
     }
 
-    public void setConsumer(String consumer) {
-        this.consumer = consumer;
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 
     public String getSender() {

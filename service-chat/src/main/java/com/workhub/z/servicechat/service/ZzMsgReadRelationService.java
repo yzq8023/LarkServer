@@ -54,9 +54,17 @@ public interface ZzMsgReadRelationService {
     boolean deleteById(String id);
 
     //删除已读关系记录
-    boolean deleteByConsumerAndSender(String sender, String consumer,String sendType);
+    boolean deleteByConsumerAndSender(String sender, String consumer);
     //获取未读消息数
     Long queryNoReadCount(String consumer);
     //获取未读消息列表
     List<NoReadVo> queryNoReadCountList(String consumer);
+    /**
+    *@Description: 获取未读消息条数
+    *@Param: 
+    *@return: 
+    *@Author: 忠
+    *@date: 2019/6/12
+    */
+    int queryNoReadMsgBySenderAndReceiver(String sender, String receiver);
 }

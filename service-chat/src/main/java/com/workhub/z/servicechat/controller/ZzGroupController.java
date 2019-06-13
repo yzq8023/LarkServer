@@ -127,10 +127,10 @@ public class ZzGroupController extends BaseController<ZzGroupServiceImpl, ZzGrou
 
     @PostMapping("/queryTest")
     public ListRestResponse queryTest(@RequestParam("userId")String userId) throws Exception {
-        List<ContactVO>  contactVOS=  userGroupService.getContactVOList(userId);
+        List<ContactVO> contactVOS = userGroupService.getContactVOList(userId);
 //        List<ZzGroup> groups = this.zzGroupService.queryGroupListByUserId(userId);
-        return new ListRestResponse("200",contactVOS.size(),contactVOS);
-
+        return new ListRestResponse("200", contactVOS.size(), contactVOS);
+    }
     /**
      * 逻辑删除群
      * @param groupId 群id;delFlg：删除标记位，1删除，0 不删
@@ -157,4 +157,5 @@ public class ZzGroupController extends BaseController<ZzGroupServiceImpl, ZzGrou
         }
         return objectRestResponse;
     }
+    
 }
