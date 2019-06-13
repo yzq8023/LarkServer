@@ -38,5 +38,5 @@ public interface IUserService {
     public List<UserInfo> all();
 
     @RequestMapping(value = "api/user/info", method = RequestMethod.POST)
-    public UserInfo info(@RequestParam("userId") String userId);
+    public UserInfo info(@RequestParam("userPId") String userPId);
 }

@@ -1,11 +1,11 @@
 package com.workhub.z.servicechat.service.impl;
 
+import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.vo.rpcvo.ContactVO;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.workhub.z.servicechat.VO.ContactVO;
 import com.workhub.z.servicechat.VO.GroupListVo;
 import com.workhub.z.servicechat.VO.NoReadVo;
 import com.workhub.z.servicechat.VO.UserNewMsgVo;
@@ -141,26 +141,30 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
     @Override
     public List<ContactVO> getContactVOList(String id) {
         List<UserNewMsgVo> userNewMsgList = this.getUserNewMsgList(id);
+        // TODO: 2019/6/12 是否@
+        // TODO: 2019/6/12 私有化定制
         List<ContactVO> list = new ArrayList<ContactVO>();
         List<NoReadVo> noReadVos = zzMsgReadRelationService.queryNoReadCountList(id);
-        if (noReadVos == null|| noReadVos.isEmpty()) return list;
-        noReadVos.stream().forEach(n ->{
+        if(userNewMsgList == null|| userNewMsgList.isEmpty()) return list;
+        userNewMsgList.stream().forEach(n ->{
+            UserInfo userInfo = iUserService.info(n.getMsgSener());
             ContactVO contactVO = new ContactVO();
-            contactVO.setId(n.getSender());
-
-            if ("GROUP".equals(n.getSendType())){
-                contactVO.setName(this.zzGroupService.queryById(n.getSender()).getGroupName());
-            }else{
-                contactVO.setName(this.iUserService.info(n.getSender()).getName());
+            contactVO.setId(n.getMsgSener());
+            contactVO.setLastMessage(n.getMsg());
+            contactVO.setTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(n.getSendTime()));
+            contactVO.setAvatar(userInfo.getAvatar());
+            contactVO.setName(userInfo.getName());
+            contactVO.setAtMe(false);
+            contactVO.setIsTop(false);
+            contactVO.setIsMute(false);
+            contactVO.setIsGroup(n.getTableType().equals("GROUP"));
+            if (noReadVos == null|| noReadVos.isEmpty()) contactVO.setUnreadNum(0);
+            else {noReadVos.stream().forEach(m ->{
+                if (m.getSender() == n.getMsgSener()){
+                    contactVO.setUnreadNum(m.getMsgCount());
+                }
+             });
             }
-            contactVO.setIsGroup("GROUP".equals(n.getSendType()));
-            contactVO.setUnreadNum(n.getMsgCount());
-            userNewMsgList.stream()
-                    .filter(msg -> msg.getTableType().equals(n.getSendType()) && msg.getMsgSener().equals(n.getSender()))
-                    .forEach(m ->{
-                        contactVO.setTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(m.getSendTime()));
-                        contactVO.setLastMessage(m.getMsg());
-                    });
             list.add(contactVO);
         });
         return list;

@@ -56,9 +56,9 @@ public class ZzMsgReadRelationController
 
     @DeleteMapping("/delete")
     public ObjectRestResponse delete(@RequestParam("sender")String sender,
-                                     @RequestParam("consumer")String consumer,
-                                     @RequestParam("sendType")String sendType){
-        boolean flag = this.zzMsgReadRelationService.deleteByConsumerAndSender(sender,consumer,sendType);
+                                     @RequestParam("consumer")String consumer
+                                     ){
+        boolean flag = this.zzMsgReadRelationService.deleteByConsumerAndSender(sender,consumer);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
         objectRestResponse.data(flag);
         return objectRestResponse;
@@ -74,5 +74,16 @@ public class ZzMsgReadRelationController
     public ListRestResponse queryNoReadCountList(@RequestParam("consumer")String consumer){
         List<NoReadVo> list = this.zzMsgReadRelationService.queryNoReadCountList(consumer);
         return new ListRestResponse("",0,list);
+    }
+    /**
+    *@Description: 清除未读标识
+    *@Param:
+    *@return:
+    *@Author: 忠
+    *@date: 2019/6/12
+    */
+    @PostMapping("/deleteBySender")
+    public void deleteBySender(@RequestParam("sender")String sender,@RequestParam("receiver") String receiver){
+        this.zzMsgReadRelationService.deleteByConsumerAndSender(sender,receiver);
     }
 }

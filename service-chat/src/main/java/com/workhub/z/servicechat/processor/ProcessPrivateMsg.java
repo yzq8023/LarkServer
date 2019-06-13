@@ -45,6 +45,7 @@ public class ProcessPrivateMsg extends AbstractMsgProcessor{
     // TODO: 2019/5/31 存储到数据库
     public void saveMsg(ZzPrivateMsg privateMsg){
         privateMsgService.insert(privateMsg);
+        super.saveNoReadMsg(privateMsg.getMsgSender(),privateMsg.getMsgReceiver());
     }
 
     
