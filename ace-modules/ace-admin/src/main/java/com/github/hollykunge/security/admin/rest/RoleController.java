@@ -53,19 +53,18 @@ public class RoleController extends BaseController<RoleBiz, Role> {
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     @ResponseBody
     public ListRestResponse<List<AdminUser>> getUsers(@RequestParam("id") String id) {
-        List<AdminUser> roleUsers = baseBiz.getRoleUsers(Integer.parseInt(id));
+        List<AdminUser> roleUsers = baseBiz.getRoleUsers(id);
         return new ListRestResponse<>("",roleUsers.size(),roleUsers);
     }
 
     /**
      * 批量修改角色用户
-     *
-     * @param id    角色id
-     * @param users 用户ids
      */
     @RequestMapping(value = "/user", method = RequestMethod.PUT)
     @ResponseBody
-    public ObjectRestResponse modifyUsers(@RequestParam("id") String id, @RequestParam("users") String users) {
+    public ObjectRestResponse modifyUsers(@RequestBody Map<String,Object> map) {
+        String id =  (String)map.get("id");
+        String users =  (String)map.get("users");
         baseBiz.modifyRoleUsers(id, users);
         return new ObjectRestResponse().rel(true).msg("修改成功");
     }
