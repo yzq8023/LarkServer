@@ -10,6 +10,9 @@ import com.workhub.z.servicechat.service.impl.ZzGroupMsgServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 群组消息表(ZzGroupMsg)表控制层
@@ -104,5 +107,30 @@ public class ZzGroupMsgController
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
         objectRestResponse.data("成功");
         return objectRestResponse;
+    }
+    /**
+     * 查询消息记录（最近+历史+二者并集）
+     * @auther zhuqz
+     * @param sender：发送人id；receiver：群id；begin_time：发送开始时间yyyy-mm-dd;end_time：发送结束时间
+     * @return
+     */
+    @GetMapping("/queryMsg")
+    public List<ZzGroupMsg> queryMsg(@RequestParam("sender") String sender,
+                                     @RequestParam("receiver") String receiver,
+                                     @RequestParam("begin_time") String begin_time,
+                                     @RequestParam("end_time") String end_time){
+
+        Map<String,String> param = new HashMap<>();
+        param.put("sender",sender);
+        param.put("receiver",receiver);
+        param.put("begin_time",begin_time);
+        param.put("end_time",end_time);
+        List<ZzGroupMsg> dataList=null;
+        try {
+            dataList=this.zzGroupMsgService.queryMsg(param);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return dataList;
     }
 }
