@@ -247,7 +247,16 @@ public class AdminAccessFilter extends ZuulFilter {
             throw new BaseException("requestUri 参数异常...");
         }
         permissionInfos =  permissionInfos.parallelStream()
-                .filter(permissionInfo ->requestUri.contains(permissionInfo.getUri())).collect(Collectors.toList());
+                .filter(new Predicate<FrontPermission>() {
+                    @Override
+                    public boolean test(FrontPermission permissionInfo) {
+                        if(StringUtils.isEmpty(permissionInfo.getUri())){
+                            return false;
+                        }
+                        return requestUri.contains(permissionInfo.getUri());
+                    }
+                }).collect(Collectors.toList());
+
         if(permissionInfos.size()==0){
             setFailedRequest(JSON.toJSONString(new TokenForbiddenResponse("Token Forbidden!request url no permission...")), 200);
         }

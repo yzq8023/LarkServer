@@ -30,10 +30,10 @@ public class MenuBiz extends BaseBiz<MenuMapper, Menu> {
     @CacheClear(keys = {"permission:menu", "permission"})
     public void insertSelective(Menu entity) {
         if (AdminCommonConstant.ROOT.equals(entity.getParentId())) {
-            entity.setPath("/" + entity.getCode());
+//            entity.setPath("/" + entity.getCode());
         } else {
-            Menu parent = this.selectById(entity.getParentId());
-            entity.setPath(parent.getPath() + "/" + entity.getCode());
+//            Menu parent = this.selectById(entity.getParentId());
+//            entity.setPath(parent.getPath() + "/" + entity.getCode());
         }
         super.insertSelective(entity);
     }
