@@ -1,11 +1,11 @@
 package com.workhub.z.servicechat.dao;
 
-import com.workhub.z.servicechat.entity.ZzAt;
 import com.workhub.z.servicechat.entity.ZzGroupMsg;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 群组消息表(ZzGroupMsg)表数据库访问层
@@ -64,5 +64,25 @@ public interface ZzGroupMsgDao extends Mapper<ZzGroupMsg> {
      * @return 影响行数
      */
     int deleteById(String msgId);
-
+    /**
+     * 查询消息记录--最近
+     *
+     * @param param 参数集合：sender发送人，receiver接收人，begin_time开始时间，end_time结束时间
+     * @return 对象列表
+     */
+    List<ZzGroupMsg> queryMsgRecent(Map<String,String> param);
+    /**
+     * 查询消息记录--历史
+     *
+     * @param param 参数集合：sender发送人，receiver接收人，begin_time开始时间，end_time结束时间
+     * @return 对象列表
+     */
+    List<ZzGroupMsg> queryMsgHis(Map<String,String> param);
+    /**
+     * 查询消息记录--历史+最近
+     *
+     * @param param 参数集合：sender发送人，receiver接收人，begin_time开始时间，end_time结束时间
+     * @return 对象列表
+     */
+    List<ZzGroupMsg> queryMsgCurrentAndHis(Map<String,String> param);
 }

@@ -1,6 +1,8 @@
 package com.workhub.z.servicechat.service;
 
+import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.workhub.z.servicechat.entity.ZzAt;
+
 import java.util.List;
 
 /**
@@ -51,5 +53,12 @@ public interface ZzAtService {
      * @return 是否成功
      */
     boolean deleteById(String id);
-
+    /**
+     * 查询分页
+     * @param
+     * @return  分页列表
+     * @author zhuqz
+     * @since 2019-06-14
+     */
+    public TableResultResponse<ZzAt> getList(String receiverId, String groupId, int pageNum, int pageSize) throws Exception;
 }
