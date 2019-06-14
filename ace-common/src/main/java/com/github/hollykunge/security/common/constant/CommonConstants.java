@@ -22,10 +22,10 @@ public class CommonConstants {
     public static final String CONTEXT_KEY_USER_TOKEN = "currentUserToken";
     public static final String JWT_KEY_USER_ID = "userId";
     public static final String JWT_KEY_NAME = "name";
-    /** 消息交换机的名字*/
-    public static final String PORTAL_EXCHANGE = "exchangePortal";
-    //门户接口队列
-    public static final String PORTAL_QUEUE_NAMA = "portal_queue";
+    /** 公告通知交换机名称*/
+    public static final String NOTICE_EXCHANGE = "noticeExchange";
+    /** 公告队列名称 */
+    public static final String NOTICE_QUEUE_NAMA = "noticeQueue";
 
     /** tio用ip数据监控统计，时间段*/
     public static final Long DURATION_1 = Time.MINUTE_1 * 5;
