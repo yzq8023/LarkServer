@@ -6,6 +6,7 @@ import org.tio.core.Tio;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -224,5 +225,19 @@ public class common {
                 }
             }
         }
+    }
+    //获取当前日期
+    public static String getCurrentDate(){
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar=Calendar.getInstance();
+        return  format.format(calendar.getTime());
+    }
+    //获取上个月第一天
+    public static String getBeforeMonthFirstDay(){
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar=Calendar.getInstance();
+        calendar.add(Calendar.MONTH, -1);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        return  format.format(calendar.getTime());
     }
 }

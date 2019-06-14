@@ -46,4 +46,9 @@ public class Notice extends BaseEntity {
      */
     @Column(name = "ORG_NAME")
     private String orgName;
+    /**
+     * 是否发送成功（1成功，0不成功）
+     */
+    @Column(name = "IS_SEND")
+    private String isSend;
 }

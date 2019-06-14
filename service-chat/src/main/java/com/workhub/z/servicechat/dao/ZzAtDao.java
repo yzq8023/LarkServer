@@ -2,8 +2,9 @@ package com.workhub.z.servicechat.dao;
 
 import com.workhub.z.servicechat.entity.ZzAt;
 import org.apache.ibatis.annotations.Param;
-import java.util.List;
 import tk.mybatis.mapper.common.Mapper;
+
+import java.util.List;
 
 /**
  * 提及（@）功能实现(ZzAt)表数据库访问层
@@ -62,5 +63,13 @@ public interface ZzAtDao extends Mapper<ZzAt> {
      * @return 影响行数
      */
     int deleteById(String id);
+    /**
+     * 查询分页
+     * @param
+     * @return  分页列表
+     * @author zhuqz
+     * @since 2019-06-14
+     */
+    List<ZzAt> getList(@Param("receiverId")String receiverId, @Param("groupId")String groupId) throws Exception;
 
 }

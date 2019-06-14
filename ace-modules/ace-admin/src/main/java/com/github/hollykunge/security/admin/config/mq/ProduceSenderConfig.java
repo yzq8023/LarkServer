@@ -1,12 +1,14 @@
-package com.github.hollykunge.security.config;
+package com.github.hollykunge.security.admin.config.mq;
 
 import com.github.hollykunge.security.common.constant.CommonConstants;
-import com.github.hollykunge.security.constants.Constants;
+import com.github.hollykunge.security.common.exception.BaseException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 
 /**
@@ -16,19 +18,18 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-public class ProduceSenderConfig {
+public class ProduceSenderConfig{
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
     /**
-     * 发送消息
-     * @param uuid
+     * 发送消息,使用发送消息mq确认机制
      * @param message  消息
      */
-    public void send(String uuid,Object message) {
-        //解决消费消息幂等性时用到，门户消费不涉及幂等性重复数据的问题
-        CorrelationData correlationId = new CorrelationData(uuid);
-        rabbitTemplate.convertAndSend(CommonConstants.PORTAL_EXCHANGE, "",message, correlationId);
+    public void send(String id,Object message) {
+        //消息id
+        CorrelationData correlationId = new CorrelationData(id);
+        rabbitTemplate.convertAndSend(CommonConstants.NOTICE_EXCHANGE, "",message, correlationId);
     }
 }

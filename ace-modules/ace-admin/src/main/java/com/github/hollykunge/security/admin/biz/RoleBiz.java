@@ -48,9 +48,9 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
         return null;
     }
 
-    public List<AdminUser> getRoleUsers(int roleId) {
+    public List<AdminUser> getRoleUsers(String roleId) {
         List<AdminUser> resultData = new ArrayList<>();
-        List<User> usersByOrgId = userMapper.selectUsersByRoleId(roleId + "");
+        List<User> usersByOrgId = userMapper.selectUsersByRoleId(roleId );
         List<User> users = Collections.synchronizedList(usersByOrgId);
         users.parallelStream().forEach(user -> {
             AdminUser frontUser = new AdminUser();
