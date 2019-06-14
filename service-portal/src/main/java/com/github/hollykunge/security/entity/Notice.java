@@ -25,6 +25,6 @@ public class Notice {
     private String content;
     @Column(name = "TOP")
     private String top;
-    @Column(name = "ORG_ID")
-    private String orgId;
+    @Column(name = "ORG_CODE")
+    private String orgCode;
 }
