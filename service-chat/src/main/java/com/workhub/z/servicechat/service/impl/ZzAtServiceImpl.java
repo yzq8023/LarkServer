@@ -1,8 +1,11 @@
 package com.workhub.z.servicechat.service.impl;
 
 import com.github.hollykunge.security.common.biz.BaseBiz;
-import com.workhub.z.servicechat.entity.ZzAt;
+import com.github.hollykunge.security.common.msg.TableResultResponse;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.dao.ZzAtDao;
+import com.workhub.z.servicechat.entity.ZzAt;
 import com.workhub.z.servicechat.service.ZzAtService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,7 +56,7 @@ public class ZzAtServiceImpl extends BaseBiz<ZzAtDao,ZzAt> implements ZzAtServic
     @Override
     @Transactional
     public void insert(ZzAt zzAt) {
-        super.insert(zzAt);
+        //super.insert(zzAt);
         int insert = this.zzAtDao.insert(zzAt);
 //        return insert;
     }
@@ -86,5 +89,25 @@ public class ZzAtServiceImpl extends BaseBiz<ZzAtDao,ZzAt> implements ZzAtServic
     @Override
     protected String getPageName() {
         return null;
+    }
+    /**
+     * 查询分页
+     * @param
+     * @return  分页列表
+     * @author zhuqz
+     * @since 2019-06-14
+     */
+    public TableResultResponse<ZzAt> getList(String receiverId, String groupId, int pageNum, int pageSize) throws Exception{
+        PageHelper.startPage(pageNum, pageSize);
+        List<ZzAt> list = this.zzAtDao.getList(receiverId,groupId);
+        PageInfo<ZzAt> pageInfo = new PageInfo<>(list);
+        TableResultResponse<ZzAt> res = new TableResultResponse<ZzAt>(
+                pageInfo.getPageSize(),
+                pageInfo.getPageNum(),
+                pageInfo.getPages(),
+                pageInfo.getTotal(),
+                pageInfo.getList()
+        );
+        return res;
     }
 }
