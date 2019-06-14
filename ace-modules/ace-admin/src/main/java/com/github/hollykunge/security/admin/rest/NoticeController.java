@@ -31,13 +31,22 @@ public class NoticeController extends BaseController<NoticeBiz,Notice> {
 //        String userId =(String) params.get("userId");
 //        String orgId = baseBiz.getOrgIdByUserId(userId);
 //        params.remove("userId");
-//        if (!params.containsKey("orgId")) {
-//            params.put("orgId", orgId);
-//        }
+//        params.put("orgId", orgId);
 //        return super.page(params);
 //    }
 
-//    @RequestMapping(value = "/no-page", method = RequestMethod.GET)
+//    @Override
+//    @RequestMapping(value = "", method = RequestMethod.POST)
+//    @ResponseBody
+//    public ObjectRestResponse<Notice> add(@RequestBody Notice notice) {
+//        baseBiz.insertSelective(notice);
+//        String orgId = baseBiz.getOrgIdByUserId(notice.getCrtUser());
+//        notice.setOrgId(orgId);
+//        return new ObjectRestResponse<Notice>();
+//
+//    }
+
+    //    @RequestMapping(value = "/no-page", method = RequestMethod.GET)
 //    @ResponseBody
 //    public ListRestResponse<Notice> noPage(@RequestParam("userId") String userId){
 //        List<Notice> listNoticeTopSix = baseBiz.listNoticeTopSix(userId);

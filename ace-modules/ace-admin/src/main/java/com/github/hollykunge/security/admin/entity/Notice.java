@@ -39,8 +39,8 @@ public class Notice extends BaseEntity {
     /**
      * 组织ID
      */
-    @Column(name = "ORG_ID")
-    private String orgId;
+    @Column(name = "ORG_CODE")
+    private String orgCode;
     /**
      * 组织名称
      */

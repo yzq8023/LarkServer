@@ -11,7 +11,7 @@
     <result column="CONTENT" property="content" jdbcType="VARCHAR" />
     <result column="ATTACHMENT" property="attachment" jdbcType="VARCHAR" />
     <result column="IS_TOP" property="isTop" jdbcType="CHAR" />
-    <result column="ORG_ID" property="orgId" jdbcType="VARCHAR" />
+    <result column="ORG_CODE" property="orgCode" jdbcType="VARCHAR" />
     <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
     <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
     <result column="CRT_USER" property="crtUser" jdbcType="VARCHAR" />
@@ -29,10 +29,11 @@
     <result column="ATTR6" property="attr6" jdbcType="VARCHAR" />
     <result column="ATTR7" property="attr7" jdbcType="VARCHAR" />
     <result column="ATTR8" property="attr8" jdbcType="VARCHAR" />
+    <result column="IS_SEND" property="isSend" jdbcType="VARCHAR" />
   </resultMap>
   <select id="getNoticeByUserIdTopSix" resultMap="BaseResultMap">
     select * from (select AN.* from ADMIN_NOTICE AN
-    left join ADMIN_USER AU on AN.ORG_ID = AU.ORG_CODE
+    left join ADMIN_USER AU on AN.ORG_CODE = AU.ORG_CODE
     where AU.ID = #{userId}
     order by AN.CRT_TIME desc)
     where ROWNUM  &lt;= 6
