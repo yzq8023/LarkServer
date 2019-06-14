@@ -1,7 +1,6 @@
-package com.github.hollykunge.security.config;
+package com.github.hollykunge.security.admin.config.mq;
 
 import com.github.hollykunge.security.common.constant.CommonConstants;
-import com.github.hollykunge.security.constants.Constants;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +22,7 @@ public class ExchangeConfig {
      */
     @Bean
     public FanoutExchange fanoutExchange(){
-        FanoutExchange fanoutExchange = new FanoutExchange(CommonConstants.PORTAL_EXCHANGE, true, false);
+        FanoutExchange fanoutExchange = new FanoutExchange(CommonConstants.NOTICE_EXCHANGE, true, false);
         return fanoutExchange;
     }
 }
