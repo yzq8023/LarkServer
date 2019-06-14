@@ -31,20 +31,22 @@ public class NoticeBiz extends BaseBiz<NoticeMapper,Notice>{
     @Autowired
     private ProduceSenderConfig produceSenderConfig;
 
-//    @Resource
-//    private UserMapper userMapper;
+    @Resource
+    private UserMapper userMapper;
 //
 //    public List<Notice> listNoticeTopSix(String userId){
 //        List<Notice> noticeByUserIdTopSix = mapper.getNoticeByUserIdTopSix(userId);
 //        return noticeByUserIdTopSix;
 //    }
 //
-//    public String getOrgIdByUserId(String userId) {
-//        Example example = new Example(User.class);
-//        example.createCriteria().andEqualTo("id", userId);
-//        List<User> orgUserMaps = userMapper.selectByExample(example);
-//        return orgUserMaps.get(0).getOrgCode();
-//    }
+    public String getOrgIdByUserId(String userId) {
+        Example example = new Example(User.class);
+        example.createCriteria().andEqualTo("id", userId);
+        List<User> orgUser = userMapper.selectByExample(example);
+
+        return orgUser.get(0).getOrgCode();
+
+    }
     @Override
     protected String getPageName() {
         return null;

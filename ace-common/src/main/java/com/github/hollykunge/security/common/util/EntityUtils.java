@@ -50,6 +50,8 @@ public class EntityUtils {
             }
             if(!StringUtils.isEmpty(request.getHeader(CommonConstants.WEB_USERNAME))){
                 name = String.valueOf(request.getHeader(CommonConstants.WEB_USERNAME));
+                //TODO:存入数据库有乱码
+				name = URLDecoder.decode(name);
             }
             if(!StringUtils.isEmpty(request.getHeader(CommonConstants.WEB_USERID))){
                 id = String.valueOf(request.getHeader(CommonConstants.WEB_USERID));
