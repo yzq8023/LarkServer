@@ -2,6 +2,7 @@ package com.github.hollykunge.security.config;
 
 import com.github.hollykunge.security.common.constant.CommonConstants;
 import com.github.hollykunge.security.common.exception.BaseException;
+import com.github.hollykunge.security.common.util.UUIDUtils;
 import com.github.hollykunge.security.common.vo.mq.NoticeVO;
 import com.github.hollykunge.security.common.vo.rpcvo.DiscussVO;
 import com.github.hollykunge.security.common.vo.rpcvo.TaskVO;
@@ -65,6 +66,7 @@ public class ConsumerListenConfig {
         // 处理消息
         Notice notice = new Notice();
         BeanUtils.copyProperties(message,notice);
+        notice.setId(UUIDUtils.generateShortUuid());
         int count = noticeMapper.insertSelective(notice);
         if(count>0){
             //手动ack

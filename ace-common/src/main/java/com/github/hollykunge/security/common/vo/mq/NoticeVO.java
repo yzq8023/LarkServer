@@ -25,5 +25,5 @@ public class NoticeVO implements Serializable {
 
     private String top;
 
-    private String orgId;
+    private String orgCode;
 }
