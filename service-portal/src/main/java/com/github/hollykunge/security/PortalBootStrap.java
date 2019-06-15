@@ -13,7 +13,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  */
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableTioWebsocket
 @MapperScan("com.github.hollykunge.security.mapper")
 public class PortalBootStrap {
 

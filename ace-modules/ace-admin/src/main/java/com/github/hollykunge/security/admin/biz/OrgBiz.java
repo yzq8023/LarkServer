@@ -14,7 +14,6 @@ import com.github.hollykunge.security.admin.vo.OrgUser;
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.util.EntityUtils;
 import com.github.hollykunge.security.common.vo.TreeNode;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -69,7 +68,7 @@ public class OrgBiz extends BaseBiz<OrgMapper, Org> {
     protected String getPageName() {
         return null;
     }
-    @Cache(key = "orgUsers{2}")
+//    @Cache(key = "orgUsers{2}") TODO:有点问题 造成前端第二次刷新显示不正确
     public List<OrgUser> getOrg(List<Org> orgs, String parentTreeId) {
         return this.buildByRecursive(orgs, parentTreeId);
     }
@@ -101,7 +100,8 @@ public class OrgBiz extends BaseBiz<OrgMapper, Org> {
                     List<User> users = userBiz.selectList(params);
                     users.stream().forEach(user ->{
                         OrgUser orgUser = new OrgUser();
-                        BeanUtils.copyProperties(user,orgUser);
+                        orgUser.setIcon(user.getAvatar());
+                        orgUser.setKey(user.getPId());
                         orgUser.setScopedSlotsTitle("userNode");
                         orgUser.setTitle(user.getName());
                         orgUser.setOnline(true);

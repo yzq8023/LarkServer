@@ -1,6 +1,5 @@
 package com.github.hollykunge.security.portal.controller;
 
-import com.github.hollykunge.security.common.context.BaseContextHandler;
 import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
@@ -20,7 +19,7 @@ import java.util.List;
  * @since 2019-06-11
  */
 @RestController
-@RequestMapping("userCard")
+@RequestMapping("workplace")
 public class UserCardController extends BaseController<UserCardService, UserCard> {
     /**
      * 给用户设置卡片接口
@@ -66,7 +65,7 @@ public class UserCardController extends BaseController<UserCardService, UserCard
      * 获取用户要展示的卡片
      * @return
      */
-    @RequestMapping(value = "/showCards", method = RequestMethod.GET)
+    @RequestMapping(value = "/myself", method = RequestMethod.GET)
     @ResponseBody
     public ListRestResponse<List<UserCardVO>> userCards(HttpServletRequest request) {
         String userID =  request.getHeader("userId");
