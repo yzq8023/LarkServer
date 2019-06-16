@@ -1,6 +1,8 @@
 package com.workhub.z.servicechat.service;
 
+import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.workhub.z.servicechat.entity.ZzGroupMsg;
+
 import java.util.List;
 import java.util.Map;
 
@@ -58,5 +60,5 @@ public interface ZzGroupMsgService {
      * @param param 参数集合：sender发送人，receiver接收人，begin_time开始时间，end_time结束时间
      * @return 对象列表
      */
-    List<ZzGroupMsg> queryMsg(Map<String,String> param) throws Exception;
+    TableResultResponse<ZzGroupMsg> queryMsg(Map<String,String> param) throws Exception;
 }

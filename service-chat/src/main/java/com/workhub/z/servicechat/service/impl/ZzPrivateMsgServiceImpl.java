@@ -1,6 +1,9 @@
 package com.workhub.z.servicechat.service.impl;
 
 import com.github.hollykunge.security.common.biz.BaseBiz;
+import com.github.hollykunge.security.common.msg.TableResultResponse;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.dao.ZzPrivateMsgDao;
 import com.workhub.z.servicechat.entity.ZzPrivateMsg;
@@ -94,7 +97,7 @@ public class ZzPrivateMsgServiceImpl extends BaseBiz<ZzPrivateMsgDao, ZzPrivateM
      * @param param 参数集合：sender发送人，receiver接收人，begin_time开始时间，end_time结束时间
      * @return 对象列表
      */
-    public List<ZzPrivateMsg> queryMsg(Map<String,String> param) throws Exception{
+    public TableResultResponse<ZzPrivateMsg> queryMsg(Map<String,String> param) throws Exception{
         List<ZzPrivateMsg> dataList = null;
         String begin_time = param.get("begin_time");//查询开始时间
         if(begin_time==null || "".equals(begin_time)){
@@ -109,6 +112,10 @@ public class ZzPrivateMsgServiceImpl extends BaseBiz<ZzPrivateMsgDao, ZzPrivateM
         //目前数据库消息备份是每个月一号凌晨备份上上个月的记录，同时删除当前消息记录
         //例如当前日期是2019-06-01 那么定时任务把2019-05-01之前的消息记录备份到历史表，同时删除当前表的记录
         //所有如果以后定时任务的逻辑有变化，这里查询逻辑也要做修改
+        int pageNum = Integer.valueOf(param.get("page"));
+        int pageSize = Integer.valueOf(param.get("size"));
+        PageHelper.startPage(pageNum, pageSize);
+
         String lastMonthFirstDay= common.getBeforeMonthFirstDay();//上个月第一天
         if(begin_time.compareTo(lastMonthFirstDay)>=0){//如果当前查询开始时间大于上个月1号，当期表
             dataList=this.zzPrivateMsgDao.queryMsgRecent(param);
@@ -117,6 +124,14 @@ public class ZzPrivateMsgServiceImpl extends BaseBiz<ZzPrivateMsgDao, ZzPrivateM
         }else{//询历史表+最近表
             dataList=this.zzPrivateMsgDao.queryMsgCurrentAndHis(param);
         }
-        return  dataList;
+        PageInfo<ZzPrivateMsg> pageInfo = new PageInfo<>(dataList);
+        TableResultResponse<ZzPrivateMsg> res = new TableResultResponse<ZzPrivateMsg>(
+                pageInfo.getPageSize(),
+                pageInfo.getPageNum(),
+                pageInfo.getPages(),
+                pageInfo.getTotal(),
+                pageInfo.getList()
+        );
+        return  res;
     }
 }

@@ -1,8 +1,10 @@
 package com.workhub.z.servicechat.controller;
 
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
+import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.hollykunge.security.common.rest.BaseController;
 import com.workhub.z.servicechat.config.RandomId;
+import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.entity.ZzPrivateMsg;
 import com.workhub.z.servicechat.service.ZzPrivateMsgService;
 import com.workhub.z.servicechat.service.impl.ZzPrivateMsgServiceImpl;
@@ -10,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,8 +37,13 @@ public class ZzPrivateMsgController
      * @return 单条数据
      */
     @GetMapping("/selectOne")
-    public ZzPrivateMsg selectOne(String id) {
-        return this.zzPrivateMsgService.queryById(id);
+    public ObjectRestResponse selectOne(String id) {
+        ZzPrivateMsg zzPrivateMsg = this.zzPrivateMsgService.queryById(id);
+        ObjectRestResponse<ZzPrivateMsg> res = new ObjectRestResponse<>();
+        res.data(zzPrivateMsg);
+        res.msg("200");
+        res.rel(true);
+        return res;
     }
 
     /**
@@ -49,7 +55,9 @@ public class ZzPrivateMsgController
     public ObjectRestResponse delFileInfo(@RequestParam("id") String id){
         boolean flag = this.zzPrivateMsgService.deleteById(id);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
-        objectRestResponse.data(flag);
+        objectRestResponse.msg("200");
+        objectRestResponse.rel(true);
+        objectRestResponse.data("成功");
         return objectRestResponse;
     }
 
@@ -59,14 +67,25 @@ public class ZzPrivateMsgController
      * @return
      */
     @PostMapping("/create")
-    public ObjectRestResponse insert(ZzPrivateMsg zzPrivateMsg){
+    public ObjectRestResponse insert(@RequestBody ZzPrivateMsg zzPrivateMsg){
         zzPrivateMsg.setMsgId(RandomId.getUUID());
 //        Integer insert = this.zzPrivateMsgService.insert(zzPrivateMsg);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
+        try{
+            common.putEntityNullToEmptyString(zzPrivateMsg);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        if("".equals(zzPrivateMsg.getIsDelete())){
+            zzPrivateMsg.setIsDelete("0");
+        }
+        this.zzPrivateMsgService.insert(zzPrivateMsg);
 //        if (insert == null){
 //            objectRestResponse.data("失败");
 //            return objectRestResponse;
 //        }
+        objectRestResponse.msg("200");
+        objectRestResponse.rel(true);
         objectRestResponse.data("成功");
         return objectRestResponse;
     }
@@ -77,13 +96,22 @@ public class ZzPrivateMsgController
      * @return
      */
     @PostMapping("/update")
-    public ObjectRestResponse update(@RequestParam("zzGroupFile") ZzPrivateMsg zzPrivateMsg){
+    public ObjectRestResponse update(@RequestBody ZzPrivateMsg zzPrivateMsg){
+        try{
+            common.putEntityNullToEmptyString(zzPrivateMsg);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         Integer update = this.zzPrivateMsgService.update(zzPrivateMsg);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
         if (update == null){
-            objectRestResponse.data("失败");
+            objectRestResponse.msg("200");
+            objectRestResponse.rel(true);
+            objectRestResponse.data("操作失败");
             return objectRestResponse;
         }
+        objectRestResponse.msg("200");
+        objectRestResponse.rel(true);
         objectRestResponse.data("成功");
         return objectRestResponse;
     }
@@ -94,22 +122,26 @@ public class ZzPrivateMsgController
      * @return
      */
     @GetMapping("/queryMsg")
-    public List<ZzPrivateMsg> queryMsg(@RequestParam("sender") String sender,
-                                     @RequestParam("receiver") String receiver,
-                                     @RequestParam("begin_time") String begin_time,
-                                     @RequestParam("end_time") String end_time){
-
+    public TableResultResponse<ZzPrivateMsg> queryMsg(@RequestParam("sender") String sender,
+                                                      @RequestParam("receiver") String receiver,
+                                                      @RequestParam("begin_time") String begin_time,
+                                                      @RequestParam("end_time") String end_time,
+                                                      @RequestParam(value = "page",defaultValue = "1")Integer page,
+                                                      @RequestParam(value = "size",defaultValue = "10")Integer size
+                                                      ){
+        TableResultResponse<ZzPrivateMsg> res = null;
         Map<String,String> param = new HashMap<>();
         param.put("sender",sender);
         param.put("receiver",receiver);
         param.put("begin_time",begin_time);
         param.put("end_time",end_time);
-        List<ZzPrivateMsg> dataList=null;
+        param.put("page",String.valueOf(page));
+        param.put("size",String.valueOf(size));
         try {
-            dataList=this.zzPrivateMsgService.queryMsg(param);
+            res=this.zzPrivateMsgService.queryMsg(param);
         }catch(Exception e){
             e.printStackTrace();
         }
-        return dataList;
+        return res;
     }
 }
