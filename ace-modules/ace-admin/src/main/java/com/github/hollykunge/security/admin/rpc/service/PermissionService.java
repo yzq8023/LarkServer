@@ -165,10 +165,11 @@ public class PermissionService {
         if (userId == null) {
             return null;
         }
-        UserInfo user = this.getUserByUserId(userId);
+        User user = userBiz.getUserByUserId(userId);
+//        UserInfo user = this.getUserByUserId(userId);
         FrontUser frontUser = new FrontUser();
         BeanUtils.copyProperties(user, frontUser);
-
+        frontUser.setId(user.getId());
         UserRole userRole = this.getUserRoleByUserId(userId);
         frontUser.setUserRole(userRole);
 

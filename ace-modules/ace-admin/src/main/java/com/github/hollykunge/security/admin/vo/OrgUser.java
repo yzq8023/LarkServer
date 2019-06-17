@@ -10,7 +10,7 @@ import lombok.Data;
  */
 @Data
 public class OrgUser extends TreeNode {
-    private String id;
+    private String key;
 
     private String title;
 
@@ -23,5 +23,7 @@ public class OrgUser extends TreeNode {
      * 是否在线，默认为true
      */
     private Boolean online;
+
+
 
 }
