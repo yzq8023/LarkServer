@@ -1,9 +1,12 @@
 package com.github.hollykunge.security.admin.config.mq;
 
+import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
 import com.github.hollykunge.security.common.constant.CommonConstants;
+import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 
 /**
  * 消息交换机配置  可以配置多个
@@ -21,8 +24,16 @@ public class ExchangeConfig {
      *   消息将会转发给queue参数指定的消息队列
      */
     @Bean
+    @Order(value = 2)
     public FanoutExchange fanoutExchange(){
         FanoutExchange fanoutExchange = new FanoutExchange(CommonConstants.NOTICE_EXCHANGE, true, false);
         return fanoutExchange;
+    }
+
+    // 创建死信交换机
+    @Bean
+    @Order(value = 1)
+    public DirectExchange noticDeadExchange() {
+        return new DirectExchange(AdminCommonConstant.NOTICE_DEAD_EXCHANGENAME);
     }
 }

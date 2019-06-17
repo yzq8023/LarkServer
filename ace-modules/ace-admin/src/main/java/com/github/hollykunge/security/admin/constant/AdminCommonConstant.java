@@ -29,5 +29,23 @@ public class AdminCommonConstant {
     public final static String BOOLEAN_NUMBER_FALSE = "0";
 
     public final static String BOOLEAN_NUMBER_TRUE = "1";
+    /**
+     * 通知死信队列交换机名称
+     */
+    public final static String NOTICE_DEAD_EXCHANGENAME = "notice_dead_exchange";
+    /**
+     * 通知死信队列路由键
+     */
+    public final static String NOTICE_DEAD_ROUTING_KEY = "notice_dead_routing_key";
+
+
+    /**
+     * 死信队列 交换机标识符
+     */
+    public static final String DEAD_LETTER_QUEUE_KEY = "x-dead-letter-exchange";
+    /**
+     * 死信队列交换机绑定键标识符
+     */
+    public static final String DEAD_LETTER_ROUTING_KEY = "x-dead-letter-routing-key";
 
 }
