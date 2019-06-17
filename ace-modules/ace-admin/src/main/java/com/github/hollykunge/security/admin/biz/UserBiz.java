@@ -35,6 +35,12 @@ public class UserBiz extends BaseBiz<UserMapper, User> {
     private RoleUserMapMapper roleUserMapMapper;
 
     public User addUser(User entity) {
+        //校验身份证是否在数据库中存在
+        User user = new User();
+        user.setPId(entity.getPId());
+        if(mapper.selectCount(user)>0){
+            throw new BaseException("身份证已存在...");
+        }
         String password = new BCryptPasswordEncoder(UserConstant.PW_ENCORDER_SALT).encode(defaultPassword);
         entity.setPassword(password);
         EntityUtils.setCreatAndUpdatInfo(entity);

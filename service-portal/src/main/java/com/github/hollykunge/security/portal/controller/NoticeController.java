@@ -21,7 +21,7 @@ public class NoticeController extends BaseController<NoticeService, Notice>{
     @ResponseBody
     public ListRestResponse<List<Notice>> orgNotices(@RequestParam("orgId") String orgId) {
         Notice notice = new Notice();
-        notice.setOrgId(orgId);
+        notice.setOrgCode(orgId);
         List<Notice> notices = baseBiz.selectList(notice);
         return new ListRestResponse("",notices.size(),notices);
     }
