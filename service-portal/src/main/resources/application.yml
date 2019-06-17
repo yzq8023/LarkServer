@@ -36,10 +36,10 @@ spring:
     poolPreparedStatements: true
     maxOpenPreparedStatements: 20
   rabbitmq:
-    host: 10.12.97.150
+    host: 10.12.97.30
     port: 5672
-    username: guest
-    password: guest
+    username: hollykunge
+    password: 123456
     virtual-host: /
 
 #开启消费者（程序出现异常的情况下会）进行重试,
