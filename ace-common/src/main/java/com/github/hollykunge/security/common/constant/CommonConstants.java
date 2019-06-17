@@ -26,6 +26,10 @@ public class CommonConstants {
     public static final String NOTICE_EXCHANGE = "noticeExchange";
     /** 公告队列名称 */
     public static final String NOTICE_QUEUE_NAMA = "noticeQueue";
+    /**
+     * 通知死信队列名称
+     */
+    public final static String NOTICE_DEAD_QUEUENAME = "notic_dead_queue";
 
     /** tio用ip数据监控统计，时间段*/
     public static final Long DURATION_1 = Time.MINUTE_1 * 5;
