@@ -1,5 +1,6 @@
 package com.github.hollykunge.util;
 
+import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.tobato.fastdfs.domain.StorePath;
 import com.github.tobato.fastdfs.exception.FdfsUnsupportStorePathException;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
@@ -22,7 +23,7 @@ public class FastDFSClientWrapper {
     private FastFileStorageClient storageClient;
 
     @Autowired
-    private AppConfig appConfig;   // 项目参数配置
+    private AppConfig appConfig;
 
     /**
      * 上传文件
@@ -62,13 +63,13 @@ public class FastDFSClientWrapper {
      */
     public void deleteFile(String fileUrl) {
         if (StringUtils.isEmpty(fileUrl)) {
-            return;
+            throw new BaseException("要删除的文件id,不能为null...");
         }
         try {
             StorePath storePath = StorePath.praseFromUrl(fileUrl);
             storageClient.deleteFile(storePath.getGroup(), storePath.getPath());
         } catch (FdfsUnsupportStorePathException e) {
-            log.warn(e.getMessage());
+            log.debug(e.getMessage());
         }
     }
 }
