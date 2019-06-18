@@ -126,8 +126,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="groupId" useGeneratedKeys="true">
-        insert into ZZ_GROUP(GROUP_NAME, GROUP_DESCRIBE, ISDELETE, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, PNAME, SCOP, ISPUBLIC, LEVELS, ISCLOSE, GROUP_IMG)
-        values (#{groupName}, #{groupDescribe}, #{isdelete}, #{createTime}, #{creator}, #{updateTime}, #{updator}, #{pname}, #{scop}, #{ispublic}, #{levels}, #{isclose}, #{groupImg})
+        insert into ZZ_GROUP(GROUP_ID,GROUP_NAME, GROUP_DESCRIBE, ISDELETE, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, PNAME, SCOP, ISPUBLIC, LEVELS, ISCLOSE, GROUP_IMG)
+        values (#{groupId},#{groupName}, #{groupDescribe}, #{isdelete}, #{createTime}, #{creator}, #{updateTime}, #{updator}, #{pname}, #{scop}, #{ispublic}, #{levels}, #{isclose}, #{groupImg})
     </insert>
 
     <!--通过主键修改数据-->

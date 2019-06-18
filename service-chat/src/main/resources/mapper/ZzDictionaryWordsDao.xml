@@ -70,9 +70,9 @@
     </select>
 
     <!--新增所有列-->
-    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into WORKHUB_IWORK.ZZ_DICTIONARY_WORDS(WORD_TYPE, WORD_CODE, WORD_NAME, REPLACE_WORD, CREATE_TIME, CREATE_USER, UPDATE_TIME, UPDATE_USER, IS_USE)
-        values (#{wordType}, #{wordCode}, #{wordName}, #{replaceWord}, #{createTime}, #{createUser}, #{updateTime}, #{updateUser}, #{isUse})
+    <insert id="insert" >
+        insert into WORKHUB_IWORK.ZZ_DICTIONARY_WORDS(ID,WORD_TYPE, WORD_CODE, WORD_NAME, REPLACE_WORD, CREATE_TIME, CREATE_USER, UPDATE_TIME, UPDATE_USER,IS_USE)
+        values (#{id},#{wordType}, #{wordCode}, #{wordName}, #{replaceWord}, #{createTime}, #{createUser}, #{updateTime}, #{updateUser}, #{isUse})
     </insert>
 
     <!--通过主键修改数据-->

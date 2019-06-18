@@ -30,7 +30,7 @@ public class ZzDictionaryWords implements Serializable {
     //修改人
     private String updateUser;
     //是否启用(0-否,1-是)
-    private Object isUse;
+    private String isUse;
 
 
     public String getId() {
@@ -105,11 +105,11 @@ public class ZzDictionaryWords implements Serializable {
         this.updateUser = updateUser;
     }
 
-    public Object getIsUse() {
+    public String getIsUse() {
         return isUse;
     }
 
-    public void setIsUse(Object isUse) {
+    public void setIsUse(String isUse) {
         this.isUse = isUse;
     }
 
