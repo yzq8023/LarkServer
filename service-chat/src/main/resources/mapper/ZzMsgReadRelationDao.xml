@@ -12,7 +12,7 @@
     <resultMap id="NoReadVo" type="com.workhub.z.servicechat.VO.NoReadVo">
         <result property="sender" column="SENDER" jdbcType="VARCHAR"></result>
         <result property="sendType" column="SEND_TYPE" jdbcType="VARCHAR"></result>
-        <result property="consumer" column="CONSUMER" jdbcType="VARCHAR"></result>
+        <result property="receiver" column="CONSUMER" jdbcType="VARCHAR"></result>
         <result property="msgCount" column="MSG_COUNT" jdbcType="INTEGER"></result>
     </resultMap>
 

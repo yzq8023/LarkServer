@@ -7,9 +7,9 @@
         <result property="groupName" column="GROUP_NAME" jdbcType="VARCHAR"/>
         <result property="groupDescribe" column="GROUP_DESCRIBE" jdbcType="VARCHAR"/>
         <result property="isdelete" column="ISDELETE" jdbcType="VARCHAR"/>
-        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="DATE"/>
         <result property="creator" column="CREATOR" jdbcType="VARCHAR"/>
-        <result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="UPDATE_TIME" jdbcType="DATE"/>
         <result property="updator" column="UPDATOR" jdbcType="VARCHAR"/>
         <result property="pname" column="PNAME" jdbcType="VARCHAR"/>
         <result property="scop" column="SCOP" jdbcType="VARCHAR"/>

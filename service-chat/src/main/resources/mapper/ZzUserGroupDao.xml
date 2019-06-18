@@ -62,7 +62,7 @@
     <select id="getUserNewMsgList" resultMap="UserNewMsgVo">
      SELECT * FROM (
            SELECT * FROM (
-                     SELECT ROW_NUMBER() OVER(PARTITION BY MSG_SENDER ORDER BY SEND_TIME DESC) RN ,t.*
+                     SELECT ROW_NUMBER() OVER(PARTITION BY MSG_SENDER,TABLE_TYPE ORDER BY SEND_TIME DESC) RN ,t.*
                           FROM (
                                 SELECT PHPM.MSG_ID AS MSG_ID,
                                       'USER' AS TABLE_TYPE,
@@ -76,7 +76,7 @@
            UNION ALL
                      SELECT PHGM.MSG_ID AS MSG_ID,
                                            'GROUP' AS TABLE_TYPE,
-                                           PHGM.MSG_SENDER AS MSG_SENDER,
+                                           PHGM.MSG_RECEIVER AS MSG_SENDER,
                                            PHGM.SEND_TIME AS SEND_TIME,
                                            PHGM.MSG AS MSG_CONTENT,
                                            PHGM.MSG_TYPE AS MSG_TYPE,

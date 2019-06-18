@@ -21,6 +21,8 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
+import static com.workhub.z.servicechat.config.VoToEntity.*;
+
 /**
  * 群组表(ZzGroup)表控制层
  *
@@ -29,7 +31,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/zzGroup")
-public class ZzGroupController extends BaseController<ZzGroupServiceImpl, ZzGroup> {
+public class ZzGroupController  {
     /**
      * 服务对象
      */
@@ -42,13 +44,15 @@ public class ZzGroupController extends BaseController<ZzGroupServiceImpl, ZzGrou
     /**
      * 通过主键查询单条数据
      *
-     * @param id 主键
+     * @param groupId 主键
      * @return 单条数据
      */
-    @GetMapping("/selectOne")
-    public ZzGroup selectOne(String id) {
-
-        return this.zzGroupService.queryById(id);
+    @GetMapping("/getGroupInfo")
+    public ObjectRestResponse selectOne(@RequestParam("groupId")String groupId) {
+        ObjectRestResponse objectRestResponse = new ObjectRestResponse();
+        objectRestResponse.msg("200");
+        objectRestResponse.data(ZzGroupToGroupInfo(this.zzGroupService.queryById(groupId)));
+        return objectRestResponse;
     }
 
     @PostMapping("/create")
@@ -119,7 +123,7 @@ public class ZzGroupController extends BaseController<ZzGroupServiceImpl, ZzGrou
     *@Author: 忠
     *@date: 2019/6/11
     */
-    @PostMapping("/queryGroupListByUserId")
+    @GetMapping("/queryGroupListByUserId")
     public ListRestResponse queryGroupListByUserId(@RequestParam("userId")String userId) throws Exception {
         List<ZzGroup> groups = this.zzGroupService.queryGroupListByUserId(userId);
         return new ListRestResponse("200",groups.size(),groups);
@@ -157,5 +161,5 @@ public class ZzGroupController extends BaseController<ZzGroupServiceImpl, ZzGrou
         }
         return objectRestResponse;
     }
-    
+
 }

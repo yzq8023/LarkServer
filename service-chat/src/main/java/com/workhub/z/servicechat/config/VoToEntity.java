@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.hollykunge.security.common.util.UUIDUtils;
+import com.workhub.z.servicechat.VO.GroupInfoVO;
 import com.workhub.z.servicechat.entity.ZzGroup;
 import com.workhub.z.servicechat.entity.ZzGroupMsg;
 import com.workhub.z.servicechat.entity.ZzPrivateMsg;
@@ -13,6 +14,7 @@ import com.workhub.z.servicechat.model.GroupTaskDto;
 import com.workhub.z.servicechat.model.UserListDto;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -112,4 +114,23 @@ public abstract class VoToEntity {
         return createGroupDto;
     }
 
+    /**
+    *@Description: 群组详细信息
+    *@Param:
+    *@return:
+    *@Author: 忠
+    *@date: 2019/6/14
+    */
+    public static Object ZzGroupToGroupInfo(ZzGroup zzGroup){
+        GroupInfoVO groupInfo = new GroupInfoVO();
+        groupInfo.setAvatar(zzGroup.getGroupImg());
+        groupInfo.setCreateTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(zzGroup.getCreateTime()));
+        groupInfo.setCreator(zzGroup.getCreator());
+        groupInfo.setDescription(zzGroup.getGroupDescribe());
+        groupInfo.setId(zzGroup.getGroupId());
+        groupInfo.setName(zzGroup.getGroupName());
+        groupInfo.setSecurityClass(zzGroup.getLevels());
+        groupInfo.setSubject(zzGroup.getPname());
+        return groupInfo;
+    }
 }
