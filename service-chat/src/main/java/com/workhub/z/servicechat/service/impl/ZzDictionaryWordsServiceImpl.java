@@ -55,9 +55,9 @@ public class ZzDictionaryWordsServiceImpl extends BaseBiz<ZzDictionaryWordsDao, 
      */
 
     public void insert(ZzDictionaryWords zzDictionaryWords) {
-        //int insert = this.zzDictionaryWordsDao.insert(zzDictionaryWords);
+        int insert = this.zzDictionaryWordsDao.insert(zzDictionaryWords);
         //return insert;
-        super.insert(zzDictionaryWords);
+        //super.insert(zzDictionaryWords);
     }
 
     @Override
@@ -73,9 +73,9 @@ public class ZzDictionaryWordsServiceImpl extends BaseBiz<ZzDictionaryWordsDao, 
      */
     @Override
     public void update(ZzDictionaryWords zzDictionaryWords) {
-        //int update = this.zzDictionaryWordsDao.update(zzDictionaryWords);
+        int update = this.zzDictionaryWordsDao.update(zzDictionaryWords);
         //return update;
-        super.updateById(zzDictionaryWords);
+        //super.updateById(zzDictionaryWords);
     }
 
     /**
@@ -97,7 +97,7 @@ public class ZzDictionaryWordsServiceImpl extends BaseBiz<ZzDictionaryWordsDao, 
     public String sensitiveIndex(String txt) {
         ZzDictionaryWords zzDictionaryWords = new ZzDictionaryWords();
         zzDictionaryWords.setWordType("SENSITIVE");
-        zzDictionaryWords.setIsUse(1);
+        zzDictionaryWords.setIsUse("1");
         List<ZzDictionaryWords> zzDictionaryWordsList = this.zzDictionaryWordsDao.queryAll(zzDictionaryWords);
         if (null == zzDictionaryWordsList && zzDictionaryWordsList.isEmpty())return txt;
         return common.sensitiveSearch(txt,zzDictionaryWordsList);
@@ -107,7 +107,7 @@ public class ZzDictionaryWordsServiceImpl extends BaseBiz<ZzDictionaryWordsDao, 
     public String confidentialIndex(String txt) {
         ZzDictionaryWords zzDictionaryWords = new ZzDictionaryWords();
         zzDictionaryWords.setWordType("CONFIDENTIAL");
-        zzDictionaryWords.setIsUse(1);
+        zzDictionaryWords.setIsUse("1");
         List<ZzDictionaryWords> zzDictionaryWordsList = this.zzDictionaryWordsDao.queryAll(zzDictionaryWords);
         if (null == zzDictionaryWordsList && zzDictionaryWordsList.isEmpty())return "";
 
