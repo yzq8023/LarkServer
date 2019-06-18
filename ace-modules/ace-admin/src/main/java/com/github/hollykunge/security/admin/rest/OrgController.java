@@ -37,8 +37,10 @@ public class OrgController extends BaseController<OrgBiz, Org> {
      */
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     @ResponseBody
-    public ListRestResponse<List<AdminUser>> getUsers(@RequestParam("orgCode") String orgCode) {
-        List<AdminUser> orgUsers = baseBiz.getOrgUsers(orgCode);
+    public ListRestResponse<List<AdminUser>> getUsers(@RequestParam("orgCode") String orgCode,
+                                                      @RequestParam String secretLevels,
+                                                      @RequestParam String pId) {
+        List<AdminUser> orgUsers = baseBiz.getOrgUsers(orgCode,secretLevels,pId);
         return new ListRestResponse("",orgUsers.size(),orgUsers);
     }
 
