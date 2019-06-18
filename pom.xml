@@ -39,6 +39,7 @@
         <module>service-portal</module>
         <module>ace-config</module>
         <module>service-webservice</module>
+        <module>service-file</module>
     </modules>
     <packaging>pom</packaging>
     <developers>
