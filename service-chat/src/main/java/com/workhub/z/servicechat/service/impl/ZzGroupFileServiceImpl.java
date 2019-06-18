@@ -1,12 +1,12 @@
 package com.workhub.z.servicechat.service.impl;
 
 import com.github.hollykunge.security.common.biz.BaseBiz;
-import com.github.pagehelper.Page;
+import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.VO.GroupInfoVO;
-import com.workhub.z.servicechat.entity.ZzGroupFile;
 import com.workhub.z.servicechat.dao.ZzGroupFileDao;
+import com.workhub.z.servicechat.entity.ZzGroupFile;
 import com.workhub.z.servicechat.service.ZzGroupFileService;
 import jodd.util.StringUtil;
 import org.springframework.stereotype.Service;
@@ -63,9 +63,9 @@ public class ZzGroupFileServiceImpl extends BaseBiz<ZzGroupFileDao,ZzGroupFile >
     @Override
     @Transactional
     public void insert(ZzGroupFile zzGroupFile) {
-       // int insert = this.zzGroupFileDao.insert(zzGroupFile);
+        int insert = this.zzGroupFileDao.insert(zzGroupFile);
 //        return insert;
-        super.insert(zzGroupFile);
+        //super.insert(zzGroupFile);
     }
 
     @Override
@@ -84,7 +84,8 @@ public class ZzGroupFileServiceImpl extends BaseBiz<ZzGroupFileDao,ZzGroupFile >
     public void update(ZzGroupFile zzGroupFile) {
         /*int update = this.zzGroupFileDao.update(zzGroupFile);
         return update;*/
-        super.updateById(zzGroupFile);
+        //super.updateById(zzGroupFile);
+        this.zzGroupFileDao.update(zzGroupFile);
     }
 
     /**
@@ -112,22 +113,19 @@ public class ZzGroupFileServiceImpl extends BaseBiz<ZzGroupFileDao,ZzGroupFile >
      * @throws Exception
      */
     @Override
-    public PageInfo<GroupInfoVO> groupFileList(String id, int page, int size) throws Exception {
+    public TableResultResponse<GroupInfoVO> groupFileList(String id, int page, int size) throws Exception {
         if (StringUtil.isEmpty(id)) throw new NullPointerException("id is null");
-        Page<Object> pageMassage = PageHelper.startPage(page, size);
-        pageMassage.setTotal(this.zzGroupFileDao.groupFileListTotal(id));
-        int startRow = pageMassage.getStartRow();
-        int endRow = pageMassage.getEndRow();
-        PageInfo<GroupInfoVO> pageInfoGroupInfo = new PageInfo<GroupInfoVO>();
-        System.out.println(this.zzGroupFileDao.groupFileList(id,startRow,endRow));
-        pageInfoGroupInfo.setList(this.zzGroupFileDao.groupFileList(id,startRow,endRow));
-        pageInfoGroupInfo.setTotal(pageMassage.getTotal());
-        pageInfoGroupInfo.setStartRow(startRow);
-        pageInfoGroupInfo.setEndRow(endRow);
-        pageInfoGroupInfo.setPages(pageMassage.getPages());
-        pageInfoGroupInfo.setPageNum(page);
-        pageInfoGroupInfo.setPageSize(size);
-        return pageInfoGroupInfo;
+        PageHelper.startPage(page, size);
+        List<GroupInfoVO> dataList =this.zzGroupFileDao.groupFileList(id);
+        PageInfo<GroupInfoVO> pageInfo = new PageInfo<>(dataList);
+        TableResultResponse<GroupInfoVO> res = new TableResultResponse<GroupInfoVO>(
+                pageInfo.getPageSize(),
+                pageInfo.getPageNum(),
+                pageInfo.getPages(),
+                pageInfo.getTotal(),
+                pageInfo.getList()
+        );
+        return res;
     }
 
     @Override

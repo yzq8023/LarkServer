@@ -26,7 +26,7 @@
         <result property="levels" column="LEVELS" jdbcType="VARCHAR"></result>
     </resultMap>
 
-    <!--查询群组文件-->
+    <!--查询群组文件
     <select id="groupFileList" resultMap="GroupFileVo">
         SELECT *
         FROM (
@@ -46,6 +46,20 @@
         WHERE ROWNUM &lt;= #{end}
         )
         WHERE RN &gt; #{start}
+    </select>
+     -->
+    <select id="groupFileList" resultMap="GroupFileVo">
+        SELECT ZGF.FILE_ID AS FILE_ID,
+        ZGF.FILE_NAME AS FILE_NAME,
+        ZGF.LEVELS AS LEVELS,
+        SU.FULLNAME AS REVISER,
+        TO_CHAR(ZGF.CREATE_TIME, 'YYYY-MM-DD HH24:MI:SS') AS TIME
+        FROM ZZ_GROUP ZG
+        LEFT JOIN ZZ_GROUP_FILE ZGF
+        ON ZG.GROUP_ID = ZGF.GROUP_ID
+        LEFT JOIN SYS_USER SU
+        ON ZGF.CREATOR = SU.USERID
+        WHERE ZG.GROUP_ID = #{id} ORDER BY ZGF.CREATE_TIME DESC
     </select>
 
     <!--查询群组文件总记录数-->

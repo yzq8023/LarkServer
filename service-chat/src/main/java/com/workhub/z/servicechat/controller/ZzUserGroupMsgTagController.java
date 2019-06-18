@@ -55,11 +55,13 @@ public class ZzUserGroupMsgTagController  extends BaseController<ZzUserGroupMsgT
             oppRes="-1";
         }
         if("1".equals(oppRes)){
-            objectRestResponse.data("1");//成功
-            objectRestResponse.msg("成功");
+            objectRestResponse.data("成功");//成功
+            objectRestResponse.rel(true);
+            objectRestResponse.msg("200");
         }else if("-1".equals(oppRes)){
-            objectRestResponse.data("-1");//失败
-            objectRestResponse.msg("失败");
+            objectRestResponse.data("失败");//失败
+            objectRestResponse.rel(true);
+            objectRestResponse.msg("200");
         }
         return objectRestResponse;
     }
@@ -82,11 +84,13 @@ public class ZzUserGroupMsgTagController  extends BaseController<ZzUserGroupMsgT
             oppRes="-1";
         }
         if("1".equals(oppRes)){
-            objectRestResponse.data("1");//成功
-            objectRestResponse.msg("成功");
+            objectRestResponse.data("成功");//成功
+            objectRestResponse.rel(true);
+            objectRestResponse.msg("200");
         }else if("-1".equals(oppRes)){
-            objectRestResponse.data("-1");//失败
-            objectRestResponse.msg("失败");
+            objectRestResponse.data("失败");//失败
+            objectRestResponse.rel(true);
+            objectRestResponse.msg("200");
         }
         return objectRestResponse;
     }
@@ -117,11 +121,13 @@ public class ZzUserGroupMsgTagController  extends BaseController<ZzUserGroupMsgT
             oppRes="-1";
         }
         if("1".equals(oppRes)){
-            objectRestResponse.data("1");//成功
-            objectRestResponse.msg("成功");
+            objectRestResponse.data("成功");//成功
+            objectRestResponse.rel(true);
+            objectRestResponse.msg("200");
         }else if("-1".equals(oppRes)){
-            objectRestResponse.data("-1");//失败
-            objectRestResponse.msg("失败");
+            objectRestResponse.data("失败");//失败
+            objectRestResponse.rel(true);
+            objectRestResponse.msg("200");
         }
         return objectRestResponse;
     }

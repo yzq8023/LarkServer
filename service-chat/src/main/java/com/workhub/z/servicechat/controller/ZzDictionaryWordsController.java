@@ -34,36 +34,48 @@ public class ZzDictionaryWordsController extends BaseController<ZzDictionaryWord
      * @return 单条数据
      */
     @GetMapping("/selectOne")
-    public ZzDictionaryWords selectOne(String id) {
-        return this.zzDictionaryWordsService.queryById(id);
+    public ObjectRestResponse selectOne(String id) {
+        ZzDictionaryWords data = this.zzDictionaryWordsService.queryById(id);
+        ObjectRestResponse res = new ObjectRestResponse();
+        res.msg("200");
+        res.rel(true);
+        res.data(data);
+        return res;
+        //return this.zzDictionaryWordsService.queryById(id);
     }
 
     @PostMapping("/create")
-    public ObjectRestResponse insert(ZzDictionaryWords zzDictionaryWords,@RequestParam("token")String token){
+    public ObjectRestResponse insert(@RequestBody ZzDictionaryWords zzDictionaryWords,@RequestParam("token")String token){
         zzDictionaryWords.setId(RandomId.getUUID());
-        zzDictionaryWords.setCreateUser("");//TODO token 拿登陆人信息
         zzDictionaryWords.setCreateTime(new Date());
         try{
             common.putEntityNullToEmptyString(zzDictionaryWords);
         }catch(Exception e){
             e.printStackTrace();
         }
-        zzDictionaryWords.setIsUse(true);
+        if(zzDictionaryWords.getIsUse()==null||zzDictionaryWords.getIsUse().equals("")){
+            zzDictionaryWords.setIsUse("1");
+        }
         this.zzDictionaryWordsService.insert(zzDictionaryWords);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
 //        if (insert == 0){
 //            objectRestResponse.data("失败");
 //            return objectRestResponse;
 //        }
+        objectRestResponse.msg("200");
+        objectRestResponse.rel(true);
         objectRestResponse.data("成功");
         return objectRestResponse;
     }
 
     @PostMapping("/update")
-    public ObjectRestResponse update(ZzDictionaryWords zzDictionaryWords, @RequestParam("token")String token){
-        zzDictionaryWords.setCreateUser("");//TODO token 拿登陆人信息
+    public ObjectRestResponse update(@RequestBody ZzDictionaryWords zzDictionaryWords, @RequestParam("token")String token){
         zzDictionaryWords.setUpdateTime(new Date());
-        zzDictionaryWords.setId("5");
+        try{
+            common.putEntityNullToEmptyString(zzDictionaryWords);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         /*Integer update = this.zzDictionaryWordsService.update(zzDictionaryWords);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
         if (update == null){
@@ -77,6 +89,8 @@ public class ZzDictionaryWordsController extends BaseController<ZzDictionaryWord
         }
         this.zzDictionaryWordsService.update(zzDictionaryWords);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
+        objectRestResponse.msg("200");
+        objectRestResponse.rel(true);
         objectRestResponse.data("成功");
         return objectRestResponse;
     }
@@ -88,6 +102,8 @@ public class ZzDictionaryWordsController extends BaseController<ZzDictionaryWord
         objectRestResponse.data(flag);*/
         this.zzDictionaryWordsService.deleteById(id);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
+        objectRestResponse.msg("200");
+        objectRestResponse.rel(true);
         objectRestResponse.data("成功");
         return objectRestResponse;
     }
