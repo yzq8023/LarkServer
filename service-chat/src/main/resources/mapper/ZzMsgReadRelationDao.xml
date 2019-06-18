@@ -5,14 +5,14 @@
     <resultMap type="com.workhub.z.servicechat.entity.ZzMsgReadRelation" id="ZzMsgReadRelationMap">
         <result property="id" column="ID" jdbcType="VARCHAR"/>
         <result property="sender" column="SENDER" jdbcType="VARCHAR"/>
-        <result property="consumer" column="CONSUMER" jdbcType="VARCHAR"/>
+        <result property="receiver" column="CONSUMER" jdbcType="VARCHAR"/>
         <result property="sendType" column="SEND_TYPE" jdbcType="VARCHAR"/>
     </resultMap>
 
     <resultMap id="NoReadVo" type="com.workhub.z.servicechat.VO.NoReadVo">
         <result property="sender" column="SENDER" jdbcType="VARCHAR"></result>
         <result property="sendType" column="SEND_TYPE" jdbcType="VARCHAR"></result>
-        <result property="consumer" column="CONSUMER" jdbcType="VARCHAR"></result>
+        <result property="receiver" column="CONSUMER" jdbcType="VARCHAR"></result>
         <result property="msgCount" column="MSG_COUNT" jdbcType="INTEGER"></result>
     </resultMap>
 
@@ -65,7 +65,7 @@
     </select>
 
     <!--新增所有列-->
-    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    <insert id="insert">
         insert into WORKHUB_IWORK.ZZ_MSG_READ_RELATION(ID,SENDER, CONSUMER, SEND_TYPE)
         values (#{id},#{sender}, #{receiver}, #{sendType})
     </insert>
