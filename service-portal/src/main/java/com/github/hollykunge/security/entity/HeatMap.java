@@ -1,0 +1,28 @@
+package com.github.hollykunge.security.entity;
+
+import lombok.Data;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.util.Date;
+
+/**
+ * 工作热力图
+ *
+ * @author: holly
+ * @since: 2019/6/17
+ */
+@Data
+@Table(name = "HEATMAP")
+public class HeatMap {
+    @Column(name = "ID")
+    @Id
+    private String id;
+    @Column(name = "USER_ID")
+    private String userId;
+    @Column(name = "MAP_DATE")
+    private Date mapDate;
+    @Column(name = "COMMITS")
+    private Integer commits;
+}
