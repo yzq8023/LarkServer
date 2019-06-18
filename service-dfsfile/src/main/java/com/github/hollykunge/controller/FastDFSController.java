@@ -3,9 +3,14 @@ package com.github.hollykunge.controller;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.rest.BaseController;
 import com.github.hollykunge.util.FastDFSClientWrapper;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
 
 /**
  * file文件接口
@@ -43,5 +48,27 @@ public class FastDFSController {
     public ObjectRestResponse<Boolean> remove(@RequestParam String file) throws Exception {
         dfsClient.deleteFile(file);
         return new ObjectRestResponse<>().rel(true);
+    }
+
+    /**
+     * 文件下载
+     * @param fileUrl  url 开头从组名开始
+     * @param response
+     * @throws Exception
+     */
+    @GetMapping("/download")
+    public void  download(@RequestParam String fileUrl,@RequestParam String fileName, HttpServletResponse response) throws Exception{
+        byte[] data = dfsClient.download(fileUrl);
+        response.setCharacterEncoding("UTF-8");
+        response.setHeader("Content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+        ServletOutputStream outputStream = response.getOutputStream();
+        IOUtils.write(data, outputStream);
+    }
+
+    @PostMapping("/thumbImage")
+    @ResponseBody
+    public ObjectRestResponse<String> crtThumbImage(@RequestParam("file") MultipartFile file) throws Exception {
+        String imgUrl = dfsClient.crtThumbImage(file);
+        return new ObjectRestResponse<>().data(imgUrl).rel(true);
     }
 }
