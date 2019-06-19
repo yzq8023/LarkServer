@@ -19,6 +19,8 @@ public class FrontUser {
     private String orgCode;
     //自述信息
     private String description;
+    //密级
+    private String secretLevel;
     //头像
     private String avatar;
     //状态0离职1在职

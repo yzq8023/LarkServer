@@ -5,8 +5,11 @@ import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.rest.BaseController;
 import com.github.hollykunge.security.entity.UserCard;
+import com.github.hollykunge.security.feign.IUserService;
 import com.github.hollykunge.security.portal.service.UserCardService;
 import com.github.hollykunge.security.vo.UserCardVO;
+import com.rabbitmq.http.client.domain.UserInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +24,8 @@ import java.util.List;
 @RestController
 @RequestMapping("workplace")
 public class UserCardController extends BaseController<UserCardService, UserCard> {
+    @Autowired
+    private IUserService userService;
     /**
      * 给用户设置卡片接口
      * @param userCard 卡片实体类
@@ -69,6 +74,8 @@ public class UserCardController extends BaseController<UserCardService, UserCard
     @ResponseBody
     public ListRestResponse<List<UserCardVO>> userCards(HttpServletRequest request) {
         String userID =  request.getHeader("userId");
+        String pid =  request.getHeader("pid");
+        UserInfo info = userService.userInfo(userID);
         if(StringUtils.isEmpty(userID)){
             throw new BaseException("request contains no user...");
         }
