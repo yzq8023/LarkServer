@@ -34,7 +34,7 @@ public class ProcessPrivateMsg extends AbstractMsgProcessor{
 //        如果不在线则不发
         Boolean temp =  checkUserOnline(channelContext,privateMsg.getMsgReceiver());
 //        Boolean temp =  Tio.sendToUser(channelContext.getGroupContext(),privateMsg.getMsgSender(),this.getWsResponse(message));
-        if (temp) {
+        if (true) {
             Tio.sendToUser(channelContext.getGroupContext(),privateMsg.getMsgReceiver(),this.getWsResponse(msg));
 
         }else {
