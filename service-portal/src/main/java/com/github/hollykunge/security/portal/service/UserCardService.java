@@ -2,11 +2,14 @@ package com.github.hollykunge.security.portal.service;
 
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.context.BaseContextHandler;
+import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.hollykunge.security.common.util.UUIDUtils;
 import com.github.hollykunge.security.entity.CardInfo;
 import com.github.hollykunge.security.entity.UserCard;
+import com.github.hollykunge.security.mapper.CardInfoMapper;
 import com.github.hollykunge.security.mapper.UserCardMapper;
 import com.github.hollykunge.security.vo.UserCardVO;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,6 +38,9 @@ public class UserCardService extends BaseBiz<UserCardMapper, UserCard> {
 
     @Value("${portal.card.h}")
     private int cardHeight;
+
+    @Resource
+    private CardInfoMapper cardInfoMapper;
 
 
     @Override
@@ -65,12 +71,45 @@ public class UserCardService extends BaseBiz<UserCardMapper, UserCard> {
         List<UserCard> userCards = mapper.select(userCard);
         userCards.stream().forEach(userCardEntity ->{
             UserCardVO userCardVO = new UserCardVO();
+            if(StringUtils.isEmpty(userCardEntity.getCardId())){
+                throw new BaseException("datasource contains error data...");
+            }
             CardInfo card = cardService.selectById(userCardEntity.getCardId());
             BeanUtils.copyProperties(userCardEntity,userCardVO);
             if(card != null){
                 userCardVO.setTitle(card.getTitle());
                 userCardVO.setUrl(card.getUrl());
                 userCardVO.setId(card.getId());
+                userCardVO.setDefaultChecked(true);
+            }
+            result.add(userCardVO);
+        });
+        return result;
+    }
+
+    public List<UserCardVO> allCard(String userId){
+        List<CardInfo> cardInfos = cardInfoMapper.selectAll();
+        UserCard userCard = new UserCard();
+        userCard.setUserId(userId);
+        List<UserCard> userCards = mapper.select(userCard);
+        List<UserCardVO> result = this.setDefaultChecked(cardInfos,userCards);
+        return result;
+    }
+
+    private List<UserCardVO> setDefaultChecked(List<CardInfo> cardInfos,List<UserCard> userCards){
+        List<UserCardVO> result = new ArrayList<>();
+        cardInfos.stream().forEach(cardInfo -> {
+            UserCardVO userCardVO = new UserCardVO();
+            BeanUtils.copyProperties(cardInfo,userCardVO);
+            if(StringUtils.isEmpty(cardInfo.getId())){
+                throw new BaseException("datasource contains error data...");
+            }
+            boolean isContains = userCards.stream().
+                    anyMatch(userCard -> cardInfo.getId().equals(userCard.getCardId()));
+            if(isContains){
+                userCardVO.setDefaultChecked(true);
+            }else{
+                userCardVO.setDefaultChecked(false);
             }
             result.add(userCardVO);
         });
