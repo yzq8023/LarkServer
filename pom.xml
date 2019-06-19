@@ -27,10 +27,10 @@
         <module>ace-auth</module>
         <module>ace-modules</module>
         <module>service-chat</module>
-        <module>service-discuss</module>
+<!--        <module>service-discuss</module>-->
         <module>service-portal</module>
-        <module>ace-config</module>
-        <module>service-webservice</module>
+<!--        <module>ace-config</module>-->
+<!--        <module>service-webservice</module>-->
         <module>service-dfsfile</module>
     </modules>
     <packaging>pom</packaging>

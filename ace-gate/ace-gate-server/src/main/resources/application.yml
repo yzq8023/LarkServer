@@ -53,9 +53,6 @@ zuul:
       path: /auth/**
       serviceId: ace-auth
 
-    workplace:
-      path:
-
     portal:
       path: /portal/**
       serviceId: service-portal
