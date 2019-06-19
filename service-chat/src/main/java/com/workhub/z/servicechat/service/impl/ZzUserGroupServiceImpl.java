@@ -19,7 +19,7 @@ import jodd.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import com.workhub.z.servicechat.rabbitMq.RabbitMqMsgProducer;
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,6 +46,8 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
 
     @Autowired
     private IUserService iUserService;
+    @Autowired
+    private RabbitMqMsgProducer rabbitMqMsgProducer;
     /**
      * 通过ID查询单条数据
      *
@@ -153,6 +155,22 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
         // TODO: 2019/6/12 是否@
         // TODO: 2019/6/12 私有化定制
         List<ContactVO> list = new ArrayList<ContactVO>();
+        //mq添加消息发送 开发测试用begin
+        try {
+            ContactVO vo=new ContactVO();
+            vo.setUnreadNum(1);
+            vo.setAtMe(true);
+            vo.setAvatar("1111");
+            vo.setId("223323");
+            list.add(vo);
+            //rabbitMqMsgProducer.sendMsg(vo);
+            rabbitMqMsgProducer.sendMsg(list);
+            //String json = mapper.writeValueAsString(list);
+            // rabbitMqMsgProducer.sendMsg(json);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        //mq添加消息发送 开发测试用end
         List<NoReadVo> noReadVos = zzMsgReadRelationService.queryNoReadCountList(id);
         if(userNewMsgList == null|| userNewMsgList.isEmpty()) return list;
         userNewMsgList.stream().forEach(n ->{
