@@ -3,7 +3,6 @@ package com.workhub.z.servicechat.controller;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.hollykunge.security.common.rest.BaseController;
-import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.VO.GroupInfoVO;
 import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.config.common;
@@ -39,10 +38,13 @@ public class ZzGroupFileController
      * @return 单条数据
      */
     @GetMapping("/selectOne")
-    public ZzGroupFile selectOne(@RequestParam("id") String id) {
-
-        return this.zzGroupFileService.queryById(id);
-
+    public ObjectRestResponse selectOne(@RequestParam("id") String id) {
+        ZzGroupFile entity = this.zzGroupFileService.queryById(id);
+        ObjectRestResponse objectRestResponse = new ObjectRestResponse();
+        objectRestResponse.msg("200");
+        objectRestResponse.rel(true);
+        objectRestResponse.data(entity);
+        return objectRestResponse;
     }
 
     /**
@@ -51,10 +53,10 @@ public class ZzGroupFileController
      * @return
      */
     @PostMapping("/groupfile")
-    public TableResultResponse groupFileList(@RequestParam("id")String id,
+    public TableResultResponse<GroupInfoVO> groupFileList(@RequestParam("id")String id,
                                           @RequestParam(value = "page",defaultValue = "1")Integer page,
                                           @RequestParam(value = "size",defaultValue = "10")Integer size){
-        PageInfo<GroupInfoVO> pageInfo = null;
+        TableResultResponse<GroupInfoVO> pageInfo = null;
         Long total = 0L;
         try {
             pageInfo = this.zzGroupFileService.groupFileList(id, page, size);
@@ -62,7 +64,7 @@ public class ZzGroupFileController
             e.printStackTrace();
         }
 //        T data, int pageSize, int pageNo, int totalPage, int totalCount
-        return new TableResultResponse();
+        return pageInfo;
     }
 
 
@@ -78,6 +80,8 @@ public class ZzGroupFileController
         //objectRestResponse.data(flag);
         this.zzGroupFileService.deleteById(id);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
+        objectRestResponse.msg("200");
+        objectRestResponse.rel(true);
         objectRestResponse.data("成功");
         return objectRestResponse;
     }
@@ -88,7 +92,7 @@ public class ZzGroupFileController
      * @return
      */
     @PostMapping("/create")
-    public ObjectRestResponse insert(ZzGroupFile zzGroupFile){
+    public ObjectRestResponse insert(@RequestBody ZzGroupFile zzGroupFile){
         zzGroupFile.setFileId(RandomId.getUUID());
         zzGroupFile.setCreator("登陆人id");//TODO
         zzGroupFile.setCreateTime(new Date());
@@ -98,7 +102,11 @@ public class ZzGroupFileController
             e.printStackTrace();
         }
 //        Integer insert = this.zzGroupFileService.insert(zzGroupFile);
+        this.zzGroupFileService.insert(zzGroupFile);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
+        objectRestResponse.msg("200");
+        objectRestResponse.rel(true);
+        objectRestResponse.data("成功");
 //        if (insert == null){
 //            objectRestResponse.data("失败");
 //            return objectRestResponse;
@@ -113,10 +121,10 @@ public class ZzGroupFileController
      * @return
      */
     @PostMapping("/update")
-    public ObjectRestResponse update(ZzGroupFile zzGroupFile){
+    public ObjectRestResponse update(@RequestBody ZzGroupFile zzGroupFile){
         zzGroupFile.setUpdator("登陆人id");//TODO
         zzGroupFile.setUpdateTime(new Date());
-        zzGroupFile.setFileId("1");
+        //zzGroupFile.setFileId("1");
         /*Integer update = this.zzGroupFileService.update(zzGroupFile);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
         if (update == 0){
@@ -131,6 +139,8 @@ public class ZzGroupFileController
         }
         this.zzGroupFileService.update(zzGroupFile);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
+        objectRestResponse.msg("200");
+        objectRestResponse.rel(true);
         objectRestResponse.data("成功");
         return objectRestResponse;
     }
