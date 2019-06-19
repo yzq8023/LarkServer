@@ -60,6 +60,10 @@ zuul:
       path: /portal/**
       serviceId: service-portal
 
+    fdfs:
+      path: /fdfsfile/**
+      serviceId: service-dfsfile
+
 ribbon:
   eureka:
     enabled: true

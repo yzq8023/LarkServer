@@ -19,8 +19,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("card")
 public class CardInfoController extends BaseController<CardService, CardInfo> {
 
-    @GetMapping("/heatmap")
-    public ListRestResponse<HeatMap> getHeatMap(@RequestParam("userId") String userId){
-return null;
-    }
 }

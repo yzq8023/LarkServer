@@ -1,5 +1,6 @@
 package com.github.hollykunge.security.vo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 /**
@@ -8,6 +9,7 @@ import lombok.Data;
  * @since 2019-06-11
  */
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserCardVO {
     private String id;
 
@@ -18,4 +20,12 @@ public class UserCardVO {
     private String i;
 
     private Integer position;
+
+    private String description;
+
+    private String icon;
+
+    private String type;
+
+    private Boolean defaultChecked;
 }
