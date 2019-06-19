@@ -245,4 +245,14 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
         }
         return  res;
     }
+    //获取群里有多少个成员
+    public int getGroupUserCount(String groupid)throws Exception{
+        int i=this.zzUserGroupDao.getGroupUserCount(groupid);
+        return  i;
+    }
+    //获取群前九个人的头像地址
+    public List<String> getGroupUserHeadList(String groupid)throws Exception{
+        List<String> res=this.zzUserGroupDao.getGroupUserHeadList(groupid);
+        return  res;
+    }
 }
