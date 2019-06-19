@@ -1,5 +1,6 @@
 package com.workhub.z.servicechat.controller;
 
+import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
 import com.workhub.z.servicechat.service.ZzFileManageService;
 import com.workhub.z.servicechat.service.ZzGroupFileService;
@@ -30,11 +31,17 @@ public class ZzFileManageController {
     @RequestMapping("/singleFileUpload")
     @ResponseBody
     //上传
-    public String singleFileUpload(@RequestParam("file") MultipartFile file) {
+    public ObjectRestResponse singleFileUpload(@RequestParam("file") MultipartFile file) {
         //System.out.println("===================================================file upload=============================================================");
         String res;//0附件是空 1成功 -1上传失败 -2数据库错误
+        ObjectRestResponse obj = new ObjectRestResponse();
+        obj.rel(true);
+        obj.msg("200");
+        obj.data("成功");
         if (Objects.isNull(file) || file.isEmpty()) {
-            return "0";
+            obj.rel(false);
+            obj.data("文件是空");
+            return  obj;
         }
         try {
             Map<String, String> uplodaRes = zzFileManageService.singleFileUpload(file);
@@ -57,29 +64,42 @@ public class ZzFileManageController {
                 try {
                     zzGroupFileService.insert(zzGroupFile);
                 } catch (Exception e) {
+                    obj.rel(false);
+                    obj.data("数据库错误");
                     e.printStackTrace();
                     res = "-2";
                     //如果上传失败，那么删除已经上传的附件
                     zzFileManageService.delUploadFile(uplodaRes.get("file_path") + "/" + uplodaRes.get("file_real_name"));
+                    return obj;
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
+            obj.rel(false);
+            obj.data("操作错误");
             res = "-1";
         }
-        return res;
+        return obj;
     }
 
     @GetMapping("/downloadFile")
     //下载 1成功 -1 失败 0 文件不存在
-    public String downloadFile(HttpServletRequest request, HttpServletResponse response) {
+    public ObjectRestResponse downloadFile(HttpServletRequest request, HttpServletResponse response) {
         String fileId = request.getParameter("fileId");
+        ObjectRestResponse obj = new ObjectRestResponse();
+        obj.rel(true);
+        obj.msg("200");
+        obj.data("成功");
         if (fileId == null || "".equals(fileId)) {
-            return "0";
+            obj.rel(false);
+            obj.data("附件id为空");
+            return  obj;
         }
         ZzGroupFile zzGroupFile = zzGroupFileService.queryById(fileId);
         if (zzGroupFile == null) {
-            return "0";
+            obj.rel(false);
+            obj.data("附件不存在");
+            return  obj;
         }
         String fileName = zzGroupFile.getFileName();//下载名称
         String filePath = zzGroupFile.getPath();//文件路径
@@ -98,10 +118,12 @@ public class ZzFileManageController {
             response = zzFileManageService.downloadFile(response, filePath, fileName);
         } catch (Exception e) {
             e.printStackTrace();
-            return "-1";
+            obj.rel(false);
+            obj.data("操作出错");
+            return  obj;
         }
 
 
-        return "1";
+        return obj;
     }
 }

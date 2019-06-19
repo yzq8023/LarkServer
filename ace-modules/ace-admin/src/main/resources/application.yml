@@ -34,11 +34,14 @@ spring:
         testOnReturn: false
         poolPreparedStatements: true
         maxOpenPreparedStatements: 20
-#    rabbitmq:
-#        host: ${RABBIT_MQ_HOST:localhost}
-#        port:  ${RABBIT_MQ_PORT:5672}
-#        username: guest
-#        password: guest
+    rabbitmq:
+        host: ${RABBIT_MQ_HOST:10.12.97.30}
+        port:  ${RABBIT_MQ_PORT:5672}
+        username: hollykunge
+        password: 123456
+        virtual-host: /
+        ###使用rabbitmq消息发送确认机制
+        publisher-confirms: true
     sleuth:
       sampler:
         percentage: 1

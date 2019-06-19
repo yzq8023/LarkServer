@@ -1,10 +1,13 @@
 package com.workhub.z.servicechat.controller;
 
+import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.rest.BaseController;
 import com.workhub.z.servicechat.entity.ZzMsgTabRelation;
 import com.workhub.z.servicechat.service.ZzMsgTabRelationService;
 import com.workhub.z.servicechat.service.impl.ZzMsgTabRelationServiceImpl;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
@@ -31,8 +34,13 @@ public class ZzMsgTabRelationController
      * @return 单条数据
      */
     @GetMapping("selectOne")
-    public ZzMsgTabRelation selectOne(String id) {
-        return this.zzMsgTabRelationService.queryById(id);
+    public ObjectRestResponse selectOne(String id) {
+        ZzMsgTabRelation data=this.zzMsgTabRelationService.queryById(id);
+        ObjectRestResponse res=new ObjectRestResponse();
+        res.rel(true);
+        res.msg("200");
+        res.data(data);
+        return  res;
     }
 
 }

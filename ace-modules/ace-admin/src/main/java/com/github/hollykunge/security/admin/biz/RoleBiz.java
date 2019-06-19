@@ -48,9 +48,9 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
         return null;
     }
 
-    public List<AdminUser> getRoleUsers(int roleId) {
+    public List<AdminUser> getRoleUsers(String roleId) {
         List<AdminUser> resultData = new ArrayList<>();
-        List<User> usersByOrgId = userMapper.selectUsersByRoleId(roleId + "");
+        List<User> usersByOrgId = userMapper.selectUsersByRoleId(roleId );
         List<User> users = Collections.synchronizedList(usersByOrgId);
         users.parallelStream().forEach(user -> {
             AdminUser frontUser = new AdminUser();
@@ -162,7 +162,7 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
         List<AdminPermission> resultPermission = new ArrayList<>();
         //获取所有的menu和所有的menu下的所有的Element
         List<Menu> menus = menuMapper.selectAll();
-        menus.parallelStream().forEach(menu -> {
+        menus.stream().forEach(menu -> {
             //根据menuid获取所有的Menu下的Element
             Element params = new Element();
             params.setMenuId(menu.getId());

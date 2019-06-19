@@ -1,6 +1,7 @@
 package com.workhub.z.servicechat.controller;
 
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
+import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.hollykunge.security.common.rest.BaseController;
 import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.config.common;
@@ -10,6 +11,8 @@ import com.workhub.z.servicechat.service.impl.ZzGroupMsgServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 群组消息表(ZzGroupMsg)表控制层
@@ -34,12 +37,15 @@ public class ZzGroupMsgController
      * @return 单条数据
      */
     @GetMapping("/selectOne")
-    public ZzGroupMsg selectOne(@RequestParam("id") String id) {
-
-        return this.zzGroupMsgService.queryById(id);
+    public ObjectRestResponse<ZzGroupMsg> selectOne(@RequestParam("id") String id) {
+        ZzGroupMsg zzGroupMsg = this.zzGroupMsgService.queryById(id);
+        ObjectRestResponse<ZzGroupMsg> res = new ObjectRestResponse<>();
+        res.data(zzGroupMsg);
+        res.msg("200");
+        res.rel(true);
+        return res;
 
     }
-
     /**
      * 文件删除(删记录)
      * @param id
@@ -53,6 +59,8 @@ public class ZzGroupMsgController
         this.zzGroupMsgService.deleteById(id);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
         objectRestResponse.data("成功");
+        objectRestResponse.msg("200");
+        objectRestResponse.rel(true);
         return objectRestResponse;
     }
 
@@ -62,7 +70,7 @@ public class ZzGroupMsgController
      * @return
      */
     @PostMapping("/create")
-    public ObjectRestResponse insert(ZzGroupMsg zzGroupMsg){
+    public ObjectRestResponse insert(@RequestBody ZzGroupMsg zzGroupMsg){
         zzGroupMsg.setMsgId(RandomId.getUUID());
         try{
             common.putEntityNullToEmptyString(zzGroupMsg);
@@ -77,6 +85,8 @@ public class ZzGroupMsgController
 //            return objectRestResponse;
 //        }
         objectRestResponse.data("成功");
+        objectRestResponse.msg("200");
+        objectRestResponse.rel(true);
         return objectRestResponse;
     }
 
@@ -86,7 +96,7 @@ public class ZzGroupMsgController
      * @return
      */
     @PostMapping("/update")
-    public ObjectRestResponse update(ZzGroupMsg zzGroupMsg){
+    public ObjectRestResponse update(@RequestBody ZzGroupMsg zzGroupMsg){
         /*Integer update = this.zzGroupMsgService.update(zzGroupMsg);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
         if (update == null){
@@ -94,7 +104,7 @@ public class ZzGroupMsgController
             return objectRestResponse;
         }
         objectRestResponse.data("成功");*/
-        zzGroupMsg.setMsgId("1");
+        //zzGroupMsg.setMsgId("1");
         try{
             common.putEntityNullToEmptyString(zzGroupMsg);
         }catch(Exception e){
@@ -103,6 +113,38 @@ public class ZzGroupMsgController
         this.zzGroupMsgService.update(zzGroupMsg);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
         objectRestResponse.data("成功");
+        objectRestResponse.msg("200");
+        objectRestResponse.rel(true);
         return objectRestResponse;
+    }
+    /**
+     * 查询消息记录（最近+历史+二者并集）
+     * @auther zhuqz
+     * @param sender：发送人id；receiver：群id；begin_time：发送开始时间yyyy-mm-dd;end_time：发送结束时间
+     * @return
+     */
+    @GetMapping("/queryMsg")
+    public TableResultResponse<ZzGroupMsg> queryMsg(@RequestParam("sender") String sender,
+                                                    @RequestParam("receiver") String receiver,
+                                                    @RequestParam("begin_time") String begin_time,
+                                                    @RequestParam("end_time") String end_time,
+                                                    @RequestParam(value = "page",defaultValue = "1")Integer page,
+                                                    @RequestParam(value = "size",defaultValue = "10")Integer size
+                                                    ){
+
+        TableResultResponse<ZzGroupMsg> res = null;
+        Map<String,String> param = new HashMap<>();
+        param.put("sender",sender);
+        param.put("receiver",receiver);
+        param.put("begin_time",begin_time);
+        param.put("end_time",end_time);
+        param.put("page",String.valueOf(page));
+        param.put("size",String.valueOf(size));
+        try {
+            res=this.zzGroupMsgService.queryMsg(param);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return res;
     }
 }

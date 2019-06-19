@@ -121,5 +121,115 @@
     <delete id="deleteById">
         delete from ZZ_PRIVATE_MSG where MSG_ID = #{msgId}
     </delete>
-
+    <!--最近消息记录-->
+    <select id="queryMsgRecent" parameterType="Map" resultMap="ZzPrivateMsgMap">
+        select
+        MSG_ID, MSG_SENDER, MSG_RECEIVER, SEND_TIME, RECEIVER_TIME, IS_READ,MSG, MSG_TYPE, MSG_PATH, IS_DELETE, LEVELS
+        from ZZ_PRIVATE_MSG
+        where 1=1
+        <if test="sender != null and sender != ''">
+            and MSG_SENDER  = #{sender}
+        </if>
+        <if test="receiver != null and receiver != ''">
+            and MSG_RECEIVER  = #{receiver}
+        </if>
+        <if test="begin_time != null and begin_time != ''">
+            and to_char(SEND_TIME,'yyyy-mm-dd') &gt;= #{begin_time}
+        </if>
+        <if test="end_time != null and end_time != ''">
+            and to_char(SEND_TIME,'yyyy-mm-dd') &lt;= #{end_time}
+        </if>
+        order by SEND_TIME desc
+    </select>
+    <!--历史消息记录-->
+    <select id="queryMsgHis" parameterType="Map"  resultMap="ZzPrivateMsgMap">
+        select
+        MSG_ID, MSG_SENDER, MSG_RECEIVER, SEND_TIME, RECEIVER_TIME, IS_READ,MSG, MSG_TYPE, MSG_PATH, IS_DELETE, LEVELS
+        from ZZ_PRIVATE_MSG_HIS
+        where 1=1
+        <if test="sender != null and sender != ''">
+            and MSG_SENDER  = #{sender}
+        </if>
+        <if test="receiver != null and receiver != ''">
+            and MSG_RECEIVER  = #{receiver}
+        </if>
+        <if test="begin_time != null and begin_time != ''">
+            and to_char(SEND_TIME,'yyyy-mm-dd') &gt;= #{begin_time}
+        </if>
+        <if test="end_time != null and end_time != ''">
+            and to_char(SEND_TIME,'yyyy-mm-dd') &lt;= #{end_time}
+        </if>
+        order by SEND_TIME desc
+    </select>
+    <!--最近与历史消息记录合集-->
+    <select id="queryMsgCurrentAndHis" parameterType="Map"  resultMap="ZzPrivateMsgMap">
+        select msg_id,
+        msg_sender,
+        msg_receiver,
+        send_time,
+        receiver_time,
+        msg,
+        msg_type,
+        msg_path,
+        is_delete,
+        is_read,
+        levels
+        from (select msg_id,
+        msg_sender,
+        msg_receiver,
+        send_time,
+        receiver_time,
+        msg,
+        msg_type,
+        msg_path,
+        is_delete,
+        is_read,
+        levels
+        from ZZ_PRIVATE_MSG
+        where 1=1
+        <if test="sender != null and sender != ''">
+            and MSG_SENDER  = #{sender}
+        </if>
+        <if test="receiver != null and receiver != ''">
+            and MSG_RECEIVER  = #{receiver}
+        </if>
+        <!--
+        <if test="begin_time != null and begin_time != ''">
+            and to_char(SEND_TIME,'yyyy-mm-dd') &gt;= #{begin_time}
+        </if>
+        -->
+        <if test="end_time != null and end_time != ''">
+            and to_char(SEND_TIME,'yyyy-mm-dd') &lt;= #{end_time}
+        </if>
+        union
+        select msg_id,
+        msg_sender,
+        msg_receiver,
+        send_time,
+        receiver_time,
+        msg,
+        msg_type,
+        msg_path,
+        is_delete,
+        is_read,
+        levels
+        from ZZ_PRIVATE_MSG_HIS
+        where 1=1
+        <if test="sender != null and sender != ''">
+            and MSG_SENDER  = #{sender}
+        </if>
+        <if test="receiver != null and receiver != ''">
+            and MSG_RECEIVER  = #{receiver}
+        </if>
+        <if test="begin_time != null and begin_time != ''">
+            and to_char(SEND_TIME,'yyyy-mm-dd') &gt;= #{begin_time}
+        </if>
+        <!--
+         <if test="end_time != null and end_time != ''">
+             and to_char(SEND_TIME,'yyyy-mm-dd') &lt;= #{end_time}
+         </if>
+         -->
+        ) a
+        order by a.send_time desc
+    </select>
 </mapper>

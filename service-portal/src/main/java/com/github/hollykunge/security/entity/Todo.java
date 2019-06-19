@@ -3,6 +3,7 @@ package com.github.hollykunge.security.entity;
 import lombok.Data;
 
 import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
 /**
@@ -14,6 +15,7 @@ import java.util.Date;
 @Table(name = "PORTAL_TODO")
 public class Todo {
     @Column(name = "ID")
+    @Id
     private String id;
     @Column(name = "CONTENT")
     private String content;

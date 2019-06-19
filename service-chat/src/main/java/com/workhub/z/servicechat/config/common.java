@@ -6,6 +6,7 @@ import org.tio.core.Tio;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -198,6 +199,23 @@ public class common {
                 }
             }
             // 如果type是类类型，则前面包含"class "，后面跟类名
+            if (type.equals("class java.lang.Double")) {
+                Method m = enity.getClass().getMethod("get" + name);
+                // 调用getter方法获取属性值
+                Double value = (Double) m.invoke(enity);
+                //System.out.println("数据类型为：String");
+                if (value == null) {
+                    //set值
+                    Class[] parameterTypes = new Class[1];
+                    parameterTypes[0] = fields[i].getType();
+                    m = enity.getClass().getMethod("set" + name, parameterTypes);
+                    double data = 0.0;
+                    Object[] objects = new Object[1];
+                    objects[0] = data;
+                    m.invoke(enity, objects);
+                }
+            }
+            // 如果type是类类型，则前面包含"class "，后面跟类名
             if (type.equals("long")) {
                 boolean hasFun = true;
                 Method m = null;
@@ -224,5 +242,19 @@ public class common {
                 }
             }
         }
+    }
+    //获取当前日期
+    public static String getCurrentDate(){
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar=Calendar.getInstance();
+        return  format.format(calendar.getTime());
+    }
+    //获取上个月第一天
+    public static String getBeforeMonthFirstDay(){
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar=Calendar.getInstance();
+        calendar.add(Calendar.MONTH, -1);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        return  format.format(calendar.getTime());
     }
 }

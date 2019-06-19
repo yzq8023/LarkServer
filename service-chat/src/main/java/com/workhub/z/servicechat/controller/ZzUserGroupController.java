@@ -39,33 +39,44 @@ public class ZzUserGroupController extends BaseController<ZzUserGroupServiceImpl
      * @return 单条数据
      */
     @GetMapping("/selectOne")
-    public ZzUserGroup selectOne(String id) {
-        return this.zzUserGroupService.queryById(id);
+    public ObjectRestResponse selectOne(String id) {
+        ZzUserGroup entity = this.zzUserGroupService.queryById(id);
+        ObjectRestResponse objectRestResponse = new ObjectRestResponse();
+        objectRestResponse.msg("200");
+        objectRestResponse.rel(true);
+        objectRestResponse.data(entity);
+        return  objectRestResponse;
     }
 
     @PostMapping("/create")
-    public ObjectRestResponse insert(ZzUserGroup zzUserGroup){
+    public ObjectRestResponse insert(@RequestBody ZzUserGroup zzUserGroup){
         zzUserGroup.setId(RandomId.getUUID());
         zzUserGroup.setCreatetime(new Date());
 //        Integer insert = this.zzUserGroupService.insert(zzUserGroup);
+        this.zzUserGroupService.insert(zzUserGroup);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
 //        if (insert == null){
 //            objectRestResponse.data("失败");
 //            return objectRestResponse;
 //        }
         objectRestResponse.data("成功");
+        objectRestResponse.msg("200");
+        objectRestResponse.rel(true);
         return objectRestResponse;
     }
 
     @PostMapping("/update")
-    public ObjectRestResponse update(ZzUserGroup zzUserGroup){
+    public ObjectRestResponse update(@RequestBody ZzUserGroup zzUserGroup){
         Integer update = this.zzUserGroupService.update(zzUserGroup);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
         if (update == null){
             objectRestResponse.data("失败");
+            objectRestResponse.rel(false);
             return objectRestResponse;
         }
         objectRestResponse.data("成功");
+        objectRestResponse.rel(true);
+        objectRestResponse.msg("200");
         return objectRestResponse;
     }
 
@@ -73,11 +84,14 @@ public class ZzUserGroupController extends BaseController<ZzUserGroupServiceImpl
     public ObjectRestResponse delete(@RequestParam("id")String id){
         boolean flag = this.zzUserGroupService.deleteById(id);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
-        objectRestResponse.data(flag);
+        objectRestResponse.rel(flag);
+        objectRestResponse.data("成功");
+        objectRestResponse.msg("200");
         return objectRestResponse;
     }
 
     @PostMapping("/querygroup")
+    //id参数是userid
     public TableResultResponse queryGroupList(@RequestParam("id")String id,
                                                   @RequestParam(value = "page",defaultValue = "1")Integer page,
                                                   @RequestParam(value = "size",defaultValue = "10")Integer size){
@@ -98,7 +112,7 @@ public class ZzUserGroupController extends BaseController<ZzUserGroupServiceImpl
     @PostMapping("/usernewmsglist")
     public ListRestResponse getUserNewMsgList(@RequestParam("id") String id){
         List<UserNewMsgVo> userNewMsgList = this.zzUserGroupService.getUserNewMsgList(id);
-        return new ListRestResponse("成功",0,userNewMsgList);
+        return new ListRestResponse("200",userNewMsgList==null?0:userNewMsgList.size(),userNewMsgList);
     }
     /**
      * 修改用户群个性化信息--是否置顶
@@ -119,11 +133,12 @@ public class ZzUserGroupController extends BaseController<ZzUserGroupServiceImpl
             oppRes="-1";
         }
         if("1".equals(oppRes)){
-            objectRestResponse.data("1");//成功
-            objectRestResponse.msg("成功");
+            objectRestResponse.msg("200");//成功
+            objectRestResponse.data("成功");
+            objectRestResponse.rel(true);
         }else if("-1".equals(oppRes)){
-            objectRestResponse.data("-1");//失败
-            objectRestResponse.msg("失败");
+            objectRestResponse.msg("失败");//失败
+            objectRestResponse.rel(false);
         }else{
             objectRestResponse.data("0");//失败
             objectRestResponse.msg("用户群不存在，或者用户已经不在群中");
@@ -131,8 +146,8 @@ public class ZzUserGroupController extends BaseController<ZzUserGroupServiceImpl
         return  objectRestResponse;
     }
     /**
-     * 修改用户群个性化信息--是否置顶
-     * @param userId 用户id；groupId 群id；topFlg 1置顶，0不置顶
+     * 修改用户群个性化信息--是否免打扰
+     * @param userId 用户id；groupId 群id；muteFlg 1免打扰，0否
      * @return  1成功；0用户不在组内或者组已经不存在；-1错误
      * @author zhuqz
      * @since 2019-06-11
@@ -149,15 +164,18 @@ public class ZzUserGroupController extends BaseController<ZzUserGroupServiceImpl
             oppRes="-1";
         }
         if("1".equals(oppRes)){
-            objectRestResponse.data("1");//成功
-            objectRestResponse.msg("成功");
+            objectRestResponse.msg("200");//成功
+            objectRestResponse.data("成功");
+            objectRestResponse.rel(true);
         }else if("-1".equals(oppRes)){
-            objectRestResponse.data("-1");//失败
-            objectRestResponse.msg("失败");
+            objectRestResponse.rel(false);
+            objectRestResponse.data("失败");
         }else{
-            objectRestResponse.data("0");//失败
-            objectRestResponse.msg("用户群不存在，或者用户已经不在群中");
+            objectRestResponse.data("用户群不存在，或者用户已经不在群中");//失败
+            objectRestResponse.msg("200");
+            objectRestResponse.rel(false);
         }
         return  objectRestResponse;
     }
+
 }

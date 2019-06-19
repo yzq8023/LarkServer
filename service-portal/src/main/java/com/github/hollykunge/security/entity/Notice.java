@@ -3,6 +3,7 @@ package com.github.hollykunge.security.entity;
 import lombok.Data;
 
 import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -14,6 +15,7 @@ import javax.persistence.Table;
 @Table(name = "PORTAL_NOTICE")
 public class Notice {
     @Column(name = "ID")
+    @Id
     private String id;
     @Column(name = "TITLE")
     private String title;
@@ -23,4 +25,6 @@ public class Notice {
     private String content;
     @Column(name = "TOP")
     private String top;
+    @Column(name = "ORG_CODE")
+    private String orgCode;
 }

@@ -8,12 +8,10 @@ import com.github.hollykunge.security.common.vo.rpcvo.ContactVO;
 import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.VO.GroupUserListVo;
 import com.workhub.z.servicechat.config.RandomId;
+import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.entity.ZzGroup;
 import com.workhub.z.servicechat.service.ZzGroupService;
-
 import com.workhub.z.servicechat.service.ZzUserGroupService;
-import com.workhub.z.servicechat.service.impl.ZzDictionaryWordsServiceImpl;
-
 import com.workhub.z.servicechat.service.impl.ZzGroupServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,27 +54,41 @@ public class ZzGroupController  {
     }
 
     @PostMapping("/create")
-    public ObjectRestResponse insert(ZzGroup zzGroup,@RequestParam("token")String token){
+    public ObjectRestResponse insert(@RequestBody ZzGroup zzGroup,@RequestParam("token")String token){
         zzGroup.setGroupId(RandomId.getUUID());
-        zzGroup.setCreator("");//TODO token 拿登陆人信息
         zzGroup.setCreateTime(new Date());
+        try {
+            common.putEntityNullToEmptyString(zzGroup);
+        }catch (Exception e){
+            e.getStackTrace();
+        }
+        this.zzGroupService.insert(zzGroup);
 //        Integer insert = this.zzGroupService.insert(zzGroup);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
 //        if (insert == 0){
 //            objectRestResponse.data("失败");
 //            return objectRestResponse;
 //        }
+        objectRestResponse.rel(true);
+        objectRestResponse.msg("200");
         objectRestResponse.data("成功");
         return objectRestResponse;
     }
 
     @PostMapping("/update")
-    public ObjectRestResponse update(ZzGroup zzGroup,@RequestParam("token")String token){
-        zzGroup.setUpdator("");//TODO token 拿登陆人信息
+    public ObjectRestResponse update(@RequestBody ZzGroup zzGroup,@RequestParam("token")String token){
         zzGroup.setUpdateTime(new Date());
+        try {
+            common.putEntityNullToEmptyString(zzGroup);
+        }catch (Exception e){
+            e.getStackTrace();
+        }
         Integer update = this.zzGroupService.update(zzGroup);
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
+        objectRestResponse.rel(true);
+        objectRestResponse.msg("200");
         if (update == null){
+            objectRestResponse.rel(false);
             objectRestResponse.data("失败");
             return objectRestResponse;
         }
@@ -153,11 +165,13 @@ public class ZzGroupController  {
             oppRes="-1";
         }
         if("1".equals(oppRes)){
-            objectRestResponse.data("1");//成功
-            objectRestResponse.msg("成功");
+            objectRestResponse.data("成功");//成功
+            objectRestResponse.rel(true);
+            objectRestResponse.msg("200");
         }else{
-            objectRestResponse.data("-1");//失败
-            objectRestResponse.msg("失败");
+            objectRestResponse.data("失败");//失败
+            objectRestResponse.rel(false);
+            objectRestResponse.msg("200");
         }
         return objectRestResponse;
     }

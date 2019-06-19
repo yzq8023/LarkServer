@@ -12,9 +12,9 @@ import com.github.hollykunge.security.admin.mapper.UserMapper;
 import com.github.hollykunge.security.admin.vo.AdminUser;
 import com.github.hollykunge.security.admin.vo.OrgUser;
 import com.github.hollykunge.security.common.biz.BaseBiz;
+import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.hollykunge.security.common.util.EntityUtils;
 import com.github.hollykunge.security.common.vo.TreeNode;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -22,6 +22,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -39,11 +40,22 @@ public class OrgBiz extends BaseBiz<OrgMapper, Org> {
     @Resource
     private UserBiz userBiz;
 
-    public List<AdminUser> getOrgUsers(String orgCode) {
+    public List<AdminUser> getOrgUsers(String orgCode,String secretLevels,String pid) {
         User userParams = new User();
         userParams.setOrgCode(orgCode);
         Example userExample = new Example(User.class);
-        userExample.createCriteria().andLike("orgCode","%"+orgCode+"%");
+        Example.Criteria criteria = userExample.createCriteria();
+        criteria.andLike("orgCode","%"+orgCode+"%");
+        if(!StringUtils.isEmpty(secretLevels)){
+            String[] secretLevelArray = secretLevels.split(",");
+            List<String> secretList = Arrays.asList(secretLevelArray);
+            for (String secretLevel:secretLevelArray ) {
+                criteria.andIn("secretLevel",secretList);
+            }
+        }
+        if(!StringUtils.isEmpty(pid)){
+            criteria.andNotEqualTo("pId",pid);
+        }
         List<User> users = userMapper.selectByExample(userExample);
         List<AdminUser> userList;
         userList = JSON.parseArray(JSON.toJSONString(users),AdminUser.class);
@@ -69,7 +81,7 @@ public class OrgBiz extends BaseBiz<OrgMapper, Org> {
     protected String getPageName() {
         return null;
     }
-    @Cache(key = "orgUsers{2}")
+//    @Cache(key = "orgUsers{2}") TODO:有点问题 造成前端第二次刷新显示不正确
     public List<OrgUser> getOrg(List<Org> orgs, String parentTreeId) {
         return this.buildByRecursive(orgs, parentTreeId);
     }
@@ -101,7 +113,8 @@ public class OrgBiz extends BaseBiz<OrgMapper, Org> {
                     List<User> users = userBiz.selectList(params);
                     users.stream().forEach(user ->{
                         OrgUser orgUser = new OrgUser();
-                        BeanUtils.copyProperties(user,orgUser);
+                        orgUser.setIcon(user.getAvatar());
+                        orgUser.setKey(user.getPId());
                         orgUser.setScopedSlotsTitle("userNode");
                         orgUser.setTitle(user.getName());
                         orgUser.setOnline(true);

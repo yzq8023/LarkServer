@@ -10,7 +10,7 @@ spring:
         default-property-inclusion: non_null
     redis:
         database: 1
-        host: 127.0.0.1
+        host: 10.12.97.34
         jedis:
           pool:
               max-active: 20

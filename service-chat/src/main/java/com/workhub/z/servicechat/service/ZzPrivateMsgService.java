@@ -1,7 +1,10 @@
 package com.workhub.z.servicechat.service;
 
+import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.workhub.z.servicechat.entity.ZzPrivateMsg;
+
 import java.util.List;
+import java.util.Map;
 
 /**
  * 私人消息(ZzPrivateMsg)表服务接口
@@ -57,5 +60,11 @@ public interface ZzPrivateMsgService {
     // TODO: 2019/5/15 根据 msgSender msgReceiver更新未读消息isRead
 
     // TODO: 2019/5/15  
-
+    /**
+     * 查询消息记录
+     * @auther zhuqz
+     * @param param 参数集合：sender发送人，receiver接收人，begin_time开始时间，end_time结束时间
+     * @return 对象列表
+     */
+    TableResultResponse<ZzPrivateMsg> queryMsg(Map<String,String> param) throws Exception;
 }

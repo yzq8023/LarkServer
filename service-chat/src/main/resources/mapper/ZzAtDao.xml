@@ -43,8 +43,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into ZZ_AT(GROUPID, RECEIVERID)
-        values (#{groupid}, #{receiverid})
+        insert into ZZ_AT(ID,GROUPID, RECEIVERID)
+        values (#{id},#{groupid}, #{receiverid})
     </insert>
 
     <!--通过主键修改数据-->
@@ -65,5 +65,18 @@
     <delete id="deleteById">
         delete from ZZ_AT where ID = #{id}
     </delete>
-
+    <select id="getList" resultMap="ZzAtMap">
+        SELECT
+        ID, GROUPID, RECEIVERID
+        from WORKHUB_IWORK.ZZ_AT A
+        WHERE  1 = 1
+        <if test="receiverId != null and receiverId != '' ">
+            AND RECEIVERID = #{receiverId}
+        </if>
+        <if test="groupId != null and groupId != '' ">
+            AND GROUPID = #{groupId}
+        </if>
+        ORDER BY
+        A .GROUPID,RECEIVERID DESC
+    </select>
 </mapper>

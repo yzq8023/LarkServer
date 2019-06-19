@@ -15,6 +15,8 @@ public class FrontUser {
     private String pId;
     //用户姓名
     private String name;
+
+    private String orgCode;
     //自述信息
     private String description;
     //头像

@@ -3,7 +3,6 @@ package com.workhub.z.servicechat.service.impl;
 import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.vo.rpcvo.ContactVO;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.VO.GroupListVo;
@@ -25,6 +24,8 @@ import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+//import com.workhub.z.servicechat.VO.ContactVO;
 
 /**
  * 用户群组映射表(ZzUserGroup)表服务实现类
@@ -114,7 +115,8 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
     @Override
     public PageInfo<GroupListVo> groupUserList(String id, int page, int size) throws Exception {
         if (StringUtil.isEmpty(id)) throw new NullPointerException("id is null");
-        Page<Object> pageMassage = PageHelper.startPage(page, size);
+        //以前写的分页暂时注释，应该有查询冗余问题
+        /*Page<Object> pageMassage = PageHelper.startPage(page, size);
         pageMassage.setTotal(this.zzUserGroupDao.groupListTotal(id));
         int startRow = pageMassage.getStartRow();
         int endRow = pageMassage.getEndRow();
@@ -126,7 +128,13 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
         pageInfoGroupInfo.setPages(pageMassage.getPages());
         pageInfoGroupInfo.setPageNum(page);
         pageInfoGroupInfo.setPageSize(size);
-        return pageInfoGroupInfo;
+        return pageInfoGroupInfo;*/
+
+        //新写查询分页
+        PageHelper.startPage(page, size);
+        List<GroupListVo> list = this.zzUserGroupDao.groupList(id);
+        PageInfo<GroupListVo> pageInfo = new PageInfo<>(list);
+        return pageInfo;
     }
 
     @Override
