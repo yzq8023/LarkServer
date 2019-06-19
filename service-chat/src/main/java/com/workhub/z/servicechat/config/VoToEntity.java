@@ -16,6 +16,7 @@ import com.workhub.z.servicechat.model.UserListDto;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,8 +46,8 @@ public abstract class VoToEntity {
         zpm.setIsDelete("0");
         zpm.setMsg(json.getString("content"));
         zpm.setMsgType(json.getString("type"));
-        zpm.setSendTime(json.getSqlDate("time"));
-        zpm.setReceiverTime(json.getSqlDate("time"));
+        zpm.setSendTime(json.getDate("time"));
+        zpm.setReceiverTime(json.getDate("time"));
         return zpm;
     }
 
@@ -66,7 +67,7 @@ public abstract class VoToEntity {
         zpm.setIsDelete("0");
         zpm.setMsg(json.getString("content"));
         zpm.setMsgType(json.getString("type"));
-        zpm.setSendTime(json.getSqlDate("time"));
+        zpm.setSendTime(json.getDate("time"));
         zpm.setIsImportant("0");
         return zpm;
     }
