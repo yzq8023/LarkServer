@@ -12,6 +12,7 @@ import com.github.hollykunge.security.admin.mapper.UserMapper;
 import com.github.hollykunge.security.admin.vo.AdminUser;
 import com.github.hollykunge.security.admin.vo.OrgUser;
 import com.github.hollykunge.security.common.biz.BaseBiz;
+import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.hollykunge.security.common.util.EntityUtils;
 import com.github.hollykunge.security.common.vo.TreeNode;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -38,11 +40,22 @@ public class OrgBiz extends BaseBiz<OrgMapper, Org> {
     @Resource
     private UserBiz userBiz;
 
-    public List<AdminUser> getOrgUsers(String orgCode) {
+    public List<AdminUser> getOrgUsers(String orgCode,String secretLevels,String pid) {
         User userParams = new User();
         userParams.setOrgCode(orgCode);
         Example userExample = new Example(User.class);
-        userExample.createCriteria().andLike("orgCode","%"+orgCode+"%");
+        Example.Criteria criteria = userExample.createCriteria();
+        criteria.andLike("orgCode","%"+orgCode+"%");
+        if(!StringUtils.isEmpty(secretLevels)){
+            String[] secretLevelArray = secretLevels.split(",");
+            List<String> secretList = Arrays.asList(secretLevelArray);
+            for (String secretLevel:secretLevelArray ) {
+                criteria.andIn("secretLevel",secretList);
+            }
+        }
+        if(!StringUtils.isEmpty(pid)){
+            criteria.andNotEqualTo("pId",pid);
+        }
         List<User> users = userMapper.selectByExample(userExample);
         List<AdminUser> userList;
         userList = JSON.parseArray(JSON.toJSONString(users),AdminUser.class);

@@ -28,7 +28,7 @@ public class ZzFileManageController {
     @Resource
     private ZzGroupFileService zzGroupFileService;
 
-    @RequestMapping("/singleFileUpload")
+    /*@RequestMapping("/singleFileUpload")
     @ResponseBody
     //上传
     public ObjectRestResponse singleFileUpload(@RequestParam("file") MultipartFile file) {
@@ -80,8 +80,47 @@ public class ZzFileManageController {
             res = "-1";
         }
         return obj;
+    }*/
+    @RequestMapping("/singleFileUpload")
+    @ResponseBody
+    //上传
+    public ZzGroupFile singleFileUpload(@RequestParam("file") MultipartFile file) {
+        //System.out.println("===================================================file upload=============================================================");
+        ZzGroupFile zzGroupFile = new ZzGroupFile();
+        if (Objects.isNull(file) || file.isEmpty()) {
+            throw new NullPointerException("上传附件是空");
+        }
+        try {
+            Map<String, String> uplodaRes = zzFileManageService.singleFileUpload(file);
+            String res = uplodaRes.get("res");
+            if (res.equals("1")) {//如果上传成功，入库记录
+                zzGroupFile.setFileId(uplodaRes.get("file_id"));
+                zzGroupFile.setCreator("登陆人id_测试");//TODO
+                zzGroupFile.setCreateTime(new Date());
+                zzGroupFile.setSizes(Double.parseDouble(uplodaRes.get("file_size")));
+                zzGroupFile.setFileName(uplodaRes.get("file_upload_name"));
+                zzGroupFile.setPath(uplodaRes.get("file_path"));
+                zzGroupFile.setFileExt("");
+                zzGroupFile.setFileType("");
+                zzGroupFile.setReadPath("");
+                zzGroupFile.setUpdator("登陆人id_测试");
+                zzGroupFile.setUpdateTime(new Date());
+                zzGroupFile.setGroupId("");
+                zzGroupFile.setLevels("");
+                try {
+                    zzGroupFileService.insert(zzGroupFile);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    //如果上传失败，那么删除已经上传的附件
+                    zzFileManageService.delUploadFile(uplodaRes.get("file_path") + "/" + uplodaRes.get("file_real_name"));
+                    zzGroupFile=null;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return zzGroupFile;
     }
-
     @GetMapping("/downloadFile")
     //下载 1成功 -1 失败 0 文件不存在
     public ObjectRestResponse downloadFile(HttpServletRequest request, HttpServletResponse response) {

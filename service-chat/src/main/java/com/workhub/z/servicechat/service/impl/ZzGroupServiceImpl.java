@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  * @since 2019-05-10 14:29:32
  */
 @Service("zzGroupService")
-public class ZzGroupServiceImpl extends BaseBiz<ZzGroupDao,ZzGroup > implements ZzGroupService {
+public class ZzGroupServiceImpl implements ZzGroupService {
     @Resource
     private ZzGroupDao zzGroupDao;
 
@@ -69,11 +69,6 @@ public class ZzGroupServiceImpl extends BaseBiz<ZzGroupDao,ZzGroup > implements 
     public void insert(ZzGroup zzGroup) {
         int insert = this.zzGroupDao.insert(zzGroup);
 //        return insert;
-    }
-
-    @Override
-    protected String getPageName() {
-        return null;
     }
 
     /**

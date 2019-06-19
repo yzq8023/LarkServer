@@ -70,6 +70,7 @@
     </select>
 
     <!--新增所有列-->
+
     <insert id="insert" keyProperty="msgId" >
         insert into ZZ_GROUP_MSG(MSG_ID,MSG_SENDER, MSG_RECEIVER, SEND_TIME, MSG, MSG_TYPE, MSG_PATH, IS_DELETE, IS_IMPORTANT, LEVELS)
         values (#{msgId},#{msgSender}, #{msgReceiver}, #{sendTime}, #{msg}, #{msgType}, #{msgPath}, #{isDelete}, #{isImportant}, #{levels})

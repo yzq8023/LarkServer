@@ -61,9 +61,9 @@ public class ZzGroupMsgServiceImpl extends BaseBiz<ZzGroupMsgDao, ZzGroupMsg> im
     @Override
     @Transactional
     public void insert(ZzGroupMsg zzGroupMsg) {
-        //int insert = this.zzGroupMsgDao.insert(zzGroupMsg);
+        int insert = this.zzGroupMsgDao.insert(zzGroupMsg);
 //        return insert;
-        super.insert(zzGroupMsg);
+//        super.insert(zzGroupMsg);
     }
 
     @Override

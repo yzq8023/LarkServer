@@ -38,7 +38,7 @@ public class AbstractMsgProcessor {
     
     public boolean checkUserOnline(ChannelContext channelContext, String userId){
         ChannelContext checkChannelContext =
-                Tio.getChannelContextByBsId(channelContext.getGroupContext(),userId);
+                Tio.getChannelContextById(channelContext.getGroupContext(),userId);
         //检查是否在线
         boolean isOnline = checkChannelContext != null && !checkChannelContext.isClosed;
         return isOnline;

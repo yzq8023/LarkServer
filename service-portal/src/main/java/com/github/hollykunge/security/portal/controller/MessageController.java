@@ -19,10 +19,9 @@ import java.util.List;
 @RequestMapping("message")
 public class MessageController extends BaseController<MessageService, Message> {
 
-    @Override
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    @RequestMapping(value = "/userMessage", method = RequestMethod.GET)
     @ResponseBody
-    public ListRestResponse<List<Message>> all() {
+    public ListRestResponse<List<Message>> userMessage() {
         String userID =  request.getHeader("userId");
         if(StringUtils.isEmpty(userID)){
             throw new BaseException("request contains no user...");
