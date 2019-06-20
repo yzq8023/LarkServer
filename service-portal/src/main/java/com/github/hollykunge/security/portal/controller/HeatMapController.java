@@ -4,7 +4,7 @@ import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.rest.BaseController;
 import com.github.hollykunge.security.entity.HeatMap;
-import com.github.hollykunge.security.portal.service.HotMapService;
+import com.github.hollykunge.security.portal.service.HeatMapService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +17,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("hotmap")
-public class HotMapController extends BaseController<HotMapService, HeatMap> {
+public class HeatMapController extends BaseController<HeatMapService, HeatMap> {
     /**
      * 根据userid获取工作热力图接口
      * @return

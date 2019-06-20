@@ -8,5 +8,5 @@ import tk.mybatis.mapper.common.Mapper;
  * @author zhhongyu
  * @since 2019-06-19
  */
-public interface HotmapMapper extends Mapper<HeatMap> {
+public interface HeatMapMapper extends Mapper<HeatMap> {
 }

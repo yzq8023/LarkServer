@@ -14,7 +14,7 @@ import java.util.Date;
  * @since: 2019/6/17
  */
 @Data
-@Table(name = "HEATMAP")
+@Table(name = "PORTAL_HEATMAP")
 public class HeatMap {
     @Column(name = "ID")
     @Id

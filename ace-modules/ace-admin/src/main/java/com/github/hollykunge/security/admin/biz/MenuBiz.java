@@ -52,6 +52,12 @@ public class MenuBiz extends BaseBiz<MenuMapper, Menu> {
 
     @Override
     @CacheClear(keys = {"permission:menu", "permission"})
+    public void deleteById(Object id) {
+        super.deleteById(id);
+    }
+
+    @Override
+    @CacheClear(keys = {"permission:menu", "permission"})
     public void updateSelectiveById(Menu entity) {
         super.updateSelectiveById(entity);
     }

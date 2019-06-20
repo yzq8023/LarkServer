@@ -2,7 +2,7 @@ package com.github.hollykunge.security.portal.service;
 
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.entity.HeatMap;
-import com.github.hollykunge.security.mapper.HotmapMapper;
+import com.github.hollykunge.security.mapper.HeatMapMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class HotMapService extends BaseBiz<HotmapMapper, HeatMap> {
+public class HeatMapService extends BaseBiz<HeatMapMapper, HeatMap> {
     @Override
     protected String getPageName() {
         return null;

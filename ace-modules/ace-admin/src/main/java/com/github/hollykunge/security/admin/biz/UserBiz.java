@@ -54,6 +54,12 @@ public class UserBiz extends BaseBiz<UserMapper, User> {
         super.updateSelectiveById(entity);
     }
 
+    @Override
+    @CacheClear(keys = {"user","userByPid"})
+    public void deleteById(Object id) {
+        super.deleteById(id);
+    }
+
     /**
      * 通过userId，主键获取用户
      * @param userId
