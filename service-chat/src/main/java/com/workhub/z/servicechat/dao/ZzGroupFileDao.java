@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 群文件(ZzGroupFile)表数据库访问层
@@ -70,4 +71,9 @@ public interface ZzGroupFileDao extends Mapper<ZzGroupFile> {
     Long groupFileListTotal(@Param("id")String id);
 
     List<GroupInfoVO> groupFileList(@Param("id") String id);
+    //查询附件大小
+    double queryFileSize(@Param("dateFmat") String dateFmat,@Param("date") String date,@Param("unit") long unit );
+    //查询附件大小(日期范围)
+    List<Map> queryFileSizeRange(@Param("dateFmat") String dateFmat, @Param("dateBegin") String dateBegin, @Param("dateEnd") String dateEnd, @Param("unit") long unit );
+
 }

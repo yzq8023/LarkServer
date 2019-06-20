@@ -5,6 +5,7 @@ import com.workhub.z.servicechat.VO.GroupInfoVO;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 群文件(ZzGroupFile)表服务接口
@@ -70,4 +71,23 @@ public interface ZzGroupFileService {
      * @throws Exception
      */
     Long groupFileListTotal(String id) throws Exception;
+    /**
+     * 获取上传附件大小（数据库统计）
+     *
+     * @param queryType 查询类型0天（默认），1月，2年
+     * @param queryDate 查询时间
+     * @param returnUnit 返回结果单位  0 M（默认），1 G，2 T
+     * @return 文件大小
+     */
+    public String getGroupChatFileSizeByDB(String queryType, String queryDate, String returnUnit) throws Exception;
+    /**
+     * 获取上传附件区间段情况(数据库统计)
+     *
+     * @param queryType 查询类型0天（默认），1月，2年
+     * @param queryDateBegin 查询时间开始
+     * @param queryDateEnd 查询时间结束
+     * @param returnUnit 返回结果单位  0 M（默认），1 G，2 T
+     * @return 文件去区间段大小
+     */
+    public List<Map<String,String>>  getGroupChatFileSizeRangeByDB(String queryType, String queryDateBegin, String queryDateEnd, String returnUnit) throws Exception;
 }
