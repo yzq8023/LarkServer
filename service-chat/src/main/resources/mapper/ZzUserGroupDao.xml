@@ -69,6 +69,7 @@
         <result column="MSG_ID" property="msgId" jdbcType="VARCHAR"></result>
         <result column="TABLE_TYPE" property="tableType" jdbcType="VARCHAR"></result>
         <result column="MSG_SENDER" property="msgSener" jdbcType="VARCHAR"></result>
+        <result column="MSG_RECEIVER" property="msgReceiver" jdbcType="VARCHAR"></result>
         <result column="SEND_TIME" property="sendTime" jdbcType="TIMESTAMP"></result>
         <result column="MSG_CONTENT" property="msg" jdbcType="VARCHAR"></result>
         <result column="MSG_TYPE" property="msgType" jdbcType="VARCHAR"></result>
@@ -83,16 +84,18 @@
                                 SELECT PHPM.MSG_ID AS MSG_ID,
                                       'USER' AS TABLE_TYPE,
                                        PHPM.MSG_SENDER AS MSG_SENDER,
+                                       PHPM.MSG_RECEIVER AS MSG_RECEIVER,
                                        PHPM.SEND_TIME AS SEND_TIME,
                                        PHPM.MSG AS MSG_CONTENT,
                                        PHPM.MSG_TYPE AS MSG_TYPE,
                                        PHPM.LEVELS AS LEVELS_USER
                                 FROM ZZ_PRIVATE_MSG PHPM
-                                WHERE PHPM.MSG_RECEIVER = #{id,jdbcType=VARCHAR}
+                                WHERE PHPM.MSG_RECEIVER = #{id,jdbcType=VARCHAR} or PHPM.MSG_SENDER = #{id,jdbcType=VARCHAR}
            UNION ALL
                      SELECT PHGM.MSG_ID AS MSG_ID,
                                            'GROUP' AS TABLE_TYPE,
                                            PHGM.MSG_RECEIVER AS MSG_SENDER,
+                                           PHGM.MSG_SENDER AS MSG_RECEIVER,
                                            PHGM.SEND_TIME AS SEND_TIME,
                                            PHGM.MSG AS MSG_CONTENT,
                                            PHGM.MSG_TYPE AS MSG_TYPE,
