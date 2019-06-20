@@ -114,7 +114,7 @@ public class OrgBiz extends BaseBiz<OrgMapper, Org> {
                     users.stream().forEach(user ->{
                         OrgUser orgUser = new OrgUser();
                         orgUser.setIcon(user.getAvatar());
-                        orgUser.setKey(user.getPId());
+                        orgUser.setKey(user.getId());
                         orgUser.setScopedSlotsTitle("userNode");
                         orgUser.setTitle(user.getName());
                         orgUser.setOnline(true);
