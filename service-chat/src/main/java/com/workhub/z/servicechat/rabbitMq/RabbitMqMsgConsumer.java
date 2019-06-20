@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 //消息测试接收，上线注释掉
-@Component
+//@Component
 public class RabbitMqMsgConsumer {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     //一个生产者，一个消费者

@@ -12,7 +12,7 @@ import com.workhub.z.servicechat.entity.ZzUserGroup;
 import com.workhub.z.servicechat.model.CreateGroupDto;
 import com.workhub.z.servicechat.model.GroupTaskDto;
 import com.workhub.z.servicechat.model.UserListDto;
-
+import com.github.hollykunge.security.common.vo.rpcvo.*;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,12 +40,12 @@ public abstract class VoToEntity {
         zpm.setMsgId(getUUID());//信息ID
         zpm.setMsgSender(json.getString("fromId"));
         zpm.setMsgReceiver(json.getString("toId"));
-        zpm.setLevels(json.getString("secretLevel"));
+        zpm.setLevels(json.getObject("content",MessageContent.class).getSecretLevel().toString());
         zpm.setIsRead("0");
         zpm.setMsgPath("");
         zpm.setIsDelete("0");
         zpm.setMsg(json.getString("content"));
-        zpm.setMsgType(json.getString("type"));
+        zpm.setMsgType(json.getObject("content",MessageContent.class).getType().toString());
         zpm.setSendTime(json.getDate("time"));
         zpm.setReceiverTime(json.getDate("time"));
         return zpm;
@@ -62,11 +62,11 @@ public abstract class VoToEntity {
         zpm.setMsgId(getUUID());//信息ID
         zpm.setMsgSender(json.getString("fromId"));
         zpm.setMsgReceiver(json.getString("toId"));
-        zpm.setLevels(json.getString("secretLevel"));
+        zpm.setLevels(json.getObject("content",MessageContent.class).getSecretLevel().toString());
         zpm.setMsgPath("");
         zpm.setIsDelete("0");
         zpm.setMsg(json.getString("content"));
-        zpm.setMsgType(json.getString("type"));
+        zpm.setMsgType(json.getObject("content",MessageContent.class).getType().toString());
         zpm.setSendTime(json.getDate("time"));
         zpm.setIsImportant("0");
         return zpm;
