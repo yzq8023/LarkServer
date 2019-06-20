@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 @Component
 @Data
 public class AppConfig {
-    @Value("${fdfs.resHost}")
+    @Value("${fdfs.nginxHost}")
     private String resHost;
 
-    @Value("${fdfs.storagePort}")
+    @Value("${fdfs.nginxPort}")
     private String storagePort;
 }
