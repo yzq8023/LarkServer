@@ -9,13 +9,25 @@ public class ContactVO {
     private String id;//用户id
     private String name;//名称
     private String time;//最近联系时间
-    private String lastMessage;//最后一条消息
+    private MessageContent lastMessage;//最后一条消息
+    private String sender;//消息发送人
     private String avatar;//头像
     private int unreadNum;//未读消息条数
     private boolean atMe;//是否@我
     private boolean isTop;//是否置顶
     private boolean isMute;//
     private boolean isGroup;//群组消息
+
+    // TODO: 2019/6/19 消息发送者名称  sender
+
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -37,10 +49,10 @@ public class ContactVO {
         return time;
     }
 
-    public void setLastMessage(String lastMessage) {
+    public void setLastMessage(MessageContent lastMessage) {
         this.lastMessage = lastMessage;
     }
-    public String getLastMessage() {
+    public MessageContent getLastMessage() {
         return lastMessage;
     }
 
