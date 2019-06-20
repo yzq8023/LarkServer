@@ -184,13 +184,14 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
                 group = zzGroupService.queryById(n.getMsgSener());
 
                 contactVO.setId(n.getMsgSener());
-                JSON.toJavaObject(JSON.parseObject(n.getMsg()), MessageContent.class);
+                UserInfo userInfo = iUserService.info(n.getMsgReceiver());
+//                JSON.toJavaObject(JSON.parseObject(n.getMsg()), MessageContent.class);
 //                MessageContent testProcessInfo = (MessageContent)JSONObject.toBean(n.getMsg(), MessageContent.class);
                 contactVO.setLastMessage(JSON.toJavaObject(JSON.parseObject(n.getMsg()), MessageContent.class));
                 contactVO.setTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(n.getSendTime()));
                 contactVO.setAvatar(group.getGroupImg());
                 contactVO.setName(group.getGroupName());
-//                contactVO.setSender();
+                contactVO.setSender(userInfo.getName());
                 contactVO.setAtMe(false);
                 contactVO.setIsTop(false);
                 contactVO.setIsMute(false);
@@ -202,9 +203,10 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
                 contactVO.setTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(n.getSendTime()));
                 contactVO.setAvatar(userInfo.getAvatar());
                 contactVO.setName(userInfo.getName());
-//                contactVO.setAtMe(false);
-//                contactVO.setIsTop(false);
-//                contactVO.setIsMute(false);
+                contactVO.setSender("");
+                contactVO.setAtMe(false);
+                contactVO.setIsTop(false);
+                contactVO.setIsMute(false);
                 contactVO.setIsGroup(n.getTableType().equals("GROUP"));
             }
             for (int j = 0; j < noReadVos.size(); j++) {
