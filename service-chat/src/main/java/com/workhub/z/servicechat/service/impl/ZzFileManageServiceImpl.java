@@ -1,5 +1,6 @@
 package com.workhub.z.servicechat.service.impl;
 
+import com.workhub.z.servicechat.config.FileTypeEnum;
 import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.config.fileManage;
 import com.workhub.z.servicechat.service.ZzFileManageService;
@@ -36,25 +37,32 @@ public class ZzFileManageServiceImpl implements ZzFileManageService {
             if (date.length() == 1) {
                 date = "0" + date;
             }
-
             String fileId = RandomId.getUUID();
             String fileName = file.getOriginalFilename();
             String suffix = "";
+            String file_ext = "";
             if (fileName.indexOf(".") != -1) {
                 suffix = fileName.substring(fileName.lastIndexOf("."));
+                fileName = fileName.substring(0,fileName.lastIndexOf("."));
             }
-
+            if(!"".equals(suffix) && !".".equals(suffix)){
+                file_ext=suffix.substring(suffix.indexOf(".")+1);
+            }
             String newFileName = fileId + suffix;
 
-            String filepath = year + month + date;
+            String filepath = "D:/file-management-center/upload/" + year + month + date;
 
-            fileManage.uploadFile(file, filepath, newFileName);
+            String file_type = "";
+            FileTypeEnum fileTypeEnum = FileTypeEnum.getEnumByValue(file_ext);
+            file_type = fileTypeEnum.getType();
 
+            fileManage.uploadFile(file, filepath, newFileName,Integer.valueOf(200));
             resMap.put("file_id", fileId);
-            resMap.put("file_real_name", newFileName);
-            resMap.put("file_path", filepath);
+            resMap.put("file_path", filepath + "/" + newFileName);
             resMap.put("file_size", String.valueOf(file.getSize()));
             resMap.put("file_upload_name", fileName);
+            resMap.put("file_ext", file_ext);
+            resMap.put("file_type", file_type);
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
@@ -67,7 +75,7 @@ public class ZzFileManageServiceImpl implements ZzFileManageService {
     public String delUploadFile(String path) throws Exception {
         String res = "1";
         try {
-            fileManage.delFile(path);
+            fileManage.delUploadFile(path);
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
@@ -79,7 +87,7 @@ public class ZzFileManageServiceImpl implements ZzFileManageService {
     //附件下载
     public HttpServletResponse downloadFile(HttpServletResponse response, String filePath, String fileName) throws Exception {
         try {
-            return fileManage.downloadFile(response, filePath, fileName);
+            return fileManage.downloadUploadFile(response, filePath, fileName);
         } catch (Exception e) {
             e.printStackTrace();
             throw e;

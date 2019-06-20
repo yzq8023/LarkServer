@@ -1,5 +1,6 @@
 package com.workhub.z.servicechat.controller;
 
+import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.hollykunge.security.common.rest.BaseController;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -146,5 +148,36 @@ public class ZzGroupMsgController
             e.printStackTrace();
         }
         return res;
+    }
+    /**
+     *@Description: 根据消息ID查询发送人详细信息
+     *@Param:
+     *@return: userid
+     *@Author: 忠
+     *@date: 2019/6/20
+     */
+    @GetMapping("/getSenderByMsgId")
+    public ObjectRestResponse getSenderByMsgId(@RequestParam("msgId") String msgId) throws Exception{
+        String data= this.zzGroupMsgService.getSenderByMsgId(msgId);
+        ObjectRestResponse res = new ObjectRestResponse();
+        res.data(data);
+        res.msg("200");
+        res.rel(true);
+        return res;
+
+    }
+    /**
+     *@Description: 根据消息ID查询接收人详细信息（若为群组则返回当前群组内userList）
+     *@Param:
+     *@return: userid,list<userid>
+     *@Author: 忠
+     *@date: 2019/6/20
+     */
+    @GetMapping("/getReceiversByMsgId")
+    public ListRestResponse getReceiversByMsgId(@RequestParam("msgId") String msgId) throws Exception{
+        List<String> data= this.zzGroupMsgService.getReceiversByMsgId(msgId);
+        ListRestResponse res = new ListRestResponse("200",data.size(),data);
+        return res;
+
     }
 }

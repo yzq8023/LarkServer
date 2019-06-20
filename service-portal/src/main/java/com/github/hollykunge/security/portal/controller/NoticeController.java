@@ -19,9 +19,9 @@ import java.util.List;
 public class NoticeController extends BaseController<NoticeService, Notice>{
     @RequestMapping(value = "/orgNotice", method = RequestMethod.GET)
     @ResponseBody
-    public ListRestResponse<List<Notice>> orgNotices(@RequestParam("orgId") String orgId) {
+    public ListRestResponse<List<Notice>> orgNotices(@RequestParam String orgCode) {
         Notice notice = new Notice();
-        notice.setOrgCode(orgId);
+        notice.setOrgCode(orgCode);
         List<Notice> notices = baseBiz.selectList(notice);
         return new ListRestResponse("",notices.size(),notices);
     }

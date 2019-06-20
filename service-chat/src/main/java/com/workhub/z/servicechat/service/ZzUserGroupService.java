@@ -82,4 +82,8 @@ public interface ZzUserGroupService {
      */
     String setUserGroupMute(String userId,String gourpId,String topFlg) throws Exception;
 
+    //获取群里有多少成员
+    int getGroupUserCount(String groupid)throws Exception;
+    //获取群前九个人的头像地址
+    List<String> getGroupUserHeadList(String groupid)throws Exception;
 }

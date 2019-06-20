@@ -119,6 +119,9 @@ public class PermissionService {
      */
     public List<FrontPermission> getPermissionByUserId(String userId) {
         List<Role> roleByUserId = roleBiz.getRoleByUserId(userId);
+        if(roleByUserId.size()==0){
+            throw new BaseException("该人员没有访问权限...");
+        }
         List<FrontPermission> authorityMenu = roleBiz.frontAuthorityMenu(roleByUserId.get(0).getId());
         return authorityMenu;
     }

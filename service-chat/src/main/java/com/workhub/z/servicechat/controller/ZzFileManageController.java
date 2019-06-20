@@ -4,13 +4,22 @@ import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
 import com.workhub.z.servicechat.service.ZzFileManageService;
 import com.workhub.z.servicechat.service.ZzGroupFileService;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import java.io.*;
+
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
@@ -101,8 +110,8 @@ public class ZzFileManageController {
                 zzGroupFile.setSizes(Double.parseDouble(uplodaRes.get("file_size")));
                 zzGroupFile.setFileName(uplodaRes.get("file_upload_name"));
                 zzGroupFile.setPath(uplodaRes.get("file_path"));
-                zzGroupFile.setFileExt("");
-                zzGroupFile.setFileType("");
+                zzGroupFile.setFileExt(uplodaRes.get("file_ext"));
+                zzGroupFile.setFileType(uplodaRes.get("file_type"));
                 zzGroupFile.setReadPath("");
                 zzGroupFile.setUpdator("登陆人id_测试");
                 zzGroupFile.setUpdateTime(new Date());
@@ -113,7 +122,7 @@ public class ZzFileManageController {
                 } catch (Exception e) {
                     e.printStackTrace();
                     //如果上传失败，那么删除已经上传的附件
-                    zzFileManageService.delUploadFile(uplodaRes.get("file_path") + "/" + uplodaRes.get("file_real_name"));
+                    zzFileManageService.delUploadFile(uplodaRes.get("file_path"));
                     zzGroupFile=null;
                 }
             }
@@ -142,18 +151,11 @@ public class ZzFileManageController {
             return  obj;
         }
         String fileName = zzGroupFile.getFileName();//下载名称
+        String fileExt = zzGroupFile.getFileExt();//后缀
+        if(!"".equals(fileExt)){
+            fileName=fileName+"."+fileExt;
+        }
         String filePath = zzGroupFile.getPath();//文件路径
-        String suffix = "";
-        if (fileName.indexOf(".") != -1) {
-            suffix = fileName.substring(fileName.lastIndexOf("."));
-        }
-        String realFileName = fileId + suffix;
-        if (filePath == null) {
-            filePath = realFileName;
-        } else {
-            filePath = filePath + "/" + realFileName;
-        }
-
         try {
             response = zzFileManageService.downloadFile(response, filePath, fileName);
         } catch (Exception e) {
@@ -167,6 +169,15 @@ public class ZzFileManageController {
         return obj;
     }
 
+
+    @RequestMapping(value = "/getFileImageStream",produces = MediaType.IMAGE_JPEG_VALUE)
+    @ResponseBody
+    public BufferedImage getFileImageStream(String fileId) throws IOException {
+        ZzGroupFile zzGroupFile = zzGroupFileService.queryById(fileId);
+        try (InputStream is = new FileInputStream(zzGroupFile.getPath())) {
+            return ImageIO.read(is);
+        }
+    }
     @RequestMapping("/GetFile")
     public void getFile(HttpServletRequest request , HttpServletResponse response) throws IOException {
         //读取路径下面的文件
@@ -208,5 +219,6 @@ public class ZzFileManageController {
         //关流
         outputStream.close();
         in.close();
+
     }
 }

@@ -85,4 +85,6 @@ public interface ZzGroupMsgDao extends Mapper<ZzGroupMsg> {
      * @return 对象列表
      */
     List<ZzGroupMsg> queryMsgCurrentAndHis(Map<String,String> param);
+
+    List<String> getReceiversByMsgId(@Param("msgId") String msgId);
 }

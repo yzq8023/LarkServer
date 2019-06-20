@@ -55,6 +55,12 @@ public class ElementBiz extends BaseBiz<ElementMapper,Element> {
     }
 
     @Override
+    @CacheClear(keys={"permission:ele","permission"})
+    public void deleteById(Object id) {
+        super.deleteById(id);
+    }
+
+    @Override
     protected String getPageName() {
         return null;
     }
