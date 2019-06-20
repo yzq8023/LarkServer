@@ -58,7 +58,7 @@ zuul:
       serviceId: service-portal
 
     fdfs:
-      path: /fdfsfile/**
+      path: /fdfs/**
       serviceId: service-dfsfile
 
 ribbon:
@@ -92,7 +92,7 @@ hystrix:
 
 gate:
   ignore:
-    startWith: /static,/auth/jwt
+    startWith: /static,/auth/jwt,/fdfs/file
 
 
 auth:

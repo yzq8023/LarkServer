@@ -53,6 +53,7 @@ public class UserCardService extends BaseBiz<UserCardMapper, UserCard> {
         //用userId查询已经添加卡片的数量
         UserCard userParams = new UserCard();
         userParams.setUserId(entity.getUserId());
+        entity.setI( mapper.selectCount(userParams)+1+"");
         entity.setId(UUIDUtils.generateShortUuid());
         entity.setStatus("1");
         mapper.insertSelective(entity);
