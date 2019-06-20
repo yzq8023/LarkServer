@@ -17,9 +17,9 @@ public class UserCommonTools {
     @Column(name = "ID")
     private String id;
 
-    @Column(name = "USERID")
+    @Column(name = "USER_ID")
     private String userId;
 
-    @Column(name = "TOOLID")
+    @Column(name = "TOOL_ID")
     private String toolId;
 }

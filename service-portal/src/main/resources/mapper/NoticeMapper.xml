@@ -10,5 +10,6 @@
     <result column="TYPE" property="type" jdbcType="VARCHAR" />
     <result column="CONTENT" property="content" jdbcType="VARCHAR" />
     <result column="TOP" property="top" jdbcType="VARCHAR" />
+    <result column="ORG_CODE" property="orgCode" jdbcType="VARCHAR" />
   </resultMap>
 </mapper>

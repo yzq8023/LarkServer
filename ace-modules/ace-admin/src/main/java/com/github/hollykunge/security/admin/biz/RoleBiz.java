@@ -82,6 +82,12 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
         }
     }
 
+    @Override
+    @CacheClear(keys = {"permission:menu", "permission:u","frontPermission{1}"})
+    public void deleteById(Object id) {
+        super.deleteById(id);
+    }
+
     @CacheClear(keys = {"permission:menu", "permission:u","frontPermission{1}"})
     public void modifyAuthorityMenu(String roleId, List<AdminPermission> permissionList) {
         if(StringUtils.isEmpty(roleId)||permissionList.isEmpty()){
