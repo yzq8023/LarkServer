@@ -17,4 +17,12 @@ public class CommonTools {
     @Column(name = "ID")
     @Id
     private String id;
+    @Column(name = "URI")
+    private String uri;
+    @Column(name = "TITLE")
+    private String title;
+    @Column(name = "DESCRIPTION")
+    private String description;
+    @Column(name = "STATUS")
+    private String status;
 }
