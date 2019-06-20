@@ -3,6 +3,7 @@ package com.workhub.z.servicechat.service.impl;
 import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.vo.rpcvo.ContactVO;
+import com.github.hollykunge.security.common.vo.rpcvo.MessageContent;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.VO.GroupListVo;
@@ -24,6 +25,9 @@ import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 //import com.workhub.z.servicechat.VO.ContactVO;
 
@@ -156,20 +160,20 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
         // TODO: 2019/6/12 私有化定制
         List<ContactVO> list = new ArrayList<ContactVO>();
         //mq添加消息发送 开发测试用begin
-        try {
-            ContactVO vo=new ContactVO();
-            vo.setUnreadNum(1);
-            vo.setAtMe(true);
-            vo.setAvatar("1111");
-            vo.setId("223323");
-            list.add(vo);
-            //rabbitMqMsgProducer.sendMsg(vo);
-            rabbitMqMsgProducer.sendMsg(list);
-            //String json = mapper.writeValueAsString(list);
-            // rabbitMqMsgProducer.sendMsg(json);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+//        try {
+//            ContactVO vo=new ContactVO();
+//            vo.setUnreadNum(1);
+//            vo.setAtMe(true);
+//            vo.setAvatar("1111");
+//            vo.setId("223323");
+//            list.add(vo);
+//            //rabbitMqMsgProducer.sendMsg(vo);
+//            rabbitMqMsgProducer.sendMsg(list);
+//            //String json = mapper.writeValueAsString(list);
+//            // rabbitMqMsgProducer.sendMsg(json);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
         //mq添加消息发送 开发测试用end
         List<NoReadVo> noReadVos = zzMsgReadRelationService.queryNoReadCountList(id);
         if(userNewMsgList == null|| userNewMsgList.isEmpty()) return list;
@@ -180,10 +184,13 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
                 group = zzGroupService.queryById(n.getMsgSener());
 
                 contactVO.setId(n.getMsgSener());
-                contactVO.setLastMessage(n.getMsg());
+                JSON.toJavaObject(JSON.parseObject(n.getMsg()), MessageContent.class);
+//                MessageContent testProcessInfo = (MessageContent)JSONObject.toBean(n.getMsg(), MessageContent.class);
+                contactVO.setLastMessage(JSON.toJavaObject(JSON.parseObject(n.getMsg()), MessageContent.class));
                 contactVO.setTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(n.getSendTime()));
                 contactVO.setAvatar(group.getGroupImg());
                 contactVO.setName(group.getGroupName());
+//                contactVO.setSender();
                 contactVO.setAtMe(false);
                 contactVO.setIsTop(false);
                 contactVO.setIsMute(false);
@@ -191,7 +198,7 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
             } else if (n.getTableType().equals("USER")) {
                 UserInfo userInfo = iUserService.info(n.getMsgSener());
                 contactVO.setId(n.getMsgSener());
-                contactVO.setLastMessage(n.getMsg());
+                contactVO.setLastMessage(JSON.toJavaObject(JSON.parseObject(n.getMsg()), MessageContent.class));
                 contactVO.setTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(n.getSendTime()));
                 contactVO.setAvatar(userInfo.getAvatar());
                 contactVO.setName(userInfo.getName());
@@ -213,6 +220,7 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
 //            });
             list.add(contactVO);
         });
+        rabbitMqMsgProducer.sendMsg(list);
         return list;
     }
     /**
@@ -243,6 +251,16 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
         if(i==0){
             res = "0";
         }
+        return  res;
+    }
+    //获取群里有多少个成员
+    public int getGroupUserCount(String groupid)throws Exception{
+        int i=this.zzUserGroupDao.getGroupUserCount(groupid);
+        return  i;
+    }
+    //获取群前九个人的头像地址
+    public List<String> getGroupUserHeadList(String groupid)throws Exception{
+        List<String> res=this.zzUserGroupDao.getGroupUserHeadList(groupid);
         return  res;
     }
 }

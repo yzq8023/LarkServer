@@ -92,7 +92,39 @@ public class fileManage {
         }
         return response;
     }
+    public static HttpServletResponse downloadUploadFile(HttpServletResponse response,
+                                                   String filePath, String fileName) throws Exception {
+        File file = new File(filePath);
+        response.setContentType("application/x-download");
+        response.setHeader("Pragma", "public");
+        response.setHeader("Cache-Control",
+                "must-revalidate, post-check=0, pre-check=0");
+        OutputStream out = null;
+        InputStream in = null;
+        fileName = new String(fileName.getBytes("GBK"), "ISO-8859-1");
+        response.addHeader("Content-disposition", "attachment;filename=" + fileName);// 设定输出文件头
 
+        try {
+            out = response.getOutputStream();
+            in = new FileInputStream(file);
+            int len = in.available();
+            byte[] b = new byte[len];
+            in.read(b);
+            out.write(b);
+            out.flush();
+
+        } catch (Exception e) {
+            throw new Exception("下载失败!");
+        } finally {
+            if (in != null) {
+                in.close();
+            }
+            if (out != null) {
+                out.close();
+            }
+        }
+        return response;
+    }
     /**
      * 服务默认路径
      * @param file
@@ -119,7 +151,16 @@ public class fileManage {
         createFolder(PATH + "/" + path);
         file.transferTo(new File(PATH + "/" + path + "/" + filename));
     }
-
+    public static void uploadFile(MultipartFile file, String path, String filename,int file_size) throws Exception {
+        if (file == null) {
+            throw new NullPointerException();
+        }
+        if (file_size < file.getSize()/1024/1024) {
+            throw new RuntimeException("上传文件超过" + file_size  + "M");
+        }
+        createFolder( path);
+        file.transferTo(new File(path + "/" + filename));
+    }
     //创建文件夹
     public static void createFolder(String path) {
         File folderPath = new File(path);
@@ -148,7 +189,15 @@ public class fileManage {
         if (file.exists() && file.isFile())
             file.delete();
     }
-
+    /**
+     * 删除文件(不能有子目录)
+     * @param url
+     */
+    public static void delUploadFile(String url) {
+        File file = new File(url);
+        if (file.exists() && file.isFile())
+            file.delete();
+    }
 
     /**
      * 删除目录(递归删除子目录以及文件)

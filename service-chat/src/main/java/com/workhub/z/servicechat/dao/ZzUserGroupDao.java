@@ -91,4 +91,9 @@ public interface ZzUserGroupDao extends Mapper<ZzUserGroup> {
      * @since 2019-06-11
      */
     int setUserGroupMute(@Param("userId") String userId, @Param("groupId") String groupId, @Param("muteFlg") String topFlg);
+
+    //获取一个群组有多少成员
+    int getGroupUserCount(@Param("groupId") String groupId);
+    //获取群前九个人的头像地址
+    List<String> getGroupUserHeadList(@Param("groupId") String groupId);
 }

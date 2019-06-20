@@ -195,4 +195,24 @@
                 UPDATE
                  SET a.IS_MUTE = #{muteFlg}
     </update>
+
+    <select id="getGroupUserCount" resultType="java.lang.Integer">
+        select count(1) as cnt
+          from sys_user u, zz_user_group gu, zz_group g
+         where u.userid = gu.user_id
+           and gu.group_id = g.group_id
+           and g.id = #{groupId}
+    </select>
+    <select id="getGroupUserHeadList" resultType="java.lang.String">
+        select a.head
+        from (select u.head, gu.createtime
+                from sys_user u, zz_user_group gu, zz_group g
+                where u.userid = gu.user_id
+                and gu.group_id = g.group_id
+                and g.id = #{groupId}
+                order by gu.createtime desc) a
+        where rownum &lt;= 9
+        order by a.createtime asc
+    </select>
+
 </mapper>

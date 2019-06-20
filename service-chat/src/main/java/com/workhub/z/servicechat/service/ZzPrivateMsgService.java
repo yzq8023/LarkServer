@@ -67,4 +67,21 @@ public interface ZzPrivateMsgService {
      * @return 对象列表
      */
     TableResultResponse<ZzPrivateMsg> queryMsg(Map<String,String> param) throws Exception;
+    
+    /**
+    *@Description: 根据消息ID查询发送人详细信息
+    *@Param: 
+    *@return: userid
+    *@Author: 忠
+    *@date: 2019/6/20
+    */
+    
+    
+    /**
+    *@Description: 根据消息ID查询接收人详细信息（若为群组则返回当前群组内userList）
+    *@Param: 
+    *@return: userid,list<userid>
+    *@Author: 忠
+    *@date: 2019/6/20
+    */
 }

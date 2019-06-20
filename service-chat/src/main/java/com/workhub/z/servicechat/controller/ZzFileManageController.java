@@ -4,12 +4,22 @@ import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
 import com.workhub.z.servicechat.service.ZzFileManageService;
 import com.workhub.z.servicechat.service.ZzGroupFileService;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import java.io.*;
+
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
@@ -100,8 +110,8 @@ public class ZzFileManageController {
                 zzGroupFile.setSizes(Double.parseDouble(uplodaRes.get("file_size")));
                 zzGroupFile.setFileName(uplodaRes.get("file_upload_name"));
                 zzGroupFile.setPath(uplodaRes.get("file_path"));
-                zzGroupFile.setFileExt("");
-                zzGroupFile.setFileType("");
+                zzGroupFile.setFileExt(uplodaRes.get("file_ext"));
+                zzGroupFile.setFileType(uplodaRes.get("file_type"));
                 zzGroupFile.setReadPath("");
                 zzGroupFile.setUpdator("登陆人id_测试");
                 zzGroupFile.setUpdateTime(new Date());
@@ -112,7 +122,7 @@ public class ZzFileManageController {
                 } catch (Exception e) {
                     e.printStackTrace();
                     //如果上传失败，那么删除已经上传的附件
-                    zzFileManageService.delUploadFile(uplodaRes.get("file_path") + "/" + uplodaRes.get("file_real_name"));
+                    zzFileManageService.delUploadFile(uplodaRes.get("file_path"));
                     zzGroupFile=null;
                 }
             }
@@ -141,18 +151,11 @@ public class ZzFileManageController {
             return  obj;
         }
         String fileName = zzGroupFile.getFileName();//下载名称
+        String fileExt = zzGroupFile.getFileExt();//后缀
+        if(!"".equals(fileExt)){
+            fileName=fileName+"."+fileExt;
+        }
         String filePath = zzGroupFile.getPath();//文件路径
-        String suffix = "";
-        if (fileName.indexOf(".") != -1) {
-            suffix = fileName.substring(fileName.lastIndexOf("."));
-        }
-        String realFileName = fileId + suffix;
-        if (filePath == null) {
-            filePath = realFileName;
-        } else {
-            filePath = filePath + "/" + realFileName;
-        }
-
         try {
             response = zzFileManageService.downloadFile(response, filePath, fileName);
         } catch (Exception e) {
@@ -164,5 +167,58 @@ public class ZzFileManageController {
 
 
         return obj;
+    }
+
+
+    @RequestMapping(value = "/getFileImageStream",produces = MediaType.IMAGE_JPEG_VALUE)
+    @ResponseBody
+    public BufferedImage getFileImageStream(String fileId) throws IOException {
+        ZzGroupFile zzGroupFile = zzGroupFileService.queryById(fileId);
+        try (InputStream is = new FileInputStream(zzGroupFile.getPath())){
+            return ImageIO.read(is);
+        }
+
+    @RequestMapping("/GetFile")
+    public void getFile(HttpServletRequest request , HttpServletResponse response) throws IOException {
+        //读取路径下面的文件
+        File file = new File("D:\\file-management-center\\upload\\20190619\\g0ngOZCN.png");
+        File picFile = null;
+//        for(File f : file.listFiles()){
+//            if(f.getName().contains("文件名")){
+                //根据路径获取文件
+                picFile = new File("D:\\file-management-center\\upload\\20190619\\g0ngOZCN.png");
+                //获取文件后缀名格式
+                String ext = picFile.getName().substring(picFile.getName().indexOf("."));
+                //判断图片格式,设置相应的输出文件格式
+                if(ext.equals("jpg")){
+                    response.setContentType("image/jpeg");
+                }else if(ext.equals("JPG")){
+                    response.setContentType("image/jpeg");
+                }else if(ext.equals("png")){
+                    response.setContentType("image/png");
+                }else if(ext.equals("PNG")){
+                    response.setContentType("image/png");
+                }
+//            }
+//        }
+        //读取指定路径下面的文件
+        InputStream in = new FileInputStream(picFile);
+        OutputStream outputStream = new BufferedOutputStream(response.getOutputStream());
+        //创建存放文件内容的数组
+        byte[] buff =new byte[1024];
+        //所读取的内容使用n来接收
+        int n;
+        //当没有读取完时,继续读取,循环
+        while((n=in.read(buff))!=-1){
+            //将字节数组的数据全部写入到输出流中
+
+            outputStream.write(buff,0,n);
+        }
+        //强制将缓存区的数据进行输出
+        outputStream.flush();
+        //关流
+        outputStream.close();
+        in.close();
+
     }
 }
