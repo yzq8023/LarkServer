@@ -26,23 +26,21 @@ public class FastDFSClientWrapper {
     @Autowired
     private FastFileStorageClient storageClient;
 
-    @Autowired
-    private AppConfig appConfig;
 
     /**
      * 上传文件
      * @param file 文件对象
-     * @return 文件访问地址
+     * @return 文件访问地址相对路径，如果想要访问该文件使用全路径如：http://nginxIP:80/ + 返回值
      * @throws IOException
      */
     public String uploadFile(MultipartFile file) throws IOException {
         StorePath storePath = storageClient.uploadFile(file.getInputStream(),file.getSize(), FilenameUtils.getExtension(file.getOriginalFilename()),null);
-        return getResAccessUrl(storePath);
+        return storePath.getFullPath();
     }
 
     /**
      * 将一段字符串生成一个文件上传
-     * @param content 文件内容
+     * @param content 文件访问地址相对路径，如果想要访问该文件使用全路径如：http://nginxIP:80/ 返回值
      * @param fileExtension
      * @return
      */
@@ -50,15 +48,15 @@ public class FastDFSClientWrapper {
         byte[] buff = content.getBytes(Charset.forName("UTF-8"));
         ByteArrayInputStream stream = new ByteArrayInputStream(buff);
         StorePath storePath = storageClient.uploadFile(stream,buff.length, fileExtension,null);
-        return getResAccessUrl(storePath);
+        return storePath.getFullPath();
     }
 
     // 封装图片完整URL地址
-    private String getResAccessUrl(StorePath storePath) {
-        String fileUrl = "http://" + appConfig.getResHost()
-                + ":" + appConfig.getStoragePort() + "/" + storePath.getFullPath();
-        return fileUrl;
-    }
+//    private String getResAccessUrl(StorePath storePath) {
+//        String fileUrl = "http://" + appConfig.getResHost()
+//                + ":" + appConfig.getStoragePort() + "/" + storePath.getFullPath();
+//        return fileUrl;
+//    }
 
     /**
      * 删除文件
@@ -92,7 +90,7 @@ public class FastDFSClientWrapper {
     /**
      * 上传图片并生成缩略图
      * @param file
-     * @return
+     * @return 文件访问地址相对路径，如果想要访问该文件使用全路径如：http://nginxIP:80/ 返回值
      * @throws IOException
      */
     public String crtThumbImage(MultipartFile file) throws IOException {
@@ -108,6 +106,6 @@ public class FastDFSClientWrapper {
         //上传图片的缩略图
         StorePath storePath = this.storageClient.uploadImageAndCrtThumbImage(file.getInputStream(),
                 file.getSize(), FilenameUtils.getExtension(file.getOriginalFilename()),null);
-        return getResAccessUrl(storePath);
+        return storePath.getFullPath();
     }
 }
