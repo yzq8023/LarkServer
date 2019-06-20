@@ -141,7 +141,7 @@ public class ZzGroupController  {
         return new ListRestResponse("200",groups.size(),groups);
     }
 
-    @PostMapping("/queryTest")
+    @PostMapping("/queryContactListById")
     public ListRestResponse queryTest(@RequestParam("userId")String userId) throws Exception {
         List<ContactVO> contactVOS = userGroupService.getContactVOList(userId);
 //        List<ZzGroup> groups = this.zzGroupService.queryGroupListByUserId(userId);
