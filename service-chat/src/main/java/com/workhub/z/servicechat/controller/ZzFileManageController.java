@@ -174,10 +174,10 @@ public class ZzFileManageController {
     @ResponseBody
     public BufferedImage getFileImageStream(String fileId) throws IOException {
         ZzGroupFile zzGroupFile = zzGroupFileService.queryById(fileId);
-        try (InputStream is = new FileInputStream(zzGroupFile.getPath())){
+        try (InputStream is = new FileInputStream(zzGroupFile.getPath())) {
             return ImageIO.read(is);
         }
-
+    }
     @RequestMapping("/GetFile")
     public void getFile(HttpServletRequest request , HttpServletResponse response) throws IOException {
         //读取路径下面的文件
