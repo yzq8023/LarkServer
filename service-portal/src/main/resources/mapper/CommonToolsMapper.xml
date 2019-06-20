@@ -6,5 +6,9 @@
       WARNING - @mbg.generated
     -->
     <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="URI" property="uri" jdbcType="VARCHAR" />
+    <result column="TITLE" property="title" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
   </resultMap>
 </mapper>

@@ -223,4 +223,13 @@
         ) a
          order by a.send_time desc
     </select>
+    <!--最近消息记录-->
+    <select id="getReceiversByMsgId" resultType="java.lang.String">
+        select distinct b.user_id
+        from zz_group_msg a, zz_user_group b
+        where a.msg_receiver = b.group_id
+        and a.msg_id = #{msgId}
+        and b.user_id != a.msg_sender
+    </select>
+
 </mapper>

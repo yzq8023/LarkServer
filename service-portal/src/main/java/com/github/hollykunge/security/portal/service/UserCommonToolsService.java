@@ -2,6 +2,7 @@ package com.github.hollykunge.security.portal.service;
 
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.exception.BaseException;
+import com.github.hollykunge.security.common.util.UUIDUtils;
 import com.github.hollykunge.security.entity.CardInfo;
 import com.github.hollykunge.security.entity.CommonTools;
 import com.github.hollykunge.security.entity.UserCard;
@@ -95,5 +96,11 @@ public class UserCommonToolsService extends BaseBiz<UserCommonToolsMapper, UserC
             result.add(userCommonToolsVO);
         });
         return result;
+    }
+
+    @Override
+    public void insertSelective(UserCommonTools entity) {
+        entity.setId(UUIDUtils.generateShortUuid());
+        mapper.insertSelective(entity);
     }
 }

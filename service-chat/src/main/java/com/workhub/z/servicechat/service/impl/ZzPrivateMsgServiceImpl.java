@@ -134,4 +134,27 @@ public class ZzPrivateMsgServiceImpl extends BaseBiz<ZzPrivateMsgDao, ZzPrivateM
         );
         return  res;
     }
+    /**
+     *@Description: 根据消息ID查询发送人详细信息
+     *@Param:
+     *@return: userid
+     *@Author: 忠
+     *@date: 2019/6/20
+     */
+    public  String getSenderByMsgId(String msgId) throws Exception{
+        ZzPrivateMsg zzPrivateMsg = this.zzPrivateMsgDao.queryById(msgId);
+        return zzPrivateMsg.getMsgSender();
+    }
+
+    /**
+     *@Description: 根据消息ID查询接收人详细信息（若为群组则返回当前群组内userList）
+     *@Param:
+     *@return: userid,list<userid>
+     *@Author: 忠
+     *@date: 2019/6/20
+     */
+    public String getReceiverByMsgId(String msgId) throws Exception{
+        ZzPrivateMsg zzPrivateMsg = this.zzPrivateMsgDao.queryById(msgId);
+        return zzPrivateMsg.getMsgReceiver();
+    }
 }

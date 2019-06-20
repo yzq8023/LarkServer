@@ -59,7 +59,7 @@ public class UserCommonToolsController extends BaseController<UserCommonToolsSer
         if(baseBiz.selectCount(userCommonTools) > 0){
             return new ObjectRestResponse<>().rel(false).msg("fail，user exist this commonTool...");
         }
-        return super.add(userCommonTools).rel(true).msg("success...");
+        return super.add(userCommonTools).rel(true).msg("success...").rel(true);
     }
 
     /**
