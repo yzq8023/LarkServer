@@ -31,12 +31,10 @@ public class AuthController {
         return new ObjectRestResponse().data(new JwtAuthenticationResponse(token)).msg("获取token成功");
     }
 
-    @RequestMapping(value = "logout", method = RequestMethod.POST)
+    @RequestMapping(value = "logout", method = RequestMethod.GET)
     @ResponseBody
-    public ObjectRestResponse<?> removeAuthenticationToken(
-            @RequestBody JwtAuthenticationRequest authenticationRequest) throws Exception {
-        final String token = authService.login(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-        return new ObjectRestResponse().data(new JwtAuthenticationResponse(token)).msg("注销成功");
+    public ObjectRestResponse<?> removeAuthenticationToken(HttpServletRequest request) throws Exception {
+        return new ObjectRestResponse().data("").msg("注销成功").rel(true);
     }
 
     @RequestMapping(value = "refresh", method = RequestMethod.GET)
