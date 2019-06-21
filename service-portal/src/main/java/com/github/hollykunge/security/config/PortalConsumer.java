@@ -39,6 +39,13 @@ public class PortalConsumer {
     @Autowired
     private HeatMapMapper heatMapMapper;
 
+    /**
+     * 工作热力图消费处理
+     * @param message
+     * @param headers
+     * @param channel
+     * @throws Exception
+     */
     @RabbitHandler
     public void handleMessage(HotMapVO message, @Headers Map<String,Object> headers, Channel channel) throws Exception {
         // 处理消息
