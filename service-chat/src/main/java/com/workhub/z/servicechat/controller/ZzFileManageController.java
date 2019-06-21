@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -220,5 +221,38 @@ public class ZzFileManageController {
         outputStream.close();
         in.close();
 
+    }
+    @GetMapping("/getGroupChatFileSizeByDB")
+    //查询附件大小（数据库统计）
+    //queryType 查询类型 0 天(默认)，1 月，2 年
+    //returnUnit 单位 0 M(默认)，1 G，2 T
+    //queryDate 查询日期 天 2019-01-01 ，月 2019-01，年 2019
+    public String getGroupChatFileSizeByDB(@RequestParam("queryType") String queryType,@RequestParam("queryDate") String queryDate,@RequestParam("unit") String returnUnit) {
+        String res = "";//-1接口报错
+        try {
+            res = zzGroupFileService.getGroupChatFileSizeByDB((queryType==null||queryType.equals(""))?"0":queryType,queryDate,(returnUnit==null||returnUnit.equals(""))?"0":returnUnit);
+        }catch (Exception e){
+            e.printStackTrace();
+            res = "-1";
+        }
+
+        return res;
+    }
+
+    @GetMapping("/getGroupChatFileSizeRangeByDB")
+    //查询区间附件大小（数据库统计）
+    //queryType 查询类型 0 天(默认)，1 月，2 年
+    //returnUnit 单位 0 M(默认)，1 G，2 T
+    //queryDateBegin 查询日期开始 天 2019-01-01 ，月 2019-01，年 2019
+    //queryDateEnd 查询日期结束 天 2019-01-02 ，月 2019-02，年 2020
+    public List<Map<String,String>> getGroupChatFileSizeRangeByDB(@RequestParam("queryType") String queryType, @RequestParam("queryDateBegin") String queryDateBegin, @RequestParam("queryDateEnd") String queryDateEnd, @RequestParam("unit") String returnUnit) {
+        List<Map<String,String>> res=null;
+        try {
+            res = zzGroupFileService.getGroupChatFileSizeRangeByDB((queryType==null||queryType.equals(""))?"0":queryType,queryDateBegin,queryDateEnd,(returnUnit==null||returnUnit.equals(""))?"0":returnUnit);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return res;
     }
 }

@@ -7,9 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 //消息测试接收，上线注释掉
 //@Component
@@ -17,8 +18,14 @@ public class RabbitMqMsgConsumer {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     //一个生产者，一个消费者
     @RabbitListener(queues = RabbitConfig.QUEUE_CONTACT,containerFactory="simpleRabbitListenerContainerFactory")
-    public void process(List<ContactVO> userList, Message message, Channel channel) {
+    public void process(Map<String,List<ContactVO>> data, Message message, Channel channel) {
         logger.info("测试：接收处理队列A当中的消息");
+        List<ContactVO> userList=null;
+        Set<String> setList = data.keySet();//只会有一个key 当前登录人的id
+        for(String key :setList){
+            userList=data.get(key);
+        }
+
         try {
             for(ContactVO vo:userList){
                 logger.info("接收消息："+vo.getId());

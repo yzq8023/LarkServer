@@ -189,5 +189,23 @@
     <delete id="deleteById">
         delete from ZZ_GROUP_FILE where FILE_ID = #{fileId}
     </delete>
+    <!--查询附件大小-->
+    <select id="queryFileSize" resultType="java.lang.Double">
+        select sum(nvl(sizes,0))/${unit} as sizes
+          from zz_group_file
+         where 1 = 1
+           and to_char(create_time, #{dateFmat}) = #{date}
+    </select>
+    <!--查询附件大小区间-->
+    <select id="queryFileSizeRange" resultType="Map">
 
+        select sum(a.sizes)/${unit}  sizes,
+        a.create_time dates
+        from (select nvl(sizes,0) sizes,to_char(create_time, #{dateFmat}) create_time from zz_group_file) a
+        where 1 = 1
+        and a.create_time &lt;= #{dateEnd}
+        and a.create_time &gt;= #{dateBegin}
+        group by a.create_time
+
+    </select>
 </mapper>

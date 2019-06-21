@@ -9,6 +9,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -284,5 +286,11 @@ public class common {
             }
         }
         return sw.toString();
+    }
+    //格式化double
+    public static String formatDouble2(double d) {
+        // 新方法，如果不需要四舍五入，可以使用RoundingMode.DOWN
+        BigDecimal bg = new BigDecimal(d).setScale(2, RoundingMode.UP);
+        return String.valueOf(bg.doubleValue());
     }
 }

@@ -5,6 +5,7 @@ import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.VO.GroupInfoVO;
+import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.dao.ZzGroupFileDao;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
 import com.workhub.z.servicechat.service.ZzGroupFileService;
@@ -13,7 +14,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 群文件(ZzGroupFile)表服务实现类
@@ -131,5 +136,73 @@ public class ZzGroupFileServiceImpl extends BaseBiz<ZzGroupFileDao,ZzGroupFile >
     @Override
     public Long groupFileListTotal(String id) throws Exception {
         return this.zzGroupFileDao.groupFileListTotal(id);
+    }
+    /**
+     * 获取上传附件大小（数据库统计）
+     *
+     * @param queryType 查询类型0天（默认），1月，2年
+     * @param queryDate 查询时间
+     * @param returnUnit 返回结果单位  0 M（默认），1 G，2 T
+     * @return 文件大小：单位兆
+     */
+    public String getGroupChatFileSizeByDB(String queryType, String queryDate, String returnUnit){
+        String res="";
+        String dateFmt="";
+        long divide=1L;
+        if(queryType.equals("0")){
+            dateFmt="yyyy-mm-dd";
+        }else if(queryType.equals("1")){
+            dateFmt="yyyy-mm";
+        }else{
+            dateFmt="yyyy";
+        }
+        if(returnUnit.equals("0")){
+            divide=1024*1024L;
+        }else if(returnUnit.equals("1")){
+            divide=1024*1024*1024L;
+        }else{
+            divide=1024*1024*1024*1024L;
+        }
+        double sizes = this.zzGroupFileDao.queryFileSize(dateFmt,queryDate,divide);
+        res=String.valueOf(common.formatDouble2(sizes));
+        return res;
+    }
+    /**
+     * 获取上传附件区间段情况（数据库统计）
+     *
+     * @param queryType 查询类型0天（默认），1月，2年
+     * @param queryDateBegin 查询时间开始
+     * @param queryDateEnd 查询时间结束
+     * @param returnUnit 返回结果单位  0 M（默认），1 G，2 T
+     * @return 文件去区间段大小
+     */
+    public List<Map<String,String>> getGroupChatFileSizeRangeByDB(String queryType, String queryDateBegin, String queryDateEnd, String returnUnit) throws Exception{
+        List<Map<String,String>> res=new ArrayList<>();
+        String dateFmt="";
+        long divide=1L;
+        if(queryType.equals("0")){
+            dateFmt="yyyy-mm-dd";
+        }else if(queryType.equals("1")){
+            dateFmt="yyyy-mm";
+        }else{
+            dateFmt="yyyy";
+        }
+        if(returnUnit.equals("0")){
+            divide=1024*1024L;
+        }else if(returnUnit.equals("1")){
+            divide=1024*1024*1024L;
+        }else{
+            divide=1024*1024*1024*1024L;
+        }
+        List<Map> data = this.zzGroupFileDao.queryFileSizeRange(dateFmt,queryDateBegin,queryDateEnd,divide);
+        for(Map<String,Object> temp : data){
+            String date = (String)temp.get("DATES");
+            String size = String.valueOf(common.formatDouble2(((BigDecimal)temp.get("SIZES")).doubleValue()));
+            Map<String,String> map=new HashMap<>();
+            map.put("date",date);
+            map.put("size",size);
+            res.add(map);
+        }
+        return res;
     }
 }
