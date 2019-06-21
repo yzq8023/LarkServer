@@ -1,5 +1,6 @@
 package com.workhub.z.servicechat.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.vo.rpcvo.ContactVO;
@@ -13,6 +14,7 @@ import com.workhub.z.servicechat.dao.ZzUserGroupDao;
 import com.workhub.z.servicechat.entity.ZzGroup;
 import com.workhub.z.servicechat.entity.ZzUserGroup;
 import com.workhub.z.servicechat.feign.IUserService;
+import com.workhub.z.servicechat.rabbitMq.RabbitMqMsgProducer;
 import com.workhub.z.servicechat.service.ZzGroupService;
 import com.workhub.z.servicechat.service.ZzMsgReadRelationService;
 import com.workhub.z.servicechat.service.ZzUserGroupService;
@@ -20,14 +22,11 @@ import jodd.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.workhub.z.servicechat.rabbitMq.RabbitMqMsgProducer;
+
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 
 //import com.workhub.z.servicechat.VO.ContactVO;
 
@@ -182,7 +181,6 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
             if (n.getTableType().equals("GROUP")) {
                 ZzGroup group = new ZzGroup();
                 group = zzGroupService.queryById(n.getMsgSener());
-
                 contactVO.setId(n.getMsgSener());
                 UserInfo userInfo = iUserService.info(n.getMsgReceiver());
 //                JSON.toJavaObject(JSON.parseObject(n.getMsg()), MessageContent.class);
@@ -220,6 +218,7 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
 //                    contactVO.setUnreadNum(m.getMsgCount());
 //                }
 //            });
+            contactVO.setCurrentId(id);//当前登录人id
             list.add(contactVO);
         });
         rabbitMqMsgProducer.sendMsg(list);
