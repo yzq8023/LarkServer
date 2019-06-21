@@ -8,6 +8,7 @@ import com.github.hollykunge.security.portal.service.HeatMapService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,6 +34,10 @@ public class HeatMapController extends BaseController<HeatMapService, HeatMap> {
         HeatMap heatMap = new HeatMap();
         heatMap.setUserId(userID);
         List<HeatMap> heatMaps = baseBiz.selectList(heatMap);
-        return new ListRestResponse<>("",heatMaps.size(),heatMaps);
+        List<HeatMap> heatMapList = new ArrayList<>();
+        for(HeatMap heatMap1: heatMaps){
+            heatMap1.getMapDate();
+        }
+        return new ListRestResponse("",heatMaps.size(),heatMaps);
     }
 }

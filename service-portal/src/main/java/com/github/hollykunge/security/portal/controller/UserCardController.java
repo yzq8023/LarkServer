@@ -79,7 +79,7 @@ public class UserCardController extends BaseController<UserCardService, UserCard
             throw new BaseException("request contains no user...");
         }
         List<UserCardVO> userCardVOS = baseBiz.userCards(userID);
-        return new ListRestResponse<>("",userCardVOS.size(),userCardVOS);
+        return new ListRestResponse("",userCardVOS.size(),userCardVOS);
     }
     /**
      * 获取卡片集，如果用户点击展示该卡片，
@@ -94,6 +94,6 @@ public class UserCardController extends BaseController<UserCardService, UserCard
             throw new BaseException("request contains no user...");
         }
         List<UserCardVO> list = baseBiz.allCard(userID);
-        return new ListRestResponse<>("",list.size(),list);
+        return new ListRestResponse("",list.size(),list);
     }
 }
