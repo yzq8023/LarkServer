@@ -1,5 +1,6 @@
 package com.workhub.z.servicechat.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.vo.rpcvo.ContactVO;
@@ -13,6 +14,7 @@ import com.workhub.z.servicechat.dao.ZzUserGroupDao;
 import com.workhub.z.servicechat.entity.ZzGroup;
 import com.workhub.z.servicechat.entity.ZzUserGroup;
 import com.workhub.z.servicechat.feign.IUserService;
+import com.workhub.z.servicechat.rabbitMq.RabbitMqMsgProducer;
 import com.workhub.z.servicechat.service.ZzGroupService;
 import com.workhub.z.servicechat.service.ZzMsgReadRelationService;
 import com.workhub.z.servicechat.service.ZzUserGroupService;
@@ -20,14 +22,13 @@ import jodd.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.workhub.z.servicechat.rabbitMq.RabbitMqMsgProducer;
+
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import java.util.Map;
 
 //import com.workhub.z.servicechat.VO.ContactVO;
 
@@ -160,20 +161,20 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
         // TODO: 2019/6/12 私有化定制
         List<ContactVO> list = new ArrayList<ContactVO>();
         //mq添加消息发送 开发测试用begin
-//        try {
-//            ContactVO vo=new ContactVO();
-//            vo.setUnreadNum(1);
-//            vo.setAtMe(true);
-//            vo.setAvatar("1111");
-//            vo.setId("223323");
-//            list.add(vo);
-//            //rabbitMqMsgProducer.sendMsg(vo);
-//            rabbitMqMsgProducer.sendMsg(list);
-//            //String json = mapper.writeValueAsString(list);
-//            // rabbitMqMsgProducer.sendMsg(json);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
+        /*try {
+            ContactVO vo=new ContactVO();
+            vo.setUnreadNum(1);
+            vo.setAtMe(true);
+            vo.setAvatar("1111");
+            vo.setId("223323");
+            list.add(vo);
+
+            Map<String,List<ContactVO>> data=new HashMap<>();
+            data.put(id,list);//当前登录人的id作为key，联系人列表作为value
+            rabbitMqMsgProducer.sendMsg(data);
+        }catch (Exception e){
+            e.printStackTrace();
+        }*/
         //mq添加消息发送 开发测试用end
         List<NoReadVo> noReadVos = zzMsgReadRelationService.queryNoReadCountList(id);
         if(userNewMsgList == null|| userNewMsgList.isEmpty()) return list;
@@ -182,7 +183,6 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
             if (n.getTableType().equals("GROUP")) {
                 ZzGroup group = new ZzGroup();
                 group = zzGroupService.queryById(n.getMsgSener());
-
                 contactVO.setId(n.getMsgSener());
                 UserInfo userInfo = iUserService.info(n.getMsgReceiver());
 //                JSON.toJavaObject(JSON.parseObject(n.getMsg()), MessageContent.class);
@@ -222,7 +222,9 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
 //            });
             list.add(contactVO);
         });
-        rabbitMqMsgProducer.sendMsg(list);
+        Map<String,List<ContactVO>> data=new HashMap<>();
+        data.put(id,list);//当前登录人的id作为key，联系人列表作为value
+        rabbitMqMsgProducer.sendMsg(data);
         return list;
     }
     /**
