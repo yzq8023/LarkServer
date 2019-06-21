@@ -15,8 +15,10 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.amqp.rabbit.transaction.RabbitTransactionManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
 
 import javax.annotation.Resource;
@@ -64,7 +66,8 @@ public class RabbitMqConfig {
      * @return
      */
     @Bean
-    public RabbitTemplate rabbitTemplate() {
+    @Primary
+    public RabbitTemplate noticeRabbitTemplate() {
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
         template.setConfirmCallback(new RabbitTemplate.ConfirmCallback() {
             @Override
@@ -78,6 +81,12 @@ public class RabbitMqConfig {
                 }
             }
         });
+        return template;
+    }
+    @Bean
+    @Qualifier("hotMapRabbitTemplate")
+    public RabbitTemplate hotMapRabbitTemplate(){
+        RabbitTemplate template = new RabbitTemplate(connectionFactory);
         return template;
     }
 
