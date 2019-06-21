@@ -55,7 +55,7 @@ public class UserRest {
         return info;
     }
 
-    @RequestMapping(value = "/user/infoList", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/userlist", method = RequestMethod.POST)
     public @ResponseBody List<UserInfo> userList(Set<String> userIdSet){
         List<UserInfo> userInfos = new ArrayList<UserInfo>();
         if (userIdSet.size() != 0) {
