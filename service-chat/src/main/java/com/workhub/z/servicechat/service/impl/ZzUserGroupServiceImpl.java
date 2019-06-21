@@ -26,7 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 //import com.workhub.z.servicechat.VO.ContactVO;
 
@@ -159,20 +161,20 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
         // TODO: 2019/6/12 私有化定制
         List<ContactVO> list = new ArrayList<ContactVO>();
         //mq添加消息发送 开发测试用begin
-//        try {
-//            ContactVO vo=new ContactVO();
-//            vo.setUnreadNum(1);
-//            vo.setAtMe(true);
-//            vo.setAvatar("1111");
-//            vo.setId("223323");
-//            list.add(vo);
-//            //rabbitMqMsgProducer.sendMsg(vo);
-//            rabbitMqMsgProducer.sendMsg(list);
-//            //String json = mapper.writeValueAsString(list);
-//            // rabbitMqMsgProducer.sendMsg(json);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
+        /*try {
+            ContactVO vo=new ContactVO();
+            vo.setUnreadNum(1);
+            vo.setAtMe(true);
+            vo.setAvatar("1111");
+            vo.setId("223323");
+            list.add(vo);
+
+            Map<String,List<ContactVO>> data=new HashMap<>();
+            data.put(id,list);//当前登录人的id作为key，联系人列表作为value
+            rabbitMqMsgProducer.sendMsg(data);
+        }catch (Exception e){
+            e.printStackTrace();
+        }*/
         //mq添加消息发送 开发测试用end
         List<NoReadVo> noReadVos = zzMsgReadRelationService.queryNoReadCountList(id);
         if(userNewMsgList == null|| userNewMsgList.isEmpty()) return list;
@@ -218,10 +220,11 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
 //                    contactVO.setUnreadNum(m.getMsgCount());
 //                }
 //            });
-            contactVO.setCurrentId(id);//当前登录人id
             list.add(contactVO);
         });
-        rabbitMqMsgProducer.sendMsg(list);
+        Map<String,List<ContactVO>> data=new HashMap<>();
+        data.put(id,list);//当前登录人的id作为key，联系人列表作为value
+        rabbitMqMsgProducer.sendMsg(data);
         return list;
     }
     /**
