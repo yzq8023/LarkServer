@@ -29,6 +29,6 @@ public class MessageController extends BaseController<MessageService, Message> {
         Message message = new Message();
         message.setUserId(userID);
         List<Message> messages = baseBiz.selectList(message);
-        return new ListRestResponse<>("",messages.size(),messages);
+        return new ListRestResponse("",messages.size(),messages);
     }
 }
