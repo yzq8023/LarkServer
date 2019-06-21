@@ -82,6 +82,7 @@ public class UserCardService extends BaseBiz<UserCardMapper, UserCard> {
                 userCardVO.setUrl(card.getUrl());
                 userCardVO.setId(card.getId());
                 userCardVO.setDefaultChecked(true);
+                userCardVO.setType(card.getType());
             }
             result.add(userCardVO);
         });
