@@ -6,6 +6,7 @@ package com.github.hollykunge.security.common.vo.rpcvo;
 *@date: 2019/5/10
 */
 public class ContactVO {
+    private String currentId;//当前登录用户id
     private String id;//用户id
     private String name;//名称
     private String time;//最近联系时间
@@ -98,4 +99,11 @@ public class ContactVO {
         return isGroup;
     }
 
+    public String getCurrentId() {
+        return currentId;
+    }
+
+    public void setCurrentId(String currentId) {
+        this.currentId = currentId;
+    }
 }
