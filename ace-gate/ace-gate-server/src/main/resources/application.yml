@@ -61,6 +61,10 @@ zuul:
       path: /fdfs/**
       serviceId: service-dfsfile
 
+    chat:
+      path: /chat/**
+      serviceId: service-chat
+
 ribbon:
   eureka:
     enabled: true
