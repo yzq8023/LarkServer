@@ -56,7 +56,7 @@ public class MenuController extends BaseController<MenuBiz, Menu> {
     @ResponseBody
     public ListRestResponse<List<AdminElement>> listMenuElement(@RequestParam("menuId") String menuId){
         List<AdminElement> adminElements = elementBiz.listMenuElement(menuId);
-        return new ListRestResponse<>("",adminElements.size(),adminElements);
+        return new ListRestResponse("",adminElements.size(),adminElements);
     }
 
     /**
