@@ -38,7 +38,7 @@ public class HeatMapService extends BaseBiz<HeatMapMapper, HeatMap> {
         Date today = new Date();
         List<HeatMap> heatMaps = new ArrayList<>();
         try {
-            heatMaps = getHeatMapData(ft.format(today), ft.format(oneYearAgo), heatMapList);
+            heatMaps = getHeatMapData(ft.format(oneYearAgo), ft.format(today), heatMapList);
 
         } catch (ParseException e) {
             e.printStackTrace();

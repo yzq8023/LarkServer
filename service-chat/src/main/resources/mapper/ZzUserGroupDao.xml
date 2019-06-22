@@ -212,7 +212,7 @@
           from sys_user u, zz_user_group gu, zz_group g
          where u.userid = gu.user_id
            and gu.group_id = g.group_id
-           and g.id = #{groupId}
+           and g.group_id = #{groupId}
     </select>
     <select id="getGroupUserHeadList" resultType="java.lang.String">
         select a.head
@@ -220,7 +220,7 @@
                 from sys_user u, zz_user_group gu, zz_group g
                 where u.userid = gu.user_id
                 and gu.group_id = g.group_id
-                and g.id = #{groupId}
+                and g.group_id = #{groupId}
                 order by gu.createtime desc) a
         where rownum &lt;= 9
         order by a.createtime asc
