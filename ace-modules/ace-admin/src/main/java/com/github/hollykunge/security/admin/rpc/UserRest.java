@@ -60,7 +60,7 @@ public class UserRest {
         List<UserInfo> userInfos = new ArrayList<UserInfo>();
         if (userIdSet.size() != 0) {
             userIdSet.forEach(userId ->{
-                User user = userBiz.getUserByUserPid(userId);
+                User user = userBiz.getUserByUserId(userId);
                 UserInfo info = new UserInfo();
                 BeanUtils.copyProperties(user, info);
                 info.setId(user.getId());
