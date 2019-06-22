@@ -67,7 +67,7 @@ public class ZzGroupServiceImpl implements ZzGroupService {
     @Override
     @Transactional
     public void insert(ZzGroup zzGroup) {
-        int insert = this.zzGroupDao.insert(zzGroup);
+        this.zzGroupDao.addGroup(zzGroup);
 //        return insert;
     }
 
