@@ -30,7 +30,7 @@ public class MessageType {
     public static final int GROUP_CLOSE_MSG = 8;
 
     //返回码 boolean
-
+    public static final int MSG_EIDT_READ = 9;
     //队列
     //人员、组织机构变更
 
