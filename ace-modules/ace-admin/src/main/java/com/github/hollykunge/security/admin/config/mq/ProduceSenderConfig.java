@@ -8,6 +8,7 @@ import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.UUID;
 
 
@@ -20,8 +21,11 @@ import java.util.UUID;
 @Component
 public class ProduceSenderConfig{
 
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
+    @Resource(name = "noticeRabbitTemplate")
+    private RabbitTemplate noticRabbitTemplate;
+
+    @Resource(name = "hotMapRabbitTemplate")
+    private RabbitTemplate hotMapRabbitTemplate;
 
     /**
      * 发送消息,使用发送消息mq确认机制
@@ -30,6 +34,17 @@ public class ProduceSenderConfig{
     public void send(String id,Object message) {
         //消息id
         CorrelationData correlationId = new CorrelationData(id);
-        rabbitTemplate.convertAndSend(CommonConstants.NOTICE_EXCHANGE, "",message, correlationId);
+        noticRabbitTemplate.convertAndSend(CommonConstants.NOTICE_EXCHANGE, "",message, correlationId);
+    }
+
+    /**
+     * 发送消息，没有确认机制
+     * @param id
+     * @param message
+     */
+    public void sendAndNoConfirm(String id,Object message) {
+        //消息id
+        CorrelationData correlationId = new CorrelationData(id);
+        hotMapRabbitTemplate.convertAndSend(CommonConstants.NOTICE_EXCHANGE, "",message, correlationId);
     }
 }

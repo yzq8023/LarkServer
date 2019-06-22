@@ -42,7 +42,7 @@ public class RoleController extends BaseController<RoleBiz, Role> {
     @ResponseBody
     public ListRestResponse<List<Role>> getUserRoles(@RequestParam("id") String userId) {
         List<Role> roleList = baseBiz.getRoleByUserId(userId);
-        return new ListRestResponse<>("",roleList.size(),roleList);
+        return new ListRestResponse("",roleList.size(),roleList);
     }
 
     /**
@@ -54,7 +54,7 @@ public class RoleController extends BaseController<RoleBiz, Role> {
     @ResponseBody
     public ListRestResponse<List<AdminUser>> getUsers(@RequestParam("id") String id) {
         List<AdminUser> roleUsers = baseBiz.getRoleUsers(id);
-        return new ListRestResponse<>("",roleUsers.size(),roleUsers);
+        return new ListRestResponse("",roleUsers.size(),roleUsers);
     }
 
     /**
@@ -107,7 +107,7 @@ public class RoleController extends BaseController<RoleBiz, Role> {
             parentTreeId = AdminCommonConstant.ROOT;
         }
         List<RoleTree> tree = getTree(baseBiz.selectListAll(), parentTreeId);
-        return new ListRestResponse<>("",tree.size(),tree);
+        return new ListRestResponse("",tree.size(),tree);
     }
 
     private List<RoleTree> getTree(List<Role> roles, String root) {

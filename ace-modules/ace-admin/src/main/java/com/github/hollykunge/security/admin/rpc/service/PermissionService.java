@@ -4,6 +4,7 @@ import com.github.hollykunge.security.admin.biz.ElementBiz;
 import com.github.hollykunge.security.admin.biz.MenuBiz;
 import com.github.hollykunge.security.admin.biz.RoleBiz;
 import com.github.hollykunge.security.admin.biz.UserBiz;
+import com.github.hollykunge.security.admin.config.mq.ProduceSenderConfig;
 import com.github.hollykunge.security.admin.entity.Element;
 import com.github.hollykunge.security.admin.entity.Menu;
 import com.github.hollykunge.security.admin.entity.Role;
@@ -18,13 +19,20 @@ import com.github.hollykunge.security.common.constant.UserConstant;
 import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.hollykunge.security.common.util.StringHelper;
 
+import com.github.hollykunge.security.common.util.UUIDUtils;
+import com.github.hollykunge.security.common.vo.mq.HotMapVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.chrono.ChronoZonedDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,6 +56,8 @@ public class PermissionService {
     private UserAuthUtil userAuthUtil;
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(UserConstant.PW_ENCORDER_SALT);
 
+    @Autowired
+    private ProduceSenderConfig produceSenderConfig;
 
     /**
      * 获取用户信息
@@ -175,7 +185,14 @@ public class PermissionService {
         frontUser.setId(user.getId());
         UserRole userRole = this.getUserRoleByUserId(userId);
         frontUser.setUserRole(userRole);
-
+        //发送消息到mq
+        HotMapVO hotMapVO = new HotMapVO();
+        hotMapVO.setUserId(userId);
+        ZoneId zoneId = ZoneId.systemDefault();
+        ChronoZonedDateTime<LocalDate> zonedDateTime = LocalDate.now().atStartOfDay(zoneId);
+        Date nowDate = Date.from(zonedDateTime.toInstant());
+        hotMapVO.setMapDate(nowDate);
+        produceSenderConfig.sendAndNoConfirm(UUIDUtils.generateShortUuid(),hotMapVO);
         return frontUser;
     }
 

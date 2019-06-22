@@ -8,6 +8,7 @@ import com.github.hollykunge.security.api.vo.authority.FrontPermission;
 import com.github.hollykunge.security.api.vo.user.UserInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -45,13 +46,29 @@ public class UserRest {
     }
 
     @RequestMapping(value = "/user/info", method = RequestMethod.POST)
-    public @ResponseBody UserInfo info(String userPId){
-        User user = userBiz.getUserByUserId(userPId);
+
+    public @ResponseBody UserInfo info(String userId){
+        User user = userBiz.getUserByUserId(userId);
         UserInfo info = new UserInfo();
 
         BeanUtils.copyProperties(user, info);
         info.setId(user.getId());
         return info;
+    }
+
+    @RequestMapping(value = "/user/userlist", method = RequestMethod.POST)
+    public @ResponseBody List<UserInfo> userList(Set<String> userIdSet){
+        List<UserInfo> userInfos = new ArrayList<UserInfo>();
+        if (userIdSet.size() != 0) {
+            userIdSet.forEach(userId ->{
+                User user = userBiz.getUserByUserPid(userId);
+                UserInfo info = new UserInfo();
+                BeanUtils.copyProperties(user, info);
+                info.setId(user.getId());
+                userInfos.add(info);
+            });
+        }
+        return userInfos;
     }
 
     @RequestMapping(value = "/user/all", method = RequestMethod.POST)
