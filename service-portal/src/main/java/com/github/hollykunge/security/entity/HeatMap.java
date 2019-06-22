@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.Date;
 
 /**
@@ -25,4 +26,10 @@ public class HeatMap {
     private Date mapDate;
     @Column(name = "COMMITS")
     private Integer commits;
+    @Transient
+    private Integer month;
+    @Transient
+    private Integer day;
+    @Transient
+    private Integer week;
 }

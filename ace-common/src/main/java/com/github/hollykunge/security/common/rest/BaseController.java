@@ -61,7 +61,7 @@ public class BaseController<Biz extends BaseBiz, Entity> {
     @ResponseBody
     public ListRestResponse<List<Entity>> all() {
         List list = baseBiz.selectListAll();
-        return new ListRestResponse<>("",list.size(),list);
+        return new ListRestResponse("",list.size(),list);
     }
 
     @RequestMapping(value = "/page", method = RequestMethod.GET)

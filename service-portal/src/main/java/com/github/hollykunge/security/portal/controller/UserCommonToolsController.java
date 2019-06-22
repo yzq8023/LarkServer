@@ -36,7 +36,7 @@ public class UserCommonToolsController extends BaseController<UserCommonToolsSer
             throw new BaseException("request contains no user...");
         }
         List<UserCommonToolsVO> userCommonToolsVOS = baseBiz.allCommonTools(userID);
-        return new ListRestResponse<>("",userCommonToolsVOS.size(),userCommonToolsVOS);
+        return new ListRestResponse("",userCommonToolsVOS.size(),userCommonToolsVOS);
     }
 
     /**
@@ -100,6 +100,6 @@ public class UserCommonToolsController extends BaseController<UserCommonToolsSer
             throw new BaseException("request contains no user...");
         }
         List<UserCommonToolsVO> userCardVOS = baseBiz.userCommonTools(userID);
-        return new ListRestResponse<>("",userCardVOS.size(),userCardVOS);
+        return new ListRestResponse("",userCardVOS.size(),userCardVOS);
     }
 }

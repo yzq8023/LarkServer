@@ -46,8 +46,8 @@ public class UserRest {
     }
 
     @RequestMapping(value = "/user/info", method = RequestMethod.POST)
-    public @ResponseBody UserInfo info(String userPId){
-        User user = userBiz.getUserByUserPid(userPId);
+    public @ResponseBody UserInfo info(String userId){
+        User user = userBiz.getUserByUserId(userId);
         UserInfo info = new UserInfo();
 
         BeanUtils.copyProperties(user, info);
