@@ -53,7 +53,7 @@ public class ProcessEditGroup extends AbstractMsgProcessor{
 //                createGroup(channelContext,message);
                 try {
                     joinGroup(channelContext,groupTaskDto);
-                    createGroupHeadsImg(groupTaskDto.getGroupId());
+//                    createGroupHeadsImg(groupTaskDto.getGroupId());
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -78,7 +78,7 @@ public class ProcessEditGroup extends AbstractMsgProcessor{
             userGroup.setUserId(userInfo.getUserId());
             userGroupService.insert(userGroup);
             //创建群头像
-            createGroupHeadsImg(groupTaskDto.getGroupId());
+//            createGroupHeadsImg(groupTaskDto.getGroupId());
         }
 
 

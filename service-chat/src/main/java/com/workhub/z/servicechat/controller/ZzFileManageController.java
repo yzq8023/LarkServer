@@ -182,26 +182,25 @@ public class ZzFileManageController {
     @RequestMapping("/GetFile")
     public void getFile(HttpServletRequest request , HttpServletResponse response) throws IOException {
         //读取路径下面的文件
-        File file = new File("D:\\file-management-center\\upload\\20190619\\g0ngOZCN.png");
+        String fileId = request.getParameter("fileId");
+        ZzGroupFile zzGroupFile = zzGroupFileService.queryById(fileId);
+        //读取路径下面的文件
+        if(zzGroupFile == null) return;
         File picFile = null;
-//        for(File f : file.listFiles()){
-//            if(f.getName().contains("文件名")){
-                //根据路径获取文件
-                picFile = new File("D:\\file-management-center\\upload\\20190619\\g0ngOZCN.png");
-                //获取文件后缀名格式
-                String ext = picFile.getName().substring(picFile.getName().indexOf("."));
-                //判断图片格式,设置相应的输出文件格式
-                if(ext.equals("jpg")){
-                    response.setContentType("image/jpeg");
-                }else if(ext.equals("JPG")){
-                    response.setContentType("image/jpeg");
-                }else if(ext.equals("png")){
-                    response.setContentType("image/png");
-                }else if(ext.equals("PNG")){
-                    response.setContentType("image/png");
-                }
-//            }
-//        }
+        //根据路径获取文件
+        picFile = new File(zzGroupFile.getPath());
+        //获取文件后缀名格式
+        String ext = picFile.getName().substring(picFile.getName().indexOf("."));
+        //判断图片格式,设置相应的输出文件格式
+        if(ext.equals("jpg")){
+            response.setContentType("image/jpeg");
+        }else if(ext.equals("JPG")){
+            response.setContentType("image/jpeg");
+        }else if(ext.equals("png")){
+            response.setContentType("image/png");
+        }else if(ext.equals("PNG")){
+            response.setContentType("image/png");
+        }
         //读取指定路径下面的文件
         InputStream in = new FileInputStream(picFile);
         OutputStream outputStream = new BufferedOutputStream(response.getOutputStream());
