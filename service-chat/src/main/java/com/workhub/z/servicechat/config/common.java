@@ -21,6 +21,8 @@ import java.util.*;
 */
 public class common {
 
+//  默认图片路径
+    public static final String imgUrl = "";
     /**
      * 加密解密算法 执行一次加密，两次解密
      * @param inStr 加密字符

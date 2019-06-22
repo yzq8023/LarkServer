@@ -49,6 +49,8 @@ public interface ZzGroupDao extends Mapper<ZzGroup> {
      */
     int insert(ZzGroup zzGroup);
 
+    void addGroup(ZzGroup zzGroup);
+
     /**
      * 修改数据
      *
