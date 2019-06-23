@@ -96,7 +96,7 @@ hystrix:
 
 gate:
   ignore:
-    startWith: /static,/auth/jwt,/fdfs/file
+    startWith: /static,/auth/jwt,/fdfs/file,/chat
 
 
 auth:
