@@ -1,6 +1,9 @@
 package com.workhub.z.servicechat.VO;
 
+import com.workhub.z.servicechat.model.MessageContent;
+
 import javax.xml.crypto.Data;
+import java.util.Date;
 import java.util.List;
 
 public class MessageVO {
@@ -23,7 +26,9 @@ public class MessageVO {
 //   消息的内容（根据消息类型，如果为文本消息，该值为文本内容；如果为图片或者文件，该值为文件或图片的名称和文件类型，文件id）
     private String content;
 //   消息发送时间
-    private Data time;
+    private Date time;
+//   是否群组
+    private boolean isGroup;
 
     public String getId() {
         return id;
@@ -97,11 +102,19 @@ public class MessageVO {
         this.content = content;
     }
 
-    public Data getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(Data time) {
+    public void setTime(Date time) {
         this.time = time;
+    }
+
+    public boolean getIsGroup() {
+        return isGroup;
+    }
+
+    public void setIsGroup(boolean isGroup) {
+        this.isGroup = isGroup;
     }
 }

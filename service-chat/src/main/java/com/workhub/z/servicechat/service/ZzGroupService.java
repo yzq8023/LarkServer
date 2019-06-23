@@ -58,8 +58,9 @@ public interface ZzGroupService {
     //获取群组成员信息
     PageInfo<GroupUserListVo> groupUserList(String id, int page, int size) throws Exception;
     //总记录数
-    Long groupUserListTotal(String id) throws Exception;
+    Long groupUserListTotal(String groupId) throws Exception;
 
+   List<String> queryGroupUserIdListByGroupId(String groupId);
     /**
     *@Description: 根据用户id查询用户所在群组
     *@Param: userId

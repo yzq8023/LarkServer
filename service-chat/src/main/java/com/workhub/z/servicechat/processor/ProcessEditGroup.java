@@ -194,7 +194,7 @@ public class ProcessEditGroup extends AbstractMsgProcessor{
         groupTaskDto1.setTimestamp(zzGroupInfo.getCreateTime());
         groupTaskDto1.setZzGroup(zzGroupInfo);
         groupTaskDto1.setReviser(zzGroupInfo.getCreator());
-        groupEditVO.setCode(MSG_EIDT_READ);
+        groupEditVO.setCode(MSG_EDIT_READ);
         groupEditVO.setData(groupTaskDto1);
         String res1 = JSONObject.toJSONString(groupEditVO);
         Tio.sendToUser(channelContext.getGroupContext(),zzGroupInfo.getCreator(),this.getWsResponse(res1));

@@ -1,7 +1,9 @@
 package com.workhub.z.servicechat.service;
 
 import com.github.hollykunge.security.common.msg.TableResultResponse;
+import com.workhub.z.servicechat.VO.HistoryMessageVO;
 import com.workhub.z.servicechat.entity.ZzGroupMsg;
+import com.workhub.z.servicechat.model.HistoryMessageDto;
 
 import java.util.List;
 import java.util.Map;
@@ -79,4 +81,11 @@ public interface ZzGroupMsgService {
      *@date: 2019/6/20
      */
     List<String> getReceiversByMsgId(String msgId) throws Exception;
+
+    /**
+    *@Description: 获取最近联系人历史消息
+    *@Author: 忠
+    *@date: 2019/6/22
+    */
+    List<HistoryMessageVO> queryHistoryMessageById(String userId);
 }
