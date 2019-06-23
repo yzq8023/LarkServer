@@ -31,12 +31,12 @@ public interface IUserService {
 //    @RequestMapping(value = "/api/user/test", method = RequestMethod.POST)
 //    public void test();
 
-    @RequestMapping(value = "/user/userlist", method = RequestMethod.POST)
-    public List<UserInfo> userList(@RequestParam("userIdSet") Set<String> userIdSet);
+    @RequestMapping(value = "/api/user/userlist", method = RequestMethod.POST)
+    public List<UserInfo> userList(@RequestParam("userIdSet") String userIdSet);
 
-    @RequestMapping(value = "/user/all", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/user/all", method = RequestMethod.POST)
     public List<UserInfo> all();
 
     @RequestMapping(value = "/api/user/info", method = RequestMethod.POST)
-    public UserInfo info(@RequestParam("userPId") String userPId);
+    public UserInfo info(@RequestParam("userId") String userId);
 }

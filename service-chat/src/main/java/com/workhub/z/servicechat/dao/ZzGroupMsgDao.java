@@ -1,6 +1,7 @@
 package com.workhub.z.servicechat.dao;
 
 import com.workhub.z.servicechat.entity.ZzGroupMsg;
+import com.workhub.z.servicechat.model.HistoryMessageDto;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
@@ -87,4 +88,12 @@ public interface ZzGroupMsgDao extends Mapper<ZzGroupMsg> {
     List<ZzGroupMsg> queryMsgCurrentAndHis(Map<String,String> param);
 
     List<String> getReceiversByMsgId(@Param("msgId") String msgId);
+
+    /**
+    *@Description: 查询最近联系人历史消息
+    *@Author: 忠
+    *@date: 2019/6/22
+    */
+
+    List<HistoryMessageDto> queryHistoryMessageById(@Param("userId") String userId);
 }

@@ -10,7 +10,7 @@ import org.tio.core.ChannelContext;
 import static com.workhub.z.servicechat.config.MessageType.*;
 
 @Service
-public class ProcessMsg{
+public class ProcessMsg extends AbstractMsgProcessor{
 
     @Autowired
     private ProcessPrivateMsg processPrivateMsg;
@@ -53,7 +53,9 @@ public class ProcessMsg{
                     break;
                 case GROUP_CREATE:
                     return processEditGroup.createGroup(channelContext,msg);
-
+                case MSG_EDIT_READ:
+                    JSONObject temp = JSONObject.parseObject(message);
+                    super.deleteNoReadMsg(temp.getString("sender"),temp.getString("reviser"));
                 default:
                     System.out.println("你说的什么鬼");
                     break;

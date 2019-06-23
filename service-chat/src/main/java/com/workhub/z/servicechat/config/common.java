@@ -1,6 +1,7 @@
 package com.workhub.z.servicechat.config;
 
 import com.workhub.z.servicechat.entity.ZzDictionaryWords;
+import com.workhub.z.servicechat.model.ContactsMessageDto;
 import org.tio.core.ChannelContext;
 import org.tio.core.Tio;
 
@@ -294,5 +295,48 @@ public class common {
         // 新方法，如果不需要四舍五入，可以使用RoundingMode.DOWN
         BigDecimal bg = new BigDecimal(d).setScale(2, RoundingMode.UP);
         return String.valueOf(bg.doubleValue());
+    }
+
+    /**
+     * 分组聚合
+     */
+    public static <T> List<List<T>> aggregation(List<T> list,Comparator<? super T> comparator) {
+        List<List<T>> lists = new ArrayList<>();
+
+        for (int i = 0; i < list.size(); i++) {
+            boolean isContain = false;
+            for (int j = 0; j < lists.size(); j++) {
+                if (lists.get(j).size() == 0||comparator.compare(lists.get(j).get(0),list.get(i)) == 0) {
+                    lists.get(j).add(list.get(i));
+                    isContain = true;
+                    break;
+                }
+            }
+            if (!isContain) {
+                List<T> newList = new ArrayList<>();
+                newList.add(list.get(i));
+                lists.add(newList);
+            }
+        }
+        return lists;
+    }
+
+    public static void aggregation1(List<ContactsMessageDto> list, Map<String, List<ContactsMessageDto>> map) {//map是用来接收分好的组的
+        if (null == list) {
+            return;
+        }
+
+
+        String key;
+        List<ContactsMessageDto> listTmp;
+        for (ContactsMessageDto val : list) {
+            key = val.getContactsId();//按这个属性分组，map的Key
+            listTmp = map.get(key);
+            if (null == listTmp) {
+                listTmp = new ArrayList<ContactsMessageDto>();
+                map.put(key, listTmp);
+            }
+            listTmp.add(val);
+        }
     }
 }

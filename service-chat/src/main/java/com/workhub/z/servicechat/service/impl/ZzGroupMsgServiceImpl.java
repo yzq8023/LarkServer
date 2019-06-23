@@ -1,19 +1,25 @@
 package com.workhub.z.servicechat.service.impl;
 
+import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.workhub.z.servicechat.VO.HistoryMessageVO;
+import com.workhub.z.servicechat.VO.MessageVO;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.dao.ZzGroupMsgDao;
 import com.workhub.z.servicechat.entity.ZzGroupMsg;
+import com.workhub.z.servicechat.feign.IUserService;
+import com.workhub.z.servicechat.model.HistoryMessageDto;
 import com.workhub.z.servicechat.service.ZzGroupMsgService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.plugin2.message.Message;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 群组消息表(ZzGroupMsg)表服务实现类
@@ -25,6 +31,8 @@ import java.util.Map;
 public class ZzGroupMsgServiceImpl extends BaseBiz<ZzGroupMsgDao, ZzGroupMsg> implements ZzGroupMsgService {
     @Resource
     private ZzGroupMsgDao zzGroupMsgDao;
+    @Autowired
+    IUserService iUserService;
 
     /**
      * 通过ID查询单条数据
@@ -164,5 +172,64 @@ public class ZzGroupMsgServiceImpl extends BaseBiz<ZzGroupMsgDao, ZzGroupMsg> im
      */
    public List<String> getReceiversByMsgId(String msgId) throws Exception{
       return zzGroupMsgDao.getReceiversByMsgId(msgId);
+    }
+
+    /**
+     *@Description: 获取最近联系人历史消息
+     *@Author: 忠
+     *@date: 2019/6/22
+     */
+    @Override
+    public List<HistoryMessageVO> queryHistoryMessageById(String userId) {
+
+        List<MessageVO> messageVOS = new ArrayList<>();
+
+        List<HistoryMessageDto> historyMessageDtoList = zzGroupMsgDao.queryHistoryMessageById(userId);
+        HistoryMessageVO historyMessageVO = new HistoryMessageVO();
+        List<HistoryMessageVO> historyMessageVOList = new ArrayList<>();
+//        String userTemp = "";
+//        List<String> userIdSetTemp = new ArrayList<>();
+//        for (int i = 0; i < historyMessageDtoList.size(); i++) {
+//            userTemp += historyMessageDtoList.get(i).getId() + ",";
+//            userIdSetTemp.add(historyMessageDtoList.get(i).getId());
+//        }
+////        String userIdSet = Sring.Join(",", list.ToArray());
+//        List<UserInfo> userInfoList =  iUserService.userList(userTemp);
+//        int a = 1;
+//        if (userIdSetTemp.size() != 0) {
+//            userIdSetTemp.forEach(n ->{
+//                for (int i = 0; i < historyMessageDtoList.size(); i++) {
+//                    if (n.equals(historyMessageDtoList.get(i).getFromId())){
+//                        HistoryMessageDto historyMessageDto = historyMessageDtoList.get(i);
+//                        MessageVO messageVO = new MessageVO();
+//                        messageVO.setId(historyMessageDto.getId());
+//                        messageVO.setAtId(null);
+//                        // TODO: 2019/6/22
+//                        for (int j = 0; j < userInfoList.size(); j++) {
+//                            if(userInfoList.get(j).equals(historyMessageDto.getFromId())){
+//                                messageVO.setAvatar(userInfoList.get(j).getAvatar());
+//                                messageVO.setUsername(userInfoList.get(j).getName());
+//                            }
+//                        }
+//                        messageVO.setContent(historyMessageDto.getContent());
+//                        messageVO.setFromId(historyMessageDto.getFromId());
+//                        // TODO: 2019/6/22
+//                        if (historyMessageDto.getIsGroup().equals("GROUP"))
+//                            messageVO.setIsGroup(true);
+//                        else messageVO.setIsGroup(false);
+//                        messageVO.setSecretLevel(Integer.valueOf(historyMessageDto.getSecretLevel()));
+//                        messageVO.setTime(historyMessageDto.getTime());
+//                        messageVO.setToId(historyMessageDto.getToId());
+//                        messageVO.setType(Integer.valueOf(historyMessageDto.getType()));
+//                        messageVOS.add(messageVO);
+//                    }
+//                    historyMessageVO.setMessageVO(messageVOS);
+//                    historyMessageVO.setContacts(n);
+//                    historyMessageVOList.add(historyMessageVO);
+//                }
+//            });
+//        }
+
+        return historyMessageVOList;
     }
 }

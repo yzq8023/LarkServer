@@ -69,10 +69,12 @@ public interface ZzGroupDao extends Mapper<ZzGroup> {
 
     List<GroupUserListVo> groupUserList(@Param("id")String id,@Param("start")Integer start,@Param("end")Integer end);
 
-    Long groupUserListTotal(@Param("id")String id);
+    Long groupUserListTotal(@Param("groupId")String groupId);
 
     List<ZzGroup> queryGroupListByUserId(@Param("id") String id);
 
+
+    List<String> queryGroupUserIdListByGroupId(@Param("groupId")String groupId);
     /**
      * 逻辑删除群
      * @param groupId 群id

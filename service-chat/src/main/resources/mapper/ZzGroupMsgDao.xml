@@ -15,6 +15,17 @@
         <result property="levels" column="LEVELS" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <resultMap id="HistoryMessage" type="com.workhub.z.servicechat.model.HistoryMessageDto">
+        <result property="id" column="MSG_ID" jdbcType="VARCHAR"/>
+        <result property="fromId" column="FROMID" jdbcType="TIMESTAMP"/>
+        <result property="toId" column="TOID" jdbcType="VARCHAR"/>
+        <result property="secretLevel" column="SECRETlEVEL" jdbcType="VARCHAR"/>
+        <result property="type" column="TYPE" jdbcType="VARCHAR"/>
+        <result property="content" column="CONTENT" jdbcType="VARCHAR"/>
+        <result property="time" column="TIME" jdbcType="TIMESTAMP"/>
+        <result property="isGroup" column="TABLE_TYPE" jdbcType="VARCHAR"/>
+    </resultMap>
+
     <!--查询单个-->
     <select id="queryById" resultMap="ZzGroupMsgMap">
         select
@@ -232,4 +243,44 @@
         and b.user_id != a.msg_sender
     </select>
 
+    <!--根据最近联系人查询最近历史消息-->
+    <select id="queryHistoryMessageById" resultMap="HistoryMessage">
+        SELECT * FROM (
+        SELECT * FROM (
+        SELECT ROW_NUMBER() OVER(PARTITION BY FROMID,TYPE ORDER BY TIME DESC) RN ,t.*
+        FROM (
+        SELECT PHPM.MSG_ID AS MSG_ID,
+        'USER' AS TABLE_TYPE,
+        (case
+        when PHPM.MSG_SENDER ='OPVhHrPM' then
+        PHPM.MSG_RECEIVER
+        else
+        PHPM.MSG_SENDER
+        end) as FROMID, --最近联系人
+        PHPM.MSG_RECEIVER AS TOID,
+        PHPM.SEND_TIME AS TIME,
+        PHPM.MSG AS CONTENT,
+        PHPM.MSG_TYPE AS TYPE,
+        PHPM.LEVELS AS SECRETlEVEL
+        FROM ZZ_PRIVATE_MSG PHPM
+        WHERE 1 = 1
+        and (PHPM.MSG_RECEIVER ='OPVhHrPM' or
+        PHPM.MSG_SENDER = 'OPVhHrPM')
+
+        UNION ALL
+        SELECT PHGM.MSG_ID AS MSG_ID,
+        'GROUP' AS TABLE_TYPE,
+        PHGM.MSG_RECEIVER AS FROMID,
+        PHGM.MSG_SENDER AS TOID,
+        PHGM.SEND_TIME AS TIME,
+        PHGM.MSG AS CONTENT,
+        PHGM.MSG_TYPE AS type,
+        PHGM.LEVELS AS SECRETlEVEL
+        FROM ZZ_GROUP_MSG PHGM LEFT JOIN ZZ_USER_GROUP ZU ON PHGM.MSG_RECEIVER = ZU.GROUP_ID
+        WHERE ZU.USER_ID ='OPVhHrPM'
+        ) t
+        )
+        ) VO where rn &lt; =100
+        ORDER BY VO.time DESC
+    </select>
 </mapper>
