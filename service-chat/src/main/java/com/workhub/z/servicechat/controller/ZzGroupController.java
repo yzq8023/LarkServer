@@ -166,8 +166,8 @@ public class ZzGroupController  {
     @GetMapping("/queryHistoryMessageById")
     public ListRestResponse queryHistoryMessageById(@RequestParam("userId")String userId) throws Exception {
 //        List<HistoryMessageVO> query = this.groupMsgService.queryHistoryMessageById(userId);
-        messageInfoService.queryContactsMessage(userId);
-        return new ListRestResponse("200", 0,"");
+        String res =  messageInfoService.queryContactsMessage(userId);
+        return new ListRestResponse("200", 0,res);
     }
 
     /**
