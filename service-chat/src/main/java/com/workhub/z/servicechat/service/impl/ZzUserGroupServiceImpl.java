@@ -203,6 +203,7 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
                 contactVO.setIsTop(false);
                 contactVO.setIsMute(false);
                 contactVO.setIsGroup(n.getTableType().equals("GROUP"));
+                contactVO.setUnreadNum(zzMsgReadRelationService.queryNoReadMsgBySenderAndReceiver(n.getMsgSener(),n.getMsgReceiver()));
             } else if (n.getTableType().equals("USER")) {
                 UserInfo userInfo = iUserService.info(n.getMsgSener());
                 contactVO.setId(n.getMsgSener());
@@ -215,12 +216,13 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
                 contactVO.setIsTop(false);
                 contactVO.setIsMute(false);
                 contactVO.setIsGroup(n.getTableType().equals("GROUP"));
+                contactVO.setUnreadNum(zzMsgReadRelationService.queryNoReadMsgBySenderAndReceiver(n.getMsgSener(),n.getMsgReceiver()));
             }
-            for (int j = 0; j < noReadVos.size(); j++) {
-                if (noReadVos.get(j).getSender() == n.getMsgSener()){
-                    contactVO.setUnreadNum(noReadVos.get(j).getMsgCount());
-                }
-            }
+//            for (int j = 0; j < noReadVos.size(); j++) {
+//                if (noReadVos.get(j).getSender() == n.getMsgSener()){
+//                    contactVO.setUnreadNum(noReadVos.get(j).getMsgCount());
+//                }
+//            }
 //            if (noReadVos == null|| noReadVos.isEmpty()) contactVO.setUnreadNum(0);
 //            else {noReadVos.stream().forEach(m ->{
 //                if (m.getSender() == userNewMsgList.get(i).getMsgSener()){

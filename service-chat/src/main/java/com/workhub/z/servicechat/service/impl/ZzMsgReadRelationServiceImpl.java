@@ -60,7 +60,8 @@ public class ZzMsgReadRelationServiceImpl implements ZzMsgReadRelationService {
     protected String getPageName() {
         return null;
     }
-*/
+    */
+
     /**
      * 修改数据
      *
@@ -102,8 +103,15 @@ public class ZzMsgReadRelationServiceImpl implements ZzMsgReadRelationService {
         return this.zzMsgReadRelationDao.queryNoReadCountList(consumer);
     }
 
+    /**
+    *@Description:
+    *@Param: receiver 当前登录人，sender 消息发送人
+    *@return: 未读消息条数
+    *@Author: 忠
+    *@date: 2019/6/23
+    */
     @Override
     public int queryNoReadMsgBySenderAndReceiver(String sender, String receiver) {
-        return this.zzMsgReadRelationDao.queryNoReadMsgBySenderAndReceiver(sender,receiver);
+        return Math.toIntExact(this.zzMsgReadRelationDao.queryNoReadMsgBySenderAndReceiver(sender, receiver));
     }
 }

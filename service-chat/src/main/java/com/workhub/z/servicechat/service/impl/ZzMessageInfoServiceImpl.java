@@ -90,7 +90,7 @@ public class ZzMessageInfoServiceImpl implements ZzMessageInfoService {
     *@Author: 忠
     *@date: 2019/6/23
     */
-    public List<ContactsMessageDto> queryContactsMessage(String userId){
+    public String queryContactsMessage(String userId){
         List<ContactsMessageDto> contactsMessageDtoList =this.zzMessageInfoDao.queryContactsMessage(userId);
 
         List<List<ContactsMessageDto>> list2 = aggregation(contactsMessageDtoList, new Comparator<ContactsMessageDto>() {
@@ -133,7 +133,7 @@ public class ZzMessageInfoServiceImpl implements ZzMessageInfoService {
 
         }
         s1 +="]";
-        return  this.zzMessageInfoDao.queryContactsMessage(userId);
+        return  s1;
     }
 
 }
