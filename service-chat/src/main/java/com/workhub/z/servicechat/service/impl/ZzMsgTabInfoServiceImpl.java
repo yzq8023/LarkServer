@@ -1,8 +1,7 @@
 package com.workhub.z.servicechat.service.impl;
 
-import com.github.hollykunge.security.common.biz.BaseBiz;
-import com.workhub.z.servicechat.entity.ZzMsgTabInfo;
 import com.workhub.z.servicechat.dao.ZzMsgTabInfoDao;
+import com.workhub.z.servicechat.entity.ZzMsgTabInfo;
 import com.workhub.z.servicechat.service.ZzMsgTabInfoService;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,7 @@ import java.util.List;
  * @since 2019-05-23 16:46:13
  */
 @Service("zzMsgTabInfoService")
-public class ZzMsgTabInfoServiceImpl extends BaseBiz<ZzMsgTabInfoDao, ZzMsgTabInfo> implements ZzMsgTabInfoService {
+public class ZzMsgTabInfoServiceImpl implements ZzMsgTabInfoService {
     @Resource
     private ZzMsgTabInfoDao zzMsgTabInfoDao;
 
@@ -55,11 +54,11 @@ public class ZzMsgTabInfoServiceImpl extends BaseBiz<ZzMsgTabInfoDao, ZzMsgTabIn
 //        return insert;
     }
 
-    @Override
+    /*@Override
     protected String getPageName() {
         return null;
     }
-
+*/
     /**
      * 修改数据
      *

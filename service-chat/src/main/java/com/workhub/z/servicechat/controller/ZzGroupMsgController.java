@@ -3,12 +3,10 @@ package com.workhub.z.servicechat.controller;
 import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
-import com.github.hollykunge.security.common.rest.BaseController;
 import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.entity.ZzGroupMsg;
 import com.workhub.z.servicechat.service.ZzGroupMsgService;
-import com.workhub.z.servicechat.service.impl.ZzGroupMsgServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -24,8 +22,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/zzGroupMsg")
-public class ZzGroupMsgController
-        extends BaseController<ZzGroupMsgServiceImpl, ZzGroupMsg> {
+public class ZzGroupMsgController{
     /**
      * 服务对象
      */

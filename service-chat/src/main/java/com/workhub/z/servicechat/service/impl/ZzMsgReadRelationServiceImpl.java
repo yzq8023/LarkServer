@@ -1,9 +1,8 @@
 package com.workhub.z.servicechat.service.impl;
 
-import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.workhub.z.servicechat.VO.NoReadVo;
-import com.workhub.z.servicechat.entity.ZzMsgReadRelation;
 import com.workhub.z.servicechat.dao.ZzMsgReadRelationDao;
+import com.workhub.z.servicechat.entity.ZzMsgReadRelation;
 import com.workhub.z.servicechat.service.ZzMsgReadRelationService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,6 +55,12 @@ public class ZzMsgReadRelationServiceImpl implements ZzMsgReadRelationService {
     public void insert(ZzMsgReadRelation zzMsgReadRelation) {
         zzMsgReadRelationDao.insert(zzMsgReadRelation);
     }
+
+    /*@Override
+    protected String getPageName() {
+        return null;
+    }
+    */
 
     /**
      * 修改数据
