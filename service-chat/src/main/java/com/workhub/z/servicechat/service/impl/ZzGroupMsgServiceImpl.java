@@ -1,7 +1,5 @@
 package com.workhub.z.servicechat.service.impl;
 
-import com.github.hollykunge.security.api.vo.user.UserInfo;
-import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -16,10 +14,11 @@ import com.workhub.z.servicechat.service.ZzGroupMsgService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.plugin2.message.Message;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 群组消息表(ZzGroupMsg)表服务实现类
@@ -28,7 +27,7 @@ import java.util.*;
  * @since 2019-05-10 11:38:02
  */
 @Service("zzGroupMsgService")
-public class ZzGroupMsgServiceImpl extends BaseBiz<ZzGroupMsgDao, ZzGroupMsg> implements ZzGroupMsgService {
+public class ZzGroupMsgServiceImpl implements ZzGroupMsgService {
     @Resource
     private ZzGroupMsgDao zzGroupMsgDao;
     @Autowired
@@ -43,9 +42,10 @@ public class ZzGroupMsgServiceImpl extends BaseBiz<ZzGroupMsgDao, ZzGroupMsg> im
     @Override
     public ZzGroupMsg queryById(String msgId) {
         //return this.zzGroupMsgDao.queryById(msgId);
-        ZzGroupMsg entity = new ZzGroupMsg();
+        /*ZzGroupMsg entity = new ZzGroupMsg();
         entity.setMsgId(msgId);
-        return super.selectOne(entity);
+        return super.selectOne(entity);*/
+        return this.zzGroupMsgDao.queryById(msgId);
     }
 
     /**
@@ -74,10 +74,10 @@ public class ZzGroupMsgServiceImpl extends BaseBiz<ZzGroupMsgDao, ZzGroupMsg> im
 //        super.insert(zzGroupMsg);
     }
 
-    @Override
+    /*@Override
     protected String getPageName() {
         return null;
-    }
+    }*/
 
     /**
      * 修改数据
@@ -104,9 +104,10 @@ public class ZzGroupMsgServiceImpl extends BaseBiz<ZzGroupMsgDao, ZzGroupMsg> im
     @Transactional
     public void deleteById(String msgId) {
        // return this.zzGroupMsgDao.deleteById(msgId) > 0;
-        ZzGroupMsg entity = new ZzGroupMsg();
+        /*ZzGroupMsg entity = new ZzGroupMsg();
         entity.setMsgId(msgId);
-        super.delete(entity);
+        super.delete(entity);*/
+        this.zzGroupMsgDao.deleteById(msgId);
     }
     /**
      * 查询消息记录

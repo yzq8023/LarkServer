@@ -2,12 +2,9 @@ package com.workhub.z.servicechat.controller;
 
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
-import com.github.hollykunge.security.common.rest.BaseController;
 import com.workhub.z.servicechat.config.RandomId;
-import com.workhub.z.servicechat.entity.ZzUserGroup;
 import com.workhub.z.servicechat.entity.ZzUserGroupMsgTag;
 import com.workhub.z.servicechat.service.ZzUserGroupMsgTagService;
-import com.workhub.z.servicechat.service.impl.ZzUserGroupMsgTagServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -21,7 +18,7 @@ import java.util.Date;
  */
 @RestController
 @RequestMapping("/zzUserGroupMsgTag")
-public class ZzUserGroupMsgTagController  extends BaseController<ZzUserGroupMsgTagServiceImpl, ZzUserGroup> {
+public class ZzUserGroupMsgTagController{
     /**
      * 服务对象
      */

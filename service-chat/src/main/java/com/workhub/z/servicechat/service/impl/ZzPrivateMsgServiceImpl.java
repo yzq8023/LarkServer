@@ -1,6 +1,5 @@
 package com.workhub.z.servicechat.service.impl;
 
-import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -22,7 +21,7 @@ import java.util.Map;
  * @since 2019-05-13 10:57:46
  */
 @Service("zzPrivateMsgService")
-public class ZzPrivateMsgServiceImpl extends BaseBiz<ZzPrivateMsgDao, ZzPrivateMsg> implements ZzPrivateMsgService {
+public class ZzPrivateMsgServiceImpl implements ZzPrivateMsgService {
     @Resource
     private ZzPrivateMsgDao zzPrivateMsgDao;
 
@@ -62,11 +61,11 @@ public class ZzPrivateMsgServiceImpl extends BaseBiz<ZzPrivateMsgDao, ZzPrivateM
 //        return insert;
     }
 
-    @Override
+    /*@Override
     protected String getPageName() {
         return null;
     }
-
+*/
     /**
      * 修改数据
      *

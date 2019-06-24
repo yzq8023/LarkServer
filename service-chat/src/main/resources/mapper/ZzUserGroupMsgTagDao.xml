@@ -32,7 +32,10 @@
             and TAG_TYPE = #{tagType}
         </if>
     </delete>
-
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from ZZ_USER_GROUP_MSG_TAG where ID = #{id}
+    </delete>
     <select id="getInfList" resultMap="ZzUserGroupMsgTagMap">
 
         SELECT

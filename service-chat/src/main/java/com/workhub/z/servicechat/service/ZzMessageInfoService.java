@@ -61,5 +61,5 @@ public interface ZzMessageInfoService {
     *@Author: 忠
     *@date: 2019/6/23
     */
-    List<ContactsMessageDto> queryContactsMessage(String userId);
+    String queryContactsMessage(String userId);
 }
