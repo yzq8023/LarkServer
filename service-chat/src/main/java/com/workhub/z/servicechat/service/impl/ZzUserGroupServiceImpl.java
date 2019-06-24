@@ -167,6 +167,14 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
             vo.setAtMe(true);
             vo.setAvatar("1111");
             vo.setId("223323");
+            MessageContent mes = new MessageContent();
+            mes.setExtension("123");
+            mes.setType(0);
+            mes.setId("11111");
+            mes.setSecretLevel(40);
+            mes.setTitle("ceshi");
+            mes.setUrl("www.baidu.com");
+            vo.setLastMessage(mes);
             list.add(vo);
 
             Map<String,List<ContactVO>> data=new HashMap<>();
