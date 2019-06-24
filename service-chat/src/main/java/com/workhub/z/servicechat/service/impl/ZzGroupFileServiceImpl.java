@@ -1,6 +1,5 @@
 package com.workhub.z.servicechat.service.impl;
 
-import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -27,7 +26,7 @@ import java.util.Map;
  * @since 2019-05-13 10:59:08
  */
 @Service("zzGroupFileService")
-public class ZzGroupFileServiceImpl extends BaseBiz<ZzGroupFileDao,ZzGroupFile > implements ZzGroupFileService {
+public class ZzGroupFileServiceImpl implements ZzGroupFileService {
     @Resource
     private ZzGroupFileDao zzGroupFileDao;
 
@@ -41,10 +40,10 @@ public class ZzGroupFileServiceImpl extends BaseBiz<ZzGroupFileDao,ZzGroupFile >
     public ZzGroupFile queryById(String fileId) {
 
         //return this.zzGroupFileDao.queryById(fileId);
-        ZzGroupFile entity = new ZzGroupFile();
+        /*ZzGroupFile entity = new ZzGroupFile();
         entity.setFileId(fileId);
-        return super.selectOne(entity);
-
+        return super.selectOne(entity);*/
+        return this.zzGroupFileDao.queryById(fileId);
     }
 
     /**
@@ -73,10 +72,10 @@ public class ZzGroupFileServiceImpl extends BaseBiz<ZzGroupFileDao,ZzGroupFile >
         //super.insert(zzGroupFile);
     }
 
-    @Override
+   /* @Override
     protected String getPageName() {
         return null;
-    }
+    }*/
 
     /**
      * 修改数据
@@ -104,9 +103,10 @@ public class ZzGroupFileServiceImpl extends BaseBiz<ZzGroupFileDao,ZzGroupFile >
     public void deleteById(String fileId) {
 
         //return this.zzGroupFileDao.deleteById(fileId) > 0;
-        ZzGroupFile entity = new ZzGroupFile();
+       /* ZzGroupFile entity = new ZzGroupFile();
         entity.setFileId(fileId);
-        super.delete(entity);
+        super.delete(entity);*/
+        this.zzGroupFileDao.deleteById(fileId);
     }
 
     /**

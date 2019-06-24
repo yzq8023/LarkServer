@@ -2,7 +2,6 @@ package com.workhub.z.servicechat.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.github.hollykunge.security.api.vo.user.UserInfo;
-import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.vo.rpcvo.ContactVO;
 import com.github.hollykunge.security.common.vo.rpcvo.MessageContent;
 import com.github.pagehelper.PageHelper;
@@ -39,7 +38,7 @@ import java.util.Map;
  * @since 2019-05-10 14:22:54
  */
 @Service("zzUserGroupService")
-public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup> implements ZzUserGroupService {
+public class ZzUserGroupServiceImpl implements ZzUserGroupService {
     @Resource
     private ZzUserGroupDao zzUserGroupDao;
 
@@ -89,11 +88,11 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
 //        return insert;
     }
 
-    @Override
+   /* @Override
     protected String getPageName() {
         return null;
     }
-
+*/
     /**
      * 修改数据
      *

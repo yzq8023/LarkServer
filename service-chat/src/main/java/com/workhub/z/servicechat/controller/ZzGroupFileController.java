@@ -2,13 +2,11 @@ package com.workhub.z.servicechat.controller;
 
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
-import com.github.hollykunge.security.common.rest.BaseController;
 import com.workhub.z.servicechat.VO.GroupInfoVO;
 import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
 import com.workhub.z.servicechat.service.ZzGroupFileService;
-import com.workhub.z.servicechat.service.impl.ZzGroupFileServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -22,8 +20,7 @@ import java.util.Date;
  */
 @RestController
 @RequestMapping("/zzGroupFile")
-public class ZzGroupFileController
-        extends BaseController<ZzGroupFileServiceImpl,ZzGroupFile > {
+public class ZzGroupFileController {
 
     /**
      * 服务对象
