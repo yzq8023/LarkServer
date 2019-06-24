@@ -2,12 +2,10 @@ package com.workhub.z.servicechat.controller;
 
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
-import com.github.hollykunge.security.common.rest.BaseController;
 import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.entity.ZzPrivateMsg;
 import com.workhub.z.servicechat.service.ZzPrivateMsgService;
-import com.workhub.z.servicechat.service.impl.ZzPrivateMsgServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -22,8 +20,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/zzPrivateMsg")
-public class ZzPrivateMsgController
-        extends BaseController<ZzPrivateMsgServiceImpl, ZzPrivateMsg> {
+public class ZzPrivateMsgController{
     /**
      * 服务对象
      */

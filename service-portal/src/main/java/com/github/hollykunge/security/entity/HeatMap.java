@@ -31,5 +31,7 @@ public class HeatMap {
     @Transient
     private Integer day;
     @Transient
-    private Integer week;
+    private String week;
+    @Transient
+    private String date;
 }

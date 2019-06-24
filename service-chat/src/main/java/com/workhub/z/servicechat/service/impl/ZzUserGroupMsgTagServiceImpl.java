@@ -1,6 +1,5 @@
 package com.workhub.z.servicechat.service.impl;
 
-import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -19,13 +18,13 @@ import java.util.List;
  * @since 2019-06-11
  */
 @Service("zzUserGroupMsgTagService")
-public class ZzUserGroupMsgTagServiceImpl  extends BaseBiz<ZzUserGroupMsgTagDao, ZzUserGroupMsgTag> implements ZzUserGroupMsgTagService {
+public class ZzUserGroupMsgTagServiceImpl implements ZzUserGroupMsgTagService {
     @Resource
     private ZzUserGroupMsgTagDao zzUserGroupMsgTagDao;
-    @Override
+   /* @Override
     protected String getPageName() {
         return null;
-    }
+    }*/
     /**
      * 增加群消息标记
      * @param entity 数据库实体
@@ -49,11 +48,13 @@ public class ZzUserGroupMsgTagServiceImpl  extends BaseBiz<ZzUserGroupMsgTagDao,
      * @since 2019-06-11
      */
     public String deleteById(String id) throws Exception{
-        String res="1";
+        /*String res="1";
         ZzUserGroupMsgTag entity = new ZzUserGroupMsgTag();
         entity.setId(id);
         super.delete(entity);
-        return  res;
+        return  res;*/
+        int i = this.zzUserGroupMsgTagDao.deleteById(id);
+        return "1";
     }
     /**
      * 按照条件（用户id，群id，消息id，标记类型）删除群消息标记

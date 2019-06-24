@@ -1,6 +1,5 @@
 package com.workhub.z.servicechat.service.impl;
 
-import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.dao.ZzDictionaryWordsDao;
 import com.workhub.z.servicechat.entity.ZzDictionaryWords;
@@ -17,7 +16,7 @@ import java.util.List;
  * @since 2019-05-17 14:56:57
  */
 @Service("zzDictionaryWordsService")
-public class ZzDictionaryWordsServiceImpl extends BaseBiz<ZzDictionaryWordsDao, ZzDictionaryWords> implements ZzDictionaryWordsService {
+public class ZzDictionaryWordsServiceImpl implements ZzDictionaryWordsService {
     @Resource
     private ZzDictionaryWordsDao zzDictionaryWordsDao;
 
@@ -30,9 +29,10 @@ public class ZzDictionaryWordsServiceImpl extends BaseBiz<ZzDictionaryWordsDao, 
     @Override
     public ZzDictionaryWords queryById(String id) {
         //return this.zzDictionaryWordsDao.queryById(id);
-        ZzDictionaryWords entity = new ZzDictionaryWords();
+       /* ZzDictionaryWords entity = new ZzDictionaryWords();
         entity.setId(id);
-        return  super.selectOne(entity);
+        return  super.selectOne(entity);*/
+        return this.zzDictionaryWordsDao.queryById(id);
     }
 
     /**
@@ -60,11 +60,11 @@ public class ZzDictionaryWordsServiceImpl extends BaseBiz<ZzDictionaryWordsDao, 
         //super.insert(zzDictionaryWords);
     }
 
-    @Override
+    /*@Override
     protected String getPageName() {
         return null;
     }
-
+*/
     /**
      * 修改数据
      *
@@ -87,9 +87,10 @@ public class ZzDictionaryWordsServiceImpl extends BaseBiz<ZzDictionaryWordsDao, 
     @Override
     public void deleteById(String id) {
         //return this.zzDictionaryWordsDao.deleteById(id) > 0;
-        ZzDictionaryWords entity = new ZzDictionaryWords();
+        /*ZzDictionaryWords entity = new ZzDictionaryWords();
         entity.setId(id);
-        super.delete(entity);
+        super.delete(entity);*/
+        this.zzDictionaryWordsDao.deleteById(id);
     }
 
 

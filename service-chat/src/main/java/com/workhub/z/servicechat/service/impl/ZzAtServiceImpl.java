@@ -1,6 +1,5 @@
 package com.workhub.z.servicechat.service.impl;
 
-import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -20,7 +19,7 @@ import java.util.List;
  * @since 2019-05-10 14:22:34
  */
 @Service("zzAtService")
-public class ZzAtServiceImpl extends BaseBiz<ZzAtDao,ZzAt> implements ZzAtService  {
+public class ZzAtServiceImpl implements ZzAtService  {
     @Resource
     private ZzAtDao zzAtDao;
 
@@ -86,10 +85,10 @@ public class ZzAtServiceImpl extends BaseBiz<ZzAtDao,ZzAt> implements ZzAtServic
         return this.zzAtDao.deleteById(id) > 0;
     }
 
-    @Override
+    /*@Override
     protected String getPageName() {
         return null;
-    }
+    }*/
     /**
      * 查询分页
      * @param
