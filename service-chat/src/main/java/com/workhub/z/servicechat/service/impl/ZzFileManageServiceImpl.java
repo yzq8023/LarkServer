@@ -50,7 +50,7 @@ public class ZzFileManageServiceImpl implements ZzFileManageService {
             }
             String newFileName = fileId + suffix;
 
-            String filepath = "D:/file-management-center/upload/" + year + month + date;
+            String filepath = "C:/file-management-center/upload/" + year + month + date;
 
             String file_type = "";
             FileTypeEnum fileTypeEnum = FileTypeEnum.getEnumByValue(file_ext);

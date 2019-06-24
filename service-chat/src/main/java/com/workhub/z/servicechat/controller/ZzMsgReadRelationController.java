@@ -22,8 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/MsgReadRelation/")
-public class ZzMsgReadRelationController
-        extends BaseController<ZzMsgReadRelationServiceImpl,ZzMsgReadRelation > {
+public class ZzMsgReadRelationController {
     /**
      * 服务对象
      */

@@ -41,7 +41,7 @@ public class ProcessGroupMsg extends AbstractMsgProcessor {
         List<String> userList = groupService.queryGroupUserIdListByGroupId(zzGroupMsg.getMsgReceiver());
         if(userList == null|| userList.isEmpty()) return;
         for (int i = 0; i < userList.size() ; i++) {
-            super.saveNoReadMsg(zzGroupMsg.getMsgSender(),userList.get(i));
+            super.saveNoReadMsg(zzGroupMsg.getMsgReceiver(),userList.get(i));
         }
     }
 }
