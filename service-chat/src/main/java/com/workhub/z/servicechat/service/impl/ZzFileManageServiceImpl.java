@@ -4,6 +4,7 @@ import com.workhub.z.servicechat.config.FileTypeEnum;
 import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.config.fileManage;
 import com.workhub.z.servicechat.service.ZzFileManageService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +22,12 @@ import java.util.Map;
 @Service("zzFileManageService")
 public class ZzFileManageServiceImpl implements ZzFileManageService {
 
+    // 上传文件大小和路径配置
+    @Value("${file_size_max}")
+    private String file_size_max;
+
+    @Value("${file_save_path_group}")
+    private String file_root_path;
     //上传附件
     public Map<String, String> singleFileUpload(MultipartFile file) throws Exception {
         Map<String, String> resMap = new HashMap<>();
@@ -50,13 +57,13 @@ public class ZzFileManageServiceImpl implements ZzFileManageService {
             }
             String newFileName = fileId + suffix;
 
-            String filepath = "D:/file-management-center/upload/" + year + month + date;
+            String filepath = file_root_path + year + month + date;
 
             String file_type = "";
             FileTypeEnum fileTypeEnum = FileTypeEnum.getEnumByValue(file_ext);
             file_type = fileTypeEnum.getType();
 
-            fileManage.uploadFile(file, filepath, newFileName,Integer.valueOf(200));
+            fileManage.uploadFile(file, filepath, newFileName,Integer.valueOf(file_size_max));
             resMap.put("file_id", fileId);
             resMap.put("file_path", filepath + "/" + newFileName);
             resMap.put("file_size", String.valueOf(file.getSize()));
