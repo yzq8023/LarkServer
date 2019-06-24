@@ -1,18 +1,13 @@
 package com.workhub.z.servicechat.feign;
 
 import com.github.hollykunge.security.api.vo.user.UserInfo;
-import com.github.hollykunge.security.auth.configuration.FeignConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.data.repository.RepositoryDefinition;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
-import java.util.Set;
 
 @FeignClient(value = "ace-admin")
 @Repository
