@@ -14,7 +14,7 @@ spring:
 #        url: jdbc:mysql://${MYSQL_HOST:10.12.97.30}:${MYSQL_PORT:3306}/lark-admin?useUnicode=true&characterEncoding=UTF8&useSSL=true
 #        username: root
 #        password: 123456
-        url: jdbc:oracle:thin:@${ORACLE_HOST:10.12.97.30}:${ORACLE_PORT:1521}:arltr
+        url: jdbc:oracle:thin:@${ORACLE_HOST:10.11.24.136}:${ORACLE_PORT:1521}:arltr
         username: lark_admin
         password: 123456
         # 使用druid数据源
@@ -35,7 +35,7 @@ spring:
         poolPreparedStatements: true
         maxOpenPreparedStatements: 20
     rabbitmq:
-        host: ${RABBIT_MQ_HOST:10.12.97.30}
+        host: ${RABBIT_MQ_HOST:10.11.24.136}
         port:  ${RABBIT_MQ_PORT:5672}
         username: hollykunge
         password: 123456
@@ -126,7 +126,7 @@ redis:
          maxActive: 300
          maxIdle: 100
          maxWait: 1000
-    host: ${REDIS_HOST:10.12.97.34}
+    host: ${REDIS_HOST:localhost}
     port:  ${REDIS_PORT:6379}
     password:
     timeout: 2000

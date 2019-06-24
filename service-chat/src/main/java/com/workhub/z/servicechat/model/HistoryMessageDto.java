@@ -1,7 +1,6 @@
 package com.workhub.z.servicechat.model;
 
 import java.util.Date;
-import java.util.List;
 
 public class HistoryMessageDto {
     //    消息的id

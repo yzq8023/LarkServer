@@ -1,8 +1,5 @@
 package com.workhub.z.servicechat.config;
 
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -231,8 +228,8 @@ public abstract class ImageUtil {
             File destFile = new File(outFileName);
             FileOutputStream out = new FileOutputStream(destFile); // 输出到文件流
             // 可以正常实现bmp、png、gif转jpg
-            JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-            encoder.encode(image); // JPEG编码
+//            JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
+//            encoder.encode(image); // JPEG编码
             out.close();
         } catch (IOException ex) {
             ex.printStackTrace();
