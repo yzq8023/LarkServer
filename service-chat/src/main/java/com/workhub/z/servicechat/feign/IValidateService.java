@@ -1,6 +1,5 @@
 package com.workhub.z.servicechat.feign;
 
-import com.github.hollykunge.security.auth.service.AuthService;
 import org.springframework.cloud.openfeign.FeignClient;
 
 /**
