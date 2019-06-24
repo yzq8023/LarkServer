@@ -32,7 +32,7 @@ public abstract class BaseBiz<M extends Mapper<T>, T> {
         return mapper.selectOne(entity);
     }
 
-    public T selectById(Object id) {
+    public T selectById(String id) {
         return mapper.selectByPrimaryKey(id);
     }
 
