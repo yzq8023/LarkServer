@@ -50,6 +50,6 @@ public class AdminCommonConstant {
     /**
      * 创建角色时默认给权限的三个菜单
      */
-    public static final String DEFAULT_MENU_PERMISSION_CODE_LIST = "talk,dashboard,login";
+    public static final String DEFAULT_MENU_PERMISSION_CODE_LIST = "talk,dashboard,login,self";
 
 }
