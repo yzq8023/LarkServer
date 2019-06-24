@@ -66,7 +66,6 @@ public class UserBiz extends BaseBiz<UserMapper, User> {
      * @param userId
      * @return
      */
-    @Cache(key = "user{1}")
     public User getUserByUserId(String userId) {
         User user = new User();
 
