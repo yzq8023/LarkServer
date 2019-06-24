@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -67,7 +68,7 @@ public class ZzGroupServiceImpl implements ZzGroupService {
     @Override
     @Transactional
     public void insert(ZzGroup zzGroup) {
-        int insert = this.zzGroupDao.insert(zzGroup);
+        this.zzGroupDao.addGroup(zzGroup);
 //        return insert;
     }
 
@@ -98,45 +99,51 @@ public class ZzGroupServiceImpl implements ZzGroupService {
 
     @Override
     public PageInfo<GroupUserListVo> groupUserList(String id, int page, int size) throws Exception {
-        if (StringUtil.isEmpty(id)) throw new NullPointerException("id is null");
-        Page<Object> pageMassage = PageHelper.startPage(page, size);
-        pageMassage.setTotal(this.zzGroupDao.groupUserListTotal(id));
-        int startRow = pageMassage.getStartRow();
-        int endRow = pageMassage.getEndRow();
-        List<GroupUserListVo> groupUserListVos = this.zzGroupDao.groupUserList(id, startRow, endRow);
-        PageInfo<GroupUserListVo> pageInfoGroupInfo = new PageInfo<GroupUserListVo>();
-        if (groupUserListVos ==null || groupUserListVos.isEmpty()) return pageInfoGroupInfo;
-        Set<String> setStr = new HashSet<String>();
-        groupUserListVos.stream().forEach(groupUserListVosList -> {
-            setStr.add(groupUserListVosList.getUserId());
-        });
-        List<UserInfo> userInfos = iUserService.userList(setStr);
-        groupUserListVos.stream().forEach(groupUserListVosList ->{
-            userInfos.stream().filter(userInfosFilter ->userInfosFilter.getId().equals(groupUserListVosList.getUserId())).forEach(userInfosList ->{
-                groupUserListVosList.setLevels("1"/*TODO*/);
-                groupUserListVosList.setFullName(userInfosList.getName());
-                groupUserListVosList.setPassword(userInfosList.getPassword());
-                groupUserListVosList.setVip(userInfosList.getDemo());//TODO
-            });
-        });
-        ZzGroup zzGroup = this.zzGroupDao.queryById(id);
-        if (zzGroup ==null) throw new RuntimeException("未查询到群组记录");
-
-        List<GroupUserListVo> resultList = this.orderByGroupUser(groupUserListVos, zzGroup.getCreator());
-
-        pageInfoGroupInfo.setList(resultList);
-        pageInfoGroupInfo.setTotal(pageMassage.getTotal());
-        pageInfoGroupInfo.setStartRow(startRow);
-        pageInfoGroupInfo.setEndRow(endRow);
-        pageInfoGroupInfo.setPages(pageMassage.getPages());
-        pageInfoGroupInfo.setPageNum(page);
-        pageInfoGroupInfo.setPageSize(size);
-        return pageInfoGroupInfo;
+//        if (StringUtil.isEmpty(id)) throw new NullPointerException("id is null");
+//        Page<Object> pageMassage = PageHelper.startPage(page, size);
+//        pageMassage.setTotal(this.zzGroupDao.groupUserListTotal(id));
+//        int startRow = pageMassage.getStartRow();
+//        int endRow = pageMassage.getEndRow();
+//        List<GroupUserListVo> groupUserListVos = this.zzGroupDao.groupUserList(id, startRow, endRow);
+//        PageInfo<GroupUserListVo> pageInfoGroupInfo = new PageInfo<GroupUserListVo>();
+//        if (groupUserListVos ==null || groupUserListVos.isEmpty()) return pageInfoGroupInfo;
+//        List<String> setStr = new ArrayList<>();
+//        groupUserListVos.stream().forEach(groupUserListVosList -> {
+//            setStr.add(groupUserListVosList.getUserId());
+//        });
+//        List<UserInfo> userInfos = iUserService.userList(setStr);
+//        groupUserListVos.stream().forEach(groupUserListVosList ->{
+//            userInfos.stream().filter(userInfosFilter ->userInfosFilter.getId().equals(groupUserListVosList.getUserId())).forEach(userInfosList ->{
+//                groupUserListVosList.setLevels("1"/*TODO*/);
+//                groupUserListVosList.setFullName(userInfosList.getName());
+//                groupUserListVosList.setPassword(userInfosList.getPassword());
+//                groupUserListVosList.setVip(userInfosList.getDemo());//TODO
+//            });
+//        });
+//        ZzGroup zzGroup = this.zzGroupDao.queryById(id);
+//        if (zzGroup ==null) throw new RuntimeException("未查询到群组记录");
+//
+//        List<GroupUserListVo> resultList = this.orderByGroupUser(groupUserListVos, zzGroup.getCreator());
+//
+//        pageInfoGroupInfo.setList(resultList);
+//        pageInfoGroupInfo.setTotal(pageMassage.getTotal());
+//        pageInfoGroupInfo.setStartRow(startRow);
+//        pageInfoGroupInfo.setEndRow(endRow);
+//        pageInfoGroupInfo.setPages(pageMassage.getPages());
+//        pageInfoGroupInfo.setPageNum(page);
+//        pageInfoGroupInfo.setPageSize(size);
+//        return pageInfoGroupInfo;
+        return null;
     }
 
     @Override
-    public Long groupUserListTotal(String id) throws Exception {
-        return this.zzGroupDao.groupUserListTotal(id);
+    public Long groupUserListTotal(String groupId) throws Exception {
+        return this.zzGroupDao.groupUserListTotal(groupId);
+    }
+
+    @Override
+    public List<String> queryGroupUserIdListByGroupId(String groupId) {
+        return this.zzGroupDao.queryGroupUserIdListByGroupId(groupId);
     }
 
     @Override

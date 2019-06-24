@@ -5,6 +5,7 @@ import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.rest.BaseController;
 import com.github.hollykunge.security.entity.HeatMap;
 import com.github.hollykunge.security.portal.service.HeatMapService;
+import com.github.hollykunge.security.vo.HeatMapVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -30,10 +31,10 @@ public class HeatMapController extends BaseController<HeatMapService, HeatMap> {
      *
      * @return
      */
-    @Override
-    @GetMapping("/all")
+
+    @GetMapping("/allData")
     @ResponseBody
-    public ListRestResponse<List<HeatMap>> all() {
+    public ListRestResponse<List<HeatMapVO>> allData() {
         String userID = request.getHeader("userId");
         if (StringUtils.isEmpty(userID)) {
             throw new BaseException("request contains no user...");

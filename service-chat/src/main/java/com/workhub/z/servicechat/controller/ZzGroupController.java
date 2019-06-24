@@ -6,11 +6,16 @@ import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.hollykunge.security.common.rest.BaseController;
 import com.github.hollykunge.security.common.vo.rpcvo.ContactVO;
 import com.github.pagehelper.PageInfo;
+import com.workhub.z.servicechat.VO.GroupInfoVO;
 import com.workhub.z.servicechat.VO.GroupUserListVo;
+import com.workhub.z.servicechat.VO.HistoryMessageVO;
+import com.workhub.z.servicechat.VO.MessageVO;
 import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.entity.ZzGroup;
+import com.workhub.z.servicechat.service.ZzGroupMsgService;
 import com.workhub.z.servicechat.service.ZzGroupService;
+import com.workhub.z.servicechat.service.ZzMessageInfoService;
 import com.workhub.z.servicechat.service.ZzUserGroupService;
 import com.workhub.z.servicechat.service.impl.ZzGroupServiceImpl;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +44,12 @@ public class ZzGroupController  {
     @Resource
     private ZzUserGroupService userGroupService;
 
+    @Resource
+    private ZzGroupMsgService groupMsgService;
+    @Resource
+    private ZzMessageInfoService messageInfoService;
+
+
     /**
      * 通过主键查询单条数据
      *
@@ -46,10 +57,14 @@ public class ZzGroupController  {
      * @return 单条数据
      */
     @GetMapping("/getGroupInfo")
-    public ObjectRestResponse selectOne(@RequestParam("groupId")String groupId) {
+    public ObjectRestResponse selectOne(@RequestParam("groupId")String groupId) throws Exception {
         ObjectRestResponse objectRestResponse = new ObjectRestResponse();
         objectRestResponse.msg("200");
-        objectRestResponse.data(ZzGroupToGroupInfo(this.zzGroupService.queryById(groupId)));
+
+        GroupInfoVO groupInfo = new GroupInfoVO();
+        groupInfo = (GroupInfoVO)ZzGroupToGroupInfo(this.zzGroupService.queryById(groupId));
+        groupInfo.setMemberNum(Math.toIntExact(this.zzGroupService.groupUserListTotal(groupId)));
+        objectRestResponse.data(groupInfo);
         return objectRestResponse;
     }
 
@@ -141,12 +156,20 @@ public class ZzGroupController  {
         return new ListRestResponse("200",groups.size(),groups);
     }
 
-    @PostMapping("/queryContactListById")
-    public ListRestResponse queryTest(@RequestParam("userId")String userId) throws Exception {
+    @GetMapping("/queryContactListById")
+    public ListRestResponse queryContactListById(@RequestParam("userId")String userId) throws Exception {
         List<ContactVO> contactVOS = userGroupService.getContactVOList(userId);
 //        List<ZzGroup> groups = this.zzGroupService.queryGroupListByUserId(userId);
         return new ListRestResponse("200", contactVOS.size(), contactVOS);
     }
+
+    @GetMapping("/queryHistoryMessageById")
+    public ListRestResponse queryHistoryMessageById(@RequestParam("userId")String userId) throws Exception {
+//        List<HistoryMessageVO> query = this.groupMsgService.queryHistoryMessageById(userId);
+        messageInfoService.queryContactsMessage(userId);
+        return new ListRestResponse("200", 0,"");
+    }
+
     /**
      * 逻辑删除群
      * @param groupId 群id;delFlg：删除标记位，1删除，0 不删

@@ -21,7 +21,7 @@ import java.util.List;
  * @since 2019-05-23 13:27:22
  */
 @RestController
-@RequestMapping("/zzMsgReadRelation")
+@RequestMapping("/MsgReadRelation/")
 public class ZzMsgReadRelationController
         extends BaseController<ZzMsgReadRelationServiceImpl,ZzMsgReadRelation > {
     /**

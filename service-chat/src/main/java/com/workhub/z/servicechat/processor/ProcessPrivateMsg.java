@@ -31,6 +31,9 @@ public class ProcessPrivateMsg extends AbstractMsgProcessor{
         String message = jsonObject.getString("data");
         ZzPrivateMsg privateMsg = (ZzPrivateMsg)MsgVOToModel(message);
         saveMsg(privateMsg);
+        //存储消息信息（新）
+        super.saveMessageInfo("USER",privateMsg.getMsgSender(),privateMsg.getMsgReceiver()
+                ,privateMsg.getLevels(),privateMsg.getSendTime(),message,privateMsg.getMsgId());
 //        如果不在线则不发
         Boolean temp =  checkUserOnline(channelContext,privateMsg.getMsgReceiver());
 //        Boolean temp =  Tio.sendToUser(channelContext.getGroupContext(),privateMsg.getMsgSender(),this.getWsResponse(message));

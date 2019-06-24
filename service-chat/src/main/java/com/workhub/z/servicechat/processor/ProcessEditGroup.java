@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.workhub.z.servicechat.VO.GroupEditVO;
 import com.workhub.z.servicechat.config.ImageUtil;
+import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.entity.ZzGroup;
 import com.workhub.z.servicechat.entity.ZzUserGroup;
 import com.workhub.z.servicechat.model.GroupTaskDto;
@@ -24,6 +25,7 @@ import java.util.List;
 import static com.workhub.z.servicechat.config.MessageType.*;
 import static com.workhub.z.servicechat.config.RandomId.getUUID;
 import static com.workhub.z.servicechat.config.VoToEntity.toGroupTaskDto;
+import static com.workhub.z.servicechat.config.common.imgUrl;
 
 @Service
 public class ProcessEditGroup extends AbstractMsgProcessor{
@@ -35,7 +37,8 @@ public class ProcessEditGroup extends AbstractMsgProcessor{
 
     // TODO: 2019/6/4 分类处理群组编辑
     public boolean processManage(ChannelContext channelContext, String message) throws IOException {
-        GroupTaskDto groupTaskDto = toGroupTaskDto(message);
+//        GroupTaskDto groupTaskDto = toGroupTaskDto(message);
+        GroupTaskDto groupTaskDto = JSONObject.parseObject(message,GroupTaskDto.class);
         switch (groupTaskDto.getType()){
             case GROUP_JOIN_MSG://这个分支目前走不进来了
                 // TODO: 2019/6/4 处理加入群组消息，1绑定用户到群组
@@ -70,17 +73,19 @@ public class ProcessEditGroup extends AbstractMsgProcessor{
 
     public boolean joinGroup(ChannelContext channelContext,GroupTaskDto groupTaskDto) throws Exception{
         //如果是加入：人员列表只有一个用户，他们自己；如果是邀请，人员列表可能多个
-        for ( UserListDto userInfo:groupTaskDto.getUserList()){
+//        for ( UserListDto userInfo:groupTaskDto.getUserList()){
             ZzUserGroup userGroup = new ZzUserGroup();
             userGroup.setCreatetime(new Date());
             userGroup.setId(getUUID());
             userGroup.setGroupId(groupTaskDto.getGroupId());
-            userGroup.setUserId(userInfo.getUserId());
-            userGroupService.insert(userGroup);
+            userGroup.setUserId(groupTaskDto.getReviser());
+//            userGroupService.insert(userGroup);
             //创建群头像
 //            createGroupHeadsImg(groupTaskDto.getGroupId());
-        }
+//        }
 
+        Tio.bindGroup(channelContext,groupTaskDto.getGroupId());
+        Tio.sendToGroup(channelContext.getGroupContext(),groupTaskDto.getGroupId(),super.getWsResponse("爷们来了"));
 
         /*for ( UserListDto userInfo:groupTaskDto.getUserList()){
             ZzUserGroup userGroup = new ZzUserGroup();
@@ -120,43 +125,81 @@ public class ProcessEditGroup extends AbstractMsgProcessor{
     // TODO: 2019/6/3 退出群组
 
     //群创建
-    public boolean createGroup(ChannelContext channelContext,String message) throws IOException {
+    public boolean createGroup(ChannelContext channelContext,String msg) throws IOException {
         //创建群begin
-        ZzGroup zzGroup = new ZzGroup();
+        ZzGroup zzGroupInfo = new ZzGroup();
+        JSONObject jsonObject = JSONObject.parseObject(msg);
+        String message = jsonObject.getString("data");
         JSONObject groupJson = JSONObject.parseObject(message);
-        zzGroup.setGroupId(getUUID());
-        zzGroup.setGroupName(groupJson.getString("groupName"));
-        zzGroup.setCreator(groupJson.getString("creator"));
-        zzGroup.setGroupDescribe(groupJson.getString("groupDescribe"));
-        zzGroup.setUpdator(groupJson.getString("updator"));
-        zzGroup.setPname(groupJson.getString("pname"));
-        zzGroup.setScop(groupJson.getString("scop"));
-        zzGroup.setLevels(groupJson.getString("levels"));
-        groupService.insert(zzGroup);//创建讨论组
+        zzGroupInfo.setGroupId(getUUID());
+        zzGroupInfo.setGroupName(groupJson.getString("groupName"));
+        zzGroupInfo.setCreator(groupJson.getString("creator"));
+        zzGroupInfo.setGroupDescribe(groupJson.getString("groupDescribe"));
+        zzGroupInfo.setUpdator(groupJson.getString("updator"));
+        zzGroupInfo.setPname(groupJson.getString("pname"));
+        zzGroupInfo.setScop(groupJson.getString("scop"));
+        zzGroupInfo.setLevels(groupJson.getString("levels"));
+        zzGroupInfo.setIsclose("0");
+        zzGroupInfo.setIsdelete("0");
+        zzGroupInfo.setIspublic("0");
+        zzGroupInfo.setCreateTime(new Date());
+        zzGroupInfo.setUpdateTime(new Date());
+//      根据全部人员生成群组头像
+        zzGroupInfo.setGroupImg(imgUrl);
+        groupService.insert(zzGroupInfo);//创建讨论组
         //创建群end
 
+        GroupEditVO groupEditVO = JSONObject.parseObject(msg,GroupEditVO.class);
+        GroupTaskDto groupTaskDto = JSONObject.parseObject(message,GroupTaskDto.class);
+        List<UserListDto> userList = new ArrayList<UserListDto>();
+        groupTaskDto.setType(GROUP_INVITE_MSG);
+        groupTaskDto.setGroupId(zzGroupInfo.getGroupId());
+        groupTaskDto.setReviser(zzGroupInfo.getCreator());
+        groupTaskDto.setUserList(null);
+        groupTaskDto.setTimestamp(zzGroupInfo.getCreateTime());
+        groupTaskDto.setZzGroup(zzGroupInfo);
+
+
+        //通知被邀请人员
         //遍历用户begin
         JSONArray userJsonArray = JSONObject.parseArray(groupJson.getString("userList"));
         for (int i = 0; i < userJsonArray.size(); i++) {
             JSONObject userJson = JSONObject.parseObject(userJsonArray.getString(i));
-            GroupTaskDto groupTaskDto = new GroupTaskDto();
-            GroupEditVO groupEditVO = new GroupEditVO();
-            groupTaskDto.setType(GROUP_INVITE_MSG);//设置返回执行的分支
-            groupEditVO.setCode(GROUP_EDIT);//设置返回处理大类
-            //给每个用户返回列表只有自己
-            List<UserListDto> userList = new ArrayList<UserListDto>();
             UserListDto userListDto = new UserListDto();
             userListDto.setUserId(userJson.getString("userId"));
             userListDto.setUserLevels(userJson.getString("userLevels"));
             userListDto.setImg(userJson.getString("img"));
             userList.add(userListDto);
-            groupTaskDto.setUserList(userList);
+            groupTaskDto.setReviser(userJson.getString("userId"));
+//          加入关系表
+            ZzUserGroup userGroup = new ZzUserGroup();
+            userGroup.setCreatetime(new Date());
+            userGroup.setId(getUUID());
+            userGroup.setGroupId(zzGroupInfo.getGroupId());
+            userGroup.setUserId(userListDto.getUserId());
+            userGroupService.insert(userGroup);
+            //
+            groupEditVO.setCode(GROUP_EDIT);
             groupEditVO.setData(groupTaskDto);
-            String msg = JSON.toJSONString(groupEditVO);
-            Tio.sendToUser(channelContext.getGroupContext(),userJson.getString("userId"),this.getWsResponse(msg));
+            String res = JSONObject.toJSONString(groupEditVO);
+            Tio.sendToUser(channelContext.getGroupContext(),userJson.getString("userId"),this.getWsResponse(res));
         }
         //遍历用户end
+        //返回创建结果
+        GroupEditVO groupEditVO1 = JSONObject.parseObject(msg,GroupEditVO.class);
+        GroupTaskDto groupTaskDto1 = JSONObject.parseObject(message,GroupTaskDto.class);
+        groupTaskDto1.setType(CREATE_GROUP_ANS);
+        groupTaskDto1.setGroupId(zzGroupInfo.getGroupId());
+        groupTaskDto1.setUserList(userList);
+        groupTaskDto1.setTimestamp(zzGroupInfo.getCreateTime());
+        groupTaskDto1.setZzGroup(zzGroupInfo);
+        groupTaskDto1.setReviser(zzGroupInfo.getCreator());
+        groupEditVO.setCode(MSG_EDIT_READ);
+        groupEditVO.setData(groupTaskDto1);
+        String res1 = JSONObject.toJSONString(groupEditVO);
+        Tio.sendToUser(channelContext.getGroupContext(),zzGroupInfo.getCreator(),this.getWsResponse(res1));
 
+//        groupTaskDto.setUserList(userList);
         /*ArrayList<String> picUrls = new ArrayList<>();
         List<UserListDto> userList = new ArrayList<UserListDto>();
         JSONArray userJsonArray = JSONObject.parseArray(groupJson.getString("userList"));

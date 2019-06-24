@@ -47,6 +47,11 @@
         WHERE RN &gt; #{start}
     </select>
 
+    <select id="queryGroupUserIdListByGroupId" resultType="java.lang.String">
+        SELECT t.user_id FROM ZZ_USER_GROUP T LEFT JOIN ZZ_GROUP U
+        ON U.GROUP_ID = T.GROUP_ID WHERE T.GROUP_ID = #{groupId}
+    </select>
+
     <select id="groupUserListTotal" resultType="java.lang.Long">
      select count(*)
        from zz_user_group zug
@@ -55,7 +60,7 @@
       where 1 = 1
         and zg.isclose = '0'
         and zg.isdelete = '0'
-        and zg.group_id = #{ID}
+        and zg.group_id = #{groupId}
     </select>
 
     <!--查询单个-->
@@ -127,6 +132,11 @@
     <!--新增所有列-->
     <insert id="insert" keyProperty="groupId" useGeneratedKeys="true">
         insert into ZZ_GROUP(GROUP_ID,GROUP_NAME, GROUP_DESCRIBE, ISDELETE, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, PNAME, SCOP, ISPUBLIC, LEVELS, ISCLOSE, GROUP_IMG)
+        values (#{groupId},#{groupName}, #{groupDescribe}, #{isdelete}, #{createTime}, #{creator}, #{updateTime}, #{updator}, #{pname}, #{scop}, #{ispublic}, #{levels}, #{isclose}, #{groupImg})
+    </insert>
+
+    <insert id="addGroup">
+         insert into ZZ_GROUP(GROUP_ID,GROUP_NAME, GROUP_DESCRIBE, ISDELETE, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, PNAME, SCOP, ISPUBLIC, LEVELS, ISCLOSE, GROUP_IMG)
         values (#{groupId},#{groupName}, #{groupDescribe}, #{isdelete}, #{createTime}, #{creator}, #{updateTime}, #{updator}, #{pname}, #{scop}, #{ispublic}, #{levels}, #{isclose}, #{groupImg})
     </insert>
 
