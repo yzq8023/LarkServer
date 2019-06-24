@@ -111,15 +111,15 @@
         SELECT ROW_NUMBER() OVER(PARTITION BY contactsId ORDER BY createtime DESC) RN ,t.*
         FROM (
         select T.TYPE,t.content,t.createtime, (case
-        when t.sender ='OPVhHrPM' then
+        when t.sender =#{userId} then
         t.receiver
         else
         t.sender
         end) as contactsId --最近联系人
-        from zz_message_info t where (t.sender = 'OPVhHrPM' or t.receiver =  'OPVhHrPM') and t.type = 'USER'
+        from zz_message_info t where (t.sender = #{userId} or t.receiver =  #{userId}) and t.type = 'USER'
         UNION ALL
 
-        select  T.TYPE,t.content,t.createtime,t.receiver as contactsId from ZZ_MESSAGE_INFO t LEFT JOIN ZZ_USER_GROUP UG ON UG.GROUP_ID=T.RECEIVER where t.type = 'GROUP' AND UG.USER_ID ='OPVhHrPM'
+        select  T.TYPE,t.content,t.createtime,t.receiver as contactsId from ZZ_MESSAGE_INFO t LEFT JOIN ZZ_USER_GROUP UG ON UG.GROUP_ID=T.RECEIVER where t.type = 'GROUP' AND UG.USER_ID =#{userId}
         ) t
         )
         ) VO where rn &lt; =100
