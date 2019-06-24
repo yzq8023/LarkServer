@@ -84,7 +84,7 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
 
     @Override
     @CacheClear(keys = {"permission:menu", "permission:u","frontPermission{1}"})
-    public void deleteById(Object id) {
+    public void deleteById(String id) {
         super.deleteById(id);
     }
 

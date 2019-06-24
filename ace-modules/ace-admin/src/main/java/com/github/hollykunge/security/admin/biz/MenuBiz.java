@@ -52,7 +52,7 @@ public class MenuBiz extends BaseBiz<MenuMapper, Menu> {
 
     @Override
     @CacheClear(keys = {"permission:menu", "permission"})
-    public void deleteById(Object id) {
+    public void deleteById(String id) {
         super.deleteById(id);
     }
 

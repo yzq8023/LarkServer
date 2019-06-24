@@ -12,6 +12,7 @@ import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.hollykunge.security.common.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.support.SimpleTriggerContext;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,7 +57,7 @@ public class UserBiz extends BaseBiz<UserMapper, User> {
 
     @Override
     @CacheClear(keys = {"user","userByPid"})
-    public void deleteById(Object id) {
+    public void deleteById(String id) {
         super.deleteById(id);
     }
 
