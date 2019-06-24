@@ -230,7 +230,7 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
         List<Role> resultRole = new ArrayList<>();
         for (RoleUserMap roleUserMap:
                 roleList ) {
-            resultRole.addAll(allRole.stream().filter((Role role) -> roleUserMap.getRoleId().contains(role.getId())) .collect(Collectors.toList()));
+            resultRole.addAll(allRole.stream().filter((Role role) -> roleUserMap.getRoleId().equals(role.getId())) .collect(Collectors.toList()));
         }
         return resultRole;
     }
