@@ -2,12 +2,10 @@ package com.workhub.z.servicechat.controller;
 
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
-import com.github.hollykunge.security.common.rest.BaseController;
 import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.entity.ZzAt;
 import com.workhub.z.servicechat.service.ZzAtService;
-import com.workhub.z.servicechat.service.impl.ZzAtServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -20,7 +18,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/zzAt")
-public class ZzAtController extends BaseController<ZzAtServiceImpl,ZzAt>{
+public class ZzAtController{
     /**
      * 服务对象
      */

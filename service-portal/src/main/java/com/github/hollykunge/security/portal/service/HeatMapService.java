@@ -3,6 +3,7 @@ package com.github.hollykunge.security.portal.service;
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.entity.HeatMap;
 import com.github.hollykunge.security.mapper.HeatMapMapper;
+import com.github.hollykunge.security.vo.HeatMapVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +29,7 @@ public class HeatMapService extends BaseBiz<HeatMapMapper, HeatMap> {
         return null;
     }
 
-    public List<HeatMap> getHeatMap(List<HeatMap> heatMapList) {
+    public List<HeatMapVO> getHeatMap(List<HeatMap> heatMapList) {
         SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
         Calendar c = Calendar.getInstance();
 
@@ -36,9 +37,9 @@ public class HeatMapService extends BaseBiz<HeatMapMapper, HeatMap> {
         c.add(Calendar.YEAR, -1);
         Date oneYearAgo = c.getTime();
         Date today = new Date();
-        List<HeatMap> heatMaps = new ArrayList<>();
+        List<HeatMapVO> heatMaps = new ArrayList<>();
         try {
-            heatMaps = getHeatMapData(ft.format(today), ft.format(oneYearAgo), heatMapList);
+            heatMaps = getHeatMapData(ft.format(oneYearAgo), ft.format(today), heatMapList);
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -57,7 +58,7 @@ public class HeatMapService extends BaseBiz<HeatMapMapper, HeatMap> {
      * "day": 3,
      * "week": "0"
      */
-    private List<HeatMap> getHeatMapData(String dBegin, String dEnd, List<HeatMap> heatMapList) throws ParseException {
+    private List<HeatMapVO> getHeatMapData(String dBegin, String dEnd, List<HeatMap> heatMapList) throws ParseException {
         //日期工具类准备
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -70,26 +71,75 @@ public class HeatMapService extends BaseBiz<HeatMapMapper, HeatMap> {
         calEnd.setTime(format.parse(dEnd));
 
         //装返回的日期集合容器
-        List<HeatMap> heatMaps = new ArrayList<HeatMap>();
+        List<HeatMapVO> heatMaps = new ArrayList<HeatMapVO>();
 
         // 每次循环给calBegin日期加一天，直到calBegin.getTime()时间等于dEnd
         while (format.parse(dEnd).after(calBegin.getTime())) {
 
-            HeatMap heatMap = new HeatMap();
+            HeatMapVO heatMap = new HeatMapVO();
             // 根据日历的规则，为给定的日历字段添加或减去指定的时间量
             calBegin.add(Calendar.DAY_OF_MONTH, 1);
             for (HeatMap heatMap1 : heatMapList) {
                 if (heatMap1.equals(calBegin)) {
                     heatMap.setCommits(heatMap1.getCommits());
+                }else {
+                    heatMap.setCommits(0);
                 }
             }
-            heatMap.setMapDate(calBegin.getTime());
-            heatMap.setDay(calBegin.DATE);
-            heatMap.setMonth(calBegin.MONTH + 1);
-            heatMap.setWeek(calBegin.DAY_OF_WEEK - 1);
+            heatMap.setDate(format.format(calBegin.getTime()));
+            heatMap.setDay(calBegin.get(Calendar.DAY_OF_WEEK) - 1);
+            heatMap.setMonth(calBegin.get(Calendar.MONTH));
+            heatMap.setWeek(String.valueOf(calBegin.get(Calendar.WEEK_OF_YEAR) - 1));
+            if (isLastDayOfMonth(format.parse(dBegin))){
+                heatMap.setLastDay(true);
+            }
+            if (isLastWeekOfMonth(format.parse(dBegin))){
+                heatMap.setLastWeek(true);
+            }
 
             heatMaps.add(heatMap);
         }
         return heatMaps;
+    }
+
+    /**
+     * 判断是否为当月最后一天
+     * @param date
+     * @return
+     */
+    private Boolean isLastDayOfMonth(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.DATE, (calendar.get(Calendar.DATE) + 1));
+        if (calendar.get(Calendar.DAY_OF_MONTH) == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 判断指定的日期是不是这个月的最后一周
+     * @param date 判断日期
+     * @return
+     */
+    private Boolean isLastWeekOfMonth(Date date) {
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM");
+        String value1=sdf1.format(date);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int val=cal.get(Calendar.WEEK_OF_MONTH);
+        try {
+            cal.setTime(sdf.parse(value1+"-00"));
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        cal.add(Calendar.MONTH, 1);
+        int val1=cal.get(Calendar.WEEK_OF_MONTH);
+        if(val==val1){
+            return true;
+        }
+        return false;
     }
 }

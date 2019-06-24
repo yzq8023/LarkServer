@@ -1,12 +1,10 @@
 package com.workhub.z.servicechat.controller;
 
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
-import com.github.hollykunge.security.common.rest.BaseController;
 import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.entity.ZzDictionaryWords;
 import com.workhub.z.servicechat.service.ZzDictionaryWordsService;
-import com.workhub.z.servicechat.service.impl.ZzDictionaryWordsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +18,7 @@ import java.util.Date;
  */
 @RestController
 @RequestMapping("/zzDictionaryWords")
-public class ZzDictionaryWordsController extends BaseController<ZzDictionaryWordsServiceImpl, ZzDictionaryWords> {
+public class ZzDictionaryWordsController{
     /**
      * 服务对象
      */

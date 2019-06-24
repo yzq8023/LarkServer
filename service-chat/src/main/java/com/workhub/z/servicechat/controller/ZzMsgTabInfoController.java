@@ -1,14 +1,12 @@
 package com.workhub.z.servicechat.controller;
 
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
-import com.github.hollykunge.security.common.rest.BaseController;
 import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.entity.ZzMsgTabInfo;
 import com.workhub.z.servicechat.entity.ZzMsgTabRelation;
 import com.workhub.z.servicechat.service.ZzMsgTabInfoService;
 import com.workhub.z.servicechat.service.ZzMsgTabRelationService;
-import com.workhub.z.servicechat.service.impl.ZzMsgTabInfoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +21,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/zzMsgTabInfo")
-public class ZzMsgTabInfoController
-        extends BaseController<ZzMsgTabInfoServiceImpl, ZzMsgTabInfo> {
+public class ZzMsgTabInfoController {
     /**
      * 服务对象
      */
