@@ -47,5 +47,9 @@ public class AdminCommonConstant {
      * 死信队列交换机绑定键标识符
      */
     public static final String DEAD_LETTER_ROUTING_KEY = "x-dead-letter-routing-key";
+    /**
+     * 创建角色时默认给权限的三个菜单
+     */
+    public static final String DEFAULT_MENU_PERMISSION_CODE_LIST = "talk,dashboard,login,self";
 
 }

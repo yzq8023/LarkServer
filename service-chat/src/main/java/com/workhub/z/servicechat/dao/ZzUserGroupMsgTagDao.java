@@ -17,4 +17,5 @@ public interface ZzUserGroupMsgTagDao  extends Mapper<ZzUserGroupMsgTag> {
     int insert(ZzUserGroupMsgTag zzUserGroupMsgTag);
     int deleteByConditions(ZzUserGroupMsgTag zzUserGroupMsgTag);
     List<ZzUserGroupMsgTag> getInfList(@Param("userId")String userId, @Param("groupId")String groupId, @Param("tagType")String tagType) throws Exception;
+    int deleteById(@Param("id")String id);
 }

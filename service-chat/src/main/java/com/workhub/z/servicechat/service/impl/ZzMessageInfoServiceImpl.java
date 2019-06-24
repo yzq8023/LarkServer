@@ -90,7 +90,7 @@ public class ZzMessageInfoServiceImpl implements ZzMessageInfoService {
     *@Author: 忠
     *@date: 2019/6/23
     */
-    public List<ContactsMessageDto> queryContactsMessage(String userId){
+    public String queryContactsMessage(String userId){
         List<ContactsMessageDto> contactsMessageDtoList =this.zzMessageInfoDao.queryContactsMessage(userId);
 
         List<List<ContactsMessageDto>> list2 = aggregation(contactsMessageDtoList, new Comparator<ContactsMessageDto>() {
@@ -106,34 +106,29 @@ public class ZzMessageInfoServiceImpl implements ZzMessageInfoService {
         List<List<ContactsMessageDto>> list3 = list2;
         String s = JSON.toJSONString(list2);
         String s1 = "[";
-        for (int k = 0; k < list3.size(); k++) {
-            for (int m = 0; m <list3.get(k).size() ; m++) {
-                s1 += "'" +list3.get(k).get(m).getContactsId()+"'";
-                for (int j = 0; j < list2.size(); j++) {
-                    s1 +="[";
-                    for (int i = 0; i < list2.get(j).size(); i++) {
-                        if (list3.get(k).get(m).getContactsId().equals(list2.get(j).get(i).getContactsId())){
-                            s1 += list2.get(j).get(i).getContent();
+        for (int j = 0; j < list2.size(); j++) {
+             s1 +="[";
+             for (int i = 0; i < list2.get(j).size(); i++) {
+             if (i == 0){
+                 s1 += "\"";
+                 s1 += list2.get(j).get(i).getContactsId();
+                 s1 +="\",";
+                  }
+             s1 += list2.get(j).get(i).getContent();
 
-                            if (i==list2.get(j).size()-1){
-                            }
-                            else {
-                                s1 += ",";
-                            }
-                        }
-                    }
+             if (i==list2.get(j).size()-1){ }
+              else {
+                   s1 += ",";
+              }
+         }
                     if (j==list2.size()-1){
                         s1 +="]";
                     }else {
                         s1 +="],";
                     }
                 }
-
-            }
-
-        }
         s1 +="]";
-        return  this.zzMessageInfoDao.queryContactsMessage(userId);
+        return  s1;
     }
 
 }

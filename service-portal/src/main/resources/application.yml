@@ -16,7 +16,7 @@ spring:
 #        enabled: true
   datasource:
     name: test
-    url: jdbc:oracle:thin:@${ORACLE_HOST:10.12.97.30}:${ORACLE_PORT:1521}:arltr
+    url: jdbc:oracle:thin:@${ORACLE_HOST:10.11.24.136}:${ORACLE_PORT:1521}:arltr
     username: lark_portal
     password: 123456
     # 使用druid数据源
@@ -36,12 +36,13 @@ spring:
     poolPreparedStatements: true
     maxOpenPreparedStatements: 20
   rabbitmq:
-    host: 10.12.97.30
+    host: localhost
     port: 5672
     username: hollykunge
     password: 123456
     virtual-host: /
-
+    ###使用rabbitmq消息发送确认机制
+    publisher-confirms: true
 #开启消费者（程序出现异常的情况下会）进行重试,
     listener:
       simple:

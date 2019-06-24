@@ -20,7 +20,7 @@ public class fileManage {
 
     private static final Long FILE_SIZE = 300 * 1024 * 1024L;
 
-    private static final String PATH = "D:/file-management-center/upload/";
+    private static final String PATH = "C:/file-management-center/upload/";
     // TODO: 2019/5/14 文件上传
     /**
      * 文件上传(任意路径)

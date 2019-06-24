@@ -2,7 +2,6 @@ package com.workhub.z.servicechat.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.github.hollykunge.security.api.vo.user.UserInfo;
-import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.vo.rpcvo.ContactVO;
 import com.github.hollykunge.security.common.vo.rpcvo.MessageContent;
 import com.github.pagehelper.PageHelper;
@@ -39,7 +38,7 @@ import java.util.Map;
  * @since 2019-05-10 14:22:54
  */
 @Service("zzUserGroupService")
-public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup> implements ZzUserGroupService {
+public class ZzUserGroupServiceImpl implements ZzUserGroupService {
     @Resource
     private ZzUserGroupDao zzUserGroupDao;
 
@@ -89,11 +88,11 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
 //        return insert;
     }
 
-    @Override
+   /* @Override
     protected String getPageName() {
         return null;
     }
-
+*/
     /**
      * 修改数据
      *
@@ -167,6 +166,14 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
             vo.setAtMe(true);
             vo.setAvatar("1111");
             vo.setId("223323");
+            MessageContent mes = new MessageContent();
+            mes.setExtension("123");
+            mes.setType(0);
+            mes.setId("11111");
+            mes.setSecretLevel(40);
+            mes.setTitle("ceshi");
+            mes.setUrl("www.baidu.com");
+            vo.setLastMessage(mes);
             list.add(vo);
 
             Map<String,List<ContactVO>> data=new HashMap<>();
@@ -196,6 +203,7 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
                 contactVO.setIsTop(false);
                 contactVO.setIsMute(false);
                 contactVO.setIsGroup(n.getTableType().equals("GROUP"));
+                contactVO.setUnreadNum(zzMsgReadRelationService.queryNoReadMsgBySenderAndReceiver(n.getMsgSener(),n.getMsgReceiver()));
             } else if (n.getTableType().equals("USER")) {
                 UserInfo userInfo = iUserService.info(n.getMsgSener());
                 contactVO.setId(n.getMsgSener());
@@ -208,12 +216,13 @@ public class ZzUserGroupServiceImpl extends BaseBiz<ZzUserGroupDao, ZzUserGroup>
                 contactVO.setIsTop(false);
                 contactVO.setIsMute(false);
                 contactVO.setIsGroup(n.getTableType().equals("GROUP"));
+                contactVO.setUnreadNum(zzMsgReadRelationService.queryNoReadMsgBySenderAndReceiver(n.getMsgSener(),n.getMsgReceiver()));
             }
-            for (int j = 0; j < noReadVos.size(); j++) {
-                if (noReadVos.get(j).getSender() == n.getMsgSener()){
-                    contactVO.setUnreadNum(noReadVos.get(j).getMsgCount());
-                }
-            }
+//            for (int j = 0; j < noReadVos.size(); j++) {
+//                if (noReadVos.get(j).getSender() == n.getMsgSener()){
+//                    contactVO.setUnreadNum(noReadVos.get(j).getMsgCount());
+//                }
+//            }
 //            if (noReadVos == null|| noReadVos.isEmpty()) contactVO.setUnreadNum(0);
 //            else {noReadVos.stream().forEach(m ->{
 //                if (m.getSender() == userNewMsgList.get(i).getMsgSener()){

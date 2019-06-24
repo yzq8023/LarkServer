@@ -56,7 +56,7 @@ public class ElementBiz extends BaseBiz<ElementMapper,Element> {
 
     @Override
     @CacheClear(keys={"permission:ele","permission"})
-    public void deleteById(Object id) {
+    public void deleteById(String id) {
         super.deleteById(id);
     }
 

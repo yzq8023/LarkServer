@@ -72,5 +72,5 @@ public interface ZzMsgReadRelationDao extends Mapper<ZzMsgReadRelation> {
 
     List<NoReadVo> queryNoReadCountList(@Param("consumer")String consumer);
 
-    int queryNoReadMsgBySenderAndReceiver(@Param("sender") String sender, @Param("receiver") String receiver);
+    Long queryNoReadMsgBySenderAndReceiver(@Param("sender") String sender, @Param("receiver") String receiver);
 }

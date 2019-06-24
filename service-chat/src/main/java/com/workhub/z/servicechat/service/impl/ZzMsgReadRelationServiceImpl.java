@@ -1,9 +1,8 @@
 package com.workhub.z.servicechat.service.impl;
 
-import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.workhub.z.servicechat.VO.NoReadVo;
-import com.workhub.z.servicechat.entity.ZzMsgReadRelation;
 import com.workhub.z.servicechat.dao.ZzMsgReadRelationDao;
+import com.workhub.z.servicechat.entity.ZzMsgReadRelation;
 import com.workhub.z.servicechat.service.ZzMsgReadRelationService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +17,7 @@ import java.util.List;
  * @since 2019-05-23 13:27:22
  */
 @Service("zzMsgReadRelationService")
-public class ZzMsgReadRelationServiceImpl extends BaseBiz<ZzMsgReadRelationDao,ZzMsgReadRelation > implements ZzMsgReadRelationService {
+public class ZzMsgReadRelationServiceImpl implements ZzMsgReadRelationService {
     @Resource
     private ZzMsgReadRelationDao zzMsgReadRelationDao;
 
@@ -57,10 +56,11 @@ public class ZzMsgReadRelationServiceImpl extends BaseBiz<ZzMsgReadRelationDao,Z
         zzMsgReadRelationDao.insert(zzMsgReadRelation);
     }
 
-    @Override
+    /*@Override
     protected String getPageName() {
         return null;
     }
+    */
 
     /**
      * 修改数据
@@ -103,8 +103,15 @@ public class ZzMsgReadRelationServiceImpl extends BaseBiz<ZzMsgReadRelationDao,Z
         return this.zzMsgReadRelationDao.queryNoReadCountList(consumer);
     }
 
+    /**
+    *@Description:
+    *@Param: receiver 当前登录人，sender 消息发送人
+    *@return: 未读消息条数
+    *@Author: 忠
+    *@date: 2019/6/23
+    */
     @Override
     public int queryNoReadMsgBySenderAndReceiver(String sender, String receiver) {
-        return this.zzMsgReadRelationDao.queryNoReadMsgBySenderAndReceiver(sender,receiver);
+        return Math.toIntExact(this.zzMsgReadRelationDao.queryNoReadMsgBySenderAndReceiver(sender, receiver));
     }
 }

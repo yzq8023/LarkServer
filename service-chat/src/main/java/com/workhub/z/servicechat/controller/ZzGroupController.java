@@ -1,5 +1,6 @@
 package com.workhub.z.servicechat.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
@@ -166,8 +167,9 @@ public class ZzGroupController  {
     @GetMapping("/queryHistoryMessageById")
     public ListRestResponse queryHistoryMessageById(@RequestParam("userId")String userId) throws Exception {
 //        List<HistoryMessageVO> query = this.groupMsgService.queryHistoryMessageById(userId);
-        messageInfoService.queryContactsMessage(userId);
-        return new ListRestResponse("200", 0,"");
+        String res =  messageInfoService.queryContactsMessage(userId);
+        JSONArray myJsonArray = JSONArray.parseArray(res);
+        return new ListRestResponse("200", 0,myJsonArray);
     }
 
     /**

@@ -84,7 +84,7 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
 
     @Override
     @CacheClear(keys = {"permission:menu", "permission:u","frontPermission{1}"})
-    public void deleteById(Object id) {
+    public void deleteById(String id) {
         super.deleteById(id);
     }
 
@@ -230,7 +230,7 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
         List<Role> resultRole = new ArrayList<>();
         for (RoleUserMap roleUserMap:
                 roleList ) {
-            resultRole.addAll(allRole.stream().filter((Role role) -> roleUserMap.getRoleId().contains(role.getId())) .collect(Collectors.toList()));
+            resultRole.addAll(allRole.stream().filter((Role role) -> roleUserMap.getRoleId().equals(role.getId())) .collect(Collectors.toList()));
         }
         return resultRole;
     }
@@ -281,6 +281,34 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
         //给菜单赋值所有的Element
         frontPermission.setActionEntitySetList(actionEntitySet);
         return frontPermission;
+    }
+
+    @Override
+    public void insertSelective(Role entity) {
+        super.insertSelective(entity);
+        //增加角色时，默认给角色三个权限，1.登录 2.工作舱 3.研讨服务
+        String[] menuCodes = AdminCommonConstant.DEFAULT_MENU_PERMISSION_CODE_LIST.split(",");
+        for (String menuCode:
+                menuCodes) {
+            Menu menu = new Menu();
+            menu.setCode(menuCode);
+            menu = menuMapper.selectOne(menu);
+            if(menu == null){
+                throw new BaseException("系统中菜单信息集中不匹配code");
+            }
+            Element element = new Element();
+            element.setMenuId(menu.getId());
+            List<Element> elements = elementMapper.select(element);
+            elements.stream().forEach((Element eleDTO) ->{
+                ResourceRoleMap resourceRoleMap = new ResourceRoleMap();
+                EntityUtils.setCreatAndUpdatInfo(resourceRoleMap);
+                resourceRoleMap.setRoleId(entity.getId());
+                resourceRoleMap.setResourceId(eleDTO.getId());
+                resourceRoleMap.setResourceType(AdminCommonConstant.RESOURCE_TYPE_BTN);
+                resourceRoleMapMapper.insertSelective(resourceRoleMap);
+            });
+        }
+
     }
 }
 
