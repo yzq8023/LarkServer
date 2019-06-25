@@ -6,6 +6,7 @@ import com.github.hollykunge.security.auth.util.user.JwtAuthenticationResponse;
 import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("jwt")
+@Slf4j
 public class AuthController {
     @Value("${jwt.token-header}")
     private String tokenHeader;
@@ -37,7 +39,18 @@ public class AuthController {
             throw new BaseException("请求头中无身份信息...");
         }
         dnname = new String (dnname.getBytes("iso8859-1"));
-        final String token = authService.login(dnname, defaultPassword);
+        String[] dnsplit = dnname.trim().split(",", 0);
+        String cn,dc,t = null;
+        for (String val:
+                dnsplit) {
+            val = val.trim();
+            if(val.indexOf("t=")>-1||val.indexOf("T=")>-1){
+                t = val.substring(2,val.length());
+            }
+        }
+        log.info("登录用户***********"+t);
+        String userId = t;
+        final String token = authService.login(userId, defaultPassword);
 //        final String token = authService.login(authenticationRequest.getUsername(), authenticationRequest.getPassword());
         return new ObjectRestResponse().data(new JwtAuthenticationResponse(token)).msg("获取token成功");
     }
