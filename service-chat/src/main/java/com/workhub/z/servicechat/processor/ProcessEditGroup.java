@@ -85,7 +85,8 @@ public class ProcessEditGroup extends AbstractMsgProcessor{
 //        }
 
         Tio.bindGroup(channelContext,groupTaskDto.getGroupId());
-        Tio.sendToGroup(channelContext.getGroupContext(),groupTaskDto.getGroupId(),super.getWsResponse("爷们来了"));
+        System.out.println(channelContext.userid + "joinGroup" +  groupTaskDto.getGroupId() + groupTaskDto.getZzGroup().getGroupName());
+//        Tio.sendToGroup(channelContext.getGroupContext(),groupTaskDto.getGroupId(),super.getWsResponse("爷们来了"));
 
         /*for ( UserListDto userInfo:groupTaskDto.getUserList()){
             ZzUserGroup userGroup = new ZzUserGroup();
@@ -183,21 +184,22 @@ public class ProcessEditGroup extends AbstractMsgProcessor{
             groupEditVO.setData(groupTaskDto);
             String res = JSONObject.toJSONString(groupEditVO);
             Tio.sendToUser(channelContext.getGroupContext(),userJson.getString("userId"),this.getWsResponse(res));
+
+            //遍历用户end
+            //返回创建结果
+            GroupTaskDto groupTaskDto1 = JSONObject.parseObject(message,GroupTaskDto.class);
+            groupTaskDto1.setType(CREATE_GROUP_ANS);
+            groupTaskDto1.setGroupId(zzGroupInfo.getGroupId());
+            groupTaskDto1.setUserList(userList);
+            groupTaskDto1.setTimestamp(zzGroupInfo.getCreateTime());
+            groupTaskDto1.setZzGroup(zzGroupInfo);
+            groupTaskDto1.setReviser(zzGroupInfo.getCreator());
+            groupEditVO.setCode(CREATE_GROUP_ANS);
+            groupEditVO.setData(groupTaskDto1);
+            String res1 = JSONObject.toJSONString(groupEditVO);
+            Tio.sendToUser(channelContext.getGroupContext(),userJson.getString("userId"),this.getWsResponse(res1));
         }
-        //遍历用户end
-        //返回创建结果
-        GroupEditVO groupEditVO1 = JSONObject.parseObject(msg,GroupEditVO.class);
-        GroupTaskDto groupTaskDto1 = JSONObject.parseObject(message,GroupTaskDto.class);
-        groupTaskDto1.setType(CREATE_GROUP_ANS);
-        groupTaskDto1.setGroupId(zzGroupInfo.getGroupId());
-        groupTaskDto1.setUserList(userList);
-        groupTaskDto1.setTimestamp(zzGroupInfo.getCreateTime());
-        groupTaskDto1.setZzGroup(zzGroupInfo);
-        groupTaskDto1.setReviser(zzGroupInfo.getCreator());
-        groupEditVO.setCode(MSG_EDIT_READ);
-        groupEditVO.setData(groupTaskDto1);
-        String res1 = JSONObject.toJSONString(groupEditVO);
-        Tio.sendToUser(channelContext.getGroupContext(),zzGroupInfo.getCreator(),this.getWsResponse(res1));
+
 
 //        groupTaskDto.setUserList(userList);
         /*ArrayList<String> picUrls = new ArrayList<>();
