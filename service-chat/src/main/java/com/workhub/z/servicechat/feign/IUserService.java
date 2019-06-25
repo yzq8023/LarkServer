@@ -36,7 +36,7 @@ public interface IUserService {
     @RequestMapping(value = "/api/user/info", method = RequestMethod.POST)
     public UserInfo info(@RequestParam("userId") String userId);
 
-    @RequestMapping(value = "/api/orgUsers", method = RequestMethod.GET)
+    @RequestMapping(value = "/org/orgUsers", method = RequestMethod.GET)
     public List<OrgUser> orgUsers(@RequestParam("parentTreeId") String parentTreeId);
 
 }
