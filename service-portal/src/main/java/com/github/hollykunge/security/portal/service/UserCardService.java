@@ -117,4 +117,18 @@ public class UserCardService extends BaseBiz<UserCardMapper, UserCard> {
         });
         return result;
     }
+
+    public void modifyUserCards(UserCard userCard){
+        if(StringUtils.isEmpty(userCard.getCardId())){
+            throw new BaseException("要修改的卡片id为空");
+        }
+        UserCard param = new UserCard();
+        BeanUtils.copyProperties(userCard,param);
+        param.setI(null);
+        param = mapper.selectOne(userCard);
+        userCard.setId(param.getId());
+        mapper.updateByPrimaryKeySelective(userCard);
+    }
+
+
 }

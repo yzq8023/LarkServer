@@ -4,6 +4,7 @@ import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.rest.BaseController;
+import com.github.hollykunge.security.common.vo.rpcvo.ContactVO;
 import com.github.hollykunge.security.entity.UserCard;
 import com.github.hollykunge.security.feign.IUserService;
 import com.github.hollykunge.security.portal.service.UserCardService;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 用户卡片接口
@@ -80,6 +83,28 @@ public class UserCardController extends BaseController<UserCardService, UserCard
         }
         List<UserCardVO> userCardVOS = baseBiz.userCards(userID);
         return new ListRestResponse("",userCardVOS.size(),userCardVOS);
+    }
+
+    /**
+     * 用户改变卡片的位置
+     * @return
+     */
+    @RequestMapping(value = "/myself", method = RequestMethod.PUT)
+    @ResponseBody
+    public ObjectRestResponse modifyUserCards(@RequestBody Map<String,Object> data,HttpServletRequest request) {
+        String userID =  request.getHeader("userId");
+        if(StringUtils.isEmpty(userID)){
+            throw new BaseException("request contains no user...");
+        }
+        Set<String> sets = data.keySet();
+        for (String temp : sets) {
+            UserCard userCard = new UserCard();
+            userCard.setUserId(userID);
+            userCard.setCardId(temp);
+            userCard.setI((String)data.get(temp));
+            baseBiz.modifyUserCards(userCard);
+        }
+        return new ObjectRestResponse().data(true);
     }
     /**
      * 获取卡片集，如果用户点击展示该卡片，

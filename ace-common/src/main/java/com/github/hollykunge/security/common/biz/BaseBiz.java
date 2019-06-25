@@ -32,7 +32,7 @@ public abstract class BaseBiz<M extends Mapper<T>, T> {
         return mapper.selectOne(entity);
     }
 
-    public T selectById(Object id) {
+    public T selectById(String id) {
         return mapper.selectByPrimaryKey(id);
     }
 
@@ -62,7 +62,7 @@ public abstract class BaseBiz<M extends Mapper<T>, T> {
         mapper.delete(entity);
     }
 
-    public void deleteById(Object id) {
+    public void deleteById(String id) {
         mapper.deleteByPrimaryKey(id);
     }
 

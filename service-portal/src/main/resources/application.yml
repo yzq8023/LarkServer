@@ -41,14 +41,8 @@ spring:
     username: hollykunge
     password: 123456
     virtual-host: /
-    rabbitmq:
-      host: ${RABBIT_MQ_HOST:10.11.24.136}
-      port:  ${RABBIT_MQ_PORT:5672}
-      username: hollykunge
-      password: 123456
-      virtual-host: /
-      ###使用rabbitmq消息发送确认机制
-      publisher-confirms: true
+    ###使用rabbitmq消息发送确认机制
+    publisher-confirms: true
 #开启消费者（程序出现异常的情况下会）进行重试,
     listener:
       simple:
