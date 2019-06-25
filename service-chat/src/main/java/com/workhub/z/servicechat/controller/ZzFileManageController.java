@@ -169,7 +169,31 @@ public class ZzFileManageController {
 
         return obj;
     }
-
+    @PostMapping ("/fileDelete")
+    //删除文件 1成功 -1 失败 0 文件不存在
+    public ObjectRestResponse fileDelete(@RequestParam("fileId") String fileId) {
+        ObjectRestResponse obj = new ObjectRestResponse();
+        obj.rel(true);
+        obj.msg("200");
+        obj.data("成功");
+        if (fileId == null || "".equals(fileId)) {
+            obj.rel(false);
+            obj.data("附件id为空");
+            return  obj;
+        }
+        ZzGroupFile zzGroupFile = zzGroupFileService.queryById(fileId);
+        //删除记录
+        this.zzGroupFileService.deleteById(fileId);
+        try {
+            //删除文件
+            zzFileManageService.delUploadFile(zzGroupFile.getPath());
+        } catch (Exception e) {
+            e.printStackTrace();
+            obj.rel(false);
+            obj.data("操作出错");
+        }
+        return obj;
+    }
 
     @RequestMapping(value = "/getFileImageStream",produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
