@@ -43,19 +43,19 @@ public class ElementBiz extends BaseBiz<ElementMapper,Element> {
 //    }
 
     @Override
-    @CacheClear(keys={"permission:ele","permission"})
+//    @CacheClear(keys={"permission:ele","permission"})
     public void insertSelective(Element entity) {
         super.insertSelective(entity);
     }
 
     @Override
-    @CacheClear(keys={"permission:ele","permission"})
+//    @CacheClear(keys={"permission:ele","permission"})
     public void updateSelectiveById(Element entity) {
         super.updateSelectiveById(entity);
     }
 
     @Override
-    @CacheClear(keys={"permission:ele","permission"})
+//    @CacheClear(keys={"permission:ele","permission"})
     public void deleteById(String id) {
         super.deleteById(id);
     }

@@ -10,10 +10,10 @@ import com.github.hollykunge.security.admin.mapper.OrgMapper;
 import com.github.hollykunge.security.admin.mapper.OrgUserMapMapper;
 import com.github.hollykunge.security.admin.mapper.UserMapper;
 import com.github.hollykunge.security.admin.vo.AdminUser;
-import com.github.hollykunge.security.admin.vo.OrgUser;
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.hollykunge.security.common.util.EntityUtils;
+import com.github.hollykunge.security.common.vo.OrgUser;
 import com.github.hollykunge.security.common.vo.TreeNode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,7 +62,7 @@ public class OrgBiz extends BaseBiz<OrgMapper, Org> {
         return userList;
     }
 
-    @CacheClear(pre = "permission")
+//    @CacheClear(pre = "permission")
     public void modifyOrgUsers(String orgId, String users) {
         OrgUserMap orgUserMap = new OrgUserMap();
         orgUserMap.setOrgId(orgId);

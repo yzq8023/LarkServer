@@ -1,6 +1,7 @@
 package com.workhub.z.servicechat.feign;
 
 import com.github.hollykunge.security.api.vo.user.UserInfo;
+import com.github.hollykunge.security.common.vo.OrgUser;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,4 +35,8 @@ public interface IUserService {
 
     @RequestMapping(value = "/api/user/info", method = RequestMethod.POST)
     public UserInfo info(@RequestParam("userId") String userId);
+
+    @RequestMapping(value = "/org/orgUsers", method = RequestMethod.GET)
+    public List<OrgUser> orgUsers(@RequestParam("parentTreeId") String parentTreeId);
+
 }
