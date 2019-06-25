@@ -1,5 +1,8 @@
 package com.github.hollykunge.security.portal.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.support.spring.FastJsonContainer;
 import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
@@ -14,6 +17,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -91,18 +95,29 @@ public class UserCardController extends BaseController<UserCardService, UserCard
      */
     @RequestMapping(value = "/myself", method = RequestMethod.PUT)
     @ResponseBody
-    public ObjectRestResponse modifyUserCards(@RequestBody Map<String,Object> data,HttpServletRequest request) {
-        String userID =  request.getHeader("userId");
-        if(StringUtils.isEmpty(userID)){
-            throw new BaseException("request contains no user...");
+    public ObjectRestResponse modifyUserCards(@RequestParam String data,HttpServletRequest request) {
+        if(StringUtils.isEmpty(data)){
+            throw new BaseException("参数为null...");
         }
-        Set<String> sets = data.keySet();
-        for (String temp : sets) {
-            UserCard userCard = new UserCard();
-            userCard.setUserId(userID);
-            userCard.setCardId(temp);
-            userCard.setI((String)data.get(temp));
-            baseBiz.modifyUserCards(userCard);
+        String[] datas = data.split(",");
+        for (String param: datas) {
+            param = "{"+param+"}";
+            Map<Integer,Integer> map = JSONObject.parseObject(param,Map.class);
+            if(map == null){
+                throw new BaseException("接口参数不能被转为map...");
+            }
+            String userID =  request.getHeader("userId");
+            if(StringUtils.isEmpty(userID)){
+                throw new BaseException("request contains no user...");
+            }
+            Set<Integer> sets = map.keySet();
+            for (Integer temp : sets) {
+                UserCard userCard = new UserCard();
+                userCard.setUserId(userID);
+                userCard.setCardId(temp+"");
+                userCard.setI(map.get(temp)+"");
+                baseBiz.modifyUserCards(userCard);
+            }
         }
         return new ObjectRestResponse().data(true);
     }

@@ -1,11 +1,15 @@
 package com.github.hollykunge.security.admin.rpc;
 
 import com.ace.cache.annotation.Cache;
+import com.github.hollykunge.security.admin.biz.OrgBiz;
 import com.github.hollykunge.security.admin.biz.UserBiz;
+import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
 import com.github.hollykunge.security.admin.entity.User;
 import com.github.hollykunge.security.admin.rpc.service.PermissionService;
 import com.github.hollykunge.security.api.vo.authority.FrontPermission;
 import com.github.hollykunge.security.api.vo.user.UserInfo;
+import com.github.hollykunge.security.common.msg.ListRestResponse;
+import com.github.hollykunge.security.common.vo.OrgUser;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -22,11 +26,16 @@ import java.util.*;
 @RestController
 @RequestMapping("api")
 public class UserRest {
+
+
     @Autowired
     private PermissionService permissionService;
 
     @Autowired
     private UserBiz userBiz;
+
+    @Autowired
+    private OrgBiz orgBiz;
 
 //    @Cache(key="permission")
     @RequestMapping(value = "/permissions", method = RequestMethod.GET)
@@ -46,7 +55,6 @@ public class UserRest {
     }
 
     @RequestMapping(value = "/user/info", method = RequestMethod.POST)
-
     public @ResponseBody UserInfo info(String userId){
         User user = userBiz.getUserByUserId(userId);
         UserInfo info = new UserInfo();
@@ -77,5 +85,19 @@ public class UserRest {
 //        List<User> infos = new ArrayList<User>();
 //        BeanUtils.copyProperties(users, infos);
         return users;
+    }
+
+    /**
+     * 组织用户树枝包含用户接口
+     * @param parentTreeId 默认root
+     * @return
+     */
+    @RequestMapping(value = "/orgUsers", method = RequestMethod.GET)
+    public @ResponseBody List<OrgUser> orgUsers(String parentTreeId) {
+        if(StringUtils.isEmpty(parentTreeId)){
+            parentTreeId = AdminCommonConstant.ROOT;
+        }
+        List<OrgUser> tree = orgBiz.getOrg(orgBiz.selectListAll(), parentTreeId);
+        return tree;
     }
 }

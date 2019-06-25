@@ -1,5 +1,6 @@
 package com.github.hollykunge.security.common.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 /**

@@ -125,7 +125,10 @@ public class UserCardService extends BaseBiz<UserCardMapper, UserCard> {
         UserCard param = new UserCard();
         BeanUtils.copyProperties(userCard,param);
         param.setI(null);
-        param = mapper.selectOne(userCard);
+        param = mapper.selectOne(param);
+        if(param == null){
+            throw new BaseException("没有找到对应的用户卡片，可能被删除了...");
+        }
         userCard.setId(param.getId());
         mapper.updateByPrimaryKeySelective(userCard);
     }
