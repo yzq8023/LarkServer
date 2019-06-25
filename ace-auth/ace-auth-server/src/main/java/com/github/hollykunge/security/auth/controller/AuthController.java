@@ -3,10 +3,12 @@ package com.github.hollykunge.security.auth.controller;
 import com.github.hollykunge.security.auth.service.AuthService;
 import com.github.hollykunge.security.auth.util.user.JwtAuthenticationRequest;
 import com.github.hollykunge.security.auth.util.user.JwtAuthenticationResponse;
+import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,11 +25,20 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
+    @Value("${auth.user.defaultPassword}")
+    private String defaultPassword;
+
     @RequestMapping(value = "token", method = RequestMethod.POST)
     @ResponseBody
     public ObjectRestResponse<?> createAuthenticationToken(
-            @RequestBody JwtAuthenticationRequest authenticationRequest) throws Exception {
-        final String token = authService.login(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+            @RequestBody JwtAuthenticationRequest authenticationRequest,HttpServletRequest request) throws Exception {
+        String dnname = request.getHeader("dnname");
+        if(StringUtils.isEmpty(dnname)){
+            throw new BaseException("请求头中无身份信息...");
+        }
+        dnname = new String (dnname.getBytes("iso8859-1"));
+        final String token = authService.login(dnname, defaultPassword);
+//        final String token = authService.login(authenticationRequest.getUsername(), authenticationRequest.getPassword());
         return new ObjectRestResponse().data(new JwtAuthenticationResponse(token)).msg("获取token成功");
     }
 
