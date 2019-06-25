@@ -37,7 +37,7 @@ public class UserRest {
     @Autowired
     private OrgBiz orgBiz;
 
-    @Cache(key="permission")
+//    @Cache(key="permission")
     @RequestMapping(value = "/permissions", method = RequestMethod.GET)
     public @ResponseBody
     List<FrontPermission> getAllPermission(){

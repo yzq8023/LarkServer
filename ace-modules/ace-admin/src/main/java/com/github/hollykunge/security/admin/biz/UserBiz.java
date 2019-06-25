@@ -50,13 +50,13 @@ public class UserBiz extends BaseBiz<UserMapper, User> {
     }
 
     @Override
-    @CacheClear(pre = "user{1.pId}")
+//    @CacheClear(pre = "user{1.pId}")
     public void updateSelectiveById(User entity) {
         super.updateSelectiveById(entity);
     }
 
     @Override
-    @CacheClear(keys = {"user","userByPid"})
+//    @CacheClear(keys = {"user","userByPid"})
     public void deleteById(String id) {
         super.deleteById(id);
     }
@@ -78,7 +78,7 @@ public class UserBiz extends BaseBiz<UserMapper, User> {
      * @param pid
      * @return
      */
-    @Cache(key = "userByPid{1}")
+//    @Cache(key = "userByPid{1}")
     public  User getUserByUserPid(String pid){
         User user = new User();
 
@@ -87,7 +87,7 @@ public class UserBiz extends BaseBiz<UserMapper, User> {
         return mapper.selectOne(user);
     }
 
-    @Cache(key = "user")
+//    @Cache(key = "user")
     public List<User> getUsers() {
         return mapper.selectAll();
     }
