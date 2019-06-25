@@ -36,4 +36,7 @@ public class Message {
     private String avatar;
     @Column(name = "USER_ID")
     private String userId;
+
+    @Column(name = "SEND_USER_ID")
+    private String sendUserId;
 }

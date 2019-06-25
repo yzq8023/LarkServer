@@ -72,6 +72,7 @@ public class MessageConsumer {
         messageEntity.setMsg(lastMessage.getTitle());
         messageEntity.setMsgType(lastMessage.getType()+"");
         messageEntity.setRead("0");
+        messageEntity.setSendUserId(contactVO.getId());
     }
 
     private Date stringToDate(String source, String pattern) {
