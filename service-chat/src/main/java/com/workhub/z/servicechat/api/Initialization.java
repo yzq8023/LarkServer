@@ -84,8 +84,10 @@ public class Initialization {
     *@date: 2019/6/25
     */
     @GetMapping("/getOrgTree")
-    public ListRestResponse queryOrgTree(){
-       List<OrgUser>  orgUserList = iUserService.orgUsers("root");
-        return new ListRestResponse("处理完成",orgUserList.size(),orgUserList);
+    @ResponseBody
+    public ListRestResponse<List<OrgUser>> queryOrgTree(){
+        List<OrgUser>  orgUserList = iUserService.orgUsers("root");
+
+        return new ListRestResponse<List<OrgUser>>("", orgUserList.size(), orgUserList);
     }
 }
