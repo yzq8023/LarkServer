@@ -21,13 +21,13 @@ import java.util.List;
 public class MenuBiz extends BaseBiz<MenuMapper, Menu> {
 
     @Override
-    @Cache(key = "permission:menu")
+//    @Cache(key = "permission:menu")
     public List<Menu> selectListAll() {
         return super.selectListAll();
     }
 
     @Override
-    @CacheClear(keys = {"permission:menu", "permission"})
+//    @CacheClear(keys = {"permission:menu", "permission"})
     public void insertSelective(Menu entity) {
         if (AdminCommonConstant.ROOT.equals(entity.getParentId())) {
 //            entity.setPath("/" + entity.getCode());
@@ -39,7 +39,7 @@ public class MenuBiz extends BaseBiz<MenuMapper, Menu> {
     }
 
     @Override
-    @CacheClear(keys = {"permission:menu", "permission"})
+//    @CacheClear(keys = {"permission:menu", "permission"})
     public void updateById(Menu entity) {
         if (AdminCommonConstant.ROOT.equals(entity.getParentId())) {
             entity.setPath("/" + entity.getCode());
@@ -51,13 +51,13 @@ public class MenuBiz extends BaseBiz<MenuMapper, Menu> {
     }
 
     @Override
-    @CacheClear(keys = {"permission:menu", "permission"})
+//    @CacheClear(keys = {"permission:menu", "permission"})
     public void deleteById(String id) {
         super.deleteById(id);
     }
 
     @Override
-    @CacheClear(keys = {"permission:menu", "permission"})
+//    @CacheClear(keys = {"permission:menu", "permission"})
     public void updateSelectiveById(Menu entity) {
         super.updateSelectiveById(entity);
     }
@@ -73,7 +73,7 @@ public class MenuBiz extends BaseBiz<MenuMapper, Menu> {
      * @param id 用户id
      * @return
      */
-    @Cache(key = "permission:menu:u{1}")
+//    @Cache(key = "permission:menu:u{1}")
     public List<Menu> getUserAuthorityMenuByUserId(String id) {
         return null;
         //TODO: return mapper.selectAuthorityMenuByUserId(id);
