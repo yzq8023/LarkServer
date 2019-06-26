@@ -31,7 +31,7 @@ import java.io.Serializable;
 /**
  * Description:索引对象
  *
- * @author ace
+ * @author hollykunge
  **/
 public class IndexObject implements Comparable<IndexObject>,Serializable{
 	

@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  *
- * @author ace
+ * @author hollykunge
  * @date 2017/9/8
  */
 @Configuration("adminWebConfig")
