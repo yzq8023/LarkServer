@@ -96,7 +96,7 @@ hystrix:
 
 gate:
   ignore:
-    startWith: /static,/auth/jwt,/fdfs/file,/chat/zzFileManage
+    startWith: /static,/auth/jwt,/fdfs/file,/chat/zzFileManage,/admin/org/tree,/admin/org/orgUsers
 
 
 auth:
