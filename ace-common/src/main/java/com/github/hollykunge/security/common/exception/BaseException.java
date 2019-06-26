@@ -7,7 +7,7 @@ package com.github.hollykunge.security.common.exception;
  * @date 2017/9/8
  */
 public class BaseException extends RuntimeException {
-    private int status = 200;
+    private int status = 500;
 
     public int getStatus() {
         return status;

@@ -31,7 +31,7 @@ public class BaseController<Biz extends BaseBiz, Entity> {
     @ResponseBody
     public ObjectRestResponse<Entity> add(@RequestBody Entity entity) {
         baseBiz.insertSelective(entity);
-        return new ObjectRestResponse<Entity>();
+        return new ObjectRestResponse<Entity>().rel(true);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -39,7 +39,7 @@ public class BaseController<Biz extends BaseBiz, Entity> {
     public ObjectRestResponse<Entity> get(@PathVariable String id) {
         ObjectRestResponse<Entity> entityObjectRestResponse = new ObjectRestResponse<>();
         Object o = baseBiz.selectById(id);
-        entityObjectRestResponse.data((Entity) o);
+        entityObjectRestResponse.data((Entity) o).rel(true);
         return entityObjectRestResponse;
     }
 
@@ -47,14 +47,14 @@ public class BaseController<Biz extends BaseBiz, Entity> {
     @ResponseBody
     public ObjectRestResponse<Entity> update(@RequestBody Entity entity) {
         baseBiz.updateSelectiveById(entity);
-        return new ObjectRestResponse<Entity>();
+        return new ObjectRestResponse<Entity>().rel(true);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public ObjectRestResponse<Entity> remove(@PathVariable String id) {
         baseBiz.deleteById(id);
-        return new ObjectRestResponse<Entity>();
+        return new ObjectRestResponse<Entity>().rel(true);
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
