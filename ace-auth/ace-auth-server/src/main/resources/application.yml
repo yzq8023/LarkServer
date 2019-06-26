@@ -7,10 +7,10 @@ spring:
         default-property-inclusion: non_null
     redis:
         database: 1
-        host: ${REDIS_HOST:localhost}
+        host: ${REDIS_HOST:10.11.24.5}
         port: ${REDIS_PORT:6379}
         pool:
-            max-active: 20
+            max-active: 200
     datasource:
       name: test
 #      url: jdbc:mysql://${MYSQL_HOST:10.12.97.30}:${MYSQL_PORT:3306}/lark-auth?useUnicode=true&characterEncoding=UTF8&useSSL=false
@@ -24,7 +24,7 @@ spring:
 #      driver-class-name: com.mysql.jdbc.Driver
       driver-class-name: oracle.jdbc.OracleDriver
       filters: stat
-      maxActive: 20
+      maxActive: 200
       initialSize: 1
       maxWait: 60000
       minIdle: 1
@@ -72,15 +72,15 @@ ribbon:
 hystrix:
   threadpool:
     default:
-      coreSize: 1000 ##并发执行的最大线程数，默认10
-      maxQueueSize: 1000 ##BlockingQueue的最大队列数
-      queueSizeRejectionThreshold: 500 ##即使maxQueueSize没有达到，达到queueSizeRejectionThreshold该值后，请求也会被拒绝
+      coreSize: 10000 ##并发执行的最大线程数，默认10
+      maxQueueSize: 10000 ##BlockingQueue的最大队列数
+      queueSizeRejectionThreshold: 5000 ##即使maxQueueSize没有达到，达到queueSizeRejectionThreshold该值后，请求也会被拒绝
   command:
     default:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 10000
+            timeoutInMilliseconds: 100000
 
 eureka:
     instance:
