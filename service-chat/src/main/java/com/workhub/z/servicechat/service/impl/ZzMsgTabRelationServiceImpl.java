@@ -1,8 +1,11 @@
 package com.workhub.z.servicechat.service.impl;
 
+import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.dao.ZzMsgTabRelationDao;
 import com.workhub.z.servicechat.entity.ZzMsgTabRelation;
 import com.workhub.z.servicechat.service.ZzMsgTabRelationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -16,6 +19,7 @@ import java.util.List;
  */
 @Service("zzMsgTabRelationService")
 public class ZzMsgTabRelationServiceImpl implements ZzMsgTabRelationService {
+    private static Logger log = LoggerFactory.getLogger(ZzMsgTabRelationServiceImpl.class);
     @Resource
     private ZzMsgTabRelationDao zzMsgTabRelationDao;
 
@@ -27,7 +31,14 @@ public class ZzMsgTabRelationServiceImpl implements ZzMsgTabRelationService {
      */
     @Override
     public ZzMsgTabRelation queryById(String id) {
-        return this.zzMsgTabRelationDao.queryById(id);
+        ZzMsgTabRelation zzMsgTabRelation=this.zzMsgTabRelationDao.queryById(id);
+        try {
+            common.putVoNullStringToEmptyString(zzMsgTabRelation);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(common.getExceptionMessage(e));
+        }
+        return zzMsgTabRelation;
     }
 
     /**

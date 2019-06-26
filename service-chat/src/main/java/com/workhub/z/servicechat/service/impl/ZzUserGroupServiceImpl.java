@@ -9,6 +9,7 @@ import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.VO.GroupListVo;
 import com.workhub.z.servicechat.VO.NoReadVo;
 import com.workhub.z.servicechat.VO.UserNewMsgVo;
+import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.dao.ZzUserGroupDao;
 import com.workhub.z.servicechat.entity.ZzGroup;
 import com.workhub.z.servicechat.entity.ZzUserGroup;
@@ -18,6 +19,8 @@ import com.workhub.z.servicechat.service.ZzGroupService;
 import com.workhub.z.servicechat.service.ZzMsgReadRelationService;
 import com.workhub.z.servicechat.service.ZzUserGroupService;
 import jodd.util.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +42,7 @@ import java.util.Map;
  */
 @Service("zzUserGroupService")
 public class ZzUserGroupServiceImpl implements ZzUserGroupService {
+    private static Logger log = LoggerFactory.getLogger(ZzUserGroupServiceImpl.class);
     @Resource
     private ZzUserGroupDao zzUserGroupDao;
 
@@ -60,7 +64,15 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
      */
     @Override
     public ZzUserGroup queryById(String id) {
-        return this.zzUserGroupDao.queryById(id);
+        ZzUserGroup zzUserGroup = this.zzUserGroupDao.queryById(id);
+        try {
+            common.putVoNullStringToEmptyString(zzUserGroup);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(common.getExceptionMessage(e));
+        }
+
+        return zzUserGroup;
     }
 
     /**
@@ -139,6 +151,7 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
         //新写查询分页
         PageHelper.startPage(page, size);
         List<GroupListVo> list = this.zzUserGroupDao.groupList(id);
+        common.putVoNullStringToEmptyString(list);
         PageInfo<GroupListVo> pageInfo = new PageInfo<>(list);
         return pageInfo;
     }
@@ -150,7 +163,14 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
 
     @Override
     public List<UserNewMsgVo> getUserNewMsgList(String id) {
-        return this.zzUserGroupDao.getUserNewMsgList(id);
+        List<UserNewMsgVo> list=this.zzUserGroupDao.getUserNewMsgList(id);
+        try {
+            common.putVoNullStringToEmptyString(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(common.getExceptionMessage(e));
+        }
+        return list;
     }
 
     @Override
@@ -232,6 +252,12 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
             list.add(contactVO);
         });
         Map<String,List<ContactVO>> data=new HashMap<>();
+        try {
+            common.putVoNullStringToEmptyString(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(common.getExceptionMessage(e));
+        }
         data.put(id,list);//当前登录人的id作为key，联系人列表作为value
         rabbitMqMsgProducer.sendMsg(data);
         return list;

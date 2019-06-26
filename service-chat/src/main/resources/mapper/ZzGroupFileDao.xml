@@ -21,7 +21,7 @@
     <resultMap id="GroupFileVo" type="com.workhub.z.servicechat.VO.GroupFileVo">
         <result property="fileId" column="FILE_ID" jdbcType="VARCHAR"></result>
         <result property="fileName" column="FILE_NAME" jdbcType="VARCHAR"></result>
-        <result property="time" column="TIME" jdbcType="TIMESTAMP"></result>
+        <result property="time" column="TIME" jdbcType="VARCHAR"></result>
         <result property="reviser" column="REVISER" jdbcType="VARCHAR"></result>
         <result property="levels" column="LEVELS" jdbcType="VARCHAR"></result>
     </resultMap>

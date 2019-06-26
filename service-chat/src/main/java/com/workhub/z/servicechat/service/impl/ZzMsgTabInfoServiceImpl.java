@@ -1,8 +1,11 @@
 package com.workhub.z.servicechat.service.impl;
 
+import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.dao.ZzMsgTabInfoDao;
 import com.workhub.z.servicechat.entity.ZzMsgTabInfo;
 import com.workhub.z.servicechat.service.ZzMsgTabInfoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -16,6 +19,7 @@ import java.util.List;
  */
 @Service("zzMsgTabInfoService")
 public class ZzMsgTabInfoServiceImpl implements ZzMsgTabInfoService {
+    private static Logger log = LoggerFactory.getLogger(ZzMsgTabInfoServiceImpl.class);
     @Resource
     private ZzMsgTabInfoDao zzMsgTabInfoDao;
 
@@ -27,7 +31,14 @@ public class ZzMsgTabInfoServiceImpl implements ZzMsgTabInfoService {
      */
     @Override
     public ZzMsgTabInfo queryById(String id) {
-        return this.zzMsgTabInfoDao.queryById(id);
+        ZzMsgTabInfo zzMsgTabInfo = this.zzMsgTabInfoDao.queryById(id);
+        try {
+            common.putVoNullStringToEmptyString(zzMsgTabInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(common.getExceptionMessage(e));
+        }
+        return zzMsgTabInfo;
     }
 
     /**

@@ -11,6 +11,8 @@ import com.workhub.z.servicechat.entity.ZzGroupMsg;
 import com.workhub.z.servicechat.feign.IUserService;
 import com.workhub.z.servicechat.model.HistoryMessageDto;
 import com.workhub.z.servicechat.service.ZzGroupMsgService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +30,7 @@ import java.util.Map;
  */
 @Service("zzGroupMsgService")
 public class ZzGroupMsgServiceImpl implements ZzGroupMsgService {
+    private static Logger log = LoggerFactory.getLogger(ZzGroupMsgServiceImpl.class);
     @Resource
     private ZzGroupMsgDao zzGroupMsgDao;
     @Autowired
@@ -45,7 +48,14 @@ public class ZzGroupMsgServiceImpl implements ZzGroupMsgService {
         /*ZzGroupMsg entity = new ZzGroupMsg();
         entity.setMsgId(msgId);
         return super.selectOne(entity);*/
-        return this.zzGroupMsgDao.queryById(msgId);
+        ZzGroupMsg zzGroupMsg = this.zzGroupMsgDao.queryById(msgId);
+        try {
+            common.putVoNullStringToEmptyString(zzGroupMsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(common.getExceptionMessage(e));
+        }
+        return zzGroupMsg;
     }
 
     /**
@@ -142,6 +152,7 @@ public class ZzGroupMsgServiceImpl implements ZzGroupMsgService {
         }else{//询历史表+最近表
             dataList=this.zzGroupMsgDao.queryMsgCurrentAndHis(param);
         }
+        common.putVoNullStringToEmptyString(dataList);
         PageInfo<ZzGroupMsg> pageInfo = new PageInfo<>(dataList);
         TableResultResponse<ZzGroupMsg> res = new TableResultResponse<ZzGroupMsg>(
                 pageInfo.getPageSize(),

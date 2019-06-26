@@ -2,7 +2,7 @@ package com.workhub.z.servicechat.controller;
 
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
-import com.workhub.z.servicechat.VO.GroupInfoVO;
+import com.workhub.z.servicechat.VO.GroupFileVo;
 import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
@@ -50,10 +50,10 @@ public class ZzGroupFileController {
      * @return
      */
     @PostMapping("/groupfile")
-    public TableResultResponse<GroupInfoVO> groupFileList(@RequestParam("id")String id,
-                                          @RequestParam(value = "page",defaultValue = "1")Integer page,
-                                          @RequestParam(value = "size",defaultValue = "10")Integer size){
-        TableResultResponse<GroupInfoVO> pageInfo = null;
+    public TableResultResponse<GroupFileVo> groupFileList(@RequestParam("id")String id,
+                                                          @RequestParam(value = "page",defaultValue = "1")Integer page,
+                                                          @RequestParam(value = "size",defaultValue = "10")Integer size){
+        TableResultResponse<GroupFileVo> pageInfo = null;
         Long total = 0L;
         try {
             pageInfo = this.zzGroupFileService.groupFileList(id, page, size);

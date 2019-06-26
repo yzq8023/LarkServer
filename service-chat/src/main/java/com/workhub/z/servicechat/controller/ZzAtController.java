@@ -6,6 +6,8 @@ import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.entity.ZzAt;
 import com.workhub.z.servicechat.service.ZzAtService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -19,6 +21,7 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/zzAt")
 public class ZzAtController{
+    private static Logger log = LoggerFactory.getLogger(ZzAtController.class);
     /**
      * 服务对象
      */
@@ -42,7 +45,7 @@ public class ZzAtController{
         try {
             common.putEntityNullToEmptyString(zzAt);
         }catch (Exception e){
-            e.printStackTrace();
+            log.error(common.getExceptionMessage(e));
         }
 
         this.zzAtService.insert(zzAt);
