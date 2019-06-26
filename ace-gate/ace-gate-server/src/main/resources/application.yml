@@ -10,10 +10,10 @@ spring:
         default-property-inclusion: non_null
     redis:
         database: 1
-        host: 127.0.0.1
+        host: localhost
         jedis:
           pool:
-              max-active: 20
+              max-active: 200
 #    rabbitmq:
 #        host: ${RABBIT_MQ_HOST:localhost}
 #        port:  ${RABBIT_MQ_PORT:5672}
@@ -38,7 +38,7 @@ zuul:
     repository: REDIS #REDIS, JPA, IN_MEMORY
     behind-proxy: true
     default-policy: #optional - will apply unless specific policy exists
-      limit: 200
+      limit: 2000
       refresh-interval: 60 #default value (in seconds)
       type: #optional
         - user
@@ -82,9 +82,9 @@ ribbon:
 hystrix:
   threadpool:
     default:
-      coreSize: 1000 ##并发执行的最大线程数，默认10
-      maxQueueSize: 1000 ##BlockingQueue的最大队列数
-      queueSizeRejectionThreshold: 500 ##即使maxQueueSize没有达到，达到queueSizeRejectionThreshold该值后，请求也会被拒绝
+      coreSize: 10000 ##并发执行的最大线程数，默认10
+      maxQueueSize: 10000 ##BlockingQueue的最大队列数
+      queueSizeRejectionThreshold: 5000 ##即使maxQueueSize没有达到，达到queueSizeRejectionThreshold该值后，请求也会被拒绝
   command:
     default:
       execution:

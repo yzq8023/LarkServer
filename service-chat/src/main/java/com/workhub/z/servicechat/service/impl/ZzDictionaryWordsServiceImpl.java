@@ -4,6 +4,8 @@ import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.dao.ZzDictionaryWordsDao;
 import com.workhub.z.servicechat.entity.ZzDictionaryWords;
 import com.workhub.z.servicechat.service.ZzDictionaryWordsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -17,6 +19,7 @@ import java.util.List;
  */
 @Service("zzDictionaryWordsService")
 public class ZzDictionaryWordsServiceImpl implements ZzDictionaryWordsService {
+    private static Logger log = LoggerFactory.getLogger(ZzDictionaryWordsServiceImpl.class);
     @Resource
     private ZzDictionaryWordsDao zzDictionaryWordsDao;
 
@@ -32,7 +35,14 @@ public class ZzDictionaryWordsServiceImpl implements ZzDictionaryWordsService {
        /* ZzDictionaryWords entity = new ZzDictionaryWords();
         entity.setId(id);
         return  super.selectOne(entity);*/
-        return this.zzDictionaryWordsDao.queryById(id);
+       ZzDictionaryWords zzDictionaryWords = this.zzDictionaryWordsDao.queryById(id);
+        try {
+            common.putVoNullStringToEmptyString(zzDictionaryWords);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(common.getExceptionMessage(e));
+        }
+        return zzDictionaryWords;
     }
 
     /**

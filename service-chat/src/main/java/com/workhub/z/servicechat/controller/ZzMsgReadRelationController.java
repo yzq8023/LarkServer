@@ -7,6 +7,8 @@ import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.entity.ZzMsgReadRelation;
 import com.workhub.z.servicechat.service.ZzMsgReadRelationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -21,6 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/MsgReadRelation/")
 public class ZzMsgReadRelationController {
+    private static Logger log = LoggerFactory.getLogger(ZzMsgReadRelationController.class);
     /**
      * 服务对象
      */
@@ -50,7 +53,7 @@ public class ZzMsgReadRelationController {
             common.putEntityNullToEmptyString(zzMsgReadRelation);
         }catch (Exception e){
             e.getStackTrace();
-
+            log.error(common.getExceptionMessage(e));
         }
         this.zzMsgReadRelationService.insert(zzMsgReadRelation);
 //        Integer insert = this.zzMsgReadRelationService.insert(zzMsgReadRelation);

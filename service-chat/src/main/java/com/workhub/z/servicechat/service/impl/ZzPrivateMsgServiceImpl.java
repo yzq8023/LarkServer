@@ -7,6 +7,8 @@ import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.dao.ZzPrivateMsgDao;
 import com.workhub.z.servicechat.entity.ZzPrivateMsg;
 import com.workhub.z.servicechat.service.ZzPrivateMsgService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,7 @@ import java.util.Map;
  */
 @Service("zzPrivateMsgService")
 public class ZzPrivateMsgServiceImpl implements ZzPrivateMsgService {
+    private static Logger log = LoggerFactory.getLogger(ZzPrivateMsgServiceImpl.class);
     @Resource
     private ZzPrivateMsgDao zzPrivateMsgDao;
 
@@ -33,7 +36,14 @@ public class ZzPrivateMsgServiceImpl implements ZzPrivateMsgService {
      */
     @Override
     public ZzPrivateMsg queryById(String msgId) {
-        return this.zzPrivateMsgDao.queryById(msgId);
+        ZzPrivateMsg zzPrivateMsg=this.zzPrivateMsgDao.queryById(msgId);
+        try {
+            common.putVoNullStringToEmptyString(zzPrivateMsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(common.getExceptionMessage(e));
+        }
+        return zzPrivateMsg;
     }
 
     /**
@@ -123,6 +133,7 @@ public class ZzPrivateMsgServiceImpl implements ZzPrivateMsgService {
         }else{//询历史表+最近表
             dataList=this.zzPrivateMsgDao.queryMsgCurrentAndHis(param);
         }
+        common.putVoNullStringToEmptyString(dataList);
         PageInfo<ZzPrivateMsg> pageInfo = new PageInfo<>(dataList);
         TableResultResponse<ZzPrivateMsg> res = new TableResultResponse<ZzPrivateMsg>(
                 pageInfo.getPageSize(),

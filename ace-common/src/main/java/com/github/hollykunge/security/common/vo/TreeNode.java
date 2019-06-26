@@ -1,12 +1,13 @@
 package com.github.hollykunge.security.common.vo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by 协同设计小组 on 2017/6/12.
  */
-public class TreeNode {
+public class TreeNode implements Serializable {
     protected String id;
     protected String parentId;
 
