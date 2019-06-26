@@ -4,6 +4,8 @@ import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
 import com.workhub.z.servicechat.service.ZzFileManageService;
 import com.workhub.z.servicechat.service.ZzGroupFileService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,14 +14,8 @@ import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 import java.io.*;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +30,7 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/zzFileManage")
 public class ZzFileManageController {
+    private static Logger log = LoggerFactory.getLogger(ZzFileManageController.class);
     @Resource
     private ZzFileManageService zzFileManageService;
     @Resource
@@ -136,6 +133,16 @@ public class ZzFileManageController {
     //下载 1成功 -1 失败 0 文件不存在
     public ObjectRestResponse downloadFile(HttpServletRequest request, HttpServletResponse response) {
         String fileId = request.getParameter("fileId");
+/*
+
+        try {
+            int i=1/0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String qqqqqq = "aaa";
+*/
+
         ObjectRestResponse obj = new ObjectRestResponse();
         obj.rel(true);
         obj.msg("200");

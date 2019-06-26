@@ -1,7 +1,7 @@
 package com.workhub.z.servicechat.service;
 
 import com.github.hollykunge.security.common.msg.TableResultResponse;
-import com.workhub.z.servicechat.VO.GroupInfoVO;
+import com.workhub.z.servicechat.VO.GroupFileVo;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
 
 import java.util.List;
@@ -62,7 +62,7 @@ public interface ZzGroupFileService {
      * @return
      * @throws Exception
      */
-    TableResultResponse<GroupInfoVO> groupFileList(String id, int page, int size) throws Exception;
+    TableResultResponse<GroupFileVo> groupFileList(String id, int page, int size) throws Exception;
 
     /**
      * 查询群组的文件信息记录数

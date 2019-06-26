@@ -3,9 +3,12 @@ package com.workhub.z.servicechat.service.impl;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.dao.ZzAtDao;
 import com.workhub.z.servicechat.entity.ZzAt;
 import com.workhub.z.servicechat.service.ZzAtService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +23,7 @@ import java.util.List;
  */
 @Service("zzAtService")
 public class ZzAtServiceImpl implements ZzAtService  {
+    private static Logger log = LoggerFactory.getLogger(ZzAtServiceImpl.class);
     @Resource
     private ZzAtDao zzAtDao;
 
@@ -31,7 +35,14 @@ public class ZzAtServiceImpl implements ZzAtService  {
      */
     @Override
     public ZzAt queryById(String id) {
-        return this.zzAtDao.queryById(id);
+        ZzAt zzAt = this.zzAtDao.queryById(id);
+        try {
+            common.putVoNullStringToEmptyString(zzAt);
+        } catch (Exception e) {
+            log.error(common.getExceptionMessage(e));
+
+        }
+        return zzAt;
     }
 
     /**
@@ -99,6 +110,12 @@ public class ZzAtServiceImpl implements ZzAtService  {
     public TableResultResponse<ZzAt> getList(String receiverId, String groupId, int pageNum, int pageSize) throws Exception{
         PageHelper.startPage(pageNum, pageSize);
         List<ZzAt> list = this.zzAtDao.getList(receiverId,groupId);
+        try {
+            common.putVoNullStringToEmptyString(list);
+        } catch (Exception e) {
+            log.error(common.getExceptionMessage(e));
+
+        }
         PageInfo<ZzAt> pageInfo = new PageInfo<>(list);
         TableResultResponse<ZzAt> res = new TableResultResponse<ZzAt>(
                 pageInfo.getPageSize(),
