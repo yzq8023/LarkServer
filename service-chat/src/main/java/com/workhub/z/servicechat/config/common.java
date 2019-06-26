@@ -163,6 +163,9 @@ public class common {
      *@date: 2019/06/10
      */
     public static<T> void putEntityNullToEmptyString (T enity) throws Exception{
+        if(enity==null){
+            return;
+        }
         //遍历enity类 成员为String类型 属性为空的全部替换为“”
         Field[] fields = enity.getClass().getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {
@@ -337,6 +340,86 @@ public class common {
                 map.put(key, listTmp);
             }
             listTmp.add(val);
+        }
+    }
+    /**
+     *@Description: 把返回给前端的VO 属性是字符串的且值是null的 转换成空字符串，其它类型在代码自行处理
+     *@Param: vo
+     *@return: void
+     *@Author: zhuqz
+     *@date: 2019/06/26
+     */
+    public static<T> void putVoNullStringToEmptyString (T vo) throws Exception{
+        if(vo==null){
+            return;
+        }
+        //遍历enity类 成员为String类型 属性为空的全部替换为“”
+        Field[] fields = vo.getClass().getDeclaredFields();
+        for (int i = 0; i < fields.length; i++) {
+            // 获取属性的名字
+            String name = fields[i].getName();
+            // 将属性的首字符大写，方便构造get，set方法
+            name = name.substring(0, 1).toUpperCase() + name.substring(1);
+            // 获取属性的类型
+            String type = fields[i].getGenericType().toString();
+            // 如果type是类类型，则前面包含"class "，后面跟类名
+            if (type.equals("class java.lang.String")) {
+                Method m = vo.getClass().getMethod("get" + name);
+                // 调用getter方法获取属性值
+                String value = (String) m.invoke(vo);
+                //System.out.println("数据类型为：String");
+                if (value == null) {
+                    //set值
+                    Class[] parameterTypes = new Class[1];
+                    parameterTypes[0] = fields[i].getType();
+                    m = vo.getClass().getMethod("set" + name, parameterTypes);
+                    String string = new String("");
+                    Object[] objects = new Object[1];
+                    objects[0] = string;
+                    m.invoke(vo, objects);
+                }
+            }
+        }
+    }
+    /**
+     *@Description: 把返回给前端的List<VO> 属性是字符串的且值是null的 转换成空字符串，其它类型在代码自行处理
+     *@Param: vo
+     *@return: void
+     *@Author: zhuqz
+     *@date: 2019/06/26
+     */
+    public static<T> void putVoNullStringToEmptyString (List<T> list) throws Exception{
+        if(list==null){
+            return;
+        }
+        for(T vo:list){
+            //遍历enity类 成员为String类型 属性为空的全部替换为“”
+            Field[] fields = vo.getClass().getDeclaredFields();
+            for (int i = 0; i < fields.length; i++) {
+                // 获取属性的名字
+                String name = fields[i].getName();
+                // 将属性的首字符大写，方便构造get，set方法
+                name = name.substring(0, 1).toUpperCase() + name.substring(1);
+                // 获取属性的类型
+                String type = fields[i].getGenericType().toString();
+                // 如果type是类类型，则前面包含"class "，后面跟类名
+                if (type.equals("class java.lang.String")) {
+                    Method m = vo.getClass().getMethod("get" + name);
+                    // 调用getter方法获取属性值
+                    String value = (String) m.invoke(vo);
+                    //System.out.println("数据类型为：String");
+                    if (value == null) {
+                        //set值
+                        Class[] parameterTypes = new Class[1];
+                        parameterTypes[0] = fields[i].getType();
+                        m = vo.getClass().getMethod("set" + name, parameterTypes);
+                        String string = new String("");
+                        Object[] objects = new Object[1];
+                        objects[0] = string;
+                        m.invoke(vo, objects);
+                    }
+                }
+            }
         }
     }
 }

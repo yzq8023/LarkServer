@@ -15,6 +15,8 @@ public class FrontUser {
     private String pId;
     //用户姓名
     private String name;
+    //性别
+    private String gender;
 
     private String orgCode;
     //自述信息

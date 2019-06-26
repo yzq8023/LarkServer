@@ -1,11 +1,13 @@
 package com.workhub.z.servicechat.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.dao.ZzMessageInfoDao;
 import com.workhub.z.servicechat.entity.ZzMessageInfo;
 import com.workhub.z.servicechat.model.ContactsMessageDto;
 import com.workhub.z.servicechat.service.ZzMessageInfoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -22,6 +24,7 @@ import static com.workhub.z.servicechat.config.common.aggregation;
  */
 @Service("zzMessageInfoService")
 public class ZzMessageInfoServiceImpl implements ZzMessageInfoService {
+    private static Logger log = LoggerFactory.getLogger(ZzMessageInfoServiceImpl.class);
     @Resource
     private ZzMessageInfoDao zzMessageInfoDao;
 
@@ -33,7 +36,14 @@ public class ZzMessageInfoServiceImpl implements ZzMessageInfoService {
      */
     @Override
     public ZzMessageInfo queryById(String msgId) {
-        return this.zzMessageInfoDao.queryById(msgId);
+        ZzMessageInfo zzMessageInfo = this.zzMessageInfoDao.queryById(msgId);
+        try {
+            common.putVoNullStringToEmptyString(zzMessageInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(common.getExceptionMessage(e));
+        }
+        return zzMessageInfo;
     }
 
     /**

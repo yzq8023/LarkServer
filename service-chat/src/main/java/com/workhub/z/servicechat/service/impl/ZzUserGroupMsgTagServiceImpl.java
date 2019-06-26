@@ -3,9 +3,12 @@ package com.workhub.z.servicechat.service.impl;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.dao.ZzUserGroupMsgTagDao;
 import com.workhub.z.servicechat.entity.ZzUserGroupMsgTag;
 import com.workhub.z.servicechat.service.ZzUserGroupMsgTagService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,6 +22,7 @@ import java.util.List;
  */
 @Service("zzUserGroupMsgTagService")
 public class ZzUserGroupMsgTagServiceImpl implements ZzUserGroupMsgTagService {
+    private static Logger log = LoggerFactory.getLogger(ZzUserGroupMsgTagServiceImpl.class);
     @Resource
     private ZzUserGroupMsgTagDao zzUserGroupMsgTagDao;
    /* @Override
@@ -102,6 +106,7 @@ public class ZzUserGroupMsgTagServiceImpl implements ZzUserGroupMsgTagService {
         //自己写分页
         PageHelper.startPage(pageNum, pageSize);
         List<ZzUserGroupMsgTag> list = this.zzUserGroupMsgTagDao.getInfList(userId,groupId,tagType);
+        common.putVoNullStringToEmptyString(list);
         PageInfo<ZzUserGroupMsgTag> pageInfo = new PageInfo<>(list);
         TableResultResponse<ZzUserGroupMsgTag> res = new TableResultResponse<ZzUserGroupMsgTag>(
                 pageInfo.getPageSize(),

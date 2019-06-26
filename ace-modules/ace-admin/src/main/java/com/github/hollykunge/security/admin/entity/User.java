@@ -5,11 +5,14 @@ import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @Table(name = "ADMIN_USER")
-public class User extends BaseEntity {
+public class User extends BaseEntity implements Serializable {
+
+    private static final long serialVersionUID = -1235943548965154778L;
     /**
      * 姓名
      */
