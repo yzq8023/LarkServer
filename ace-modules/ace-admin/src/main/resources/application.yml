@@ -81,8 +81,8 @@ feign:
 ribbon:
   eureka:
     enabled: true
-  ReadTimeout: 120000
-  ConnectTimeout: 120000
+  ReadTimeout: 20000
+  ConnectTimeout: 20000
   MaxAutoRetries: 0
   MaxAutoRetriesNextServer: 1
   OkToRetryOnAllOperations: false
@@ -98,7 +98,7 @@ hystrix:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 110000
+            timeoutInMilliseconds: 60000
 
 
 # 配置swagger
