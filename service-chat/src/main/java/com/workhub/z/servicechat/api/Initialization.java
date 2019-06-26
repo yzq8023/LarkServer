@@ -2,6 +2,7 @@ package com.workhub.z.servicechat.api;
 
 //import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.vo.OrgUser;
@@ -88,7 +89,7 @@ public class Initialization {
     @ResponseBody
     public ListRestResponse<List<OrgUser>> queryOrgTree(){
         String orgUserJson = iUserService.orgUsers("root");
-        List<OrgUser> orgUserList = JSON.parseArray(orgUserJson, OrgUser.class);
+        JSONArray orgUserList = JSON.parseArray(orgUserJson);
         return new ListRestResponse("", orgUserList.size(), orgUserList);
     }
 }
