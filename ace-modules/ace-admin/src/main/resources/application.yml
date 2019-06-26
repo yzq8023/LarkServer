@@ -22,7 +22,7 @@ spring:
 #        driver-class-name: com.mysql.jdbc.Driver
         driver-class-name: oracle.jdbc.OracleDriver
         filters: stat
-        maxActive: 20
+        maxActive: 200
         initialSize: 1
         maxWait: 60000
         minIdle: 1
@@ -35,7 +35,7 @@ spring:
         poolPreparedStatements: true
         maxOpenPreparedStatements: 20
     rabbitmq:
-        host: ${RABBIT_MQ_HOST:10.11.24.136}
+        host: ${RABBIT_MQ_HOST:localhost}
         port:  ${RABBIT_MQ_PORT:5672}
         username: hollykunge
         password: 123456
@@ -90,9 +90,9 @@ ribbon:
 hystrix:
   threadpool:
     default:
-      coreSize: 1000 ##并发执行的最大线程数，默认10
-      maxQueueSize: 1000 ##BlockingQueue的最大队列数
-      queueSizeRejectionThreshold: 500 ##即使maxQueueSize没有达到，达到queueSizeRejectionThreshold该值后，请求也会被拒绝
+      coreSize: 10000 ##并发执行的最大线程数，默认10
+      maxQueueSize: 10000 ##BlockingQueue的最大队列数
+      queueSizeRejectionThreshold: 5000 ##即使maxQueueSize没有达到，达到queueSizeRejectionThreshold该值后，请求也会被拒绝
   command:
     default:
       execution:
@@ -125,11 +125,11 @@ redis:
     pool:
          maxActive: 300
          maxIdle: 100
-         maxWait: 1000
-    host: ${REDIS_HOST:10.11.24.5}
+         maxWait: 10000
+    host: ${REDIS_HOST:localhost}
     port:  ${REDIS_PORT:6379}
     password:
-    timeout: 2000
+    timeout: 20000
     # 服务或应用名
     sysName: ace-admin
     enable: true
