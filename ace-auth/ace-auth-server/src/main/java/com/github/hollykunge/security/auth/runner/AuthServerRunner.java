@@ -10,7 +10,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import java.util.Map;
 
 /**
- * @author ace
+ * @author hollykunge
  * @create 2017/12/17.
  */
 @Configuration

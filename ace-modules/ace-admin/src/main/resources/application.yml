@@ -52,7 +52,8 @@ spring:
           max-open-prepared-statements: 20
           filter: stat,wall,log4j
     rabbitmq:
-        host: ${RABBIT_MQ_HOST:localhost}
+      #需要修改地址
+        host: ${RABBIT_MQ_HOST:10.11.24.136}
         port:  ${RABBIT_MQ_PORT:5672}
         username: hollykunge
         password: 123456
@@ -143,7 +144,8 @@ redis:
          maxActive: 300
          maxIdle: 100
          maxWait: 10000
-    host: ${REDIS_HOST:localhost}
+      #需要修改地址
+    host: ${REDIS_HOST:10.11.24.5}
     port:  ${REDIS_PORT:6379}
     password:
     timeout: 20000

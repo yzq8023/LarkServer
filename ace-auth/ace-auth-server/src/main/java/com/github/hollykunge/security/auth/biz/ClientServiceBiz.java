@@ -6,7 +6,7 @@ import com.github.hollykunge.security.common.biz.BaseBiz;
 import org.springframework.stereotype.Service;
 
 /**
- * @author ace
+ * @author hollykunge
  * @create 2017/12/30.
  */
 @Service
