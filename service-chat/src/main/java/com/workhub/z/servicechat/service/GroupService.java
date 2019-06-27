@@ -5,7 +5,7 @@ import com.workhub.z.servicechat.model.GroupTaskDto;
 public interface GroupService {
 
     //创建群组
-    boolean createGroup(GroupTaskDto groupTaskDto) throws RuntimeException;
+    boolean createGroup(GroupTaskDto groupTaskDto) throws Exception;
     //加入群组
     boolean addGroup(GroupTaskDto groupTaskDto) throws RuntimeException;
     //退出群组

@@ -15,6 +15,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.workhub.z.servicechat.config.common.aggregation;
+import static com.workhub.z.servicechat.config.common.putEntityNullToEmptyString;
 
 /**
  * 消息存储(ZzMessageInfo)表服务实现类
@@ -66,6 +67,11 @@ public class ZzMessageInfoServiceImpl implements ZzMessageInfoService {
      */
     @Override
     public ZzMessageInfo insert(ZzMessageInfo zzMessageInfo) {
+        try {
+            putEntityNullToEmptyString(zzMessageInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         this.zzMessageInfoDao.insert(zzMessageInfo);
         return zzMessageInfo;
     }

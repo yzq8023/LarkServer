@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.workhub.z.servicechat.config.common.putEntityNullToEmptyString;
+
 /**
  * 群组消息表(ZzGroupMsg)表服务实现类
  *
@@ -79,6 +81,11 @@ public class ZzGroupMsgServiceImpl implements ZzGroupMsgService {
     @Override
     @Transactional
     public void insert(ZzGroupMsg zzGroupMsg) {
+        try {
+            putEntityNullToEmptyString(zzGroupMsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         int insert = this.zzGroupMsgDao.insert(zzGroupMsg);
 //        return insert;
 //        super.insert(zzGroupMsg);

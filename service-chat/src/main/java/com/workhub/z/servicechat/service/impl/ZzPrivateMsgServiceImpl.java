@@ -16,6 +16,8 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
+import static com.workhub.z.servicechat.config.common.putEntityNullToEmptyString;
+
 /**
  * 私人消息(ZzPrivateMsg)表服务实现类
  *
@@ -67,6 +69,11 @@ public class ZzPrivateMsgServiceImpl implements ZzPrivateMsgService {
     @Override
     @Transactional
     public void insert(ZzPrivateMsg zzPrivateMsg) {
+        try {
+            putEntityNullToEmptyString(zzPrivateMsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         int insert = this.zzPrivateMsgDao.insert(zzPrivateMsg);
 //        return insert;
     }
