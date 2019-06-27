@@ -35,6 +35,7 @@ spring:
         poolPreparedStatements: true
         maxOpenPreparedStatements: 20
     rabbitmq:
+      #需要修改地址
         host: ${RABBIT_MQ_HOST:10.11.24.136}
         port:  ${RABBIT_MQ_PORT:5672}
         username: hollykunge
@@ -126,6 +127,7 @@ redis:
          maxActive: 300
          maxIdle: 100
          maxWait: 10000
+      #需要修改地址
     host: ${REDIS_HOST:10.11.24.5}
     port:  ${REDIS_PORT:6379}
     password:
