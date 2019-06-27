@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.workhub.z.servicechat.config.common.putEntityNullToEmptyString;
+
 /**
  * 群组表(ZzGroup)表服务实现类
  *
@@ -68,6 +70,11 @@ public class ZzGroupServiceImpl implements ZzGroupService {
     @Override
     @Transactional
     public void insert(ZzGroup zzGroup) {
+        try {
+            putEntityNullToEmptyString(zzGroup);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         this.zzGroupDao.addGroup(zzGroup);
 //        return insert;
     }

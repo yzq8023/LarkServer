@@ -21,6 +21,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.workhub.z.servicechat.config.common.putEntityNullToEmptyString;
+
 @Service("groupService")
 public class GroupServiceImpl implements GroupService {
 
@@ -58,13 +60,14 @@ public class GroupServiceImpl implements GroupService {
      */
 
     @Override
-    public boolean createGroup(GroupTaskDto groupTaskDto) throws RuntimeException {
+    public boolean createGroup(GroupTaskDto groupTaskDto) throws Exception {
         if (null == groupTaskDto) throw new NullPointerException("GroupTaskDto is null");
         ZzGroup zzGroup = groupTaskDto.getZzGroup();
         if (null == zzGroup) throw new NullPointerException("zzGroup is null");
         UserInfo info = this.iUserService.info(groupTaskDto.getGroupId());
         if (null == info) throw new RuntimeException("info is null");
         if (Integer.parseInt(zzGroup.getLevels())<1/*TODO 属性暂时未加 */) throw new RuntimeException("群创建等级必须小于或者等于创建人等级");
+        putEntityNullToEmptyString(zzGroup);
         this.zzGroupService.insert(zzGroup);
 //        if (insert == 0) throw  new RuntimeException("创群失败！");
         List<UserListDto> userList = groupTaskDto.getUserList();
@@ -78,6 +81,11 @@ public class GroupServiceImpl implements GroupService {
             if (StringUtil.isEmpty(userId)) throw new NullPointerException("userId is null");
             zzUserGroup.setUserId(userId);
             zzUserGroup.setCreatetime(date);
+            try {
+                putEntityNullToEmptyString(zzUserGroup);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             zzUserGroupService.insert(zzUserGroup);
 //            if (count == 0)new Error(JSONObject.toJSON(zzUserGroup)+"入群失败");
         });
@@ -108,6 +116,11 @@ public class GroupServiceImpl implements GroupService {
             if (StringUtil.isEmpty(userId)) throw new NullPointerException("userId is null");
             zzUserGroup.setUserId(userId);
             zzUserGroup.setCreatetime(date);
+            try {
+                putEntityNullToEmptyString(zzUserGroup);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             zzUserGroupService.insert(zzUserGroup);
 //            if (insert == 0)new Error(JSONObject.toJSON(zzUserGroup)+"入群失败");
         });

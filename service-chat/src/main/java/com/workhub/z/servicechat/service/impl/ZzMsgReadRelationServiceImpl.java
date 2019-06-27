@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.List;
 
+import static com.workhub.z.servicechat.config.common.putEntityNullToEmptyString;
+
 /**
  * 消息阅读状态关系表(ZzMsgReadRelation)表服务实现类
  *
@@ -64,6 +66,11 @@ public class ZzMsgReadRelationServiceImpl implements ZzMsgReadRelationService {
     @Override
     @Transactional
     public void insert(ZzMsgReadRelation zzMsgReadRelation) {
+        try {
+            putEntityNullToEmptyString(zzMsgReadRelation);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         zzMsgReadRelationDao.insert(zzMsgReadRelation);
     }
 

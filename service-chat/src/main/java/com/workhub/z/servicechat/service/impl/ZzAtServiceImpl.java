@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.List;
 
+import static com.workhub.z.servicechat.config.common.putEntityNullToEmptyString;
+
 /**
  * 提及（@）功能实现(ZzAt)表服务实现类
  *
@@ -67,6 +69,11 @@ public class ZzAtServiceImpl implements ZzAtService  {
     @Transactional
     public void insert(ZzAt zzAt) {
         //super.insert(zzAt);
+        try {
+            putEntityNullToEmptyString(zzAt);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         int insert = this.zzAtDao.insert(zzAt);
 //        return insert;
     }

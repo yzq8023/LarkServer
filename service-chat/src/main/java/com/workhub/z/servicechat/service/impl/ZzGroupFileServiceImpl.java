@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.workhub.z.servicechat.config.common.putEntityNullToEmptyString;
+
 /**
  * 群文件(ZzGroupFile)表服务实现类
  *
@@ -77,6 +79,11 @@ public class ZzGroupFileServiceImpl implements ZzGroupFileService {
     @Override
     @Transactional
     public void insert(ZzGroupFile zzGroupFile) {
+        try {
+            putEntityNullToEmptyString(zzGroupFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         int insert = this.zzGroupFileDao.insert(zzGroupFile);
 //        return insert;
         //super.insert(zzGroupFile);
