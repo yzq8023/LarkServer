@@ -131,8 +131,10 @@ public class ZzFileManageController {
     }
     @GetMapping("/downloadFile")
     //下载 1成功 -1 失败 0 文件不存在
-    public ObjectRestResponse downloadFile(HttpServletRequest request, HttpServletResponse response) {
+    public void downloadFile(HttpServletRequest request, HttpServletResponse response) {
         String fileId = request.getParameter("fileId");
+        request.setAttribute("resCode","1");
+        request.setAttribute("msg","下载成功");
 /*
 
         try {
@@ -143,20 +145,16 @@ public class ZzFileManageController {
         String qqqqqq = "aaa";
 */
 
-        ObjectRestResponse obj = new ObjectRestResponse();
-        obj.rel(true);
-        obj.msg("200");
-        obj.data("成功");
         if (fileId == null || "".equals(fileId)) {
-            obj.rel(false);
-            obj.data("附件id为空");
-            return  obj;
+            request.setAttribute("resCode","0");
+            request.setAttribute("msg","附件id是空");
+            return ;
         }
         ZzGroupFile zzGroupFile = zzGroupFileService.queryById(fileId);
         if (zzGroupFile == null) {
-            obj.rel(false);
-            obj.data("附件不存在");
-            return  obj;
+            request.setAttribute("resCode","0");
+            request.setAttribute("msg","附件不存在");
+            return ;
         }
         String fileName = zzGroupFile.getFileName();//下载名称
         String fileExt = zzGroupFile.getFileExt();//后缀
@@ -168,13 +166,10 @@ public class ZzFileManageController {
             response = zzFileManageService.downloadFile(response, filePath, fileName);
         } catch (Exception e) {
             e.printStackTrace();
-            obj.rel(false);
-            obj.data("操作出错");
-            return  obj;
+            request.setAttribute("resCode","-1");
+            request.setAttribute("msg","下载出错");
+            return ;
         }
-
-
-        return obj;
     }
     @PostMapping ("/fileDelete")
     //删除文件 1成功 -1 失败 0 文件不存在
