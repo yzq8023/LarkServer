@@ -126,4 +126,38 @@
         ORDER BY VO.createtime ASC
     </select>
     <!--根据最近联系人id和当前登录人获取最近100条消息-->
+
+
+    <select id="queryHistoryMessageForSinglePrivate" resultType="java.lang.String">
+        select content from (
+            select content,createtime
+              from zz_message_info
+             where 1 = 1
+               and receiver = #{userId}
+               and sender = #{contactId}
+               and type='USER'
+              union
+              select content,createtime
+              from zz_message_info
+             where 1 = 1
+               and receiver = #{contactId}
+               and sender = #{userId}
+               and type='USER'
+              ) a
+         order by a.createtime desc
+    </select>
+    <select id="queryHistoryMessageForSingleGroup" resultType="java.lang.String">
+        select content
+        from zz_message_info mes
+        where 1 = 1
+        and receiver = #{contactId}
+        and type = 'GROUP'
+        and exists (select 1
+                    from zz_user_group c
+                    where 1 = 1
+                    and c.user_id = #{userId}
+                    and c.group_id = #{contactId})
+        order by mes.createtime desc
+    </select>
+
 </mapper>

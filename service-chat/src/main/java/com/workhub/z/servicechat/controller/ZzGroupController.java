@@ -202,5 +202,10 @@ public class ZzGroupController  {
         }
         return objectRestResponse;
     }
-
+    //当前登录人查询具体某个人或者群的聊天记录,contactId表示个人或者群id
+    @GetMapping("/queryHistoryMessageForSingle")
+    public TableResultResponse queryHistoryMessageForSingle(@RequestParam("userId")String userId,@RequestParam("contactId")String contactId,@RequestParam("isGroup")String isGroup,@RequestParam("page")String page,@RequestParam("size")String size) throws Exception {
+        TableResultResponse resultResponse = messageInfoService.queryHistoryMessageForSingle(userId,contactId,isGroup,page,size);
+        return resultResponse;
+    }
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <configuration>
-    <!-- 读取springboot工程的properties配置文件logpath属性 作为日志的存放目录 -->
-    <!--<springProperty scope="context" name="logPath" source="logpath" defaultValue="C:/service_chat_log/"/>-->
+    <!-- 读取springboot工程的properties配置文件showConsoleInf属性 判断是否输出console日志 -->
+    <springProperty scope="context" name="showConsoleInf" source="showConsoleInf" defaultValue="1"/>
     <!-- 开发时候console输出 -->
     <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
@@ -77,12 +77,22 @@
     </logger>
     <!-- 为了方便开发调试，输出mybaits的sql到控制台 级别必须是debug additivity=false不在向上传递-->
     <logger name="com.workhub.z.servicechat.dao" level="debug" additivity="false">
-        <appender-ref ref="consoleLog" />
+        <if condition='property("showConsoleInf").equals("1")'>
+            <then>
+                <appender-ref ref="consoleLog" />
+            </then>
+        </if>
+        <!--<appender-ref ref="consoleLog" />-->
         <appender-ref ref="infoLog" />
     </logger>
     <!-- root 的日志级别如果改成debug会有很多程序内部日志信息，所以这里写为INFO-->
     <root level="info">
-        <appender-ref ref="consoleLog" />
+        <if condition='property("showConsoleInf").equals("1")'>
+            <then>
+                <appender-ref ref="consoleLog" />
+            </then>
+        </if>
+        <!--<appender-ref ref="consoleLog" />-->
         <appender-ref ref="infoLog" />
         <appender-ref ref="errorLog" />
     </root>
