@@ -91,7 +91,7 @@ hystrix:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 50000
+            timeoutInMilliseconds: 200000
           strategy: SEMAPHORE
 
 
