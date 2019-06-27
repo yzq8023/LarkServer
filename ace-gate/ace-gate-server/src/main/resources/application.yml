@@ -10,7 +10,8 @@ spring:
         default-property-inclusion: non_null
     redis:
         database: 1
-        host: localhost
+        #需要修改地址
+        host: 10.11.24.5
         jedis:
           pool:
               max-active: 200
@@ -96,7 +97,7 @@ hystrix:
 
 gate:
   ignore:
-    startWith: /static,/auth/jwt,/fdfs/file,/chat/zzFileManage,/admin/org/tree,/admin/org/orgUsers
+    startWith: /static,/auth/jwt,/fdfs/file,/chat/zzFileManage,/admin/org/tree,/admin/org/orgUsers,/admin/org/user
 
 
 auth:
