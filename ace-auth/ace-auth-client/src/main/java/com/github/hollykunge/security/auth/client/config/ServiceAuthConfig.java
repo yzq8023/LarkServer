@@ -1,6 +1,5 @@
 package com.github.hollykunge.security.auth.client.config;
 
-import com.github.hollykunge.security.auth.client.feign.ServiceAuthFeign;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.servlet.http.HttpServletRequest;
