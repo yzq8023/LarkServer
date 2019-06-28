@@ -127,3 +127,12 @@ client:
 auth:
   user:
     defaultPassword: 123456
+##druid数据库连接池管理页面配置
+druid:
+  enabled: true
+  ###允许登录的白名单
+  whiteip: 127.0.0.1
+  ###不允许登录的黑名单
+  blackip: 192.168.1.1
+  loginUsername: admin
+  loginPassword: 123456
