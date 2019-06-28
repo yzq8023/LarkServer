@@ -8,8 +8,12 @@ import com.github.hollykunge.security.admin.mapper.NoticeMapper;
 import com.github.hollykunge.security.admin.mapper.UserMapper;
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.exception.BaseException;
+import com.github.hollykunge.security.common.msg.TableResultResponse;
+import com.github.hollykunge.security.common.util.Query;
 import com.github.hollykunge.security.common.util.UUIDUtils;
 import com.github.hollykunge.security.common.vo.mq.NoticeVO;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +22,9 @@ import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -72,5 +78,20 @@ public class NoticeBiz extends BaseBiz<NoticeMapper,Notice>{
         NoticeVO mqNoticeEntity = new NoticeVO();
         BeanUtils.copyProperties(entity,mqNoticeEntity);
         produceSenderConfig.send(mqNoticeEntity.getId(),mqNoticeEntity);
+    }
+
+    public TableResultResponse<Notice> pageList(Query query,String userId) {
+        Class<Notice> clazz = (Class<Notice>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+        Example example = new Example(clazz);
+        Example.Criteria criteria = example.createCriteria();
+        if(query.entrySet().size()>0) {
+            for (Map.Entry<String, Object> entry : query.entrySet()) {
+                criteria.andLike(entry.getKey(), "%" + entry.getValue().toString() + "%");
+            }
+        }
+        criteria.andEqualTo("crtUser",userId);
+        Page<Object> result = PageHelper.startPage(query.getPageNo(), query.getPageSize());
+        List<Notice> list = mapper.selectByExample(example);
+        return new TableResultResponse<Notice>(result.getPageSize(), result.getPageNum() ,result.getPages(), result.getTotal(), list);
     }
 }
