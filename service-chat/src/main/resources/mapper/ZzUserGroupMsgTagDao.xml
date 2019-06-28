@@ -36,26 +36,27 @@
     <delete id="deleteById">
         delete from ZZ_USER_GROUP_MSG_TAG where ID = #{id}
     </delete>
-    <select id="getInfList" resultMap="ZzUserGroupMsgTagMap">
-
-        SELECT
-        A . ID,
-        A .USER_ID,
-        A . GROUP_ID,
-        A .TAG_TYPE,
-        A .MES_ID,
-        A .CREATE_TIME
-        FROM
-        ZZ_USER_GROUP_MSG_TAG A
-        WHERE  1 = 1
+    <select id="getInfList" resultType="java.lang.String">
+        select b.content
+        from ZZ_USER_GROUP_MSG_TAG A,zz_message_info b
+        where 1 = 1
+        AND a.mes_id = b.msg_id
+        and b.type = 'GROUP'
         <if test="userId != null and userId != '' ">
-            AND USER_ID = #{userId}
+            AND a.USER_ID = #{userId}
         </if>
         <if test="groupId != null and groupId != '' ">
-            AND GROUP_ID = #{groupId}
+            AND a.GROUP_ID = #{groupId}
         </if>
         <if test="tagType != null and tagType != '' ">
-            AND TAG_TYPE = #{tagType}
+            AND a.TAG_TYPE = #{tagType}
+        </if>
+        <if test="userId!=null and userId!='' and groupId!=null and groupId!=''">
+            and exists (select 1
+            from zz_user_group c
+            where 1 = 1
+            and c.user_id = #{userId}
+            and c.group_id = #{groupId})
         </if>
         ORDER BY
         A .CREATE_TIME DESC
