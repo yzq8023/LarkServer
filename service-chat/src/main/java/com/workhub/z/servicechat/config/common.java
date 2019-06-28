@@ -1,5 +1,8 @@
 package com.workhub.z.servicechat.config;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.workhub.z.servicechat.entity.ZzDictionaryWords;
 import com.workhub.z.servicechat.model.ContactsMessageDto;
 import org.tio.core.ChannelContext;
@@ -422,4 +425,49 @@ public class common {
             }
         }
     }
+    /**
+     *@Description: 修改json字符串的某个属性值
+     *@Param: json字符串；key,如果是多级用"."拼接，key只支持String；value 修改后新的值.只支持到叶子节点，非叶子节点，没试过，有需要自行测试。
+     * 例如：某个json字符串是{"toId":"GMt5H6xf","contactInfo":{"name":"8756","id":"GMt5H6xf"},"username":"myname"}，传入key: contactInfo.id, value: newValue,返回值是：{"toId":"GMt5H6xf","contactInfo":{"name":"8756","id":"newValue"},"username":"myname"}
+     *@return: 修改后的json字符串
+     *@Author: zhuqz
+     *@date: 2019/06/28
+     */
+    public static String   setJsonStringKeyValue (String jsonStr,String key, Object value) throws Exception{
+        if(jsonStr==null){
+            return null;
+        }
+        Map<String,Object> jsonMap= JSON.parseObject(jsonStr, new TypeReference<Map<String, Object>>() {});
+        //System.out.println("before:"+JSONObject.toJSONString(jsonMap));
+        jsonMap=setMapKeyValue(jsonMap,key,value);
+       // System.out.println("after:"+JSONObject.toJSONString(jsonMap));
+        return JSONObject.toJSONString(jsonMap);
+    }
+    //递归赋值给map的key
+    public static Map<String,Object> setMapKeyValue(Map<String,Object> map,String key, Object value) throws  Exception {
+        String[] keyArr=key.split("\\.");
+
+        if(keyArr.length!=1){
+            String currentKey=keyArr[0];
+            Map<String,Object> temp=JSONObject.parseObject(map.get(currentKey).toString());
+            map.put(currentKey,setMapKeyValue(temp,key.substring(key.indexOf(".")+1),value));
+
+        }else {
+            map.put(keyArr[0],value);
+        }
+        JSONObject jsonObj=new JSONObject(map);
+        return  map;
+    }
+    //测试setJsonStringKeyValue
+/*
+    public static void main(String[] args) {
+        try {
+            setJsonStringKeyValue("{\"toId\":\"GMt5H6xf\",\"atId\":[],\"contactInfo\":{\"name\":\"8756\",\"id\":\"GMt5H6xf\",\"avatar\":\"\",\"memberNum\":4,\"isGroup\":true,\"secretLevel\":30},\"id\":\"69be81ca-f633-45c0-be0c-262d14aa68e1\",\"avatar\":\"http://10.12.97.34:80/undefined\",\"time\":\"2019-06-24T08:36:10.137Z\",\"isGroup\":true,\"fromId\":\"duyukun\",\"content\":{\"extension\":\"jpg\",\"id\":\"398b8662f7694ea28264330e63e79d97\",\"type\":3,\"title\":\"jpg\",\"secretLevel\":30,\"url\":\"/api/chat/zzFileManage/GetFile?fileId=398b8662f7694ea28264330e63e79d97&t=1561193135178\"},\"username\":\"杜宇坤\"}",
+            "contactInfo.memberNum",
+                    12
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }*/
 }
