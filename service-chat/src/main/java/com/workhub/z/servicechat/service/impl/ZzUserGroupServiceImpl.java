@@ -27,10 +27,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static com.workhub.z.servicechat.config.common.putEntityNullToEmptyString;
 
 //import com.workhub.z.servicechat.VO.ContactVO;
 
@@ -96,6 +95,11 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
     @Override
     @Transactional
     public void insert(ZzUserGroup zzUserGroup) {
+        try {
+            putEntityNullToEmptyString(zzUserGroup);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         int insert = this.zzUserGroupDao.insert(zzUserGroup);
 //        return insert;
     }
@@ -215,7 +219,11 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
 //                JSON.toJavaObject(JSON.parseObject(n.getMsg()), MessageContent.class);
 //                MessageContent testProcessInfo = (MessageContent)JSONObject.toBean(n.getMsg(), MessageContent.class);
                 contactVO.setLastMessage(JSON.toJavaObject(JSON.parseObject(n.getMsg()), MessageContent.class));
-                contactVO.setTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(n.getSendTime()));
+                if(new SimpleDateFormat("YYYY-MM-dd").format(n.getSendTime()).equals(new SimpleDateFormat("YYYY-MM-dd").format(new Date()))){//格式化为相同格式
+                    contactVO.setTime(new SimpleDateFormat("hh:mm").format(n.getSendTime()));
+                }else {
+                    contactVO.setTime(new SimpleDateFormat("MM-dd").format(n.getSendTime()));
+                }
                 contactVO.setAvatar(group.getGroupImg());
                 contactVO.setName(group.getGroupName());
                 contactVO.setSender(userInfo.getName());
@@ -228,7 +236,11 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
                 UserInfo userInfo = iUserService.info(n.getMsgSener());
                 contactVO.setId(n.getMsgSener());
                 contactVO.setLastMessage(JSON.toJavaObject(JSON.parseObject(n.getMsg()), MessageContent.class));
-                contactVO.setTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(n.getSendTime()));
+                if(new SimpleDateFormat("YYYY-MM-dd").format(n.getSendTime()).equals(new SimpleDateFormat("YYYY-MM-dd").format(new Date()))){//格式化为相同格式
+                    contactVO.setTime(new SimpleDateFormat("hh:mm").format(n.getSendTime()));
+                }else {
+                    contactVO.setTime(new SimpleDateFormat("MM-dd").format(n.getSendTime()));
+                }
                 contactVO.setAvatar(userInfo.getAvatar());
                 contactVO.setName(userInfo.getName());
                 contactVO.setSender("");

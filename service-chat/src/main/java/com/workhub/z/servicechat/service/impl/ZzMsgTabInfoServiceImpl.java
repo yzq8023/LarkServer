@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.List;
 
+import static com.workhub.z.servicechat.config.common.putEntityNullToEmptyString;
+
 /**
  * 消息标记信息表(ZzMsgTabInfo)表服务实现类
  *
@@ -61,6 +63,11 @@ public class ZzMsgTabInfoServiceImpl implements ZzMsgTabInfoService {
      */
     @Override
     public void insert(ZzMsgTabInfo zzMsgTabInfo) {
+        try {
+            putEntityNullToEmptyString(zzMsgTabInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         int insert = this.zzMsgTabInfoDao.insert(zzMsgTabInfo);
 //        return insert;
     }

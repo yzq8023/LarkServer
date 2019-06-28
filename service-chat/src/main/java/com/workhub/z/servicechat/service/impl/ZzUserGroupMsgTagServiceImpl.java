@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.List;
 
+import static com.workhub.z.servicechat.config.common.putEntityNullToEmptyString;
+
 /**
  * 用户标记群消息
  *
@@ -41,6 +43,11 @@ public class ZzUserGroupMsgTagServiceImpl implements ZzUserGroupMsgTagService {
         //调用父类方法目前报错，暂时改成自己的方法，如果以后父类方法修改好，应该改成走父类方法。
         //super.insert(entity);
         //调用自己的方法新增数据
+        try {
+            putEntityNullToEmptyString(entity);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         int rows = this.zzUserGroupMsgTagDao.insert(entity);
         return  res;
     }

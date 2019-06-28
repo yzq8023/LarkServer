@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.List;
 
+import static com.workhub.z.servicechat.config.common.putEntityNullToEmptyString;
+
 /**
  * 字典词汇表(ZzDictionaryWords)表服务实现类
  *
@@ -65,6 +67,11 @@ public class ZzDictionaryWordsServiceImpl implements ZzDictionaryWordsService {
      */
 
     public void insert(ZzDictionaryWords zzDictionaryWords) {
+        try {
+            putEntityNullToEmptyString(zzDictionaryWords);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         int insert = this.zzDictionaryWordsDao.insert(zzDictionaryWords);
         //return insert;
         //super.insert(zzDictionaryWords);
