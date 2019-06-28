@@ -157,3 +157,9 @@ redis:
 admin:
   create-user:
       defaultPassword: 123456
+druid:
+    enable: true
+    whiteip: 127.0.0.1
+    blackip: 192.168.1.1
+    loginUsername: admin
+    loginPassword: 123456
