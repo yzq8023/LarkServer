@@ -2,6 +2,8 @@ package com.github.hollykunge.security.entity;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  *@ClassName FeedBack
  *@Description 问题反馈
@@ -11,9 +13,13 @@ import lombok.Data;
  **/
 @Data
 public class FeedBack {
-    private String id;
+    private Integer id;
+    /**
+     * uuid
+     */
+    private String feedBackId;
     private String title;
-    private String description;
+    private String content;
     /**
      * 问题状态，true打开，false关闭
      */
@@ -22,13 +28,13 @@ public class FeedBack {
      * 问题类型
      */
     private String type;
-    /**
-     * 赞同数量
-     */
-    private Integer likeNum;
-    /**
-     * 反对数量
-     */
-    private Integer dislikeNum;
     private String userId;
+    private Date crtTime;
+    private Date updTime;
+    private String crtUser;
+    private String updUser;
+    /**
+     * 普通用户可见性
+     */
+    private Boolean visible;
 }

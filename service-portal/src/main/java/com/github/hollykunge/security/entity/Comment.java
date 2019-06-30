@@ -2,6 +2,8 @@ package com.github.hollykunge.security.entity;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * @ClassName Comment
  * @Description 评论
@@ -11,8 +13,18 @@ import lombok.Data;
  **/
 @Data
 public class Comment {
-    private String id;
-    private String toWhere;
-    private String comment;
-    private String userId;
+    private Integer id;
+    /**
+     * uuid
+     */
+    private String commentId;
+    /**
+     * 属于哪个问题
+     */
+    private String feedBackId;
+    private String content;
+    private Date crtTime;
+    private Date updTime;
+    private String crtUser;
+    private String updUser;
 }
