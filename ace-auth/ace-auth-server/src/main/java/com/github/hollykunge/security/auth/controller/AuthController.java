@@ -3,10 +3,13 @@ package com.github.hollykunge.security.auth.controller;
 import com.github.hollykunge.security.auth.service.AuthService;
 import com.github.hollykunge.security.auth.util.user.JwtAuthenticationRequest;
 import com.github.hollykunge.security.auth.util.user.JwtAuthenticationResponse;
+import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("jwt")
+@Slf4j
 public class AuthController {
     @Value("${jwt.token-header}")
     private String tokenHeader;
@@ -23,10 +27,30 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
+    @Value("${auth.user.defaultPassword}")
+    private String defaultPassword;
+
     @RequestMapping(value = "token", method = RequestMethod.POST)
     @ResponseBody
     public ObjectRestResponse<?> createAuthenticationToken(
-            @RequestBody JwtAuthenticationRequest authenticationRequest) throws Exception {
+            @RequestBody JwtAuthenticationRequest authenticationRequest,HttpServletRequest request) throws Exception {
+//        String dnname = request.getHeader("dnname");
+//        if(StringUtils.isEmpty(dnname)){
+//            throw new BaseException("请求头中无身份信息...");
+//        }
+//        dnname = new String (dnname.getBytes("iso8859-1"));
+//        String[] dnsplit = dnname.trim().split(",", 0);
+//        String cn,dc,t = null;
+//        for (String val:
+//                dnsplit) {
+//            val = val.trim();
+//            if(val.indexOf("t=")>-1||val.indexOf("T=")>-1){
+//                t = val.substring(2,val.length());
+//            }
+//        }
+//        log.info("登录用户***********"+t);
+//        String userId = t;
+//        final String token = authService.login(userId, defaultPassword);
         final String token = authService.login(authenticationRequest.getUsername(), authenticationRequest.getPassword());
         return new ObjectRestResponse().data(new JwtAuthenticationResponse(token)).msg("获取token成功");
     }

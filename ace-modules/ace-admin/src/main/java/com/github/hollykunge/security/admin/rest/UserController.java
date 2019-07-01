@@ -67,7 +67,7 @@ public class UserController extends BaseController<UserBiz,User> {
         //未防止暴露密码使用AdminUser携带id返回前端
         AdminUser adminUser = new AdminUser();
         BeanUtils.copyProperties(user,adminUser);
-        return new ObjectRestResponse<AdminUser>().data(adminUser);
+        return new ObjectRestResponse<AdminUser>().data(adminUser).rel(true);
     }
 
 //    @RequestMapping(value = "/front/menus", method = RequestMethod.GET)

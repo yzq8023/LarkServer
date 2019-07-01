@@ -1,14 +1,19 @@
 package com.workhub.z.servicechat.service.impl;
 
 import com.workhub.z.servicechat.VO.NoReadVo;
+import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.dao.ZzMsgReadRelationDao;
 import com.workhub.z.servicechat.entity.ZzMsgReadRelation;
 import com.workhub.z.servicechat.service.ZzMsgReadRelationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+
+import static com.workhub.z.servicechat.config.common.putEntityNullToEmptyString;
 
 /**
  * 消息阅读状态关系表(ZzMsgReadRelation)表服务实现类
@@ -18,6 +23,7 @@ import java.util.List;
  */
 @Service("zzMsgReadRelationService")
 public class ZzMsgReadRelationServiceImpl implements ZzMsgReadRelationService {
+    private static Logger log = LoggerFactory.getLogger(ZzMsgReadRelationServiceImpl.class);
     @Resource
     private ZzMsgReadRelationDao zzMsgReadRelationDao;
 
@@ -29,7 +35,14 @@ public class ZzMsgReadRelationServiceImpl implements ZzMsgReadRelationService {
      */
     @Override
     public ZzMsgReadRelation queryById(String id) {
-        return this.zzMsgReadRelationDao.queryById(id);
+        ZzMsgReadRelation zzMsgReadRelation=this.zzMsgReadRelationDao.queryById(id);
+        try {
+            common.putVoNullStringToEmptyString(zzMsgReadRelation);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(common.getExceptionMessage(e));
+        }
+        return zzMsgReadRelation;
     }
 
     /**
@@ -53,6 +66,11 @@ public class ZzMsgReadRelationServiceImpl implements ZzMsgReadRelationService {
     @Override
     @Transactional
     public void insert(ZzMsgReadRelation zzMsgReadRelation) {
+        try {
+            putEntityNullToEmptyString(zzMsgReadRelation);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         zzMsgReadRelationDao.insert(zzMsgReadRelation);
     }
 

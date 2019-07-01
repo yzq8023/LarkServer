@@ -9,6 +9,7 @@ import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.VO.GroupListVo;
 import com.workhub.z.servicechat.VO.NoReadVo;
 import com.workhub.z.servicechat.VO.UserNewMsgVo;
+import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.dao.ZzUserGroupDao;
 import com.workhub.z.servicechat.entity.ZzGroup;
 import com.workhub.z.servicechat.entity.ZzUserGroup;
@@ -18,16 +19,17 @@ import com.workhub.z.servicechat.service.ZzGroupService;
 import com.workhub.z.servicechat.service.ZzMsgReadRelationService;
 import com.workhub.z.servicechat.service.ZzUserGroupService;
 import jodd.util.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static com.workhub.z.servicechat.config.common.putEntityNullToEmptyString;
 
 //import com.workhub.z.servicechat.VO.ContactVO;
 
@@ -39,6 +41,7 @@ import java.util.Map;
  */
 @Service("zzUserGroupService")
 public class ZzUserGroupServiceImpl implements ZzUserGroupService {
+    private static Logger log = LoggerFactory.getLogger(ZzUserGroupServiceImpl.class);
     @Resource
     private ZzUserGroupDao zzUserGroupDao;
 
@@ -60,7 +63,15 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
      */
     @Override
     public ZzUserGroup queryById(String id) {
-        return this.zzUserGroupDao.queryById(id);
+        ZzUserGroup zzUserGroup = this.zzUserGroupDao.queryById(id);
+        try {
+            common.putVoNullStringToEmptyString(zzUserGroup);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(common.getExceptionMessage(e));
+        }
+
+        return zzUserGroup;
     }
 
     /**
@@ -84,6 +95,11 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
     @Override
     @Transactional
     public void insert(ZzUserGroup zzUserGroup) {
+        try {
+            putEntityNullToEmptyString(zzUserGroup);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         int insert = this.zzUserGroupDao.insert(zzUserGroup);
 //        return insert;
     }
@@ -139,6 +155,7 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
         //新写查询分页
         PageHelper.startPage(page, size);
         List<GroupListVo> list = this.zzUserGroupDao.groupList(id);
+        common.putVoNullStringToEmptyString(list);
         PageInfo<GroupListVo> pageInfo = new PageInfo<>(list);
         return pageInfo;
     }
@@ -150,7 +167,14 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
 
     @Override
     public List<UserNewMsgVo> getUserNewMsgList(String id) {
-        return this.zzUserGroupDao.getUserNewMsgList(id);
+        List<UserNewMsgVo> list=this.zzUserGroupDao.getUserNewMsgList(id);
+        try {
+            common.putVoNullStringToEmptyString(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(common.getExceptionMessage(e));
+        }
+        return list;
     }
 
     @Override
@@ -195,7 +219,11 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
 //                JSON.toJavaObject(JSON.parseObject(n.getMsg()), MessageContent.class);
 //                MessageContent testProcessInfo = (MessageContent)JSONObject.toBean(n.getMsg(), MessageContent.class);
                 contactVO.setLastMessage(JSON.toJavaObject(JSON.parseObject(n.getMsg()), MessageContent.class));
-                contactVO.setTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(n.getSendTime()));
+                if(new SimpleDateFormat("YYYY-MM-dd").format(n.getSendTime()).equals(new SimpleDateFormat("YYYY-MM-dd").format(new Date()))){//格式化为相同格式
+                    contactVO.setTime(new SimpleDateFormat("hh:mm").format(n.getSendTime()));
+                }else {
+                    contactVO.setTime(new SimpleDateFormat("MM-dd").format(n.getSendTime()));
+                }
                 contactVO.setAvatar(group.getGroupImg());
                 contactVO.setName(group.getGroupName());
                 contactVO.setSender(userInfo.getName());
@@ -208,7 +236,11 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
                 UserInfo userInfo = iUserService.info(n.getMsgSener());
                 contactVO.setId(n.getMsgSener());
                 contactVO.setLastMessage(JSON.toJavaObject(JSON.parseObject(n.getMsg()), MessageContent.class));
-                contactVO.setTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(n.getSendTime()));
+                if(new SimpleDateFormat("YYYY-MM-dd").format(n.getSendTime()).equals(new SimpleDateFormat("YYYY-MM-dd").format(new Date()))){//格式化为相同格式
+                    contactVO.setTime(new SimpleDateFormat("hh:mm").format(n.getSendTime()));
+                }else {
+                    contactVO.setTime(new SimpleDateFormat("MM-dd").format(n.getSendTime()));
+                }
                 contactVO.setAvatar(userInfo.getAvatar());
                 contactVO.setName(userInfo.getName());
                 contactVO.setSender("");
@@ -232,6 +264,12 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
             list.add(contactVO);
         });
         Map<String,List<ContactVO>> data=new HashMap<>();
+        try {
+            common.putVoNullStringToEmptyString(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(common.getExceptionMessage(e));
+        }
         data.put(id,list);//当前登录人的id作为key，联系人列表作为value
         rabbitMqMsgProducer.sendMsg(data);
         return list;

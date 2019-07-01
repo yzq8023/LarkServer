@@ -4,13 +4,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
-import com.github.hollykunge.security.common.rest.BaseController;
 import com.github.hollykunge.security.common.vo.rpcvo.ContactVO;
 import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.VO.GroupInfoVO;
 import com.workhub.z.servicechat.VO.GroupUserListVo;
-import com.workhub.z.servicechat.VO.HistoryMessageVO;
-import com.workhub.z.servicechat.VO.MessageVO;
 import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.entity.ZzGroup;
@@ -18,14 +15,15 @@ import com.workhub.z.servicechat.service.ZzGroupMsgService;
 import com.workhub.z.servicechat.service.ZzGroupService;
 import com.workhub.z.servicechat.service.ZzMessageInfoService;
 import com.workhub.z.servicechat.service.ZzUserGroupService;
-import com.workhub.z.servicechat.service.impl.ZzGroupServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
-import static com.workhub.z.servicechat.config.VoToEntity.*;
+import static com.workhub.z.servicechat.config.VoToEntity.ZzGroupToGroupInfo;
 
 /**
  * 群组表(ZzGroup)表控制层
@@ -36,6 +34,7 @@ import static com.workhub.z.servicechat.config.VoToEntity.*;
 @RestController
 @RequestMapping("/zzGroup")
 public class ZzGroupController  {
+    private static Logger log = LoggerFactory.getLogger(ZzGroupController.class);
     /**
      * 服务对象
      */
@@ -65,6 +64,7 @@ public class ZzGroupController  {
         GroupInfoVO groupInfo = new GroupInfoVO();
         groupInfo = (GroupInfoVO)ZzGroupToGroupInfo(this.zzGroupService.queryById(groupId));
         groupInfo.setMemberNum(Math.toIntExact(this.zzGroupService.groupUserListTotal(groupId)));
+        common.putVoNullStringToEmptyString(groupInfo);
         objectRestResponse.data(groupInfo);
         return objectRestResponse;
     }
@@ -76,7 +76,7 @@ public class ZzGroupController  {
         try {
             common.putEntityNullToEmptyString(zzGroup);
         }catch (Exception e){
-            e.getStackTrace();
+            log.error(common.getExceptionMessage(e));
         }
         this.zzGroupService.insert(zzGroup);
 //        Integer insert = this.zzGroupService.insert(zzGroup);
@@ -154,12 +154,14 @@ public class ZzGroupController  {
     @GetMapping("/queryGroupListByUserId")
     public ListRestResponse queryGroupListByUserId(@RequestParam("userId")String userId) throws Exception {
         List<ZzGroup> groups = this.zzGroupService.queryGroupListByUserId(userId);
+        common.putVoNullStringToEmptyString(groups);
         return new ListRestResponse("200",groups.size(),groups);
     }
 
     @GetMapping("/queryContactListById")
     public ListRestResponse queryContactListById(@RequestParam("userId")String userId) throws Exception {
         List<ContactVO> contactVOS = userGroupService.getContactVOList(userId);
+        common.putVoNullStringToEmptyString(contactVOS);
 //        List<ZzGroup> groups = this.zzGroupService.queryGroupListByUserId(userId);
         return new ListRestResponse("200", contactVOS.size(), contactVOS);
     }
@@ -200,5 +202,10 @@ public class ZzGroupController  {
         }
         return objectRestResponse;
     }
-
+    //当前登录人查询具体某个人或者群的聊天记录,contactId表示个人或者群id
+    @GetMapping("/queryHistoryMessageForSingle")
+    public TableResultResponse queryHistoryMessageForSingle(@RequestParam("userId")String userId,@RequestParam("contactId")String contactId,@RequestParam("isGroup")String isGroup,@RequestParam("page")String page,@RequestParam("size")String size) throws Exception {
+        TableResultResponse resultResponse = messageInfoService.queryHistoryMessageForSingle(userId,contactId,isGroup,page,size);
+        return resultResponse;
+    }
 }

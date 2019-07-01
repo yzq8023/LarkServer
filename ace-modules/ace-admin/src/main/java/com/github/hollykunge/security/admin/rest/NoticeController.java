@@ -3,13 +3,16 @@ package com.github.hollykunge.security.admin.rest;
 import com.github.hollykunge.security.admin.biz.NoticeBiz;
 
 import com.github.hollykunge.security.admin.entity.Notice;
+import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.hollykunge.security.common.rest.BaseController;
+import com.github.hollykunge.security.common.util.Query;
 import io.swagger.annotations.Api;
 import org.springframework.stereotype.Controller;
 
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -64,5 +67,17 @@ public class NoticeController extends BaseController<NoticeBiz,Notice> {
     public ObjectRestResponse<Boolean> sendNotice(@RequestBody Notice notice){
         baseBiz.sentNotice(notice);
         return new ObjectRestResponse().data(true);
+    }
+    @Override
+    @RequestMapping(value = "/page", method = RequestMethod.GET)
+    @ResponseBody
+    public TableResultResponse<Notice> page(@RequestParam Map<String, Object> params) {
+        //查询列表数据
+        Query query = new Query(params);
+        String userID = request.getHeader("userId");
+        if(StringUtils.isEmpty(userID)){
+            throw new BaseException("request contains no user...");
+        }
+        return baseBiz.pageList(query,userID);
     }
 }

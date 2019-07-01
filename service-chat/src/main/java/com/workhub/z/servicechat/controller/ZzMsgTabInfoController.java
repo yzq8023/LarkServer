@@ -7,6 +7,8 @@ import com.workhub.z.servicechat.entity.ZzMsgTabInfo;
 import com.workhub.z.servicechat.entity.ZzMsgTabRelation;
 import com.workhub.z.servicechat.service.ZzMsgTabInfoService;
 import com.workhub.z.servicechat.service.ZzMsgTabRelationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,7 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/zzMsgTabInfo")
 public class ZzMsgTabInfoController {
+    private static Logger log = LoggerFactory.getLogger(ZzMsgTabInfoController.class);
     /**
      * 服务对象
      */
@@ -56,6 +59,7 @@ public class ZzMsgTabInfoController {
             common.putEntityNullToEmptyString(zzMsgTabInfo);
         }catch (Exception e){
             e.printStackTrace();
+            log.error(common.getExceptionMessage(e));
         }
 
         this.zzMsgTabInfoService.insert(zzMsgTabInfo);

@@ -119,7 +119,7 @@ public class UserCardController extends BaseController<UserCardService, UserCard
                 baseBiz.modifyUserCards(userCard);
             }
         }
-        return new ObjectRestResponse().data(true);
+        return new ObjectRestResponse().data(true).rel(true);
     }
     /**
      * 获取卡片集，如果用户点击展示该卡片，

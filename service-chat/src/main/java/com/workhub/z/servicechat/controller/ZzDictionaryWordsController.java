@@ -5,6 +5,8 @@ import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.entity.ZzDictionaryWords;
 import com.workhub.z.servicechat.service.ZzDictionaryWordsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +21,7 @@ import java.util.Date;
 @RestController
 @RequestMapping("/zzDictionaryWords")
 public class ZzDictionaryWordsController{
+    private static Logger log = LoggerFactory.getLogger(ZzDictionaryWordsController.class);
     /**
      * 服务对象
      */
@@ -50,6 +53,7 @@ public class ZzDictionaryWordsController{
             common.putEntityNullToEmptyString(zzDictionaryWords);
         }catch(Exception e){
             e.printStackTrace();
+            log.error(common.getExceptionMessage(e));
         }
         if(zzDictionaryWords.getIsUse()==null||zzDictionaryWords.getIsUse().equals("")){
             zzDictionaryWords.setIsUse("1");

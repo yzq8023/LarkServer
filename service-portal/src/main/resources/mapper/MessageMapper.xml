@@ -15,5 +15,23 @@
     <result column="LEVELS" property="levels" jdbcType="VARCHAR" />
     <result column="AVATAR" property="avatar" jdbcType="VARCHAR" />
     <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+    <result column="SEND_USER_ID" property="sendUserId" jdbcType="VARCHAR" />
   </resultMap>
+  <select id="userMessages" resultMap="BaseResultMap" parameterType="com.github.hollykunge.security.entity.Message">
+     SELECT MES.* FROM
+        (
+        SELECT
+            PM.*, ROW_NUMBER()OVER (
+                PARTITION BY
+                    PM.SEND_USER_ID
+                    ORDER BY
+                        SEND_TIME DESC
+
+            ) RN
+        FROM
+            PORTAL_MESSAGE PM
+        WHERE USER_ID = #{userId}
+        ) MES
+        WHERE RN = 1
+  </select>
 </mapper>

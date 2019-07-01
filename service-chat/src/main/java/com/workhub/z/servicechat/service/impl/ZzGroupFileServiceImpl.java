@@ -3,12 +3,14 @@ package com.workhub.z.servicechat.service.impl;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.workhub.z.servicechat.VO.GroupInfoVO;
+import com.workhub.z.servicechat.VO.GroupFileVo;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.dao.ZzGroupFileDao;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
 import com.workhub.z.servicechat.service.ZzGroupFileService;
 import jodd.util.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.workhub.z.servicechat.config.common.putEntityNullToEmptyString;
+
 /**
  * 群文件(ZzGroupFile)表服务实现类
  *
@@ -27,6 +31,7 @@ import java.util.Map;
  */
 @Service("zzGroupFileService")
 public class ZzGroupFileServiceImpl implements ZzGroupFileService {
+    private static Logger log = LoggerFactory.getLogger(ZzGroupFileServiceImpl.class);
     @Resource
     private ZzGroupFileDao zzGroupFileDao;
 
@@ -43,7 +48,14 @@ public class ZzGroupFileServiceImpl implements ZzGroupFileService {
         /*ZzGroupFile entity = new ZzGroupFile();
         entity.setFileId(fileId);
         return super.selectOne(entity);*/
-        return this.zzGroupFileDao.queryById(fileId);
+        ZzGroupFile zzGroupFile = this.zzGroupFileDao.queryById(fileId);
+        try {
+            common.putVoNullStringToEmptyString(zzGroupFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(common.getExceptionMessage(e));
+        }
+        return zzGroupFile;
     }
 
     /**
@@ -67,6 +79,11 @@ public class ZzGroupFileServiceImpl implements ZzGroupFileService {
     @Override
     @Transactional
     public void insert(ZzGroupFile zzGroupFile) {
+        try {
+            putEntityNullToEmptyString(zzGroupFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         int insert = this.zzGroupFileDao.insert(zzGroupFile);
 //        return insert;
         //super.insert(zzGroupFile);
@@ -118,12 +135,14 @@ public class ZzGroupFileServiceImpl implements ZzGroupFileService {
      * @throws Exception
      */
     @Override
-    public TableResultResponse<GroupInfoVO> groupFileList(String id, int page, int size) throws Exception {
+    public TableResultResponse<GroupFileVo> groupFileList(String id, int page, int size) throws Exception {
         if (StringUtil.isEmpty(id)) throw new NullPointerException("id is null");
         PageHelper.startPage(page, size);
-        List<GroupInfoVO> dataList =this.zzGroupFileDao.groupFileList(id);
-        PageInfo<GroupInfoVO> pageInfo = new PageInfo<>(dataList);
-        TableResultResponse<GroupInfoVO> res = new TableResultResponse<GroupInfoVO>(
+        List<GroupFileVo> dataList =this.zzGroupFileDao.groupFileList(id);
+        //null的String类型属性转换空字符串
+        common.putVoNullStringToEmptyString(dataList);
+        PageInfo<GroupFileVo> pageInfo = new PageInfo<>(dataList);
+        TableResultResponse<GroupFileVo> res = new TableResultResponse<GroupFileVo>(
                 pageInfo.getPageSize(),
                 pageInfo.getPageNum(),
                 pageInfo.getPages(),

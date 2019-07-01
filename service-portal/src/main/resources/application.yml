@@ -36,6 +36,7 @@ spring:
     poolPreparedStatements: true
     maxOpenPreparedStatements: 20
   rabbitmq:
+    #需要修改地址
     host: 10.11.24.136
     port: 5672
     username: hollykunge

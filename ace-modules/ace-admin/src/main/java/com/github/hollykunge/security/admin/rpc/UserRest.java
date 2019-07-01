@@ -1,6 +1,7 @@
 package com.github.hollykunge.security.admin.rpc;
 
 import com.ace.cache.annotation.Cache;
+import com.alibaba.fastjson.JSON;
 import com.github.hollykunge.security.admin.biz.OrgBiz;
 import com.github.hollykunge.security.admin.biz.UserBiz;
 import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
@@ -93,11 +94,11 @@ public class UserRest {
      * @return
      */
     @RequestMapping(value = "/orgUsers", method = RequestMethod.GET)
-    public @ResponseBody List<OrgUser> orgUsers(String parentTreeId) {
+    public @ResponseBody String orgUsers(String parentTreeId) {
         if(StringUtils.isEmpty(parentTreeId)){
             parentTreeId = AdminCommonConstant.ROOT;
         }
         List<OrgUser> tree = orgBiz.getOrg(orgBiz.selectListAll(), parentTreeId);
-        return tree;
+        return JSON.toJSONString(tree);
     }
 }
