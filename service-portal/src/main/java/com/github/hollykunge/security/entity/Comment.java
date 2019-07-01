@@ -1,8 +1,7 @@
 package com.github.hollykunge.security.entity;
 
+import com.github.hollykunge.security.common.entity.BaseEntity;
 import lombok.Data;
-
-import java.util.Date;
 
 /**
  * @ClassName Comment
@@ -12,19 +11,10 @@ import java.util.Date;
  * @Version 1.0
  **/
 @Data
-public class Comment {
-    private Integer id;
-    /**
-     * uuid
-     */
-    private String commentId;
+public class Comment extends BaseEntity {
     /**
      * 属于哪个问题
      */
     private String feedBackId;
     private String content;
-    private Date crtTime;
-    private Date updTime;
-    private String crtUser;
-    private String updUser;
 }

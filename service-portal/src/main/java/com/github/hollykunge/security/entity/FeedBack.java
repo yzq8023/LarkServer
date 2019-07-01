@@ -1,8 +1,7 @@
 package com.github.hollykunge.security.entity;
 
+import com.github.hollykunge.security.common.entity.BaseEntity;
 import lombok.Data;
-
-import java.util.Date;
 
 /**
  *@ClassName FeedBack
@@ -12,12 +11,7 @@ import java.util.Date;
  *@Version 1.0
  **/
 @Data
-public class FeedBack {
-    private Integer id;
-    /**
-     * uuid
-     */
-    private String feedBackId;
+public class FeedBack extends BaseEntity {
     private String title;
     private String content;
     /**
@@ -28,11 +22,6 @@ public class FeedBack {
      * 问题类型
      */
     private String type;
-    private String userId;
-    private Date crtTime;
-    private Date updTime;
-    private String crtUser;
-    private String updUser;
     /**
      * 普通用户可见性
      */
