@@ -1,8 +1,10 @@
 package com.workhub.z.servicechat.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.workhub.z.servicechat.VO.SingleMessageVO;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.dao.ZzUserGroupMsgTagDao;
 import com.workhub.z.servicechat.entity.ZzUserGroupMsgTag;
@@ -12,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.workhub.z.servicechat.config.common.putEntityNullToEmptyString;
@@ -91,7 +94,7 @@ public class ZzUserGroupMsgTagServiceImpl implements ZzUserGroupMsgTagService {
      * @author zhuqz
      * @since 2019-06-11
      */
-    public TableResultResponse<ZzUserGroupMsgTag> getUserGroupMsgTagList(String userId,String groupId,String tagType,int pageNum,int pageSize) throws Exception{
+    public TableResultResponse getUserGroupMsgTagList(String userId,String groupId,String tagType,int pageNum,int pageSize) throws Exception{
 
         //调用父类查询分页begin
         /*Map<String, Object> params = new HashMap<>();
@@ -112,15 +115,22 @@ public class ZzUserGroupMsgTagServiceImpl implements ZzUserGroupMsgTagService {
 
         //自己写分页
         PageHelper.startPage(pageNum, pageSize);
-        List<ZzUserGroupMsgTag> list = this.zzUserGroupMsgTagDao.getInfList(userId,groupId,tagType);
-        common.putVoNullStringToEmptyString(list);
-        PageInfo<ZzUserGroupMsgTag> pageInfo = new PageInfo<>(list);
-        TableResultResponse<ZzUserGroupMsgTag> res = new TableResultResponse<ZzUserGroupMsgTag>(
+        List<String> list = this.zzUserGroupMsgTagDao.getInfList(userId,groupId,tagType);
+        PageInfo pageInfo = new PageInfo<>(list);
+
+        List<SingleMessageVO> voList=new ArrayList<>();
+        for(String temp:list){
+            SingleMessageVO vo = JSON.parseObject(temp, SingleMessageVO.class);
+            voList.add(vo);
+        }
+        common.putVoNullStringToEmptyString(voList);
+
+        TableResultResponse res = new TableResultResponse(
                 pageInfo.getPageSize(),
                 pageInfo.getPageNum(),
                 pageInfo.getPages(),
                 pageInfo.getTotal(),
-                pageInfo.getList()
+                voList
         );
         return res;
     }
