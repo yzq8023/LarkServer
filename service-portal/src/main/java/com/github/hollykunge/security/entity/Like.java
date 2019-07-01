@@ -12,8 +12,7 @@ import lombok.Data;
 @Data
 public class Like {
 
-    private Integer id;
-    private String likeId;
+    private String id;
     private String userId;
     /**
      * 点赞实体id

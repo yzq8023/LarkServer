@@ -25,4 +25,10 @@ public class CommonTools {
     private String description;
     @Column(name = "STATUS")
     private String status;
+    @Column(name = "ORG_CODE")
+    private String orgCode;
+
+    @Column(name = "ORG_NAME")
+    private String orgName;
+
 }

@@ -1,8 +1,10 @@
 package com.github.hollykunge.security.entity;
 
+import com.github.hollykunge.security.common.entity.BaseEntity;
 import lombok.Data;
 
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Table;
 
 /**
  * @ClassName Comment
@@ -12,19 +14,13 @@ import java.util.Date;
  * @Version 1.0
  **/
 @Data
-public class Comment {
-    private Integer id;
-    /**
-     * uuid
-     */
-    private String commentId;
+@Table(name = "PORTAL_COMMENT")
+public class Comment extends BaseEntity {
     /**
      * 属于哪个问题
      */
+    @Column(name = "FEED_BACK_ID")
     private String feedBackId;
+    @Column(name = "CONTENT")
     private String content;
-    private Date crtTime;
-    private Date updTime;
-    private String crtUser;
-    private String updUser;
 }
