@@ -3,10 +3,12 @@ package com.workhub.z.servicechat.controller;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
+import com.workhub.z.servicechat.feign.IValidateService;
 import com.workhub.z.servicechat.service.ZzFileManageService;
 import com.workhub.z.servicechat.service.ZzGroupFileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +17,7 @@ import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Date;
@@ -36,6 +39,48 @@ public class ZzFileManageController {
     private ZzFileManageService zzFileManageService;
     @Resource
     private ZzGroupFileService zzGroupFileService;
+    @Autowired
+    private IValidateService iValidateService;
+
+    @RequestMapping("/login")
+    @ResponseBody
+    //上传
+    public ObjectRestResponse login(HttpServletRequest request, HttpSession session, HttpServletResponse response) throws Exception {
+        //System.out.println("===================================================file upload=============================================================");
+//		//用户身份证
+        String userId = "";
+        String dnname = ((HttpServletRequest) request).getHeader("dnname");
+        String url = request.getParameter("url");
+
+        // 模拟CA
+//		System.out.println("<-----");
+        // dnname==null 则没有通过CA来进行登录
+        if (dnname == null) {
+            return null;
+        } else {
+
+            try {
+                dnname = new String(dnname.getBytes("iso8859-1"), "gbk");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            String dnsplit[] = dnname.trim().split(",", 0);
+            String cn, dc, t = null;
+            for (String val : dnsplit) {
+                val = val.trim();
+                // cn dc t
+                if (val.indexOf("t=") > -1 || val.indexOf("T=") > -1) {
+                    t = val.substring(2, val.length());
+                }
+            }
+
+           ObjectRestResponse res =   iValidateService.generate(t,"123456");
+            return res;
+        }
+
+//       response.sendRedirect("http://127.0.0.1:8080?token=1121312");
+
+    }
 
     /*@RequestMapping("/singleFileUpload")
     @ResponseBody

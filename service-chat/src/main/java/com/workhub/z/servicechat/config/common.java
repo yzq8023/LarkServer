@@ -140,13 +140,15 @@ public class common {
     *@Author: 忠
     *@date: 2019/5/30
     */
-    public static boolean checkUserOnline(ChannelContext channelContext,String userId){
-        ChannelContext checkChannelContext =
+    public static void checkUserOnline(ChannelContext channelContext,String userId){
+        ChannelContext previousChannelContext = Tio.getChannelContextByBsId(channelContext.groupContext, userId);
+        if (!channelContext.equals(previousChannelContext) && previousChannelContext != null) {
+            previousChannelContext.setAttribute("kickOut", true); // 踢掉的标志
+            Tio.unbindBsId(previousChannelContext);
+            Tio.remove(previousChannelContext, "服务器断开客户端连接");
+            System.out.println("踢掉 {} 已经登录的连接 {}"+ userId + previousChannelContext.getClientNode());
+        }
 
-                Tio.getChannelContextByBsId(channelContext.getGroupContext(),userId);
-        //检查是否在线
-        boolean isOnline = checkChannelContext != null && !checkChannelContext.isClosed;
-        return isOnline;
     }
     /**
      *@Description: 判断msg数据体是否正确

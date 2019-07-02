@@ -75,9 +75,7 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
         String token = request.getParam("token");
         String userid=request.getParam("userId");
         // 获取用户在线信息，如在线，踢掉他
-        if(checkUserOnline(channelContext,userid)){
-            Tio.unbindUser(channelContext.getGroupContext(),userid);
-        }
+//        checkUserOnline(channelContext,userid);
 //      获取用户群组信息,组织机构
 //        UserInfo userInfo = serverHandler.userService.info(userid);
 //      加入组织
@@ -86,6 +84,7 @@ public class IworkWsMsgHandler implements IWsMsgHandler {
 //      iValidateService.validate(token);
 //      Tio.bindToken(channelContext,token);
 //      前端 参数 绑定信息
+        Tio.bindBsId(channelContext,userid);
         Tio.bindUser(channelContext,userid);
 //      加入系统消息组
         Tio.bindGroup(channelContext, Const.GROUP_SYS);
