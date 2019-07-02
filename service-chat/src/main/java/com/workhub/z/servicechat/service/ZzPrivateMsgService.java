@@ -1,6 +1,7 @@
 package com.workhub.z.servicechat.service;
 
 import com.github.hollykunge.security.common.msg.TableResultResponse;
+import com.workhub.z.servicechat.VO.PrivateFileVO;
 import com.workhub.z.servicechat.entity.ZzPrivateMsg;
 
 import java.util.List;
@@ -85,4 +86,6 @@ public interface ZzPrivateMsgService {
     *@date: 2019/6/20
     */
     String getReceiverByMsgId(String msgId) throws Exception;
+    //私有聊天文件查询
+    public TableResultResponse<PrivateFileVO> getFileList(String userId, String receiverId, int page, int size) throws Exception ;
 }

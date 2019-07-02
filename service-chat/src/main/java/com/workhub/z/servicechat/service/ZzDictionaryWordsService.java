@@ -1,6 +1,8 @@
 package com.workhub.z.servicechat.service;
 
 import com.workhub.z.servicechat.entity.ZzDictionaryWords;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 /**
@@ -64,4 +66,6 @@ public interface ZzDictionaryWordsService {
      * @return
      */
     String sensitiveIndex(String txt);
+    //导入敏感词汇
+    void importDictionaryWords(MultipartFile file,String userId) throws Exception;
 }
