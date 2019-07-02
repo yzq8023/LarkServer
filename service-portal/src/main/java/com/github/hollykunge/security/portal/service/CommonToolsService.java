@@ -4,10 +4,14 @@ import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.hollykunge.security.common.util.UUIDUtils;
 import com.github.hollykunge.security.entity.CommonTools;
+import com.github.hollykunge.security.entity.UserCommonTools;
 import com.github.hollykunge.security.mapper.CommonToolsMapper;
+import com.github.hollykunge.security.mapper.UserCommonToolsMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+
+import javax.annotation.Resource;
 
 /**
  * 常用工具业务
@@ -16,6 +20,8 @@ import org.springframework.util.StringUtils;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class CommonToolsService extends BaseBiz<CommonToolsMapper, CommonTools> {
+    @Resource
+    private UserCommonToolsMapper userCommonToolsMapper;
     @Override
     protected String getPageName() {
         return null;
@@ -30,5 +36,19 @@ public class CommonToolsService extends BaseBiz<CommonToolsMapper, CommonTools> 
         //添加时状态默认为1
         entity.setStatus("1");
         mapper.insertSelective(entity);
+    }
+
+    @Override
+    public void updateSelectiveById(CommonTools entity) {
+        if(StringUtils.isEmpty(entity.getId())){
+            throw new BaseException("常用工具id不能为空...");
+        }
+        //如果做停用常用工具，需要将用户设置好的用户常用工具删除掉
+        if("0".equals(entity.getStatus())){
+            UserCommonTools userCommonTools = new UserCommonTools();
+            userCommonTools.setToolId(entity.getId());
+            userCommonToolsMapper.delete(userCommonTools);
+        }
+        super.updateSelectiveById(entity);
     }
 }

@@ -2,6 +2,7 @@ package com.github.hollykunge.security.admin.biz;
 
 import com.ace.cache.annotation.Cache;
 import com.ace.cache.annotation.CacheClear;
+import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
 import com.github.hollykunge.security.admin.entity.RoleUserMap;
 import com.github.hollykunge.security.admin.entity.User;
 import com.github.hollykunge.security.admin.mapper.RoleUserMapMapper;
@@ -9,7 +10,11 @@ import com.github.hollykunge.security.admin.mapper.UserMapper;
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.constant.UserConstant;
 import com.github.hollykunge.security.common.exception.BaseException;
+import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.hollykunge.security.common.util.EntityUtils;
+import com.github.hollykunge.security.common.util.Query;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.support.SimpleTriggerContext;
@@ -17,9 +22,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 协同设计小组
@@ -119,5 +128,24 @@ public class UserBiz extends BaseBiz<UserMapper, User> {
             }
         }
 
+    }
+
+    @Override
+    public TableResultResponse<User> selectByQuery(Query query) {
+        Class<User> clazz = (Class<User>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+        Example example = new Example(clazz);
+        if(query.entrySet().size()>0) {
+            Example.Criteria criteria = example.createCriteria();
+            for (Map.Entry<String, Object> entry : query.entrySet()) {
+                //如果orgCode为航天二院组织编码，则返回的数据为空
+                if(AdminCommonConstant.NO_DATA_ORG_CODE.equals(entry.getValue().toString())){
+                    return new TableResultResponse<User>(query.getPageSize(), query.getPageNo() ,0, 0, new ArrayList<>());
+                }
+                criteria.andLike(entry.getKey(), "%" + entry.getValue().toString() + "%");
+            }
+        }
+        Page<Object> result = PageHelper.startPage(query.getPageNo(), query.getPageSize());
+        List<User> list = mapper.selectByExample(example);
+        return new TableResultResponse<User>(result.getPageSize(), result.getPageNum() ,result.getPages(), result.getTotal(), list);
     }
 }
