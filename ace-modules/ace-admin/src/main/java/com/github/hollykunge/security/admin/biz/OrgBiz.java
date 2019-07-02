@@ -3,6 +3,7 @@ package com.github.hollykunge.security.admin.biz;
 import com.ace.cache.annotation.Cache;
 import com.ace.cache.annotation.CacheClear;
 import com.alibaba.fastjson.JSON;
+import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
 import com.github.hollykunge.security.admin.entity.Org;
 import com.github.hollykunge.security.admin.entity.OrgUserMap;
 import com.github.hollykunge.security.admin.entity.User;
@@ -41,6 +42,10 @@ public class OrgBiz extends BaseBiz<OrgMapper, Org> {
     private UserBiz userBiz;
 
     public List<AdminUser> getOrgUsers(String orgCode,String secretLevels,String pid) {
+        //如果orgCode为航天二院，则直接返回空数据
+        if(AdminCommonConstant.NO_DATA_ORG_CODE.equals(orgCode)){
+            return new ArrayList<AdminUser>();
+        }
         User userParams = new User();
         userParams.setOrgCode(orgCode);
         Example userExample = new Example(User.class);
