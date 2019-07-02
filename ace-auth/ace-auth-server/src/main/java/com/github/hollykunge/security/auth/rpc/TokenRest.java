@@ -26,4 +26,9 @@ public class TokenRest {
         IJWTInfo ijwtInfo = (IJWTInfo) authService.tokenValidate(token);
         return new ObjectRestResponse().data(ijwtInfo.getId());
     }
+    @RequestMapping(value = "/token/generate", method = RequestMethod.GET)
+    public ObjectRestResponse<?> generate(String username, String password) throws Exception {
+        final String token = authService.login(username, password);
+        return new ObjectRestResponse().data(token).msg("获取token成功");
+    }
 }
