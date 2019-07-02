@@ -66,16 +66,17 @@ public class UserRest {
     }
 
     @RequestMapping(value = "/user/userlist", method = RequestMethod.POST)
-    public @ResponseBody List<UserInfo> userList(Set<String> userIdSet){
+    public @ResponseBody List<UserInfo> userList(String userIdSet){
         List<UserInfo> userInfos = new ArrayList<UserInfo>();
-        if (userIdSet.size() != 0) {
-            userIdSet.forEach(userId ->{
-                User user = userBiz.getUserByUserId(userId);
+        if (!StringUtils.isEmpty(userIdSet)) {
+            String[] ids = userIdSet.split(",");
+            for (String m : ids) {
+                User user = userBiz.getUserByUserId(m);
                 UserInfo info = new UserInfo();
                 BeanUtils.copyProperties(user, info);
                 info.setId(user.getId());
                 userInfos.add(info);
-            });
+            }
         }
         return userInfos;
     }

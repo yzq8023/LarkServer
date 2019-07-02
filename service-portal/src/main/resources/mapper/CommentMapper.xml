@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.github.hollykunge.security.admin.mapper.NoticeMapper" >
-  <resultMap id="BaseResultMap" type="com.github.hollykunge.security.admin.entity.Notice" >
+<mapper namespace="com.github.hollykunge.security.mapper.CommentMapper" >
+  <resultMap id="BaseResultMap" type="com.github.hollykunge.security.entity.Comment" >
     <!--
       WARNING - @mbg.generated
     -->
     <id column="ID" property="id" jdbcType="VARCHAR" />
-    <result column="TITLE" property="title" jdbcType="VARCHAR" />
-    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+    <result column="FEED_BACK_ID" property="feedBackId" jdbcType="VARCHAR" />
     <result column="CONTENT" property="content" jdbcType="VARCHAR" />
-    <result column="ATTACHMENT" property="attachment" jdbcType="VARCHAR" />
-    <result column="IS_TOP" property="isTop" jdbcType="CHAR" />
-    <result column="ORG_CODE" property="orgCode" jdbcType="VARCHAR" />
-    <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
     <result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP" />
     <result column="CRT_USER" property="crtUser" jdbcType="VARCHAR" />
     <result column="CRT_NAME" property="crtName" jdbcType="VARCHAR" />
@@ -25,13 +20,5 @@
     <result column="ATTR2" property="attr2" jdbcType="VARCHAR" />
     <result column="ATTR3" property="attr3" jdbcType="VARCHAR" />
     <result column="ATTR4" property="attr4" jdbcType="VARCHAR" />
-    <result column="IS_SEND" property="isSend" jdbcType="VARCHAR" />
   </resultMap>
-  <select id="getNoticeByUserIdTopSix" resultMap="BaseResultMap">
-    select * from (select AN.* from ADMIN_NOTICE AN
-    left join ADMIN_USER AU on AN.ORG_CODE = AU.ORG_CODE
-    where AU.ID = #{userId}
-    order by AN.CRT_TIME desc)
-    where ROWNUM  &lt;= 6
-  </select>
 </mapper>
