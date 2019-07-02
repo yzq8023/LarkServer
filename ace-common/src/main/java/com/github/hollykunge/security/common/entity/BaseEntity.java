@@ -51,17 +51,4 @@ public class BaseEntity {
 
     @Column(name = "ATTR4")
     private String attr4;
-
-    @Column(name = "ATTR5")
-    private String attr5;
-
-    @Column(name = "ATTR6")
-    private String attr6;
-
-    @Column(name = "ATTR7")
-    private String attr7;
-
-    @Column(name = "ATTR8")
-    private String attr8;
-
 }

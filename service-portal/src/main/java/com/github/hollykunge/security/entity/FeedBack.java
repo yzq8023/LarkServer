@@ -21,10 +21,10 @@ public class FeedBack extends BaseEntity {
     @Column(name = "CONTENT")
     private String content;
     /**
-     * 问题状态，true打开，false关闭
+     * 问题状态，1-true打开，0-false关闭
      */
     @Column(name = "STATUS")
-    private Boolean status;
+    private String status;
     /**
      * 问题类型
      */
@@ -34,5 +34,5 @@ public class FeedBack extends BaseEntity {
      * 普通用户可见性(1为可见，0为不可见)
      */
     @Column(name = "VISIBLE")
-    private Boolean visible;
+    private String visible;
 }

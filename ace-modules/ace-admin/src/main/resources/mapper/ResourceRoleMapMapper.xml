@@ -22,10 +22,6 @@
     <result column="ATTR2" property="attr2" jdbcType="VARCHAR" />
     <result column="ATTR3" property="attr3" jdbcType="VARCHAR" />
     <result column="ATTR4" property="attr4" jdbcType="VARCHAR" />
-    <result column="ATTR5" property="attr5" jdbcType="VARCHAR" />
-    <result column="ATTR6" property="attr6" jdbcType="VARCHAR" />
-    <result column="ATTR7" property="attr7" jdbcType="VARCHAR" />
-    <result column="ATTR8" property="attr8" jdbcType="VARCHAR" />
   </resultMap>
   <!--<resultMap id="ElementResultMap" type="com.github.hollykunge.security.admin.vo.ActionEntitySet">-->
     <!--&lt;!&ndash; element表中要展示的字段 &ndash;&gt;-->
