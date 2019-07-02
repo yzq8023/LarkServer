@@ -3,10 +3,12 @@ package com.workhub.z.servicechat.controller;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
+import com.workhub.z.servicechat.feign.IValidateService;
 import com.workhub.z.servicechat.service.ZzFileManageService;
 import com.workhub.z.servicechat.service.ZzGroupFileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +17,7 @@ import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Date;
@@ -36,6 +39,48 @@ public class ZzFileManageController {
     private ZzFileManageService zzFileManageService;
     @Resource
     private ZzGroupFileService zzGroupFileService;
+    @Autowired
+    private IValidateService iValidateService;
+
+    @RequestMapping("/login")
+    @ResponseBody
+    //上传
+    public ObjectRestResponse login(HttpServletRequest request, HttpSession session, HttpServletResponse response) throws Exception {
+        //System.out.println("===================================================file upload=============================================================");
+//		//用户身份证
+        String userId = "";
+        String dnname = ((HttpServletRequest) request).getHeader("dnname");
+        String url = request.getParameter("url");
+
+        // 模拟CA
+//		System.out.println("<-----");
+        // dnname==null 则没有通过CA来进行登录
+        if (dnname == null) {
+            return null;
+        } else {
+
+            try {
+                dnname = new String(dnname.getBytes("iso8859-1"), "gbk");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            String dnsplit[] = dnname.trim().split(",", 0);
+            String cn, dc, t = null;
+            for (String val : dnsplit) {
+                val = val.trim();
+                // cn dc t
+                if (val.indexOf("t=") > -1 || val.indexOf("T=") > -1) {
+                    t = val.substring(2, val.length());
+                }
+            }
+
+           ObjectRestResponse res =   iValidateService.generate(t,"123456");
+            return res;
+        }
+
+//       response.sendRedirect("http://127.0.0.1:8080?token=1121312");
+
+    }
 
     /*@RequestMapping("/singleFileUpload")
     @ResponseBody
@@ -224,44 +269,56 @@ public class ZzFileManageController {
     }
     @RequestMapping("/GetFile")
     public void getFile(HttpServletRequest request , HttpServletResponse response) throws IOException {
-        //读取路径下面的文件
-        String fileId = request.getParameter("fileId");
-        ZzGroupFile zzGroupFile = zzGroupFileService.queryById(fileId);
-        //读取路径下面的文件
-        if(zzGroupFile == null) return;
-        File picFile = null;
-        //根据路径获取文件
-        picFile = new File(zzGroupFile.getPath());
-        //获取文件后缀名格式
-        String ext = picFile.getName().substring(picFile.getName().indexOf("."));
-        //判断图片格式,设置相应的输出文件格式
-        if(ext.equals("jpg")){
-            response.setContentType("image/jpeg");
-        }else if(ext.equals("JPG")){
-            response.setContentType("image/jpeg");
-        }else if(ext.equals("png")){
-            response.setContentType("image/png");
-        }else if(ext.equals("PNG")){
-            response.setContentType("image/png");
-        }
-        //读取指定路径下面的文件
-        InputStream in = new FileInputStream(picFile);
-        OutputStream outputStream = new BufferedOutputStream(response.getOutputStream());
-        //创建存放文件内容的数组
-        byte[] buff =new byte[1024];
-        //所读取的内容使用n来接收
-        int n;
-        //当没有读取完时,继续读取,循环
-        while((n=in.read(buff))!=-1){
-            //将字节数组的数据全部写入到输出流中
+        InputStream in =null;
+        OutputStream outputStream = null;
+        try {
+            //读取路径下面的文件
+            String fileId = request.getParameter("fileId");
+            ZzGroupFile zzGroupFile = zzGroupFileService.queryById(fileId);
+            //读取路径下面的文件
+            if(zzGroupFile == null) return;
+            File picFile = null;
+            //根据路径获取文件
+            picFile = new File(zzGroupFile.getPath());
+            //获取文件后缀名格式
+            String ext = ((zzGroupFile.getFileExt()==null)?"":zzGroupFile.getFileExt());
+            //判断图片格式,设置相应的输出文件格式
+            if(ext.equals("jpg")){
+                response.setContentType("image/jpeg");
+            }else if(ext.equals("JPG")){
+                response.setContentType("image/jpeg");
+            }else if(ext.equals("png")){
+                response.setContentType("image/png");
+            }else if(ext.equals("PNG")){
+                response.setContentType("image/png");
+            }
+            //读取指定路径下面的文件
+             in = new FileInputStream(picFile);
+             outputStream = new BufferedOutputStream(response.getOutputStream());
+            //创建存放文件内容的数组
+            byte[] buff =new byte[1024];
+            //所读取的内容使用n来接收
+            int n;
+            //当没有读取完时,继续读取,循环
+            while((n=in.read(buff))!=-1){
+                //将字节数组的数据全部写入到输出流中
 
-            outputStream.write(buff,0,n);
+                outputStream.write(buff,0,n);
+            }
+            //强制将缓存区的数据进行输出
+            outputStream.flush();
+            //int i=1/0;
+        }catch (Exception e){
+            log.error(common.getExceptionMessage(e));
+        }finally {
+            //关流
+            if(outputStream!=null){
+                outputStream.close();
+            }
+            if(in!=null){
+                in.close();
+            }
         }
-        //强制将缓存区的数据进行输出
-        outputStream.flush();
-        //关流
-        outputStream.close();
-        in.close();
 
     }
     @GetMapping("/getGroupChatFileSizeByDB")

@@ -231,7 +231,7 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
                 contactVO.setIsTop(false);
                 contactVO.setIsMute(false);
                 contactVO.setIsGroup(n.getTableType().equals("GROUP"));
-                contactVO.setUnreadNum(zzMsgReadRelationService.queryNoReadMsgBySenderAndReceiver(n.getMsgSener(),n.getMsgReceiver()));
+                contactVO.setUnreadNum(zzMsgReadRelationService.queryNoReadMsgBySenderAndReceiver(group.getGroupId(),id));
             } else if (n.getTableType().equals("USER")) {
                 UserInfo userInfo = iUserService.info(n.getMsgSener());
                 contactVO.setId(n.getMsgSener());
