@@ -1,25 +1,17 @@
 package com.workhub.z.servicechat.service.impl;
 
-import com.github.hollykunge.security.api.vo.user.UserInfo;
-import com.github.hollykunge.security.common.biz.BaseBiz;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.VO.GroupUserListVo;
 import com.workhub.z.servicechat.dao.ZzGroupDao;
 import com.workhub.z.servicechat.entity.ZzGroup;
 import com.workhub.z.servicechat.feign.IUserService;
 import com.workhub.z.servicechat.service.ZzGroupService;
-import jodd.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.workhub.z.servicechat.config.common.putEntityNullToEmptyString;
@@ -186,5 +178,30 @@ public class ZzGroupServiceImpl implements ZzGroupService {
     public String deleteGroupLogic(String groupId, String delFlg) throws Exception{
         int i=this.zzGroupDao.deleteGroupLogic( groupId, delFlg);
         return  "1";
+    }
+    //获取群成员列表
+    public String getGroupUserList(String groupId) throws Exception{
+
+            List<String> userIdList = this.zzGroupDao.queryGroupUserIdListByGroupId(groupId);
+            StringBuilder ids = new StringBuilder();
+            System.out.println(ids.length());
+            for(String temp:userIdList){
+                ids.append(temp+",");
+            }
+            if(ids.length()>0){
+                ids.setLength(ids.length()-1);
+            }
+            //测试使用，给前端返回测试数据
+           /* List<UserInfoVO> data=new ArrayList<>();
+            for(int i=0;i<5;i++){
+                UserInfoVO vo=new UserInfoVO();
+                vo.setId("id"+i);
+                vo.setName("name"+i);
+                vo.setOnline((i%2)+"");
+                vo.setAvartar("http://10.11.24.5:80/group1/M00/00/00/CgxhIl0N9FOALihUAADc6-sdZkU837.jpg");
+                data.add(vo);
+            }
+            ListRestResponse res = new ListRestResponse("200",data.size(),data);*/
+            return  ids.toString();
     }
 }

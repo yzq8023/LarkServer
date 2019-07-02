@@ -3,6 +3,7 @@ package com.workhub.z.servicechat.service.impl;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.workhub.z.servicechat.VO.PrivateFileVO;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.dao.ZzPrivateMsgDao;
 import com.workhub.z.servicechat.entity.ZzPrivateMsg;
@@ -173,5 +174,29 @@ public class ZzPrivateMsgServiceImpl implements ZzPrivateMsgService {
     public String getReceiverByMsgId(String msgId) throws Exception{
         ZzPrivateMsg zzPrivateMsg = this.zzPrivateMsgDao.queryById(msgId);
         return zzPrivateMsg.getMsgReceiver();
+    }
+    /**
+     * 私有聊天文件信息
+     * @param
+     * @param page
+     * @param size
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public TableResultResponse<PrivateFileVO> getFileList(String userId,String receiverId, int page, int size) throws Exception {
+        PageHelper.startPage(page, size);
+        List<PrivateFileVO> dataList =this.zzPrivateMsgDao.getFileList(userId,receiverId);
+        //null的String类型属性转换空字符串
+        common.putVoNullStringToEmptyString(dataList);
+        PageInfo<PrivateFileVO> pageInfo = new PageInfo<>(dataList);
+        TableResultResponse<PrivateFileVO> res = new TableResultResponse<PrivateFileVO>(
+                pageInfo.getPageSize(),
+                pageInfo.getPageNum(),
+                pageInfo.getPages(),
+                pageInfo.getTotal(),
+                pageInfo.getList()
+        );
+        return res;
     }
 }

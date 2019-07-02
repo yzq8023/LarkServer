@@ -9,8 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * 字典词汇表(ZzDictionaryWords)表控制层
@@ -107,6 +109,35 @@ public class ZzDictionaryWordsController{
         objectRestResponse.msg("200");
         objectRestResponse.rel(true);
         objectRestResponse.data("成功");
+        return objectRestResponse;
+    }
+    @RequestMapping("/importDictionaryWords")
+    @ResponseBody
+    //导入敏感词汇
+    public ObjectRestResponse importDictionaryWords(@RequestParam("file") MultipartFile file,@RequestParam("userId") String userId) {
+        ObjectRestResponse objectRestResponse = new ObjectRestResponse();
+        objectRestResponse.rel(true);
+        objectRestResponse.msg("200");
+        if (Objects.isNull(file) || file.isEmpty()) {
+            objectRestResponse.rel(false);
+            objectRestResponse.msg("500");
+            throw new NullPointerException("Excel文件是空");
+        }
+        String fileName=file.getOriginalFilename();
+        if(fileName.endsWith("xls")==false && fileName.endsWith("xlsx")==false ){
+            objectRestResponse.rel(false);
+            objectRestResponse.msg("500");
+            objectRestResponse.data("请上传excel文件");
+            return objectRestResponse;
+        }
+        try {
+            this.zzDictionaryWordsService.importDictionaryWords(file,userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            objectRestResponse.rel(false);
+            objectRestResponse.msg("500");
+            objectRestResponse.data("导入失败："+ common.getExceptionMessage(e));
+        }
         return objectRestResponse;
     }
 }

@@ -1,12 +1,15 @@
 package com.workhub.z.servicechat.service.impl;
 
+import com.workhub.z.servicechat.config.ExcelUtil;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.dao.ZzDictionaryWordsDao;
 import com.workhub.z.servicechat.entity.ZzDictionaryWords;
 import com.workhub.z.servicechat.service.ZzDictionaryWordsService;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -134,5 +137,9 @@ public class ZzDictionaryWordsServiceImpl implements ZzDictionaryWordsService {
 //            strSet.add(zzDictionaryWordsListfor.getWordName());
 //        });
         return common.stringSearch(txt, zzDictionaryWordsList);
+    }
+    //导入敏感词汇
+    public void importDictionaryWords(MultipartFile file, String userId) throws Exception{
+        Workbook workbook = ExcelUtil.getWb(file);
     }
 }

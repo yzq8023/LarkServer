@@ -78,4 +78,6 @@ public interface ZzGroupService {
      * @since 2019-06-11
      */
     String deleteGroupLogic(String groupId, String delFlg) throws Exception;
+    //获取群成员列表
+    String getGroupUserList(String groupId) throws Exception;
 }

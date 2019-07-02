@@ -55,8 +55,8 @@ public class ZzFileManageServiceImpl implements ZzFileManageService {
             if(!"".equals(suffix) && !".".equals(suffix)){
                 file_ext=suffix.substring(suffix.indexOf(".")+1);
             }
-            String newFileName = fileId + suffix;
-
+           // String newFileName = fileId + suffix;
+            String newFileName = fileId;
             String filepath = file_root_path + year + month + date;
 
             String file_type = "";
