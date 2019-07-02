@@ -52,4 +52,6 @@ public class AdminCommonConstant {
      */
     public static final String DEFAULT_MENU_PERMISSION_CODE_LIST = "talk,dashboard,login,self";
 
+    public static final String NO_DATA_ORG_CODE = "0010";
+
 }
