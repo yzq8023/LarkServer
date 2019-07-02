@@ -30,12 +30,12 @@ public class UserCommonToolsController extends BaseController<UserCommonToolsSer
      */
     @RequestMapping(value = "/allTools", method = RequestMethod.GET)
     @ResponseBody
-    public ListRestResponse<List<UserCommonToolsVO>> allCommonTools() {
+    public ListRestResponse<List<UserCommonToolsVO>> allCommonTools(@RequestParam String orgCode) {
         String userID =  request.getHeader("userId");
         if(StringUtils.isEmpty(userID)){
             throw new BaseException("request contains no user...");
         }
-        List<UserCommonToolsVO> userCommonToolsVOS = baseBiz.allCommonTools(userID);
+        List<UserCommonToolsVO> userCommonToolsVOS = baseBiz.allCommonTools(userID,orgCode);
         return new ListRestResponse("",userCommonToolsVOS.size(),userCommonToolsVOS);
     }
 

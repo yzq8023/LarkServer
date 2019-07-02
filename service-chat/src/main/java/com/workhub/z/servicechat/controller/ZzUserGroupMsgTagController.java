@@ -136,7 +136,7 @@ public class ZzUserGroupMsgTagController{
      * @since 2019-06-11
      */
     @GetMapping ("/getUserGroupMsgTagList")
-    public TableResultResponse<ZzUserGroupMsgTag> getUserGroupMsgTagList(@RequestParam("userId")String userId,
+    public TableResultResponse getUserGroupMsgTagList(@RequestParam("userId")String userId,
                                               @RequestParam("groupId")String groupId,
                                               @RequestParam("tagType")String tagType,
                                               @RequestParam(value = "page",defaultValue = "1")Integer page,

@@ -1,6 +1,7 @@
 package com.workhub.z.servicechat.controller;
 
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
+import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
 import com.workhub.z.servicechat.feign.IValidateService;
 import com.workhub.z.servicechat.service.ZzFileManageService;
@@ -137,11 +138,18 @@ public class ZzFileManageController {
     @RequestMapping("/singleFileUpload")
     @ResponseBody
     //上传
-    public ZzGroupFile singleFileUpload(@RequestParam("file") MultipartFile file) {
+    //上传 成功msg=200，失败=500；
+    //     成功rel=true，失败=false
+     //    成功data=返回实体，失败 ：堆栈错误打印
+    public ObjectRestResponse singleFileUpload(@RequestParam("file") MultipartFile file) {
         //System.out.println("===================================================file upload=============================================================");
-        // TODO: 2019/7/1 增加上传异常码输出
+        ObjectRestResponse objectRestResponse = new ObjectRestResponse();
+        objectRestResponse.rel(true);
+        objectRestResponse.msg("200");
         ZzGroupFile zzGroupFile = new ZzGroupFile();
         if (Objects.isNull(file) || file.isEmpty()) {
+            objectRestResponse.rel(false);
+            objectRestResponse.msg("500");
             throw new NullPointerException("上传附件是空");
         }
         try {
@@ -163,17 +171,25 @@ public class ZzFileManageController {
                 zzGroupFile.setLevels("");
                 try {
                     zzGroupFileService.insert(zzGroupFile);
+                    //int i=1/0;
+                    objectRestResponse.data(zzGroupFile);
                 } catch (Exception e) {
                     e.printStackTrace();
                     //如果上传失败，那么删除已经上传的附件
                     zzFileManageService.delUploadFile(uplodaRes.get("file_path"));
                     zzGroupFile=null;
+                    objectRestResponse.rel(false);
+                    objectRestResponse.msg("500");
+                    objectRestResponse.data("上传失败："+ common.getExceptionMessage(e));
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
+            objectRestResponse.rel(false);
+            objectRestResponse.msg("500");
+            objectRestResponse.data("上传失败："+ common.getExceptionMessage(e));
         }
-        return zzGroupFile;
+        return objectRestResponse;
     }
     @GetMapping("/downloadFile")
     //下载 1成功 -1 失败 0 文件不存在

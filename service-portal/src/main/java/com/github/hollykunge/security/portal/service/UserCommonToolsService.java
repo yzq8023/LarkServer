@@ -16,10 +16,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * 用户设置常用工具业务
@@ -41,8 +44,20 @@ public class UserCommonToolsService extends BaseBiz<UserCommonToolsMapper, UserC
      * @param userId
      * @return
      */
-    public List<UserCommonToolsVO> allCommonTools(String userId){
+    public List<UserCommonToolsVO> allCommonTools(String userId,String orgCode){
         List<CommonTools> commonTools = commonToolsMapper.selectAll();
+        commonTools = commonTools.parallelStream().filter(new Predicate<CommonTools>() {
+            @Override
+            public boolean test(CommonTools commonTools) {
+                if(StringUtils.isEmpty(commonTools.getOrgCode())){
+                    return false;
+                }
+                if(orgCode.contains(commonTools.getOrgCode())){
+                    return true;
+                }
+                return false;
+            }
+        }).collect(Collectors.toList());
         UserCommonTools userCommonTools = new UserCommonTools();
         userCommonTools.setUserId(userId);
         List<UserCommonTools> userCommonToolsList = mapper.select(userCommonTools);
