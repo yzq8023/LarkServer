@@ -236,7 +236,7 @@ public class ZzFileManageController {
             //根据路径获取文件
             picFile = new File(zzGroupFile.getPath());
             //获取文件后缀名格式
-            String ext = picFile.getName().substring(picFile.getName().indexOf("."));
+            String ext = ((zzGroupFile.getFileExt()==null)?"":zzGroupFile.getFileExt());
             //判断图片格式,设置相应的输出文件格式
             if(ext.equals("jpg")){
                 response.setContentType("image/jpeg");
