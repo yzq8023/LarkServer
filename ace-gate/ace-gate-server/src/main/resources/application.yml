@@ -31,7 +31,7 @@ server:
 #
 zuul:
   ignored-services: "*"
-  sensitive-headers:
+  sensitive-headers: #默认过滤所有的请求头，为空则放行所有的请求头
   prefix: /api #为zuul设置一个公共的前缀
   ratelimit: # 网关限流
     key-prefix: gate_rate
