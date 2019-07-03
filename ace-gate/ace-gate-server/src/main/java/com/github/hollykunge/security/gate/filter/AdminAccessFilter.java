@@ -8,6 +8,7 @@ import com.github.hollykunge.security.auth.client.config.UserAuthConfig;
 import com.github.hollykunge.security.auth.client.jwt.ServiceAuthUtil;
 import com.github.hollykunge.security.auth.client.jwt.UserAuthUtil;
 import com.github.hollykunge.security.auth.common.util.jwt.IJWTInfo;
+import com.github.hollykunge.security.common.constant.CommonConstants;
 import com.github.hollykunge.security.common.context.BaseContextHandler;
 import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.hollykunge.security.common.msg.auth.TokenErrorResponse;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
@@ -89,6 +91,27 @@ public class AdminAccessFilter extends ZuulFilter {
         HttpServletRequest request = ctx.getRequest();
         final String requestUri = request.getRequestURI().substring(zuulPrefix.length());
         BaseContextHandler.setToken(null);
+        String dnname = request.getHeader(CommonConstants.PERSON_ID_ARG);
+        if(StringUtils.isEmpty(dnname)){
+            throw new BaseException("请求头中无身份信息...");
+        }
+        try {
+            dnname = new String (dnname.getBytes(CommonConstants.PERSON_CHAR_SET));
+        } catch (UnsupportedEncodingException e) {
+            throw new BaseException("身份信息编码转化错误...");
+        }
+        String[] userObjects = dnname.trim().split(",", 0);
+        String pId = null;
+        for (String val:
+                userObjects) {
+            val = val.trim();
+            if(val.indexOf("t=")>-1||val.indexOf("T=")>-1){
+                pId = val.substring(2,val.length());
+            }
+        }
+        log.info("登录用户***********"+pId);
+        //将dnname设置为身份证信息
+        ctx.addZuulRequestHeader(CommonConstants.PERSON_ID_ARG,pId);
         // 不进行拦截的地址
         if (isStartWith(requestUri)) {
             return null;

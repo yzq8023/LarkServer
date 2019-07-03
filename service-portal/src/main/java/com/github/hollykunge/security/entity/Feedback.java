@@ -15,7 +15,7 @@ import javax.persistence.Table;
  **/
 @Data
 @Table(name = "PORTAL_FEEDBACK")
-public class FeedBack extends BaseEntity {
+public class Feedback extends BaseEntity {
     @Column(name = "TITLE")
     private String title;
     @Column(name = "CONTENT")

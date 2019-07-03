@@ -1,6 +1,6 @@
 package com.github.hollykunge.security.mapper;
 
-import com.github.hollykunge.security.entity.FeedBack;
+import com.github.hollykunge.security.entity.Feedback;
 import tk.mybatis.mapper.common.Mapper;
 
 /**
@@ -10,5 +10,5 @@ import tk.mybatis.mapper.common.Mapper;
  * @Date 2019/6/30 13:34
  * @Version 1.0
  **/
-public interface FeedBackMapper extends Mapper<FeedBack> {
+public interface FeedbackMapper extends Mapper<Feedback> {
 }

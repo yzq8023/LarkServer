@@ -41,4 +41,12 @@ public class CommonConstants {
     public static final String WEB_USERHOST = "userHost";
     public static final String WEB_USERNAME = "userName";
     public static final String WEB_USERID = "userId";
+    /**
+     * 院网关身份姓名
+     */
+    public static final String PERSON_ID_ARG = "dnname";
+    /**
+     * 院网关解码
+     */
+    public static final String PERSON_CHAR_SET = "ISO8859-1";
 }
