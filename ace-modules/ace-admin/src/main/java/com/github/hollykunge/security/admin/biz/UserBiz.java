@@ -149,11 +149,21 @@ public class UserBiz extends BaseBiz<UserMapper, User> {
                 if(AdminCommonConstant.NO_DATA_ORG_CODE.equals(entry.getValue().toString())){
                     return new TableResultResponse<User>(query.getPageSize(), query.getPageNo() ,0, 0, new ArrayList<>());
                 }
+                if(specialStr(entry.getValue().toString())){
+                    throw new BaseException("查询条件不能包含特殊字符...");
+                }
                 criteria.andLike(entry.getKey(), "%" + entry.getValue().toString() + "%");
             }
         }
         Page<Object> result = PageHelper.startPage(query.getPageNo(), query.getPageSize());
         List<User> list = mapper.selectByExample(example);
         return new TableResultResponse<User>(result.getPageSize(), result.getPageNum() ,result.getPages(), result.getTotal(), list);
+    }
+
+    private boolean specialStr(String inputStr){
+        String regEx="[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+        Pattern p=Pattern.compile(regEx);
+        Matcher m=p.matcher(inputStr);
+        return m.find();
     }
 }
