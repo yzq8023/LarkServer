@@ -3,7 +3,6 @@ package com.workhub.z.servicechat.controller;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
-import com.workhub.z.servicechat.feign.IValidateService;
 import com.workhub.z.servicechat.service.ZzFileManageService;
 import com.workhub.z.servicechat.service.ZzGroupFileService;
 import org.slf4j.Logger;
@@ -39,13 +38,11 @@ public class ZzFileManageController {
     private ZzFileManageService zzFileManageService;
     @Resource
     private ZzGroupFileService zzGroupFileService;
-    @Autowired
-    private IValidateService iValidateService;
 
     @RequestMapping("/login")
     @ResponseBody
     //上传
-    public ObjectRestResponse login(HttpServletRequest request, HttpSession session, HttpServletResponse response) throws Exception {
+    public void login(HttpServletRequest request, HttpSession session, HttpServletResponse response) throws Exception {
         //System.out.println("===================================================file upload=============================================================");
 //		//用户身份证
         String userId = "";
@@ -56,7 +53,7 @@ public class ZzFileManageController {
 //		System.out.println("<-----");
         // dnname==null 则没有通过CA来进行登录
         if (dnname == null) {
-            return null;
+            return;
         } else {
 
             try {
@@ -74,11 +71,11 @@ public class ZzFileManageController {
                 }
             }
 
-           ObjectRestResponse res =   iValidateService.generate(t,"123456");
-            return res;
+            userId = t;
+//            return zzFileManageService.login(t);
         }
 
-//       response.sendRedirect("http://127.0.0.1:8080?token=1121312");
+       response.sendRedirect("http://10.11.24.129:8080?userId="+userId);
 
     }
 
