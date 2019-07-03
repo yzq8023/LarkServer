@@ -23,13 +23,13 @@ import java.util.List;
 public class CommentController extends BaseController<CommentService, Comment> {
     /**
      * 根据问题反馈id获取对应的评论列表
-     * @param feedBackId 问题反馈id
+     * @param feedbackId 问题反馈id
      * @return
      */
     @RequestMapping("feedBackComments")
     @ResponseBody
-    public ListRestResponse<List<Comment>> feedBackComments(@RequestParam String feedBackId){
-        List<Comment> comments = baseBiz.feedBackComments(feedBackId);
+    public ListRestResponse<List<Comment>> feedbackComments(@RequestParam String feedbackId){
+        List<Comment> comments = baseBiz.feedbackComments(feedbackId);
         return new ListRestResponse<List<Comment>>("",comments.size(),comments);
     }
 }
