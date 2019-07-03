@@ -1,8 +1,10 @@
 package com.github.hollykunge.security.entity;
 
+import com.github.hollykunge.security.common.entity.BaseEntity;
 import lombok.Data;
 
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Table;
 
 /**
  *@ClassName FeedBack
@@ -12,29 +14,25 @@ import java.util.Date;
  *@Version 1.0
  **/
 @Data
-public class FeedBack {
-    private Integer id;
-    /**
-     * uuid
-     */
-    private String feedBackId;
+@Table(name = "PORTAL_FEEDBACK")
+public class FeedBack extends BaseEntity {
+    @Column(name = "TITLE")
     private String title;
+    @Column(name = "CONTENT")
     private String content;
     /**
      * 问题状态，true打开，false关闭
      */
+    @Column(name = "STATUS")
     private Boolean status;
     /**
      * 问题类型
      */
+    @Column(name = "TYPE")
     private String type;
-    private String userId;
-    private Date crtTime;
-    private Date updTime;
-    private String crtUser;
-    private String updUser;
     /**
-     * 普通用户可见性
+     * 普通用户可见性(1为可见，0为不可见)
      */
+    @Column(name = "VISIBLE")
     private Boolean visible;
 }

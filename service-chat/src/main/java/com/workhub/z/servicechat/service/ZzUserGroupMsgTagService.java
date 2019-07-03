@@ -42,5 +42,5 @@ public interface ZzUserGroupMsgTagService {
      * @author zhuqz
      * @since 2019-06-11
      */
-    public TableResultResponse<ZzUserGroupMsgTag> getUserGroupMsgTagList(String userId,String groupId,String tagType,int pageNum,int pageSize) throws Exception;
+    public TableResultResponse getUserGroupMsgTagList(String userId,String groupId,String tagType,int pageNum,int pageSize) throws Exception;
 }
