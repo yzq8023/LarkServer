@@ -81,7 +81,7 @@ public class ZzDictionaryWordsServiceImpl implements ZzDictionaryWordsService {
             e.printStackTrace();
         }
 
-        long lo  = this.zzDictionaryWordsDao.selcount("",zzDictionaryWords.getWordName());
+        long lo  = this.zzDictionaryWordsDao.selcount("",zzDictionaryWords.getWordName(),zzDictionaryWords.getWordType());
         if(lo >0){//如果已经存在记录
             return 0;
         }
@@ -103,7 +103,7 @@ public class ZzDictionaryWordsServiceImpl implements ZzDictionaryWordsService {
      */
     @Override
     public int update(ZzDictionaryWords zzDictionaryWords) {
-        long insert = this.zzDictionaryWordsDao.selcount(zzDictionaryWords.getId(),zzDictionaryWords.getWordName());
+        long insert = this.zzDictionaryWordsDao.selcount(zzDictionaryWords.getId(),zzDictionaryWords.getWordName(),zzDictionaryWords.getWordType());
         if(insert>0){//如果已经存在记录
             return 0;
         }
@@ -231,8 +231,8 @@ public class ZzDictionaryWordsServiceImpl implements ZzDictionaryWordsService {
                     validFlg=false;
                 }
                 //重复校验
-                if(!wordName.equals("")){
-                     if(wordsRepeat.contains(wordName)){
+                if(!wordType.equals("") && !wordName.equals("")){
+                     if(wordsRepeat.contains(wordType+"000000"+wordName)){
                          info.append("第"+(rowN+titleRowNum)+"行词汇["+wordName+"]重复"+"/r/n");
                          validFlg=false;
                      }
@@ -240,18 +240,16 @@ public class ZzDictionaryWordsServiceImpl implements ZzDictionaryWordsService {
                 if(!validFlg){//如果校验不通过，跳转下一行
                     continue;
                 }
-                wordsRepeat.add(wordName);
+                wordsRepeat.add(wordType+"000000"+wordName);
                 ZzDictionaryWords zzDictionaryWords = new ZzDictionaryWords();
                 zzDictionaryWords.setId(RandomId.getUUID());
-                zzDictionaryWords.setWordType(DataDictionary.getWordTypeDic().get(wordType));
+                zzDictionaryWords.setWordType(DataDictionary.wordTypeDicCons.get(wordType).toString());
                 zzDictionaryWords.setCreateTime(new Date());
                 zzDictionaryWords.setCreateUser(userId);
                 zzDictionaryWords.setReplaceWord(wordRep);
-                zzDictionaryWords.setWordCode(DataDictionary.getWordCodeDic().get(wordCode));
+                zzDictionaryWords.setWordCode(DataDictionary.wordCodeDicCons.get(wordCode).toString());
                 zzDictionaryWords.setWordName(wordName);
-                /*//测试：
-                DataDictionary.getWordTypeDic().put("new","33333");
-                DataDictionary.getWordTypeDic().get("new");*/
+
                 if(wordType.equals("涉密")){//如果是涉密词汇，去掉替换词
                     zzDictionaryWords.setReplaceWord("");
                 }
@@ -263,12 +261,12 @@ public class ZzDictionaryWordsServiceImpl implements ZzDictionaryWordsService {
         }else{
             info.append("excel文件没有数据");
         }
-        if(dbList.size()!=0){
+        /*if(dbList.size()!=0){
             for (int i = 0; i < dbList.size() ; i++) {
                 int j = this.zzDictionaryWordsDao.importData(dbList.get(i));
             }
-        }
-        //int x=this.zzDictionaryWordsDao.importDataList(dbList);
+        }*/
+        int x=this.zzDictionaryWordsDao.importDataList(dbList);
         if(info.length()==0){
             info.append("共导入数据："+dbList.size()+"条。");
         }else{
