@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -44,6 +45,8 @@ public class NoticeService extends BaseBiz<NoticeMapper, Notice> {
                 return false;
             }
         }).collect(Collectors.toList());
+        //根据id进行排序
+        Collections.sort(notices);
         return notices;
     }
 }
