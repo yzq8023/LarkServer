@@ -29,6 +29,8 @@ import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author 协同设计小组
@@ -45,6 +47,12 @@ public class UserBiz extends BaseBiz<UserMapper, User> {
     private RoleUserMapMapper roleUserMapMapper;
 
     public User addUser(User entity) {
+        String regex="[^%$&!@...￥]{1,}";
+        Pattern p= Pattern.compile(regex);
+        Matcher m=p.matcher(entity.getName());
+        if(!m.matches()){
+            throw new BaseException("姓名中不能包含特殊字符...");
+        }
         //校验身份证是否在数据库中存在
         User user = new User();
         user.setPId(entity.getPId());
