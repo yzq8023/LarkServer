@@ -67,7 +67,7 @@ public interface ZzDictionaryWordsDao extends Mapper<ZzDictionaryWords> {
     int stopUse(@Param("id") String id,@Param("flg") String flg,@Param("userId") String userId);
     List<ZzDictionaryWords> query(@Param("type")String  type,@Param("code")String code,@Param("name")String name,@Param("replace")String replace,@Param("isUse")String isUse);
     //新增修改前判断是否已经存在记录了
-    long selcount(@Param("id") String id,@Param("wordName") String wordName);
+    long selcount(@Param("id") String id,@Param("wordName") String wordName,@Param("wordType") String wordType);
     //导入数据单条
     int importData(ZzDictionaryWords zzDictionaryWords);
     //导入数据多条
