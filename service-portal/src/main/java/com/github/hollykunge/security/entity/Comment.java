@@ -19,8 +19,8 @@ public class Comment extends BaseEntity {
     /**
      * 属于哪个问题
      */
-    @Column(name = "FEED_BACK_ID")
-    private String feedBackId;
+    @Column(name = "FEEDBACK_ID")
+    private String feedbackId;
     @Column(name = "CONTENT")
     private String content;
 }
