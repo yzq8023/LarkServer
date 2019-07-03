@@ -4,10 +4,7 @@ import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.rest.BaseController;
 import com.github.hollykunge.security.entity.Comment;
 import com.github.hollykunge.security.portal.service.CommentService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,9 +23,9 @@ public class CommentController extends BaseController<CommentService, Comment> {
      * @param feedbackId 问题反馈id
      * @return
      */
-    @RequestMapping("feedBackComments")
+    @RequestMapping(value = "feedBackComments", method = RequestMethod.GET)
     @ResponseBody
-    public ListRestResponse<List<Comment>> feedbackComments(@RequestParam String feedbackId){
+    public ListRestResponse<List<Comment>> feedbackComments(@PathVariable String feedbackId){
         List<Comment> comments = baseBiz.feedbackComments(feedbackId);
         return new ListRestResponse<List<Comment>>("",comments.size(),comments);
     }
