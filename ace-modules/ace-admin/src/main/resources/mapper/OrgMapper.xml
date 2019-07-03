@@ -26,10 +26,6 @@
     <result column="ATTR2" jdbcType="VARCHAR" property="attr2" />
     <result column="ATTR3" jdbcType="VARCHAR" property="attr3" />
     <result column="ATTR4" jdbcType="VARCHAR" property="attr4" />
-    <result column="ATTR5" jdbcType="VARCHAR" property="attr5" />
-    <result column="ATTR6" jdbcType="VARCHAR" property="attr6" />
-    <result column="ATTR7" jdbcType="VARCHAR" property="attr7" />
-    <result column="ATTR8" jdbcType="VARCHAR" property="attr8" />
     <result column="ORG_CODE" jdbcType="VARCHAR" property="orgCode" />
   </resultMap>
 </mapper>

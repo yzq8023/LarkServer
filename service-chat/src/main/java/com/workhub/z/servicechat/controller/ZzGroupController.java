@@ -1,6 +1,7 @@
 package com.workhub.z.servicechat.controller;
 
 import com.alibaba.fastjson.JSONArray;
+import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
@@ -8,18 +9,22 @@ import com.github.hollykunge.security.common.vo.rpcvo.ContactVO;
 import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.VO.GroupInfoVO;
 import com.workhub.z.servicechat.VO.GroupUserListVo;
+import com.workhub.z.servicechat.VO.UserInfoVO;
 import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.entity.ZzGroup;
+import com.workhub.z.servicechat.feign.IUserService;
 import com.workhub.z.servicechat.service.ZzGroupMsgService;
 import com.workhub.z.servicechat.service.ZzGroupService;
 import com.workhub.z.servicechat.service.ZzMessageInfoService;
 import com.workhub.z.servicechat.service.ZzUserGroupService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -49,7 +54,8 @@ public class ZzGroupController  {
     @Resource
     private ZzMessageInfoService messageInfoService;
 
-
+    @Autowired
+    private IUserService iUserService;
     /**
      * 通过主键查询单条数据
      *
@@ -207,5 +213,28 @@ public class ZzGroupController  {
     public TableResultResponse queryHistoryMessageForSingle(@RequestParam("userId")String userId,@RequestParam("contactId")String contactId,@RequestParam("isGroup")String isGroup,@RequestParam("page")String page,@RequestParam("size")String size) throws Exception {
         TableResultResponse resultResponse = messageInfoService.queryHistoryMessageForSingle(userId,contactId,isGroup,page,size);
         return resultResponse;
+    }
+    /**
+     * 查询群成员列表信息
+     *
+     * @param groupId 主键
+     * @return 单条数据
+     */
+    @GetMapping("/getGroupUserList")
+    public ListRestResponse getGroupUserList(@RequestParam("groupId")String groupId) throws Exception {
+
+        String userIds= this.zzGroupService.getGroupUserList(groupId);
+        List<UserInfo> list  = iUserService.userList(userIds);
+        List<UserInfoVO> dataList = new ArrayList<>();
+        for(UserInfo temp:list){
+            UserInfoVO vo = new UserInfoVO();
+            vo.setAvartar(temp.getAvatar());
+            vo.setId(temp.getId());
+            vo.setOnline("1");//是否在线有待后续开发
+            vo.setName(temp.getName());
+            dataList.add(vo);
+        }
+        ListRestResponse res=new ListRestResponse("200",dataList.size(),dataList);
+        return  res;
     }
 }

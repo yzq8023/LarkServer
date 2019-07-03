@@ -24,4 +24,8 @@ public class ActionEntitySet {
      * 默认选中
      */
     private Boolean defaultCheck;
+    /**
+     * 编码
+     */
+    private String code;
 }

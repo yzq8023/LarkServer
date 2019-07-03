@@ -15,7 +15,14 @@
         <result property="isDelete" column="IS_DELETE" jdbcType="VARCHAR"/>
         <result property="levels" column="LEVELS" jdbcType="VARCHAR"/>
     </resultMap>
-
+    <resultMap id="privateFileVO" type="com.workhub.z.servicechat.VO.PrivateFileVO">
+        <result property="fileId" column="FILE_ID" jdbcType="VARCHAR"></result>
+        <result property="fileName" column="FILE_NAME" jdbcType="VARCHAR"></result>
+        <result property="time" column="TIME" jdbcType="VARCHAR"></result>
+        <result property="reviser" column="REVISER" jdbcType="VARCHAR"></result>
+        <result property="levels" column="LEVELS" jdbcType="VARCHAR"></result>
+        <result property="receiver" column="RECEIVER" jdbcType="VARCHAR"></result>
+    </resultMap>
     <!--查询单个-->
     <select id="queryById" resultMap="ZzPrivateMsgMap">
         select
@@ -231,5 +238,24 @@
          -->
         ) a
         order by a.send_time desc
+    </select>
+
+    <select id="getFileList" resultMap="privateFileVO">
+          SELECT
+            ZGF.GROUP_ID AS RECEIVER,
+            ZGF.FILE_ID AS FILE_ID,
+            ZGF.FILE_NAME||decode(nvl(ZGF.FILE_EXT,'null'),'null','','.'||ZGF.FILE_EXT) as FILE_NAME,
+            ZGF.LEVELS AS LEVELS,
+            ZGF.CREATOR AS REVISER,
+            TO_CHAR(ZGF.CREATE_TIME, 'YYYY-MM-DD HH24:MI:SS') AS TIME
+       FROM ZZ_GROUP_FILE ZGF
+      WHERE 1=1
+        <if test="userId != null and userId != ''">
+            and ZGF.CREATOR  = #{userId}
+        </if>
+        <if test="receiverId != null and receiverId != ''">
+            and ZGF.GROUP_ID  = #{receiverId}
+        </if>
+      ORDER BY ZGF.CREATE_TIME DESC
     </select>
 </mapper>

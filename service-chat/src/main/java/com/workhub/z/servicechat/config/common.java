@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.workhub.z.servicechat.entity.ZzDictionaryWords;
 import com.workhub.z.servicechat.model.ContactsMessageDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.tio.core.ChannelContext;
 import org.tio.core.Tio;
 
@@ -24,7 +26,7 @@ import java.util.*;
 *@date: 2019/5/14
 */
 public class common {
-
+    private static Logger log = LoggerFactory.getLogger(common.class);
 //  默认图片路径
     public static final String imgUrl = "";
     /**
@@ -472,4 +474,17 @@ public class common {
             e.printStackTrace();
         }
     }*/
+    //objec转字符串 null-> ""
+    public static String nulToEmptyString(Object object){
+        try{
+            if(object==null){
+                return "";
+            }
+            return  object.toString();
+        }catch (Exception e){
+            e.printStackTrace();
+            log.error(getExceptionMessage(e));
+        }
+        return  null;
+    }
 }

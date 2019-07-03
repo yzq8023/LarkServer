@@ -2,6 +2,7 @@ package com.workhub.z.servicechat.controller;
 
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
+import com.workhub.z.servicechat.VO.PrivateFileVO;
 import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.entity.ZzPrivateMsg;
@@ -173,6 +174,25 @@ public class ZzPrivateMsgController{
         res.msg("200");
         res.rel(true);
         return res;
+    }
+    /**
+     * 私聊文件查询
+     * @param
+     * @return
+     */
+    @PostMapping("/privateFile")
+    public TableResultResponse<PrivateFileVO> getFileList(@RequestParam("userId")String userId,
+                                                          @RequestParam("receiver")String receiver,
+                                                          @RequestParam(value = "page",defaultValue = "1")Integer page,
+                                                          @RequestParam(value = "size",defaultValue = "10")Integer size){
+        TableResultResponse<PrivateFileVO> pageInfo = null;
+        try {
+            pageInfo = this.zzPrivateMsgService.getFileList(userId,receiver,page,size);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//        T data, int pageSize, int pageNo, int totalPage, int totalCount
+        return pageInfo;
     }
 
 }

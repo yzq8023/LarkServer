@@ -45,7 +45,10 @@ public class UserCommonToolsService extends BaseBiz<UserCommonToolsMapper, UserC
      * @return
      */
     public List<UserCommonToolsVO> allCommonTools(String userId,String orgCode){
-        List<CommonTools> commonTools = commonToolsMapper.selectAll();
+        CommonTools commonTool = new CommonTools();
+        commonTool.setStatus("1");
+        //查询status为启用的数据
+        List<CommonTools> commonTools = commonToolsMapper.select(commonTool);
         commonTools = commonTools.parallelStream().filter(new Predicate<CommonTools>() {
             @Override
             public boolean test(CommonTools commonTools) {
