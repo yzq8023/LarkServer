@@ -13,6 +13,7 @@ import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.hollykunge.security.common.util.EntityUtils;
 import com.github.hollykunge.security.common.util.Query;
+import com.github.hollykunge.security.common.util.SpecialStrUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,10 +48,7 @@ public class UserBiz extends BaseBiz<UserMapper, User> {
     private RoleUserMapMapper roleUserMapMapper;
 
     public User addUser(User entity) {
-        String regex="[^%$&!@...￥]{1,}";
-        Pattern p= Pattern.compile(regex);
-        Matcher m=p.matcher(entity.getName());
-        if(!m.matches()){
+        if(SpecialStrUtils.check(entity.getName())){
             throw new BaseException("姓名中不能包含特殊字符...");
         }
         //校验身份证是否在数据库中存在
@@ -149,7 +147,7 @@ public class UserBiz extends BaseBiz<UserMapper, User> {
                 if(AdminCommonConstant.NO_DATA_ORG_CODE.equals(entry.getValue().toString())){
                     return new TableResultResponse<User>(query.getPageSize(), query.getPageNo() ,0, 0, new ArrayList<>());
                 }
-                if(specialStr(entry.getValue().toString())){
+                if(SpecialStrUtils.check(entry.getValue().toString())){
                     throw new BaseException("查询条件不能包含特殊字符...");
                 }
                 criteria.andLike(entry.getKey(), "%" + entry.getValue().toString() + "%");
@@ -158,12 +156,5 @@ public class UserBiz extends BaseBiz<UserMapper, User> {
         Page<Object> result = PageHelper.startPage(query.getPageNo(), query.getPageSize());
         List<User> list = mapper.selectByExample(example);
         return new TableResultResponse<User>(result.getPageSize(), result.getPageNum() ,result.getPages(), result.getTotal(), list);
-    }
-
-    private boolean specialStr(String inputStr){
-        String regEx="[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
-        Pattern p=Pattern.compile(regEx);
-        Matcher m=p.matcher(inputStr);
-        return m.find();
     }
 }
