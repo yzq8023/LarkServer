@@ -1,6 +1,5 @@
 package com.workhub.z.servicechat.dao;
 
-import com.workhub.z.servicechat.entity.ZzAt;
 import com.workhub.z.servicechat.entity.ZzDictionaryWords;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
@@ -64,5 +63,13 @@ public interface ZzDictionaryWordsDao extends Mapper<ZzDictionaryWords> {
      * @return 影响行数
      */
     int deleteById(String id);
-
+    //启用停用flg=0 停用 flg=启用
+    int stopUse(@Param("id") String id,@Param("flg") String flg,@Param("userId") String userId);
+    List<ZzDictionaryWords> query(@Param("type")String  type,@Param("code")String code,@Param("name")String name,@Param("replace")String replace,@Param("isUse")String isUse);
+    //新增修改前判断是否已经存在记录了
+    long selcount(@Param("id") String id,@Param("wordName") String wordName);
+    //导入数据单条
+    int importData(ZzDictionaryWords zzDictionaryWords);
+    //导入数据多条
+    int importDataList(@Param("list") List<ZzDictionaryWords> listData);
 }
