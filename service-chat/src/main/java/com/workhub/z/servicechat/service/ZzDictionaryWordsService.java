@@ -1,5 +1,6 @@
 package com.workhub.z.servicechat.service;
 
+import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.workhub.z.servicechat.entity.ZzDictionaryWords;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,7 +37,7 @@ public interface ZzDictionaryWordsService {
      * @param zzDictionaryWords 实例对象
      * @return 实例对象
      */
-    void insert(ZzDictionaryWords zzDictionaryWords);
+    int insert(ZzDictionaryWords zzDictionaryWords);
 
     /**
      * 修改数据
@@ -44,7 +45,7 @@ public interface ZzDictionaryWordsService {
      * @param zzDictionaryWords 实例对象
      * @return 实例对象
      */
-    void update(ZzDictionaryWords zzDictionaryWords);
+    int update(ZzDictionaryWords zzDictionaryWords);
 
     /**
      * 通过主键删除数据
@@ -67,5 +68,9 @@ public interface ZzDictionaryWordsService {
      */
     String sensitiveIndex(String txt);
     //导入敏感词汇
-    void importDictionaryWords(MultipartFile file,String userId) throws Exception;
+    String importDictionaryWords(MultipartFile file,String userId) throws Exception;
+    //停用启用
+    int stopUse(String id,String useFlg,String userId) throws  Exception;
+    //分页查询
+    TableResultResponse<ZzDictionaryWords> query(int page, int size, String type, String code, String name, String replace,String isUse) throws  Exception;
 }
