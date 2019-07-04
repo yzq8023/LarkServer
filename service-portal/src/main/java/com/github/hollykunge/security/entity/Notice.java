@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * @description: 工作台-公告栏
@@ -27,4 +28,6 @@ public class Notice {
     private String top;
     @Column(name = "ORG_CODE")
     private String orgCode;
+    @Column(name = "SEND_TIME")
+    private Date sendTime;
 }
