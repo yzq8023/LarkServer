@@ -27,6 +27,5 @@ public class UnUsedFileDealTask  extends QuartzJobBean {
             e.printStackTrace();
             log.error("处理无用附件错误："+common.getExceptionMessage(e));
         }
-
     }
 }
