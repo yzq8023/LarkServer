@@ -225,7 +225,7 @@ public class ZzGroupFileServiceImpl implements ZzGroupFileService {
         return res;
     }
     //文件数据库信息补全
-    public int fileUpdate(String fileId,String receiverId,String level) throws Exception{
-        return this.zzGroupFileDao.fileUpdate( fileId,receiverId, level);
+    public int fileUpdate(String fileId,String receiverId,String level,String sendId,String sendName,String receiverName) throws Exception{
+        return this.zzGroupFileDao.fileUpdate( fileId,receiverId, level,sendId,sendName,receiverName);
     }
 }

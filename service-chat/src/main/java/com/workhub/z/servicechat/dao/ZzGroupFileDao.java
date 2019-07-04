@@ -76,6 +76,6 @@ public interface ZzGroupFileDao extends Mapper<ZzGroupFile> {
     //查询附件大小(日期范围)
     List<Map> queryFileSizeRange(@Param("dateFmat") String dateFmat, @Param("dateBegin") String dateBegin, @Param("dateEnd") String dateEnd, @Param("unit") long unit );
     //文件信息补全
-    int fileUpdate(@Param("fileId") String fileId,@Param("receiverId") String receiverId,@Param("level") String level);
+    int fileUpdate(@Param("fileId") String fileId,@Param("receiverId") String receiverId,@Param("level") String level,@Param("sendId") String sendId,@Param("sendName") String sendName,@Param("receiverName") String receiverName);
 
 }

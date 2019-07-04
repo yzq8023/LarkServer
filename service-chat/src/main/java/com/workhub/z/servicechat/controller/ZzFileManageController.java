@@ -266,7 +266,10 @@ public class ZzFileManageController {
     public ObjectRestResponse fileUpdate(
                                          @RequestParam("fileId") String fileId,
                                          @RequestParam("receiverId") String receiverId,
-                                         @RequestParam("level") String level
+                                         @RequestParam("level") String level,
+                                         @RequestParam("sendId") String sendId,
+                                         @RequestParam("sendName") String sendName,
+                                         @RequestParam("receiverName") String receiverName
                                          ) {
         ObjectRestResponse obj = new ObjectRestResponse();
         obj.rel(true);
@@ -278,8 +281,9 @@ public class ZzFileManageController {
             return  obj;
         }
         try {
-            int i =this.zzGroupFileService.fileUpdate(fileId,receiverId,level);
+            int i =this.zzGroupFileService.fileUpdate(fileId,receiverId,level,sendId,sendName,receiverName);
         } catch (Exception e) {
+
             e.printStackTrace();
             obj.rel(false);
             obj.data("操作出错");
