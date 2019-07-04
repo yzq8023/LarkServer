@@ -37,7 +37,8 @@ public class ZzGroupFile implements Serializable {
     private String groupId;
     //保密等级
     private String levels;
-
+    //创建人姓名
+    private String creatorName;
 
     public String getFileId() {
         return fileId;
@@ -142,5 +143,11 @@ public class ZzGroupFile implements Serializable {
     public void setLevels(String levels) {
         this.levels = levels;
     }
+    public String getCreatorName() {
+        return creatorName;
+    }
 
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
+    }
 }
