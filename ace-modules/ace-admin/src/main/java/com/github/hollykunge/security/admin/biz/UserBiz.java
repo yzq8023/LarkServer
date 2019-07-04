@@ -13,6 +13,7 @@ import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.hollykunge.security.common.util.EntityUtils;
 import com.github.hollykunge.security.common.util.Query;
+import com.github.hollykunge.security.common.util.SpecialStrUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,8 @@ import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author 协同设计小组
@@ -45,6 +48,9 @@ public class UserBiz extends BaseBiz<UserMapper, User> {
     private RoleUserMapMapper roleUserMapMapper;
 
     public User addUser(User entity) {
+        if(SpecialStrUtils.check(entity.getName())){
+            throw new BaseException("姓名中不能包含特殊字符...");
+        }
         //校验身份证是否在数据库中存在
         User user = new User();
         user.setPId(entity.getPId());
@@ -61,6 +67,9 @@ public class UserBiz extends BaseBiz<UserMapper, User> {
     @Override
 //    @CacheClear(pre = "user{1.pId}")
     public void updateSelectiveById(User entity) {
+        if(SpecialStrUtils.check(entity.getName())){
+            throw new BaseException("姓名中不能包含特殊字符...");
+        }
         super.updateSelectiveById(entity);
     }
 
@@ -140,6 +149,9 @@ public class UserBiz extends BaseBiz<UserMapper, User> {
                 //如果orgCode为航天二院组织编码，则返回的数据为空
                 if(AdminCommonConstant.NO_DATA_ORG_CODE.equals(entry.getValue().toString())){
                     return new TableResultResponse<User>(query.getPageSize(), query.getPageNo() ,0, 0, new ArrayList<>());
+                }
+                if(SpecialStrUtils.check(entry.getValue().toString())){
+                    throw new BaseException("查询条件不能包含特殊字符...");
                 }
                 criteria.andLike(entry.getKey(), "%" + entry.getValue().toString() + "%");
             }

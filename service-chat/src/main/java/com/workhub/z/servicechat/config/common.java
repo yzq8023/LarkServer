@@ -474,6 +474,45 @@ public class common {
             e.printStackTrace();
         }
     }*/
+    /**
+     *@Description: 获取json字符串的某个属性值
+     *@Param: json字符串；key,如果是多级用"."拼接，key只支持String；
+     * 例如：某个json字符串是{"toId":"GMt5H6xf","contactInfo":{"name":"8756","id":"GMt5H6xf"},"username":"myname"}，传入key: contactInfo.id 返回值是：GMt5H6xf
+     *@return:
+     *@Author: zhuqz
+     *@date: 2019/07/03
+     */
+    public static Object   getJsonStringKeyValue (String jsonStr,String key) throws Exception{
+        if(jsonStr==null){
+            return null;
+        }
+        Map<String,Object> jsonMap= JSON.parseObject(jsonStr, new TypeReference<Map<String, Object>>() {});
+        return getMapKeyValue(jsonMap,key);
+    }
+    //递归json的key
+    public static Object getMapKeyValue(Map<String,Object> map,String key) throws  Exception {
+        String[] keyArr=key.split("\\.");
+
+        if(keyArr.length!=1){
+            String currentKey=keyArr[0];
+            Map<String,Object> temp=JSONObject.parseObject(map.get(currentKey).toString());
+            return getMapKeyValue(temp,key.substring(key.indexOf(".")+1));
+
+        }else {
+            return map.get(keyArr[0]);
+        }
+        
+    }
+    /*public static void main(String[] args) {
+        try {
+            Object obj = getJsonStringKeyValue("{\"toId\":\"GMt5H6xf\",\"atId\":[],\"contactInfo\":{\"name\":\"8756\",\"id\":\"GMt5H6xf\",\"avatar\":\"\",\"memberNum\":4,\"isGroup\":true,\"secretLevel\":30},\"id\":\"69be81ca-f633-45c0-be0c-262d14aa68e1\",\"avatar\":\"http://10.12.97.34:80/undefined\",\"time\":\"2019-06-24T08:36:10.137Z\",\"isGroup\":true,\"fromId\":\"duyukun\",\"content\":{\"extension\":\"jpg\",\"id\":\"398b8662f7694ea28264330e63e79d97\",\"type\":3,\"title\":\"jpg\",\"secretLevel\":30,\"url\":\"/api/chat/zzFileManage/GetFile?fileId=398b8662f7694ea28264330e63e79d97&t=1561193135178\"},\"username\":\"杜宇坤\"}",
+                    "contactInfo.memberNum"
+            );
+            System.out.println(obj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }*/
     //objec转字符串 null-> ""
     public static String nulToEmptyString(Object object){
         try{

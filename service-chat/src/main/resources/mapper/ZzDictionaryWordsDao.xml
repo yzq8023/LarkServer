@@ -79,10 +79,10 @@
         select count(1) as cnt
         from zz_dictionary_words
          where word_name = #{wordName}
+         and   WORD_TYPE = #{wordType}
          <if test="id != null and id!=''">
              and id != #{id}
          </if>
-
     </select>
     <!--通过主键修改数据-->
     <update id="update">
@@ -156,8 +156,8 @@
         values(#{id},#{wordType},#{wordName},#{wordCode},#{replaceWord},sysdate,#{createUser})
     </update>
 
-    <update id="importDataList">
-        <foreach collection="list" item="temp"  index="index" separator=",">
+    <update id="importDataList" parameterType="Map">
+        <foreach collection="list" item="temp"  index="index"  open="begin" close=";end;" separator=";">
             merge into WORKHUB_IWORK.ZZ_DICTIONARY_WORDS a
             using ( select #{temp.wordName} as word_name from dual ) b
             on (a.word_name = b.word_name)

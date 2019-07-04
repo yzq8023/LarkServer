@@ -91,9 +91,31 @@ public class AdminAccessFilter extends ZuulFilter {
         HttpServletRequest request = ctx.getRequest();
         final String requestUri = request.getRequestURI().substring(zuulPrefix.length());
         BaseContextHandler.setToken(null);
+
         String dnname = request.getHeader(CommonConstants.PERSON_ID_ARG);
         if(StringUtils.isEmpty(dnname)){
-            throw new BaseException("请求头中无身份信息...");
+//            throw new BaseException("请求头中无身份信息...");
+            /**
+             * 正常用户名密码登录
+             */
+            if (isStartWith(requestUri)) {
+                return null;
+            }
+            IJWTInfo user = null;
+            try {
+                user = getJWTUser(request, ctx);
+            } catch (Exception e) {
+                setFailedRequest(JSON.toJSONString(new TokenErrorResponse(e.getMessage())), 200);
+                return null;
+            }
+            //根据用户id获取资源列表，包括菜单和菜单功能
+            List<FrontPermission> permissionInfos = userService.getPermissionByUserId(user.getId());
+            if(permissionInfos.size()>0){
+                checkUserPermission(requestUri,permissionInfos, ctx, user);
+            }
+            // 申请客户端密钥头，加到header里传递到下方服务
+            ctx.addZuulRequestHeader(serviceAuthConfig.getTokenHeader(), serviceAuthUtil.getClientToken());
+            return null;
         }
         try {
             dnname = new String (dnname.getBytes(CommonConstants.PERSON_CHAR_SET));
@@ -123,17 +145,6 @@ public class AdminAccessFilter extends ZuulFilter {
             setFailedRequest(JSON.toJSONString(new TokenErrorResponse(e.getMessage())), 200);
             return null;
         }
-        //获取所有的资源信息，包括menu和element
-//        List<FrontPermission> permissionIfs = userService.getAllPermissionInfo();
-//        // 判断当前资源是否属于权限资源
-//        Stream<FrontPermission> stream = getPermissionIfs(requestUri, method, permissionIfs);
-//        List<FrontPermission> result = stream.collect(Collectors.toList());
-//        FrontPermission[] permissions = result.toArray(new FrontPermission[]{});
-
-//        if (permissions.length > 0) {
-//            //判断用户是否有当前资源访问权限
-//            checkUserPermission(permissions, ctx, user);
-//        }
         //根据用户id获取资源列表，包括菜单和菜单功能
         List<FrontPermission> permissionInfos = userService.getPermissionByUserId(user.getId());
         if(permissionInfos.size()>0){
