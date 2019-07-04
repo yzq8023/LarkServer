@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 消息队列用公告通知实体类
@@ -26,4 +27,6 @@ public class NoticeVO implements Serializable {
     private String top;
 
     private String orgCode;
+
+    private Date sendTime;
 }

@@ -33,5 +33,6 @@
         WHERE USER_ID = #{userId}
         ) MES
         WHERE RN = 1
+        ORDER BY MES.SEND_TIME DESC
   </select>
 </mapper>

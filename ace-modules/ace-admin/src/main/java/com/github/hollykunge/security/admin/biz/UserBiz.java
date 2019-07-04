@@ -67,6 +67,9 @@ public class UserBiz extends BaseBiz<UserMapper, User> {
     @Override
 //    @CacheClear(pre = "user{1.pId}")
     public void updateSelectiveById(User entity) {
+        if(SpecialStrUtils.check(entity.getName())){
+            throw new BaseException("姓名中不能包含特殊字符...");
+        }
         super.updateSelectiveById(entity);
     }
 

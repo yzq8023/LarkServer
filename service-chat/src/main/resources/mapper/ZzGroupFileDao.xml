@@ -16,7 +16,6 @@
         <result property="updator" column="UPDATOR" jdbcType="VARCHAR"/>
         <result property="groupId" column="GROUP_ID" jdbcType="VARCHAR"/>
         <result property="levels" column="LEVELS" jdbcType="VARCHAR"/>
-        <result property="creatorName" column="CREATOR_NAME" jdbcType="VARCHAR"></result>
     </resultMap>
 
     <resultMap id="GroupFileVo" type="com.workhub.z.servicechat.VO.GroupFileVo">
@@ -58,7 +57,6 @@
             TO_CHAR(ZGF.CREATE_TIME, 'YYYY-MM-DD HH24:MI:SS') AS TIME
        FROM ZZ_GROUP ZG, ZZ_GROUP_FILE ZGF
       WHERE ZG.GROUP_ID = ZGF.GROUP_ID
-      AND ZGF.SEND_FLG='1'
       AND ZG.GROUP_ID = #{id}
       ORDER BY ZGF.CREATE_TIME DESC
     </select>
@@ -139,8 +137,8 @@
     </select>
     <!--新增所有列-->
     <insert id="insert">
-        insert into ZZ_GROUP_FILE(FILE_ID, FILE_NAME, FILE_EXT, FILE_TYPE, SIZES, PATH, READ_PATH, CREATE_TIME, CREATOR, GROUP_ID, LEVELS,CREATOR_NAME)
-        values (#{fileId},#{fileName}, #{fileExt}, #{fileType}, #{sizes}, #{path}, #{readPath}, #{createTime}, #{creator}, #{groupId}, #{levels}, #{creatorName})
+        insert into ZZ_GROUP_FILE(FILE_ID, FILE_NAME, FILE_EXT, FILE_TYPE, SIZES, PATH, READ_PATH, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, GROUP_ID, LEVELS)
+        values (#{fileId},#{fileName}, #{fileExt}, #{fileType}, #{sizes}, #{path}, #{readPath}, #{createTime}, #{creator}, #{updateTime}, #{updator}, #{groupId}, #{levels})
     </insert>
     <!--通过主键修改数据-->
     <update id="update">
@@ -209,11 +207,4 @@
         group by a.create_time
 
     </select>
-    <update id="fileUpdate">
-        update ZZ_GROUP_FILE
-        set SEND_FLG='1',
-        LEVELS=#{level},
-        GROUP_ID=#{receiverId}
-        where FILE_ID=#{fileId}
-    </update>
 </mapper>

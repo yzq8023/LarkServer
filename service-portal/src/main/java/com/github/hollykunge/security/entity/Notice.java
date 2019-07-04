@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * @description: 工作台-公告栏
@@ -13,7 +14,7 @@ import javax.persistence.Table;
  */
 @Data
 @Table(name = "PORTAL_NOTICE")
-public class Notice implements Comparable<Notice>{
+public class Notice {
     @Column(name = "ID")
     @Id
     private String id;
@@ -27,10 +28,6 @@ public class Notice implements Comparable<Notice>{
     private String top;
     @Column(name = "ORG_CODE")
     private String orgCode;
-
-
-    @Override
-    public int compareTo(Notice o) {
-        return id.compareTo(o.id);
-    }
+    @Column(name = "SEND_TIME")
+    private Date sendTime;
 }

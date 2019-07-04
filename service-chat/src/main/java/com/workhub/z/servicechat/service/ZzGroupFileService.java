@@ -90,6 +90,4 @@ public interface ZzGroupFileService {
      * @return 文件去区间段大小
      */
     public List<Map<String,String>>  getGroupChatFileSizeRangeByDB(String queryType, String queryDateBegin, String queryDateEnd, String returnUnit) throws Exception;
-    //文件数据库信息补全
-    public int fileUpdate(String fileId,String receiverId,String level) throws Exception;
 }
