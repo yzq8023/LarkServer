@@ -15,6 +15,9 @@ public class QuartzConfig {
     //读去配置文件执行定时任务安排
     @Value("${deal_his_msg_job_cron}")
     private String deal_his_msg_job_cron;
+
+    @Value("${deal_unused_file_job_cron}")
+    private String deal_unused_file_job_cron;
     @Bean
     public JobDetail hisMsgQuartz() {
         return JobBuilder.newJob(HisMsgDealTask.class).withIdentity("hisMsgQuartz").storeDurably().build();
@@ -33,6 +36,17 @@ public class QuartzConfig {
                 .withSchedule(CronScheduleBuilder.cronSchedule(deal_his_msg_job_cron))
                 .build();
     }
+//----------------------------处理无用附件定时任务-------------------------------------------------------------
+    @Bean
+    public JobDetail unUsedFileQuartz() {
+        return JobBuilder.newJob(UnUsedFileDealTask.class).withIdentity("unUsedFileQuartz").storeDurably().build();
+    }
 
-
+    @Bean
+    public Trigger dealUnUsedFileTrigger() {
+        return TriggerBuilder.newTrigger().forJob(unUsedFileQuartz())
+                .withIdentity("unUsedFileQuartz")
+                .withSchedule(CronScheduleBuilder.cronSchedule(deal_unused_file_job_cron))
+                .build();
+    }
 }

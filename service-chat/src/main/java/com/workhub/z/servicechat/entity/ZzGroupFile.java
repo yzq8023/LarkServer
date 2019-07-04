@@ -27,7 +27,7 @@ public class ZzGroupFile implements Serializable {
     private String readPath;
     //创建时间
     private Date createTime;
-    //创建人
+    //创建人id
     private String creator;
     //更新时间
     private Date updateTime;
@@ -37,7 +37,8 @@ public class ZzGroupFile implements Serializable {
     private String groupId;
     //保密等级
     private String levels;
-
+    //创建人姓名
+    private String creatorName;
 
     public String getFileId() {
         return fileId;
@@ -143,4 +144,11 @@ public class ZzGroupFile implements Serializable {
         this.levels = levels;
     }
 
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
+    }
 }
