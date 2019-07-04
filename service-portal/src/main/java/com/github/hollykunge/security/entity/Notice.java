@@ -14,7 +14,7 @@ import java.util.Date;
  */
 @Data
 @Table(name = "PORTAL_NOTICE")
-public class Notice {
+public class Notice implements Comparable<Notice>{
     @Column(name = "ID")
     @Id
     private String id;
@@ -30,4 +30,9 @@ public class Notice {
     private String orgCode;
     @Column(name = "SEND_TIME")
     private Date sendTime;
+
+    @Override
+    public int compareTo(Notice o) {
+        return id.compareTo(o.id);
+    }
 }
