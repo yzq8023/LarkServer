@@ -13,9 +13,4 @@ public interface JobService {
      *
      */
     public String backupHisMsg() throws Exception;
-    /**
-     * 定时任务-处理无用附件
-     *
-     */
-    void dealUnUsedFileList() throws Exception;
 }
