@@ -1,8 +1,12 @@
 package com.workhub.z.servicechat.processor;
 
 import com.alibaba.fastjson.JSONObject;
+import com.workhub.z.servicechat.config.common;
+import com.workhub.z.servicechat.service.ZzGroupFileService;
 import com.workhub.z.servicechat.service.ZzGroupService;
 import com.workhub.z.servicechat.service.ZzUserGroupService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tio.core.ChannelContext;
@@ -22,6 +26,9 @@ public class ProcessMsg extends AbstractMsgProcessor{
     private ZzUserGroupService userGroupService;
     @Autowired
     private ZzGroupService groupService;
+    @Autowired
+    private ZzGroupFileService zzGroupFileService;
+    private static Logger log = LoggerFactory.getLogger(ProcessMsg.class);
     /**
      * 消息处理入口
      */
