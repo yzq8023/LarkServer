@@ -38,8 +38,7 @@ public class ZzFileManageController {
     private ZzFileManageService zzFileManageService;
     @Resource
     private ZzGroupFileService zzGroupFileService;
-    @Autowired
-    private HttpServletRequest request;
+
     @RequestMapping("/login")
     @ResponseBody
     //上传
@@ -155,11 +154,7 @@ public class ZzFileManageController {
             String res = uplodaRes.get("res");
             if (res.equals("1")) {//如果上传成功，入库记录
                 zzGroupFile.setFileId(uplodaRes.get("file_id"));
-                //zzGroupFile.setCreator("登陆人id_测试");//TODO
-                String userId = common.nulToEmptyString(request.getHeader("userId"));
-                String userName = common.nulToEmptyString(request.getHeader("userName"));
-                zzGroupFile.setCreator((userId==null)?"":userId);//TODO
-                zzGroupFile.setCreatorName((userName==null)?"":userName);//TODO
+                zzGroupFile.setCreator("登陆人id_测试");//TODO
                 zzGroupFile.setCreateTime(new Date());
                 zzGroupFile.setSizes(Double.parseDouble(uplodaRes.get("file_size")));
                 zzGroupFile.setFileName(uplodaRes.get("file_upload_name"));
@@ -167,8 +162,8 @@ public class ZzFileManageController {
                 zzGroupFile.setFileExt(uplodaRes.get("file_ext"));
                 zzGroupFile.setFileType(uplodaRes.get("file_type"));
                 zzGroupFile.setReadPath("");
-                //zzGroupFile.setUpdator("登陆人id_测试");
-                //zzGroupFile.setUpdateTime(new Date());
+                zzGroupFile.setUpdator("登陆人id_测试");
+                zzGroupFile.setUpdateTime(new Date());
                 zzGroupFile.setGroupId("");
                 zzGroupFile.setLevels("");
                 try {
@@ -290,6 +285,7 @@ public class ZzFileManageController {
         }
         return obj;
     }
+
     @RequestMapping(value = "/getFileImageStream",produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
     public BufferedImage getFileImageStream(String fileId) throws IOException {
