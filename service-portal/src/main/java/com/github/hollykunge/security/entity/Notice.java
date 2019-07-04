@@ -13,7 +13,7 @@ import javax.persistence.Table;
  */
 @Data
 @Table(name = "PORTAL_NOTICE")
-public class Notice {
+public class Notice implements Comparable<Notice>{
     @Column(name = "ID")
     @Id
     private String id;
@@ -27,4 +27,10 @@ public class Notice {
     private String top;
     @Column(name = "ORG_CODE")
     private String orgCode;
+
+
+    @Override
+    public int compareTo(Notice o) {
+        return id.compareTo(o.id);
+    }
 }
