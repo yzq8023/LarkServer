@@ -249,7 +249,7 @@
             ZGF.CREATOR AS REVISER,
             TO_CHAR(ZGF.CREATE_TIME, 'YYYY-MM-DD HH24:MI:SS') AS TIME
        FROM ZZ_GROUP_FILE ZGF
-      WHERE 1=1
+      WHERE SEND_FLG = '1'
         <if test="userId != null and userId != ''">
             and ZGF.CREATOR  = #{userId}
         </if>
