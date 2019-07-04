@@ -23,6 +23,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.lang.reflect.ParameterizedType;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -77,6 +78,8 @@ public class NoticeBiz extends BaseBiz<NoticeMapper,Notice>{
         //保存完成后向mq发送一条消息
         NoticeVO mqNoticeEntity = new NoticeVO();
         BeanUtils.copyProperties(entity,mqNoticeEntity);
+        //发布时间取当前时间
+        mqNoticeEntity.setSendTime(new Date());
         produceSenderConfig.send(mqNoticeEntity.getId(),mqNoticeEntity);
     }
 

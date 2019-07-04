@@ -1,6 +1,5 @@
 package com.workhub.z.servicechat.dao;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,15 +15,5 @@ public interface JobDao {
      *
      */
     String backupHisMsg(Map param);
-    /**
-     * 定时任务-处理无用附件
-     *
-     */
-    List<String>  getUnUsedFileList();
-    /**
-     * 定时任务-删除无用附件
-     *
-     */
-    int delUnUsedFileList();
 
 }

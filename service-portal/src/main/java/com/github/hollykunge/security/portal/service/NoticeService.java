@@ -32,8 +32,11 @@ public class NoticeService extends BaseBiz<NoticeMapper, Notice> {
         if(StringUtils.isEmpty(entity.getOrgCode())){
             throw new BaseException("当前登录人没有组织编码...");
         }
-        List<Notice> notices = mapper.selectAll();
-        notices = notices.parallelStream().filter(new Predicate<Notice>() {
+        Example example = new Example(Notice.class);
+        example.setOrderByClause("SEND_TIME DESC");
+        List<Notice> notices =  mapper.selectByExample(example);
+//        List<Notice> notices = mapper.selectAll();
+        notices = notices.stream().filter(new Predicate<Notice>() {
             @Override
             public boolean test(Notice notice) {
                 if(StringUtils.isEmpty(notice.getOrgCode())){
@@ -45,7 +48,6 @@ public class NoticeService extends BaseBiz<NoticeMapper, Notice> {
                 return false;
             }
         }).collect(Collectors.toList());
-        //根据id进行排序
         Collections.sort(notices);
         return notices;
     }

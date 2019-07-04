@@ -1,6 +1,7 @@
 package com.workhub.z.servicechat.dao;
 
 import com.workhub.z.servicechat.VO.GroupFileVo;
+import com.workhub.z.servicechat.VO.GroupInfoVO;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
@@ -66,7 +67,7 @@ public interface ZzGroupFileDao extends Mapper<ZzGroupFile> {
      */
     int deleteById(String fileId);
 
-    //List<GroupInfoVO> groupFileList(@Param("id") String id, @Param("start") Integer start, @Param("end") Integer end);
+    List<GroupInfoVO> groupFileList(@Param("id") String id, @Param("start") Integer start, @Param("end") Integer end);
 
     Long groupFileListTotal(@Param("id")String id);
 
