@@ -5,4 +5,17 @@
     <select id="backupHisMsg" statementType="CALLABLE" parameterType="Map">
     {CALL put_message_to_his_table(#{out,mode=OUT,jdbcType=VARCHAR})}
     </select>
+    <!--定时任务处理24小时未发送附件-->
+    <select id="getUnUsedFileList" resultType="String">
+        select t.path
+        from zz_group_file t
+        where t.send_flg = '0'
+        and (sysdate - nvl(create_time, sysdate)) * 24 > 24
+    </select>
+    <!--将无用的附件信息删除-->
+    <delete id="delUnUsedFileList">
+        delete from zz_group_file t
+        where t.send_flg = '0'
+        and (sysdate - nvl(create_time, sysdate)) * 24 > 24
+    </delete>
 </mapper>
