@@ -32,6 +32,25 @@ public class ProcessMsg extends AbstractMsgProcessor{
             String code = jsonObject.getString("code");
             String message = jsonObject.getString("data");
 
+            //文件上传信息更新begin
+            try {
+                String msgType = common.nulToEmptyString(common.getJsonStringKeyValue(message,"content.type"));
+                //如果是文件或者图片上传
+                if("2".equals(msgType)||"3".equals(msgType)){
+                    String fileId = common.nulToEmptyString(common.getJsonStringKeyValue(message,"content.id"));
+                    String level = common.nulToEmptyString(common.getJsonStringKeyValue(message,"content.secretLevel"));
+                    String receiverId = common.nulToEmptyString(common.getJsonStringKeyValue(message,"toId"));
+                    String sendId = common.nulToEmptyString(common.getJsonStringKeyValue(message,"fromId"));
+                    String sendName = common.nulToEmptyString(common.getJsonStringKeyValue(message,"username"));
+                    String receiverName = common.nulToEmptyString(common.getJsonStringKeyValue(message,"contactInfo.name"));
+                    zzGroupFileService.fileUpdate(fileId,receiverId,level,sendId,sendName,receiverName);
+                }
+            } catch (Exception e) {
+                //异常记录到日志
+                log.error(common.getExceptionMessage(e));
+            }
+            //文件上传信息更新end
+
 //            processMsg(channelContext,msg,Integer.parseInt(code));
 
             switch (Integer.parseInt(code)){

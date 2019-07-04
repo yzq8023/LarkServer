@@ -256,6 +256,36 @@ public class ZzFileManageController {
         return obj;
     }
 
+    @PostMapping ("/fileUpdate")
+    //文件更新（前端上传后，点击发送触发文件信息补全）
+    public ObjectRestResponse fileUpdate(
+                                         @RequestParam("fileId") String fileId,
+                                         @RequestParam("receiverId") String receiverId,
+                                         @RequestParam("level") String level,
+                                         @RequestParam("sendId") String sendId,
+                                         @RequestParam("sendName") String sendName,
+                                         @RequestParam("receiverName") String receiverName
+                                         ) {
+        ObjectRestResponse obj = new ObjectRestResponse();
+        obj.rel(true);
+        obj.msg("200");
+        obj.data("成功");
+        if (fileId == null || "".equals(fileId)) {
+            obj.rel(false);
+            obj.data("附件id为空");
+            return  obj;
+        }
+        try {
+            int i =this.zzGroupFileService.fileUpdate(fileId,receiverId,level,sendId,sendName,receiverName);
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            obj.rel(false);
+            obj.data("操作出错");
+        }
+        return obj;
+    }
+
     @RequestMapping(value = "/getFileImageStream",produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
     public BufferedImage getFileImageStream(String fileId) throws IOException {

@@ -207,4 +207,14 @@
         group by a.create_time
 
     </select>
+
+    <update id="fileUpdate">
+        update ZZ_GROUP_FILE
+        set SEND_FLG='1',
+        LEVELS=#{level},
+        GROUP_ID=#{receiverId},
+        CREATOR=#{sendId},
+        CREATOR_NAME=#{sendName}
+        where FILE_ID=#{fileId}
+    </update>
 </mapper>
