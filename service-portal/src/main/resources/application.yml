@@ -2,6 +2,10 @@
 spring:
   application:
       name: service-portal
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
 #  cloud:
 #      config:
 #        uri: http://10.12.97.45:8769
