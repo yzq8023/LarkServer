@@ -34,24 +34,14 @@ public class AuthController {
     @ResponseBody
     public ObjectRestResponse<?> createAuthenticationToken(
             @RequestBody JwtAuthenticationRequest authenticationRequest,HttpServletRequest request) throws Exception {
-        String dnname = request.getHeader("dnname");
-//        if(StringUtils.isEmpty(dnname)){
-//            throw new BaseException("请求头中无身份信息...");
-//        }
-//        dnname = new String (dnname.getBytes("iso8859-1"));
-//        String[] dnsplit = dnname.trim().split(",", 0);
-//        String cn,dc,t = null;
-//        for (String val:
-//                dnsplit) {
-//            val = val.trim();
-//            if(val.indexOf("t=")>-1||val.indexOf("T=")>-1){
-//                t = val.substring(2,val.length());
-//            }
-//        }
-//        log.info("登录用户***********"+t);
-//        String userId = t;
-        final String token = authService.login(dnname, defaultPassword);
-//        final String token = authService.login(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+        final String token;
+        String pid = request.getHeader("dnname");
+        if (pid==""||pid==null){
+            token = authService.login(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+        }else {
+            token = authService.login(pid, defaultPassword);
+        }
+
         return new ObjectRestResponse().data(new JwtAuthenticationResponse(token)).msg("获取token成功");
     }
 
