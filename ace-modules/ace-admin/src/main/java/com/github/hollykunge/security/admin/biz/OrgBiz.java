@@ -92,7 +92,7 @@ public class OrgBiz extends BaseBiz<OrgMapper, Org> {
     }
     private List<OrgUser> buildByRecursive(List<Org> orgs,Object root) {
         List<OrgUser> result = new ArrayList<>();
-        List<OrgUser> treeNodes ;
+        List<OrgUser> treeNodes;
         treeNodes = JSON.parseArray(JSON.toJSONString(orgs),OrgUser.class);
         for (int i = 0; i < treeNodes.size(); i++) {
             OrgUser treeNode = treeNodes.get(i);
