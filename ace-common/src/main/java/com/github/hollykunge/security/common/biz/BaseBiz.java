@@ -98,6 +98,11 @@ public abstract class BaseBiz<M extends Mapper<T>, T> {
         return new TableResultResponse<T>(result.getPageSize(), result.getPageNum() ,result.getPages(), result.getTotal(), list);
     }
 
+    /**
+     * 查询等于的内容
+     * @param query
+     * @return
+     */
     public TableResultResponse<T> selectByQueryEq(Query query) {
         Class<T> clazz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
         Example example = new Example(clazz);
@@ -112,6 +117,11 @@ public abstract class BaseBiz<M extends Mapper<T>, T> {
         return new TableResultResponse<T>(result.getPageSize(), result.getPageNum() ,result.getPages(), result.getTotal(), list);
     }
 
+    /**
+     * 查询不等于的内容
+     * @param query
+     * @return
+     */
     public TableResultResponse<T> selectByQueryNotEq(Query query) {
         Class<T> clazz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
         Example example = new Example(clazz);

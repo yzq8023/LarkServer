@@ -95,7 +95,7 @@ public class OrgController extends BaseController<OrgBiz, Org> {
         if(StringUtils.isEmpty(parentTreeId)){
             parentTreeId = AdminCommonConstant.ROOT;
         }
-        List<OrgUser> tree = baseBiz.getOrg(baseBiz.selectListAll(), parentTreeId);
+        List<OrgUser> tree = baseBiz.getOrg(parentTreeId);
         return new ListRestResponse("",tree.size(),tree);
     }
 
