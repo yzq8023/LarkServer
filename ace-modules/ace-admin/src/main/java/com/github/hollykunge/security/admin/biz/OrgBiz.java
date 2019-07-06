@@ -22,9 +22,7 @@ import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author 云雀小组
@@ -87,8 +85,11 @@ public class OrgBiz extends BaseBiz<OrgMapper, Org> {
         return null;
     }
 //    @Cache(key = "orgUsers{2}") TODO:有点问题 造成前端第二次刷新显示不正确
-    public List<OrgUser> getOrg(List<Org> orgs, String parentTreeId) {
-        return this.buildByRecursive(orgs, parentTreeId);
+    public List<OrgUser> getOrg(String parentTreeId) {
+        List<Org> orgs = this.selectListAll();
+        Collections.sort(orgs, Comparator.comparing(Org::getOrderId));
+        List<OrgUser> orgUserList = this.buildByRecursive(orgs, parentTreeId);
+        return orgUserList;
     }
     private List<OrgUser> buildByRecursive(List<Org> orgs,Object root) {
         List<OrgUser> result = new ArrayList<>();
@@ -104,7 +105,7 @@ public class OrgBiz extends BaseBiz<OrgMapper, Org> {
         }
         return result;
     }
-    private OrgUser  findChildren(OrgUser treeNode, List<OrgUser> treeNodes) {
+    private OrgUser findChildren(OrgUser treeNode, List<OrgUser> treeNodes) {
         for (OrgUser it : treeNodes) {
             if (treeNode.getId().equals(it.getParentId())) {
                 if (treeNode.getChildren()==null) {
@@ -116,6 +117,7 @@ public class OrgBiz extends BaseBiz<OrgMapper, Org> {
                     User params = new User();
                     params.setOrgCode(super.selectById(children.getId()).getOrgCode());
                     List<User> users = userBiz.selectList(params);
+                    Collections.sort(users, Comparator.comparing(User::getOrderId));
                     users.stream().forEach(user ->{
                         OrgUser orgUser = new OrgUser();
                         orgUser.setIcon(user.getAvatar());
@@ -128,9 +130,7 @@ public class OrgBiz extends BaseBiz<OrgMapper, Org> {
                 }
                 children.setScopedSlotsTitle("orgNode");
                 children.setOnline(null);
-                //todo:iocn数据库中没有字段
                 treeNode.add(children);
-
             }
         }
         return treeNode;

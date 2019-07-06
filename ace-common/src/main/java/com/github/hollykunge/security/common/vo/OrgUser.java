@@ -16,6 +16,8 @@ public class OrgUser extends TreeNode implements Serializable {
 
     private String key;
 
+    private Long order;
+
     private String title;
 
     private String icon;
