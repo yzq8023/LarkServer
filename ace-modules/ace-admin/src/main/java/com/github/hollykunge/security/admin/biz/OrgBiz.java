@@ -60,6 +60,7 @@ public class OrgBiz extends BaseBiz<OrgMapper, Org> {
             criteria.andNotEqualTo("pId",pid);
         }
         List<User> users = userMapper.selectByExample(userExample);
+        Collections.sort(users, Comparator.comparing(User::getOrderId));
         List<AdminUser> userList;
         userList = JSON.parseArray(JSON.toJSONString(users),AdminUser.class);
         return userList;
