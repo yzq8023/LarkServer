@@ -25,7 +25,7 @@ public class CommentController extends BaseController<CommentService, Comment> {
      */
     @RequestMapping(value = "feedBackComments", method = RequestMethod.GET)
     @ResponseBody
-    public ListRestResponse<List<Comment>> feedbackComments(@PathVariable String feedbackId){
+    public ListRestResponse<List<Comment>> feedbackComments(@RequestParam String feedbackId){
         List<Comment> comments = baseBiz.feedbackComments(feedbackId);
         return new ListRestResponse<List<Comment>>("",comments.size(),comments);
     }

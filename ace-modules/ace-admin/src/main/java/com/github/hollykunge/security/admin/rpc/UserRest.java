@@ -99,7 +99,7 @@ public class UserRest {
         if(StringUtils.isEmpty(parentTreeId)){
             parentTreeId = AdminCommonConstant.ROOT;
         }
-        List<OrgUser> tree = orgBiz.getOrg(orgBiz.selectListAll(), parentTreeId);
+        List<OrgUser> tree = orgBiz.getOrg(parentTreeId);
         return JSON.toJSONString(tree);
     }
 }

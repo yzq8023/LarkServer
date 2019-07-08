@@ -2,6 +2,10 @@
 spring:
   application:
       name: service-portal
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
 #  cloud:
 #      config:
 #        uri: http://10.12.97.45:8769
@@ -37,7 +41,7 @@ spring:
     maxOpenPreparedStatements: 20
   rabbitmq:
     #需要修改地址
-    host: 10.11.24.136
+    host: 127.0.0.1
     port: 5672
     username: hollykunge
     password: 123456
