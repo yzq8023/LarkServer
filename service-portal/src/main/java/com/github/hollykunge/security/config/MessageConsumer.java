@@ -63,7 +63,7 @@ public class MessageConsumer {
         messageEntity.setAvatar(contactVO.getAvatar());
         messageEntity.setFromUsername(contactVO.getName());
         messageEntity.setMsgSender(contactVO.getName());
-        messageEntity.setSendTime(this.stringToDate(contactVO.getTime(),"yyyy-MM-dd HH:mm"));
+        messageEntity.setSendTime(this.stringToDate(contactVO.getFullTime(),"yyyy-MM-dd HH:mm:ss"));
         MessageContent lastMessage = contactVO.getLastMessage();
         if(lastMessage == null){
             throw new BaseException("消费消息中没有最后一条消息实体类");

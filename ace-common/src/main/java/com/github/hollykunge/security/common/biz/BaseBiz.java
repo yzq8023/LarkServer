@@ -2,7 +2,6 @@ package com.github.hollykunge.security.common.biz;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.github.hollykunge.security.common.context.BaseContextHandler;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.hollykunge.security.common.util.EntityUtils;
 import com.github.hollykunge.security.common.util.Query;
@@ -10,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,6 +94,9 @@ public abstract class BaseBiz<M extends Mapper<T>, T> {
                 criteria.andLike(entry.getKey(), "%" + entry.getValue().toString() + "%");
             }
         }
+        if(this.isContantsCrtTime(clazz)){
+            example.setOrderByClause("CRT_TIME DESC");
+        }
         Page<Object> result = PageHelper.startPage(query.getPageNo(), query.getPageSize());
         List<T> list = mapper.selectByExample(example);
         return new TableResultResponse<T>(result.getPageSize(), result.getPageNum() ,list.size()/10+1, list.size(), list);
@@ -166,5 +169,17 @@ public abstract class BaseBiz<M extends Mapper<T>, T> {
 
 
     protected abstract String getPageName();
+
+    private boolean isContantsCrtTime(Class<T> t){
+        try {
+            Method crtTime = t.getMethod("getCrtTime");
+            if(crtTime != null){
+                return true;
+            }
+            return false;
+        } catch (NoSuchMethodException e) {
+            return false;
+        }
+    }
 
 }
