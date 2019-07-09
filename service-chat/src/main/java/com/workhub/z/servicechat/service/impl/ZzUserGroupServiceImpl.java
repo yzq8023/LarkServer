@@ -219,6 +219,7 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
 //                JSON.toJavaObject(JSON.parseObject(n.getMsg()), MessageContent.class);
 //                MessageContent testProcessInfo = (MessageContent)JSONObject.toBean(n.getMsg(), MessageContent.class);
                 contactVO.setLastMessage(JSON.toJavaObject(JSON.parseObject(n.getMsg()), MessageContent.class));
+                contactVO.setFullTime(new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(n.getSendTime()==null?(new Date()):n.getSendTime()));
                 if(new SimpleDateFormat("YYYY-MM-dd").format(n.getSendTime()).equals(new SimpleDateFormat("YYYY-MM-dd").format(new Date()))){//格式化为相同格式
                     contactVO.setTime(new SimpleDateFormat("hh:mm").format(n.getSendTime()));
                 }else {
@@ -236,6 +237,7 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
                 UserInfo userInfo = iUserService.info(n.getMsgSener());
                 contactVO.setId(n.getMsgSener());
                 contactVO.setLastMessage(JSON.toJavaObject(JSON.parseObject(n.getMsg()), MessageContent.class));
+                contactVO.setFullTime(new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(n.getSendTime()==null?(new Date()):n.getSendTime()));
                 if(new SimpleDateFormat("YYYY-MM-dd").format(n.getSendTime()).equals(new SimpleDateFormat("YYYY-MM-dd").format(new Date()))){//格式化为相同格式
                     contactVO.setTime(new SimpleDateFormat("hh:mm").format(n.getSendTime()));
                 }else {
