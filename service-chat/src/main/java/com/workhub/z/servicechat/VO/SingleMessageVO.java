@@ -24,6 +24,10 @@ public class SingleMessageVO {
         private ContentVO content;
         //   消息发送时间
         private Date time;
+        //   消息发送时间（当天显示时间，昨天以前显示日志）
+        private String sendTimeShort;
+        //   消息发送时间（yyyy-MM-dd HH:mm:ss）
+        private String sendTimeFull;
         //   是否群组
         private boolean isGroup;
 
@@ -114,4 +118,20 @@ public class SingleMessageVO {
         public void setGroup(boolean group) {
             isGroup = group;
         }
+
+    public String getSendTimeShort() {
+        return sendTimeShort;
+    }
+
+    public void setSendTimeShort(String sendTimeShort) {
+        this.sendTimeShort = sendTimeShort;
+    }
+
+    public String getSendTimeFull() {
+        return sendTimeFull;
+    }
+
+    public void setSendTimeFull(String sendTimeFull) {
+        this.sendTimeFull = sendTimeFull;
+    }
 }

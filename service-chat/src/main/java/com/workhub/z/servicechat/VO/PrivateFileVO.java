@@ -12,7 +12,8 @@ public class PrivateFileVO {
 
     //上传人
     private String reviser;
-
+    //上传人姓名
+    private String reviserName;
     //文件密级
     private String levels;
 
@@ -65,5 +66,13 @@ public class PrivateFileVO {
 
     public void setReceiver(String receiver) {
         this.receiver = receiver;
+    }
+
+    public String getReviserName() {
+        return reviserName;
+    }
+
+    public void setReviserName(String reviserName) {
+        this.reviserName = reviserName;
     }
 }

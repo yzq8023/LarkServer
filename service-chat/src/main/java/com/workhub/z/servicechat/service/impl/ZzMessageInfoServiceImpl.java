@@ -15,8 +15,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import static com.workhub.z.servicechat.config.common.aggregation;
@@ -168,10 +170,27 @@ public class ZzMessageInfoServiceImpl implements ZzMessageInfoService {
         }else{
             dataList=this.zzMessageInfoDao.queryHistoryMessageForSinglePrivate(userId,contactId);
         }
+        SimpleDateFormat fullf = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+        SimpleDateFormat dayf = new SimpleDateFormat("YYYY-MM-dd");
+        SimpleDateFormat shortTimef = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat shortDayf = new SimpleDateFormat("MM-dd");
         PageInfo pageInfo = new PageInfo<>(dataList);
         List<SingleMessageVO> voList=new ArrayList<>();
         for(String temp:dataList){
             SingleMessageVO vo = JSON.parseObject(temp, SingleMessageVO.class);
+            Date time = vo.getTime();//发送时间
+            String shortTime = "";//当天显示十分，昨天以前显示日期
+            String fullTime = "";//全日期
+            if(time!=null){
+                fullTime=fullf.format(time);
+                if(dayf.format(time).equals(dayf.format(new Date()))){//格式化为相同格式
+                    shortTime=shortTimef.format(time);
+                }else {
+                    shortTime=shortDayf.format(time);
+                }
+            }
+            vo.setSendTimeShort(shortTime);
+            vo.setSendTimeFull(fullTime);
             voList.add(vo);
         }
         try {
