@@ -83,12 +83,12 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
     }
 
     @Override
-//    @CacheClear(keys = {"permission:menu", "permission:u","frontPermission{1}"})
+    @CacheClear(keys = {"permission:menu", "permission:u","frontPermission{1}"})
     public void deleteById(String id) {
         super.deleteById(id);
     }
 
-//    @CacheClear(keys = {"permission:menu", "permission:u","frontPermission{1}"})
+    @CacheClear(keys = {"permission:menu", "permission:u","frontPermission{1}"})
     public void modifyAuthorityMenu(String roleId, List<AdminPermission> permissionList) {
         if(StringUtils.isEmpty(roleId)||permissionList.isEmpty()){
             throw new BaseException("args is null...");
@@ -241,7 +241,7 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
      * @param roleId 角色id
      * @return 
      */
-//    @Cache(key = "frontPermission{1}")
+    @Cache(key = "frontPermission{1}")
     public List<FrontPermission> frontAuthorityMenu(String roleId) {
         //定义固定返回参数
         List<FrontPermission> resultPermission = new ArrayList<>();
