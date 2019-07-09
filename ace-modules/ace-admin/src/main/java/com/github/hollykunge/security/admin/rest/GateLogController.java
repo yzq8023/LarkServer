@@ -19,7 +19,6 @@ import tk.mybatis.mapper.entity.Example;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +37,6 @@ public class GateLogController extends BaseController<GateLogBiz,GateLog> {
     @ResponseBody
     @Override
     public TableResultResponse<GateLog> page(@RequestParam Map<String, Object> params){
-        Example example = new Example(GateLog.class);
         String userId = null;
         try {
             userId = URLDecoder.decode(request.getHeader("userName"), "UTF-8");
