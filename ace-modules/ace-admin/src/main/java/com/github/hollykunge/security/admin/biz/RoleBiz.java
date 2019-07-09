@@ -248,9 +248,6 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
         //获取权限下的menu
         List<Menu> menus = menuMapper.selectMenuByRoleId(roleId);
 
-        if (menus.size()<12){
-            String sss="";
-        }
         for (Menu menu:menus){
             //roleId下的element
             List<Element> elementList = elementMapper.getAuthorityMenuElement(roleId, menu.getId(), AdminCommonConstant.RESOURCE_TYPE_BTN);
