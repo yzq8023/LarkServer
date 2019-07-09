@@ -17,8 +17,52 @@ public class ContactVO {
     private boolean isTop;//是否置顶
     private boolean isMute;//
     private boolean isGroup;//群组消息
+    private int memberNum;//群组成员数/在线人数
+    private int secretLevel;//群组密级
 
-    // TODO: 2019/6/19 消息发送者名称  sender
+    public boolean isAtMe() {
+        return atMe;
+    }
+
+    public boolean isTop() {
+        return isTop;
+    }
+
+    public void setTop(boolean top) {
+        isTop = top;
+    }
+
+    public boolean isMute() {
+        return isMute;
+    }
+
+    public void setMute(boolean mute) {
+        isMute = mute;
+    }
+
+    public boolean isGroup() {
+        return isGroup;
+    }
+
+    public void setGroup(boolean group) {
+        isGroup = group;
+    }
+
+    public int getMemberNum() {
+        return memberNum;
+    }
+
+    public void setMemberNum(int memberNum) {
+        this.memberNum = memberNum;
+    }
+
+    public int getSecretLevel() {
+        return secretLevel;
+    }
+
+    public void setSecretLevel(int secretLevel) {
+        this.secretLevel = secretLevel;
+    }
 
     public String getSender() {
         return sender;

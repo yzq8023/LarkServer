@@ -230,6 +230,13 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
                 contactVO.setAtMe(false);
                 contactVO.setIsTop(false);
                 contactVO.setIsMute(false);
+//               群组密级
+                contactVO.setSecretLevel(Integer.parseInt(group.getLevels()));
+                try {
+                    contactVO.setMemberNum(Math.toIntExact(this.zzGroupService.groupUserListTotal(group.getGroupId())));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 contactVO.setIsGroup(n.getTableType().equals("GROUP"));
                 contactVO.setUnreadNum(zzMsgReadRelationService.queryNoReadMsgBySenderAndReceiver(group.getGroupId(),id));
             } else if (n.getTableType().equals("USER")) {
