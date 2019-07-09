@@ -9,6 +9,7 @@ public class ContactVO {
     private String id;//用户id
     private String name;//名称
     private String time;//最近联系时间
+    private String fullTime;//最近联系时间-全，用来给mq消费端
     private MessageContent lastMessage;//最后一条消息
     private String sender;//消息发送人
     private String avatar;//头像
@@ -98,4 +99,11 @@ public class ContactVO {
         return isGroup;
     }
 
+    public String getFullTime() {
+        return fullTime;
+    }
+
+    public void setFullTime(String fullTime) {
+        this.fullTime = fullTime;
+    }
 }
