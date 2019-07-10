@@ -3,7 +3,9 @@ package com.github.hollykunge.security.portal.controller;
 import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
+import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.hollykunge.security.common.rest.BaseController;
+import com.github.hollykunge.security.common.util.Query;
 import com.github.hollykunge.security.entity.UserCard;
 import com.github.hollykunge.security.entity.UserCommonTools;
 import com.github.hollykunge.security.portal.service.UserCommonToolsService;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户设置常用工具类接口
@@ -30,13 +33,15 @@ public class UserCommonToolsController extends BaseController<UserCommonToolsSer
      */
     @RequestMapping(value = "/allTools", method = RequestMethod.GET)
     @ResponseBody
-    public ListRestResponse<List<UserCommonToolsVO>> allCommonTools(@RequestParam String orgCode) {
+    public TableResultResponse<UserCommonToolsVO> allCommonTools(@RequestParam Map<String, Object> params) {
         String userID =  request.getHeader("userId");
         if(StringUtils.isEmpty(userID)){
             throw new BaseException("request contains no user...");
         }
-        List<UserCommonToolsVO> userCommonToolsVOS = baseBiz.allCommonTools(userID,orgCode);
-        return new ListRestResponse("",userCommonToolsVOS.size(),userCommonToolsVOS);
+        //查询列表数据
+        Query query = new Query(params);
+        TableResultResponse<UserCommonToolsVO> tableResult = baseBiz.userCommonToolsTable(query, userID);
+        return tableResult;
     }
 
     /**
