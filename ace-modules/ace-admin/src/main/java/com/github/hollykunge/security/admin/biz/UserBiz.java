@@ -60,6 +60,9 @@ public class UserBiz extends BaseBiz<UserMapper, User> {
         String password = new BCryptPasswordEncoder(UserConstant.PW_ENCORDER_SALT).encode(defaultPassword);
         entity.setPassword(password);
         EntityUtils.setCreatAndUpdatInfo(entity);
+        //用户新增添加默认字段
+        entity.setDeleted("0");
+        entity.setOrderId(Long.parseLong(99999+""));
         mapper.insertSelective(entity);
         return entity;
     }

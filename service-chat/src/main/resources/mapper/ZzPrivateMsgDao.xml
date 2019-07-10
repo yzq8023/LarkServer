@@ -22,6 +22,7 @@
         <result property="reviser" column="REVISER" jdbcType="VARCHAR"></result>
         <result property="levels" column="LEVELS" jdbcType="VARCHAR"></result>
         <result property="receiver" column="RECEIVER" jdbcType="VARCHAR"></result>
+        <result property="reviserName" column="REVISERNAME" jdbcType="VARCHAR"></result>
     </resultMap>
     <!--查询单个-->
     <select id="queryById" resultMap="ZzPrivateMsgMap">
@@ -247,14 +248,15 @@
             ZGF.FILE_NAME||decode(nvl(ZGF.FILE_EXT,'null'),'null','','.'||ZGF.FILE_EXT) as FILE_NAME,
             ZGF.LEVELS AS LEVELS,
             ZGF.CREATOR AS REVISER,
+            ZGF.CREATOR_NAME AS REVISERNAME,
             TO_CHAR(ZGF.CREATE_TIME, 'YYYY-MM-DD HH24:MI:SS') AS TIME
        FROM ZZ_GROUP_FILE ZGF
       WHERE ZGF.SEND_FLG = '1'
         <if test="userId != null and userId != ''">
-            and ZGF.CREATOR  = #{userId}
+            and (ZGF.CREATOR  = #{userId} or ZGF.GROUP_ID  = #{userId})
         </if>
         <if test="receiverId != null and receiverId != ''">
-            and ZGF.GROUP_ID  = #{receiverId}
+            and (ZGF.GROUP_ID  = #{receiverId} or ZGF.CREATOR  = #{receiverId})
         </if>
       ORDER BY ZGF.CREATE_TIME DESC
     </select>

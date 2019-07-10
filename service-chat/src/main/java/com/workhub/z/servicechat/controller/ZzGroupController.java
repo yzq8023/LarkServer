@@ -71,6 +71,8 @@ public class ZzGroupController  {
         groupInfo = (GroupInfoVO)ZzGroupToGroupInfo(this.zzGroupService.queryById(groupId));
         groupInfo.setMemberNum(Math.toIntExact(this.zzGroupService.groupUserListTotal(groupId)));
         common.putVoNullStringToEmptyString(groupInfo);
+        UserInfo userInfo =  iUserService.info(groupInfo.getCreator());
+        groupInfo.setCreatorName(userInfo==null?"":userInfo.getName());
         objectRestResponse.data(groupInfo);
         return objectRestResponse;
     }

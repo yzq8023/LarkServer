@@ -127,7 +127,6 @@
     </select>
     <!--根据最近联系人id和当前登录人获取最近100条消息-->
 
-
     <select id="queryHistoryMessageForSinglePrivate" resultType="java.lang.String">
         select content from (
             select content,createtime
@@ -146,6 +145,7 @@
               ) a
          order by a.createtime desc
     </select>
+
     <select id="queryHistoryMessageForSingleGroup" resultType="java.lang.String">
         select content
         from zz_message_info mes
