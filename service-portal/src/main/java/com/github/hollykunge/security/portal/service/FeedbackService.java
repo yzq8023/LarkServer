@@ -29,19 +29,4 @@ public class FeedbackService extends BaseBiz<FeedbackMapper, Feedback> {
     protected String getPageName() {
         return null;
     }
-
-    @Override
-    public TableResultResponse<Feedback> selectByQuery(Query query) {
-        Class<Feedback> clazz = (Class<Feedback>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-        Example example = new Example(clazz);
-        if(query.entrySet().size()>0) {
-            Example.Criteria criteria = example.createCriteria();
-            for (Map.Entry<String, Object> entry : query.entrySet()) {
-                criteria.andLike(entry.getKey(), "%" + entry.getValue().toString() + "%");
-            }
-        }
-        Page<Object> result = PageHelper.startPage(query.getPageNo(), query.getPageSize());
-        List<Feedback> list = mapper.selectByExample(example);
-        return new TableResultResponse<Feedback>(result.getPageSize(), result.getPageNum() ,list.size()/10+1, list.size(), list);
-    }
 }
