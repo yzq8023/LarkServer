@@ -3,6 +3,7 @@ package com.github.hollykunge.security.admin.config.mq;
 import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
 import com.github.hollykunge.security.admin.entity.Notice;
 import com.github.hollykunge.security.admin.mapper.NoticeMapper;
+import com.github.hollykunge.security.common.constant.CommonConstants;
 import com.github.hollykunge.security.common.exception.BaseException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Binding;
@@ -52,7 +53,7 @@ public class RabbitMqConfig {
     @Bean
     @Order(value = 6)
     public Binding binding_portal() {
-        Binding binding = BindingBuilder.bind(queueConfig.noticeQueue()).to(exchangeConfig.fanoutExchange());
+        Binding binding = BindingBuilder.bind(queueConfig.noticeQueue()).to(exchangeConfig.directExchange()).with(CommonConstants.NOTICE_TOPORTAL_ROTEING_KEY);
         return binding;
     }
     //// 死信队列与死信交换机进行绑定
@@ -69,7 +70,7 @@ public class RabbitMqConfig {
     @Bean
     @Order(value = 8)
     public Binding binding_chat() {
-        Binding binding = BindingBuilder.bind(queueConfig.noticToChatQueue()).to(exchangeConfig.fanoutExchange());
+        Binding binding = BindingBuilder.bind(queueConfig.noticToChatQueue()).to(exchangeConfig.directExchange()).with(CommonConstants.NOTICE_TOCHAT_ROTEING_KEY);
         return binding;
     }
 

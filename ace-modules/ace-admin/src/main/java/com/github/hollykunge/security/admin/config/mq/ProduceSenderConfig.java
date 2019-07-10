@@ -34,7 +34,10 @@ public class ProduceSenderConfig{
     public void send(String id,Object message) {
         //消息id
         CorrelationData correlationId = new CorrelationData(id);
-        noticRabbitTemplate.convertAndSend(CommonConstants.NOTICE_EXCHANGE, "",message, correlationId);
+        //发送到门户服务
+        noticRabbitTemplate.convertAndSend(CommonConstants.NOTICE_EXCHANGE, CommonConstants.NOTICE_TOPORTAL_ROTEING_KEY,message, correlationId);
+        //发送到研讨服务
+        noticRabbitTemplate.convertAndSend(CommonConstants.NOTICE_EXCHANGE, CommonConstants.NOTICE_TOCHAT_ROTEING_KEY,message, correlationId);
     }
 
     /**
@@ -45,6 +48,6 @@ public class ProduceSenderConfig{
     public void sendAndNoConfirm(String id,Object message) {
         //消息id
         CorrelationData correlationId = new CorrelationData(id);
-        hotMapRabbitTemplate.convertAndSend(CommonConstants.NOTICE_EXCHANGE, "",message, correlationId);
+        hotMapRabbitTemplate.convertAndSend(CommonConstants.NOTICE_EXCHANGE, CommonConstants.NOTICE_TOPORTAL_ROTEING_KEY,message, correlationId);
     }
 }
