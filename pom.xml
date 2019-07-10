@@ -16,7 +16,7 @@
     <properties>
         <docker.image.prefix>ag</docker.image.prefix>
         <docker.plugin.version>0.4.13</docker.plugin.version>
-        <mapper.version>3.4.0</mapper.version>
+        <mapper.version>3.4.1</mapper.version>
         <maven.compile.source>1.8</maven.compile.source>
         <maven.compile.target>1.8</maven.compile.target>
     </properties>
