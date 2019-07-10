@@ -57,19 +57,4 @@ public class NoticeService extends BaseBiz<NoticeMapper, Notice> {
         Collections.sort(notices);
         return notices;
     }
-
-    @Override
-    public TableResultResponse<Notice> selectByQuery(Query query) {
-        Class<Notice> clazz = (Class<Notice>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-        Example example = new Example(clazz);
-        if(query.entrySet().size()>0) {
-            Example.Criteria criteria = example.createCriteria();
-            for (Map.Entry<String, Object> entry : query.entrySet()) {
-                criteria.andLike(entry.getKey(), "%" + entry.getValue().toString() + "%");
-            }
-        }
-        Page<Object> result = PageHelper.startPage(query.getPageNo(), query.getPageSize());
-        List<Notice> list = mapper.selectByExample(example);
-        return new TableResultResponse<Notice>(result.getPageSize(), result.getPageNum() ,list.size()/10+1, list.size(), list);
-    }
 }
