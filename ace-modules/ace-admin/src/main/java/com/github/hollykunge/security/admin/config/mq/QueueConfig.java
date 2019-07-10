@@ -29,6 +29,13 @@ public class QueueConfig {
 
     @Bean
     @Order(value = 4)
+    public Queue noticToChatQueue() {
+        Queue queue = new Queue(CommonConstants.NOTICE_TOWECHAT_QUEUE_NAMA, true);
+        return queue;
+    }
+
+    @Bean
+    @Order(value = 5)
     public Queue noticeQueue() {
 
         // 消息发布队列绑定死信（备胎交换机和备胎队列）
