@@ -27,6 +27,10 @@ public class CommonConstants {
     /** 公告队列名称 */
     public static final String NOTICE_QUEUE_NAMA = "noticeQueue";
     /**
+     * 公告推送到研讨服务队列名称
+     */
+    public static final String NOTICE_TOWECHAT_QUEUE_NAMA = "noticeToChatService";
+    /**
      * 通知死信队列名称
      */
     public final static String NOTICE_DEAD_QUEUENAME = "notic_dead_queue";

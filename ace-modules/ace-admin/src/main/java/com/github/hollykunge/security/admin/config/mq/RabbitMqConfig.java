@@ -50,15 +50,27 @@ public class RabbitMqConfig {
      将消息队列和交换机进行绑定
      */
     @Bean
-    @Order(value = 5)
+    @Order(value = 6)
     public Binding binding_portal() {
-        return BindingBuilder.bind(queueConfig.noticeQueue()).to(exchangeConfig.fanoutExchange());
+        Binding binding = BindingBuilder.bind(queueConfig.noticeQueue()).to(exchangeConfig.fanoutExchange());
+        return binding;
     }
     //// 死信队列与死信交换机进行绑定
     @Bean
-    @Order(value = 6)
+    @Order(value = 7)
     public Binding bindingDeadExchange() {
         return BindingBuilder.bind(queueConfig.noticDeadQueue()).to(exchangeConfig.noticDeadExchange()).with(AdminCommonConstant.DEAD_LETTER_ROUTING_KEY);
+    }
+
+    /**
+     * 通知公告发送到研讨服务队列
+     * @return
+     */
+    @Bean
+    @Order(value = 8)
+    public Binding binding_chat() {
+        Binding binding = BindingBuilder.bind(queueConfig.noticToChatQueue()).to(exchangeConfig.fanoutExchange());
+        return binding;
     }
 
     /**
