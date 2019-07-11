@@ -99,7 +99,7 @@ public abstract class BaseBiz<M extends Mapper<T>, T> {
         }
         Page<Object> result = PageHelper.startPage(query.getPageNo(), query.getPageSize());
         List<T> list = mapper.selectByExample(example);
-        return new TableResultResponse<T>(result.getPageSize(), result.getPageNum() ,list.size()/10+1, list.size(), list);
+        return new TableResultResponse<T>(result.getPageSize(), result.getPageNum() ,result.getPages(), result.getTotal(), list);
     }
 
     /**
@@ -158,7 +158,7 @@ public abstract class BaseBiz<M extends Mapper<T>, T> {
                     criteria.andNotEqualTo(entry.getKey(),  valueList.get(0) ).andNotEqualTo(entry.getKey(),  valueList.get(1));
                 }
                 else if (type.equals("Security")){
-                    criteria.andEqualTo(entry.getKey(),  valueList.get(0) ).andEqualTo(entry.getKey(),  valueList.get(1) );
+                    criteria.orEqualTo(entry.getKey(),  valueList.get(0) ).orEqualTo(entry.getKey(),  valueList.get(1) );
                 }
             }
         }

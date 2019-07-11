@@ -25,9 +25,9 @@ public class ExchangeConfig {
      */
     @Bean
     @Order(value = 2)
-    public FanoutExchange fanoutExchange(){
-        FanoutExchange fanoutExchange = new FanoutExchange(CommonConstants.NOTICE_EXCHANGE, true, false);
-        return fanoutExchange;
+    public DirectExchange directExchange(){
+        DirectExchange directExchange = new DirectExchange(CommonConstants.NOTICE_EXCHANGE, true, false);
+        return directExchange;
     }
 
     // 创建死信交换机
