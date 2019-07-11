@@ -50,7 +50,7 @@ spring:
           test-on-borrow: false
           test-on-return: false
           max-open-prepared-statements: 20
-          filter: stat,wall,log4j
+          filters: stat,wall,log4j
 #    rabbitmq:
 #      host: ${RABBIT_MQ_HOST:localhost}
 #      port:  ${RABBIT_MQ_PORT:5672}
