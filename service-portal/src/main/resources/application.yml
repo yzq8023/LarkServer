@@ -39,7 +39,7 @@ spring:
       test-on-borrow: false
       test-on-return: false
       max-open-prepared-statements: 20
-      filter: stat,wall,log4j2
+      filter: stat,wall,log4j
 #    filters: stat
 #    maxActive: 20
 #    initialSize: 1
