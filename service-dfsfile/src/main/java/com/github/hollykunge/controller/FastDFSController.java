@@ -35,6 +35,18 @@ public class FastDFSController {
         String imgUrl = dfsClient.uploadFile(file);
         return new ObjectRestResponse<>().data(imgUrl).rel(true);
     }
+    /**
+     * 上传加密文件接口
+     * @param file file文件
+     * @return 文件访问路径
+     * @throws Exception
+     */
+    @PostMapping("/sensitiveUpload")
+    @ResponseBody
+    public ObjectRestResponse<String> uploadSensitiveFile(@RequestParam("file") MultipartFile file) throws Exception {
+        String imgUrl = dfsClient.uploadSensitiveFile(file);
+        return new ObjectRestResponse<>().data(imgUrl).rel(true);
+    }
 
     /**
      * 删除文件接口
@@ -59,6 +71,22 @@ public class FastDFSController {
     @GetMapping("/download")
     public void  download(@RequestParam String fileUrl,@RequestParam String fileName, HttpServletResponse response) throws Exception{
         byte[] data = dfsClient.download(fileUrl);
+        response.setCharacterEncoding("UTF-8");
+        response.setHeader("Content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+        ServletOutputStream outputStream = response.getOutputStream();
+        IOUtils.write(data, outputStream);
+    }
+
+    /**
+     * 下载加密文件
+     * @param fileUrl
+     * @param fileName
+     * @param response
+     * @throws Exception
+     */
+    @GetMapping("/sensitiveDownload")
+    public void  downloadSensitiveFile(@RequestParam String fileUrl,@RequestParam String fileName, HttpServletResponse response) throws Exception{
+        byte[] data = dfsClient.downloadSensitiveFile(fileUrl);
         response.setCharacterEncoding("UTF-8");
         response.setHeader("Content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
         ServletOutputStream outputStream = response.getOutputStream();
