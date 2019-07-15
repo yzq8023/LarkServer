@@ -45,6 +45,12 @@ public class AuthController {
         return new ObjectRestResponse().data(new JwtAuthenticationResponse(token)).msg("获取token成功");
     }
 
+    /**
+     * 在用户注销时清除token
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "logout", method = RequestMethod.GET)
     @ResponseBody
     public ObjectRestResponse<?> removeAuthenticationToken(HttpServletRequest request) throws Exception {
