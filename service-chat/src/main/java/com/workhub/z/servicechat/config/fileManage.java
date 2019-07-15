@@ -96,6 +96,14 @@ public class fileManage {
     public static HttpServletResponse downloadUploadFile(HttpServletResponse response,
                                                    String filePath, String fileName) throws Exception {
         File file = new File(filePath);
+        String newFilePath="";//解密文件路径
+        if(file.exists()){//解密
+            newFilePath = EncryptionAndDeciphering.decipherFile(file);
+        }
+        if("0".equals(newFilePath) || "-1".equals(newFilePath)){
+            return response;
+        }
+        File newFile= new File(newFilePath);
         response.setContentType("application/x-download");
         response.setHeader("Pragma", "public");
         response.setHeader("Cache-Control",
@@ -116,7 +124,7 @@ public class fileManage {
 
         try {
             out = response.getOutputStream();
-            in = new FileInputStream(file);
+            in = new FileInputStream(newFile);
             int len = in.available();
             byte[] b = new byte[len];
             in.read(b);
@@ -131,6 +139,10 @@ public class fileManage {
             }
             if (out != null) {
                 out.close();
+            }
+            //解密文件删除
+            if(newFile.exists()){
+                newFile.delete();
             }
         }
         return response;
@@ -169,7 +181,9 @@ public class fileManage {
             throw new RuntimeException("上传文件超过" + file_size  + "M");
         }
         createFolder( path);
-        file.transferTo(new File(path + "/" + filename));
+        File diskFile=new File(path + "/" + filename);
+        file.transferTo(diskFile);
+        EncryptionAndDeciphering.encryptFile(diskFile);//加密
     }
     //创建文件夹
     public static void createFolder(String path) {
