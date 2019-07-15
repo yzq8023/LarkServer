@@ -183,8 +183,11 @@ public class AdminAccessFilter extends ZuulFilter {
         ctx.addZuulRequestHeader("userId", user.getId());
         ctx.addZuulRequestHeader("userName", URLEncoder.encode(user.getName()));
         ctx.addZuulRequestHeader("userHost", ClientUtil.getClientIp(ctx.getRequest()));
-        LogInfo logInfo = new LogInfo(pm.getTitle(), ctx.getRequest().getMethod(), pm.getUri(), new Date(), user.getId(), user.getName(), host);
-        DBLog.getInstance().setLogService(logService).offerQueue(logInfo);
+        //标识已经成功
+//        LogInfo logInfo = new LogInfo(pm.getTitle(), ctx.getRequest().getMethod(), pm.getUri(), new Date(), user.getId(), user.getName(), host,"0");
+//        DBLog.getInstance().setLogService(logService).offerQueue(logInfo);
+        BaseContextHandler.set("pm",pm);
+        BaseContextHandler.set("user",user);
     }
 
     /**
