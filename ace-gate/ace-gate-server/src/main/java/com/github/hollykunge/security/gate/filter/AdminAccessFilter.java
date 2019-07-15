@@ -131,9 +131,9 @@ public class AdminAccessFilter extends ZuulFilter {
                 pId = val.substring(2,val.length());
             }
         }
-        log.info("登录用户***********"+pId);
+
         //将dnname设置为身份证信息
-        ctx.addZuulRequestHeader(CommonConstants.PERSON_ID_ARG,pId);
+        ctx.addZuulRequestHeader(CommonConstants.PERSON_ID_ARG,pId.toLowerCase());
         // 不进行拦截的地址
         if (isStartWith(requestUri)) {
             return null;
