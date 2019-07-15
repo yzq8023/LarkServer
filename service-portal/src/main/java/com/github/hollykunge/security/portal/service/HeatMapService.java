@@ -31,7 +31,7 @@ public class HeatMapService extends BaseBiz<HeatMapMapper, HeatMap> {
         return null;
     }
 
-    public List<HeatMapVO> getHeatMap(List<HeatMap> heatMapList) {
+    public List<String[]> getHeatMap(List<HeatMap> heatMapList) {
         SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
         Calendar c = Calendar.getInstance();
 
@@ -39,7 +39,7 @@ public class HeatMapService extends BaseBiz<HeatMapMapper, HeatMap> {
         c.add(Calendar.YEAR, -1);
         Date oneYearAgo = c.getTime();
         Date today = new Date();
-        List<HeatMapVO> heatMaps = new ArrayList<>();
+        List<String[]> heatMaps = new ArrayList<>();
         try {
             heatMaps = getHeatMapData(ft.format(oneYearAgo), ft.format(today), heatMapList);
 
@@ -60,7 +60,7 @@ public class HeatMapService extends BaseBiz<HeatMapMapper, HeatMap> {
      * "day": 3,
      * "week": "0"
      */
-    private List<HeatMapVO> getHeatMapData(String dBegin, String dEnd, List<HeatMap> heatMapList) throws ParseException {
+    private List<String[]> getHeatMapData(String dBegin, String dEnd, List<HeatMap> heatMapList) throws ParseException {
         //日期工具类准备
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -73,15 +73,14 @@ public class HeatMapService extends BaseBiz<HeatMapMapper, HeatMap> {
         calEnd.setTime(format.parse(dEnd));
 
         //装返回的日期集合容器
-        List<HeatMapVO> heatMaps = new ArrayList<HeatMapVO>();
+        List<String[]> heatMaps = new ArrayList<String[]>();
         // 每次循环给calBegin日期加一天，直到calBegin.getTime()时间等于dEnd
         while (format.parse(dEnd).after(calBegin.getTime())) {
-            HeatMapVO heatMap = new HeatMapVO();
+            String[] calendarData = new String[]{"2019-07-11",0+""};
             // 根据日历的规则，为给定的日历字段添加或减去指定的时间量
             calBegin.add(Calendar.DAY_OF_MONTH, 1);
             //这个while循环统一将commits字段赋值为0
-            heatMap.setCommits(0);
-            heatMap.setDate(format.format(calBegin.getTime()));
+            calendarData[0] = format.format(calBegin.getTime());
             boolean isConstans = heatMapList.parallelStream().anyMatch(new Predicate<HeatMap>() {
                 @Override
                 public boolean test(HeatMap heatMap) {
@@ -91,11 +90,11 @@ public class HeatMapService extends BaseBiz<HeatMapMapper, HeatMap> {
             if(isConstans){
                 for(HeatMap heatMap1 : heatMapList){
                     if(heatMap1.getMapDate().compareTo(calBegin.getTime()) == 0){
-                        heatMap.setCommits(heatMap1.getCommits());
+                        calendarData[1] = heatMap1.getCommits()+"";
                     }
                 }
             }
-            heatMaps.add(heatMap);
+            heatMaps.add(calendarData);
         }
         return heatMaps;
     }
