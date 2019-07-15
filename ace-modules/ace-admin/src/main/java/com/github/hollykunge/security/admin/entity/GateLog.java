@@ -33,4 +33,7 @@ public class GateLog {
 
     @Column(name = "CRT_HOST")
     private String crtHost;
+
+    @Column(name = "IS_SUCCESS")
+    private String isSuccess;
 }
