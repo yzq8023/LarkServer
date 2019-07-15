@@ -12,9 +12,9 @@ import lombok.Data;
 public class HeatMapVO {
     private Integer commits;
     private String date;
-    private Integer day;
-    private Integer month;
-    private String week;
-    private Boolean lastWeek;
-    private Boolean lastDay;
+//    private Integer day;
+//    private Integer month;
+//    private String week;
+//    private Boolean lastWeek;
+//    private Boolean lastDay;
 }
