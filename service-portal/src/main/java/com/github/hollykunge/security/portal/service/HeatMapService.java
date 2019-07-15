@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * 工作热力图业务实现
@@ -72,31 +74,27 @@ public class HeatMapService extends BaseBiz<HeatMapMapper, HeatMap> {
 
         //装返回的日期集合容器
         List<HeatMapVO> heatMaps = new ArrayList<HeatMapVO>();
-
         // 每次循环给calBegin日期加一天，直到calBegin.getTime()时间等于dEnd
         while (format.parse(dEnd).after(calBegin.getTime())) {
-
             HeatMapVO heatMap = new HeatMapVO();
             // 根据日历的规则，为给定的日历字段添加或减去指定的时间量
             calBegin.add(Calendar.DAY_OF_MONTH, 1);
-            for (HeatMap heatMap1 : heatMapList) {
-                if (heatMap1.equals(calBegin)) {
-                    heatMap.setCommits(heatMap1.getCommits());
-                }else {
-                    heatMap.setCommits(0);
+            //这个while循环统一将commits字段赋值为0
+            heatMap.setCommits(0);
+            heatMap.setDate(format.format(calBegin.getTime()));
+            boolean isConstans = heatMapList.parallelStream().anyMatch(new Predicate<HeatMap>() {
+                @Override
+                public boolean test(HeatMap heatMap) {
+                    return heatMap.getMapDate().compareTo(calBegin.getTime()) == 0;
+                }
+            });
+            if(isConstans){
+                for(HeatMap heatMap1 : heatMapList){
+                    if(heatMap1.getMapDate().compareTo(calBegin.getTime()) == 0){
+                        heatMap.setCommits(heatMap1.getCommits());
+                    }
                 }
             }
-            heatMap.setDate(format.format(calBegin.getTime()));
-            heatMap.setDay(calBegin.get(Calendar.DAY_OF_WEEK) - 1);
-            heatMap.setMonth(calBegin.get(Calendar.MONTH));
-            heatMap.setWeek(String.valueOf(calBegin.get(Calendar.WEEK_OF_YEAR) - 1));
-            if (isLastDayOfMonth(format.parse(dBegin))){
-                heatMap.setLastDay(true);
-            }
-            if (isLastWeekOfMonth(format.parse(dBegin))){
-                heatMap.setLastWeek(true);
-            }
-
             heatMaps.add(heatMap);
         }
         return heatMaps;
@@ -122,7 +120,7 @@ public class HeatMapService extends BaseBiz<HeatMapMapper, HeatMap> {
      * @param date 判断日期
      * @return
      */
-    private Boolean isLastWeekOfMonth(Date date) {
+    public static Boolean isLastWeekOfMonth(Date date) {
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM");
         String value1=sdf1.format(date);
@@ -141,5 +139,15 @@ public class HeatMapService extends BaseBiz<HeatMapMapper, HeatMap> {
             return true;
         }
         return false;
+    }
+
+    public static void main(String[] args) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date parse = dateFormat.parse("2019-06-29 10:10:10");
+            System.out.println(isLastWeekOfMonth(parse));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }
