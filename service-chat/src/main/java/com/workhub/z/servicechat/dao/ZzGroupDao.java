@@ -1,11 +1,13 @@
 package com.workhub.z.servicechat.dao;
 
 import com.workhub.z.servicechat.VO.GroupUserListVo;
+import com.workhub.z.servicechat.VO.GroupVO;
 import com.workhub.z.servicechat.entity.ZzGroup;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 群组表(ZzGroup)表数据库访问层
@@ -83,4 +85,8 @@ public interface ZzGroupDao extends Mapper<ZzGroup> {
      * @since 2019-06-11
      */
     int deleteGroupLogic(@Param("groupId") String groupId, @Param("delFlg") String delFlg);
+    //群组信息监控
+    //param:group_name群组名称；creator创建人姓名；level密级；
+    // dateBegin创建时间开始；dateEnd创建时间结束；pname项目名称；isclose是否关闭
+    List<GroupVO> groupListMonitoring(@Param("params") Map<String,String> param);
 }

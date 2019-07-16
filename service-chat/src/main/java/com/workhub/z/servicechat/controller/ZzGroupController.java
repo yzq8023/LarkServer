@@ -9,6 +9,7 @@ import com.github.hollykunge.security.common.vo.rpcvo.ContactVO;
 import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.VO.GroupInfoVO;
 import com.workhub.z.servicechat.VO.GroupUserListVo;
+import com.workhub.z.servicechat.VO.GroupVO;
 import com.workhub.z.servicechat.VO.UserInfoVO;
 import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.config.common;
@@ -24,9 +25,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import static com.workhub.z.servicechat.config.VoToEntity.ZzGroupToGroupInfo;
 
@@ -56,6 +59,8 @@ public class ZzGroupController  {
 
     @Autowired
     private IUserService iUserService;
+    @Autowired
+    private HttpServletRequest request;
     /**
      * 通过主键查询单条数据
      *
@@ -81,8 +86,13 @@ public class ZzGroupController  {
     public ObjectRestResponse insert(@RequestBody ZzGroup zzGroup,@RequestParam("token")String token){
         zzGroup.setGroupId(RandomId.getUUID());
         zzGroup.setCreateTime(new Date());
+        String userId=common.nulToEmptyString(request.getHeader("userId"));
         try {
             common.putEntityNullToEmptyString(zzGroup);
+            if(zzGroup!=null && zzGroup.getIscross().equals("")){
+                zzGroup.setIscross("0");
+            }
+            zzGroup.setCreator(userId);
         }catch (Exception e){
             log.error(common.getExceptionMessage(e));
         }
@@ -100,10 +110,12 @@ public class ZzGroupController  {
     }
 
     @PostMapping("/update")
-    public ObjectRestResponse update(@RequestBody ZzGroup zzGroup,@RequestParam("token")String token){
-        zzGroup.setUpdateTime(new Date());
+    public ObjectRestResponse update(@RequestBody ZzGroup zzGroup){
+        String userId = common.nulToEmptyString(request.getHeader("userId"));
         try {
             common.putEntityNullToEmptyString(zzGroup);
+            zzGroup.setCreateTime(null);
+            zzGroup.setUpdator(userId);
         }catch (Exception e){
             e.getStackTrace();
         }
@@ -238,5 +250,21 @@ public class ZzGroupController  {
         }
         ListRestResponse res=new ListRestResponse("200",dataList.size(),dataList);
         return  res;
+    }
+    /**
+     * 群列表监控
+     //param:page 页码 size 每页几条;group_name群组名称；creator创建人姓名；level密级；
+     // dateBegin创建时间开始；dateEnd创建时间结束；pname项目名称；isclose是否关闭
+     * @return
+     */
+    @GetMapping("/groupListMonitoring")
+    public TableResultResponse<GroupVO> groupListMonitoring(@RequestParam Map<String,String> params){
+        TableResultResponse<GroupVO> pageInfo = null;
+        try {
+            pageInfo = this.zzGroupService.groupListMonitoring(params);
+        } catch (Exception e) {
+            log.error(common.getExceptionMessage(e));
+        }
+        return pageInfo;
     }
 }

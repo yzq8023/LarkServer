@@ -495,6 +495,9 @@ public class common {
 
         if(keyArr.length!=1){
             String currentKey=keyArr[0];
+            if(map.get(currentKey)==null){
+                return null;
+            }
             Map<String,Object> temp=JSONObject.parseObject(map.get(currentKey).toString());
             return getMapKeyValue(temp,key.substring(key.indexOf(".")+1));
 
@@ -503,10 +506,10 @@ public class common {
         }
         
     }
-    /*public static void main(String[] args) {
+/*    public static void main(String[] args) {
         try {
-            Object obj = getJsonStringKeyValue("{\"toId\":\"GMt5H6xf\",\"atId\":[],\"contactInfo\":{\"name\":\"8756\",\"id\":\"GMt5H6xf\",\"avatar\":\"\",\"memberNum\":4,\"isGroup\":true,\"secretLevel\":30},\"id\":\"69be81ca-f633-45c0-be0c-262d14aa68e1\",\"avatar\":\"http://10.12.97.34:80/undefined\",\"time\":\"2019-06-24T08:36:10.137Z\",\"isGroup\":true,\"fromId\":\"duyukun\",\"content\":{\"extension\":\"jpg\",\"id\":\"398b8662f7694ea28264330e63e79d97\",\"type\":3,\"title\":\"jpg\",\"secretLevel\":30,\"url\":\"/api/chat/zzFileManage/GetFile?fileId=398b8662f7694ea28264330e63e79d97&t=1561193135178\"},\"username\":\"杜宇坤\"}",
-                    "contactInfo.memberNum"
+            Object obj = getJsonStringKeyValue("{\"toId\":\"GMt5H6xf\",\"atId\":[],\"contactInfo\":{\"name\":\"8756\",\"id\":\"GMt5H6xf\",\"avatar\":\"\",\"memberNum\":4,\"isGroup\":true,\"secretLevel\":30,\"family\":{\"address\":\"China Shandong\"}},\"id\":\"69be81ca-f633-45c0-be0c-262d14aa68e1\",\"avatar\":\"http://10.12.97.34:80/undefined\",\"time\":\"2019-06-24T08:36:10.137Z\",\"isGroup\":true,\"fromId\":\"duyukun\",\"content\":{\"extension\":\"jpg\",\"id\":\"398b8662f7694ea28264330e63e79d97\",\"type\":3,\"title\":\"jpg\",\"secretLevel\":30,\"url\":\"/api/chat/zzFileManage/GetFile?fileId=398b8662f7694ea28264330e63e79d97&t=1561193135178\"},\"username\":\"杜宇坤\"}",
+                    "contactInfo.family.2222"
             );
             System.out.println(obj);
         } catch (Exception e) {

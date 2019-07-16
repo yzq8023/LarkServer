@@ -1,32 +1,18 @@
-package com.workhub.z.servicechat.entity;
+package com.workhub.z.servicechat.VO;
 
-import java.util.Date;
-import java.io.Serializable;
-
-/**
- * 群组表(ZzGroup)实体类
- *
- * @author 忠
- * @since 2019-05-10 14:29:32
- */
-public class ZzGroup implements Serializable {
-    private static final long serialVersionUID = -36565429819302307L;
+public class GroupVO {
     //用户组id
     private String groupId;
     //组名称
     private String groupName;
     //组描述
     private String groupDescribe;
-    //是否已经解散
-    private String isdelete;
     //创建时间
-    private Date createTime;
+    private String createTime;
     //创建人
     private String creator;
-    //更新时间
-    private Date updateTime;
-    //更新人
-    private String updator;
+    //创建姓名
+    private String creatorName;
     //项目名称
     private String pname;
     //参与范围
@@ -41,6 +27,8 @@ public class ZzGroup implements Serializable {
     private String groupImg;
     //是否跨越场所
     private String iscross;
+    //群组成员个数
+    private String memberNums;
 
     public String getGroupId() {
         return groupId;
@@ -66,19 +54,11 @@ public class ZzGroup implements Serializable {
         this.groupDescribe = groupDescribe;
     }
 
-    public String getIsdelete() {
-        return isdelete;
-    }
-
-    public void setIsdelete(String isdelete) {
-        this.isdelete = isdelete;
-    }
-
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
@@ -90,20 +70,12 @@ public class ZzGroup implements Serializable {
         this.creator = creator;
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
+    public String getCreatorName() {
+        return creatorName;
     }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public String getUpdator() {
-        return updator;
-    }
-
-    public void setUpdator(String updator) {
-        this.updator = updator;
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 
     public String getPname() {
@@ -154,6 +126,14 @@ public class ZzGroup implements Serializable {
         this.groupImg = groupImg;
     }
 
+    public String getMemberNums() {
+        return memberNums;
+    }
+
+    public void setMemberNums(String memberNums) {
+        this.memberNums = memberNums;
+    }
+
     public String getIscross() {
         return iscross;
     }
@@ -161,26 +141,4 @@ public class ZzGroup implements Serializable {
     public void setIscross(String iscross) {
         this.iscross = iscross;
     }
-
-    @Override
-    public String toString() {
-        return "ZzGroup{" +
-                "groupId='" + groupId + '\'' +
-                ", groupName='" + groupName + '\'' +
-                ", groupDescribe='" + groupDescribe + '\'' +
-                ", isdelete='" + isdelete + '\'' +
-                ", createTime=" + createTime +
-                ", creator='" + creator + '\'' +
-                ", updateTime=" + updateTime +
-                ", updator='" + updator + '\'' +
-                ", pname='" + pname + '\'' +
-                ", scop='" + scop + '\'' +
-                ", ispublic='" + ispublic + '\'' +
-                ", levels='" + levels + '\'' +
-                ", isclose='" + isclose + '\'' +
-                ", groupImg='" + groupImg + '\'' +
-                ", iscross='" + iscross + '\'' +
-                '}';
-    }
-
 }
