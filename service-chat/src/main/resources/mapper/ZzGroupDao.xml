@@ -17,6 +17,7 @@
         <result property="levels" column="LEVELS" jdbcType="VARCHAR"/>
         <result property="isclose" column="ISCLOSE" jdbcType="VARCHAR"/>
         <result property="groupImg" column="GROUP_IMG" jdbcType="VARCHAR"/>
+        <result property="iscross" column="ISCROSS" jdbcType="VARCHAR"/>
     </resultMap>
 
     <resultMap id="GroupUserListVo" type="com.workhub.z.servicechat.VO.GroupUserListVo">
@@ -30,6 +31,21 @@
         <result column="HEAD" property="head" jdbcType="VARCHAR"></result>-->
     </resultMap>
 
+    <resultMap type="com.workhub.z.servicechat.VO.GroupVO" id="GroupVO">
+        <result property="groupId" column="GROUP_ID" jdbcType="VARCHAR"/>
+        <result property="groupName" column="GROUP_NAME" jdbcType="VARCHAR"/>
+        <result property="groupDescribe" column="GROUP_DESCRIBE" jdbcType="VARCHAR"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="VARCHAR"/>
+        <result property="creator" column="CREATOR" jdbcType="VARCHAR"/>
+        <result property="pname" column="PNAME" jdbcType="VARCHAR"/>
+        <result property="scop" column="SCOP" jdbcType="VARCHAR"/>
+        <result property="ispublic" column="ISPUBLIC" jdbcType="VARCHAR"/>
+        <result property="levels" column="LEVELS" jdbcType="VARCHAR"/>
+        <result property="isclose" column="ISCLOSE" jdbcType="VARCHAR"/>
+        <result property="groupImg" column="GROUP_IMG" jdbcType="VARCHAR"/>
+        <result property="memberNums" column="MEMBER_NUMS" jdbcType="VARCHAR"/>
+        <result property="iscross" column="ISCROSS" jdbcType="VARCHAR"/>
+    </resultMap>
     <select id="groupUserList" resultMap="GroupUserListVo">
         SELECT *
         FROM (SELECT VO.*, ROWNUM AS RN
@@ -66,7 +82,7 @@
     <!--查询单个-->
     <select id="queryById" resultMap="ZzGroupMap">
         select
-          GROUP_ID, GROUP_NAME, GROUP_DESCRIBE, ISDELETE, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, PNAME, SCOP, ISPUBLIC, LEVELS, ISCLOSE, GROUP_IMG
+          GROUP_ID, GROUP_NAME, GROUP_DESCRIBE, ISDELETE, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, PNAME, SCOP, ISPUBLIC, LEVELS, ISCLOSE, GROUP_IMG, ISCROSS
         from ZZ_GROUP
         where GROUP_ID = #{groupId} order  by CREATE_TIME desc
     </select>
@@ -74,14 +90,14 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="ZzGroupMap">
         select
-          GROUP_ID, GROUP_NAME, GROUP_DESCRIBE, ISDELETE, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, PNAME, SCOP, ISPUBLIC, LEVELS, ISCLOSE, GROUP_IMG
+          GROUP_ID, GROUP_NAME, GROUP_DESCRIBE, ISDELETE, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, PNAME, SCOP, ISPUBLIC, LEVELS, ISCLOSE, GROUP_IMG, ISCROSS
         from ZZ_GROUP order  by CREATE_TIME desc
     </select>
 
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="ZzGroupMap">
         select
-          GROUP_ID, GROUP_NAME, GROUP_DESCRIBE, ISDELETE, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, PNAME, SCOP, ISPUBLIC, LEVELS, ISCLOSE, GROUP_IMG
+          GROUP_ID, GROUP_NAME, GROUP_DESCRIBE, ISDELETE, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, PNAME, SCOP, ISPUBLIC, LEVELS, ISCLOSE, GROUP_IMG, ISCROSS
         from ZZ_GROUP
         <where>
             <if test="groupId != null and groupId != ''">
@@ -131,13 +147,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="groupId" useGeneratedKeys="true">
-        insert into ZZ_GROUP(GROUP_ID,GROUP_NAME, GROUP_DESCRIBE, ISDELETE, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, PNAME, SCOP, ISPUBLIC, LEVELS, ISCLOSE, GROUP_IMG)
-        values (#{groupId},#{groupName}, #{groupDescribe}, #{isdelete}, #{createTime}, #{creator}, #{updateTime}, #{updator}, #{pname}, #{scop}, #{ispublic}, #{levels}, #{isclose}, #{groupImg})
+        insert into ZZ_GROUP(GROUP_ID,GROUP_NAME, GROUP_DESCRIBE, ISDELETE, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, PNAME, SCOP, ISPUBLIC, LEVELS, ISCLOSE, GROUP_IMG, ISCROSS)
+        values (#{groupId},#{groupName}, #{groupDescribe}, #{isdelete}, #{createTime}, #{creator}, #{updateTime}, #{updator}, #{pname}, #{scop}, #{ispublic}, #{levels}, #{isclose}, #{groupImg}, #{iscross})
     </insert>
 
     <insert id="addGroup">
-         insert into ZZ_GROUP(GROUP_ID,GROUP_NAME, GROUP_DESCRIBE, ISDELETE, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, PNAME, SCOP, ISPUBLIC, LEVELS, ISCLOSE, GROUP_IMG)
-        values (#{groupId},#{groupName}, #{groupDescribe}, #{isdelete}, #{createTime}, #{creator}, #{updateTime}, #{updator}, #{pname}, #{scop}, #{ispublic}, #{levels}, #{isclose}, #{groupImg})
+         insert into ZZ_GROUP(GROUP_ID,GROUP_NAME, GROUP_DESCRIBE, ISDELETE, CREATE_TIME, CREATOR, UPDATE_TIME, UPDATOR, PNAME, SCOP, ISPUBLIC, LEVELS, ISCLOSE, GROUP_IMG, ISCROSS)
+        values (#{groupId},#{groupName}, #{groupDescribe}, #{isdelete}, #{createTime}, #{creator}, #{updateTime}, #{updator}, #{pname}, #{scop}, #{ispublic}, #{levels}, #{isclose}, #{groupImg}, #{iscross})
     </insert>
 
     <!--通过主键修改数据-->
@@ -183,6 +199,9 @@
             <if test="groupImg != null and groupImg != ''">
                 GROUP_IMG = #{groupImg},
             </if>
+            <if test="iscross != null and iscross != ''">
+                ISCROSS = #{iscross},
+            </if>
         </set>
         where GROUP_ID = #{groupId}
     </update>
@@ -212,4 +231,44 @@
            set ISDELETE = #{delFlg}
         where GROUP_ID = #{groupId}
     </update>
+
+    <!--群监控查询-->
+    <select id="groupListMonitoring" resultMap="GroupVO">
+        select group_id,
+        group_name,
+        group_describe,
+        to_char(create_time, 'yyyy-mm-dd hh24:mi:ss') create_time,
+        creator,
+        pname,
+        scop,
+        ispublic,
+        levels,
+        isclose,
+        group_img,
+        (select to_char(count(1)) from zz_user_group u where u.group_id = g.group_id)  as member_nums,
+        iscross
+        from zz_group g
+        where 1=1
+        <if test="params.group_name != null and params.group_name != ''">
+            and g.group_name  like '%'||#{params.group_name}||'%'
+        </if>
+        <if test="params.level != null and params.level != ''">
+            and g.levels = #{params.level}
+        </if>
+        <if test="params.dateBegin != null and params.dateBegin != ''">
+            and to_char(g.create_time, 'yyyy-mm-dd') &gt;= #{params.dateBegin}
+        </if>
+        <if test="params.dateEnd != null and params.dateEnd != ''">
+            and to_char(g.create_time, 'yyyy-mm-dd') &lt;= #{params.dateEnd}
+        </if>
+        <if test="params.pname != null and params.pname != ''">
+            and g.pname  like '%'||#{params.pname}||'%'
+        </if>
+        <if test="params.isclose != null and params.isclose != ''">
+            and g.isclose = #{params.isclose}
+        </if>
+        <if test="params.iscross != null and params.iscross != ''">
+            and g.iscross = #{params.iscross}
+        </if>
+    </select>
 </mapper>
