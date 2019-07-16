@@ -1,6 +1,5 @@
 package com.github.hollykunge.security.admin.rpc;
 
-import com.ace.cache.annotation.Cache;
 import com.alibaba.fastjson.JSON;
 import com.github.hollykunge.security.admin.biz.OrgBiz;
 import com.github.hollykunge.security.admin.biz.UserBiz;
@@ -9,14 +8,14 @@ import com.github.hollykunge.security.admin.entity.User;
 import com.github.hollykunge.security.admin.rpc.service.PermissionService;
 import com.github.hollykunge.security.api.vo.authority.FrontPermission;
 import com.github.hollykunge.security.api.vo.user.UserInfo;
-import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.vo.OrgUser;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ${DESCRIPTION}
@@ -59,7 +58,9 @@ public class UserRest {
     public @ResponseBody UserInfo info(String userId){
         User user = userBiz.getUserByUserId(userId);
         UserInfo info = new UserInfo();
-
+        if(user==null){//研讨服务的用户和表数据出现不一致时候
+            return info;
+        }
         BeanUtils.copyProperties(user, info);
         info.setId(user.getId());
         return info;
@@ -73,6 +74,9 @@ public class UserRest {
             for (String m : ids) {
                 User user = userBiz.getUserByUserId(m);
                 UserInfo info = new UserInfo();
+                if(user==null){//研讨服务的用户和表数据出现不一致时候
+                    continue;
+                }
                 BeanUtils.copyProperties(user, info);
                 info.setId(user.getId());
                 userInfos.add(info);
