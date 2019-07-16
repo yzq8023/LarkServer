@@ -131,9 +131,9 @@ public class AdminAccessFilter extends ZuulFilter {
                 pId = val.substring(2,val.length());
             }
         }
-        log.info("登录用户***********"+pId);
+
         //将dnname设置为身份证信息
-        ctx.addZuulRequestHeader(CommonConstants.PERSON_ID_ARG,pId);
+        ctx.addZuulRequestHeader(CommonConstants.PERSON_ID_ARG,pId.toLowerCase());
         // 不进行拦截的地址
         if (isStartWith(requestUri)) {
             return null;
@@ -183,8 +183,11 @@ public class AdminAccessFilter extends ZuulFilter {
         ctx.addZuulRequestHeader("userId", user.getId());
         ctx.addZuulRequestHeader("userName", URLEncoder.encode(user.getName()));
         ctx.addZuulRequestHeader("userHost", ClientUtil.getClientIp(ctx.getRequest()));
-        LogInfo logInfo = new LogInfo(pm.getTitle(), ctx.getRequest().getMethod(), pm.getUri(), new Date(), user.getId(), user.getName(), host);
-        DBLog.getInstance().setLogService(logService).offerQueue(logInfo);
+        //标识已经成功
+//        LogInfo logInfo = new LogInfo(pm.getTitle(), ctx.getRequest().getMethod(), pm.getUri(), new Date(), user.getId(), user.getName(), host,"0");
+//        DBLog.getInstance().setLogService(logService).offerQueue(logInfo);
+        BaseContextHandler.set("pm",pm);
+        BaseContextHandler.set("user",user);
     }
 
     /**
