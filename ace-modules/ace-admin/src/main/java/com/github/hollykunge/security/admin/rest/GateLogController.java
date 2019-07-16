@@ -37,16 +37,16 @@ public class GateLogController extends BaseController<GateLogBiz,GateLog> {
     @ResponseBody
     @Override
     public TableResultResponse<GateLog> page(@RequestParam Map<String, Object> params){
-        String userId = null;
+        String userName = null;
         try {
-            userId = URLDecoder.decode(request.getHeader("userName"), "UTF-8");
+            userName = URLDecoder.decode(request.getHeader("userName"), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         List<String> userlist = new ArrayList();
         userlist.add(SYSTEM_USER);
         userlist.add(LOG_USER);
-        switch (userId){
+        switch (userName){
             case LOG_USER:
                 params.put("crtName",userlist);
                 return baseBiz.selectByQueryM( new Query(params),"log");
