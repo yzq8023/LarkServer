@@ -1,6 +1,7 @@
 package com.workhub.z.servicechat.controller;
 
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
+import com.workhub.z.servicechat.config.EncryptionAndDeciphering;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
 import com.workhub.z.servicechat.service.ZzFileManageService;
@@ -303,6 +304,7 @@ public class ZzFileManageController {
     public void getFile(HttpServletRequest request , HttpServletResponse response) throws IOException {
         InputStream in =null;
         OutputStream outputStream = null;
+        File newFile = null;
         try {
             //读取路径下面的文件
             String fileId = request.getParameter("fileId");
@@ -312,6 +314,11 @@ public class ZzFileManageController {
             File picFile = null;
             //根据路径获取文件
             picFile = new File(zzGroupFile.getPath());
+            String newFilePath="";
+            if(picFile.exists()){//解密
+                newFilePath= EncryptionAndDeciphering.decipherFile(picFile);
+            }
+            newFile = new File(newFilePath);
             //获取文件后缀名格式
             String ext = ((zzGroupFile.getFileExt()==null)?"":zzGroupFile.getFileExt());
             //判断图片格式,设置相应的输出文件格式
@@ -325,7 +332,7 @@ public class ZzFileManageController {
                 response.setContentType("image/png");
             }
             //读取指定路径下面的文件
-             in = new FileInputStream(picFile);
+             in = new FileInputStream(newFile);
              outputStream = new BufferedOutputStream(response.getOutputStream());
             //创建存放文件内容的数组
             byte[] buff =new byte[1024];
@@ -349,6 +356,10 @@ public class ZzFileManageController {
             }
             if(in!=null){
                 in.close();
+            }
+            //解密文件删除
+            if(newFile!=null && newFile.exists()){
+                newFile.delete();
             }
         }
 
