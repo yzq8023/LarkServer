@@ -1,7 +1,12 @@
 package com.workhub.z.servicechat.service.impl;
 
+import com.github.hollykunge.security.api.vo.user.UserInfo;
+import com.github.hollykunge.security.common.msg.TableResultResponse;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.VO.GroupUserListVo;
+import com.workhub.z.servicechat.VO.GroupVO;
+import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.dao.ZzGroupDao;
 import com.workhub.z.servicechat.entity.ZzGroup;
 import com.workhub.z.servicechat.feign.IUserService;
@@ -12,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.workhub.z.servicechat.config.common.putEntityNullToEmptyString;
@@ -203,5 +209,30 @@ public class ZzGroupServiceImpl implements ZzGroupService {
             }
             ListRestResponse res = new ListRestResponse("200",data.size(),data);*/
             return  ids.toString();
+    }
+    //群组信息监控
+    //param:page 页码 size 每页几条;group_name群组名称；creator创建人姓名；level密级；
+    // dateBegin创建时间开始；dateEnd创建时间结束；pname项目名称；isclose是否关闭
+    public TableResultResponse<GroupVO> groupListMonitoring(Map<String,String> params) throws Exception{
+        int page=Integer.valueOf(common.nulToEmptyString(params.get("page")));
+        int size=Integer.valueOf(common.nulToEmptyString(params.get("size")));
+        PageHelper.startPage(page, size);
+        List<GroupVO> dataList =this.zzGroupDao.groupListMonitoring(params);
+        //null的String类型属性转换空字符串
+        common.putVoNullStringToEmptyString(dataList);
+        UserInfo userInfo=null;
+        for(GroupVO groupVO:dataList){
+            userInfo=iUserService.info(common.nulToEmptyString(groupVO.getCreator()));
+            groupVO.setCreatorName(userInfo==null?"":userInfo.getName());
+        }
+        PageInfo<GroupVO> pageInfo = new PageInfo<>(dataList);
+        TableResultResponse<GroupVO> res = new TableResultResponse<GroupVO>(
+                pageInfo.getPageSize(),
+                pageInfo.getPageNum(),
+                pageInfo.getPages(),
+                pageInfo.getTotal(),
+                pageInfo.getList()
+        );
+        return res;
     }
 }

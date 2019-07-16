@@ -1,10 +1,13 @@
 package com.workhub.z.servicechat.service;
 
+import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.pagehelper.PageInfo;
 import com.workhub.z.servicechat.VO.GroupUserListVo;
+import com.workhub.z.servicechat.VO.GroupVO;
 import com.workhub.z.servicechat.entity.ZzGroup;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 群组表(ZzGroup)表服务接口
@@ -80,4 +83,8 @@ public interface ZzGroupService {
     String deleteGroupLogic(String groupId, String delFlg) throws Exception;
     //获取群成员列表
     String getGroupUserList(String groupId) throws Exception;
+    //群组信息监控
+    //param:group_name群组名称；creator创建人姓名；level密级；
+    // dateBegin创建时间开始；dateEnd创建时间结束；pname项目名称；isclose是否关闭
+    TableResultResponse<GroupVO> groupListMonitoring(Map<String,String> params) throws Exception;
 }
