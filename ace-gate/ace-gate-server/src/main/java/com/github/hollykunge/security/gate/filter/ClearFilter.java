@@ -58,7 +58,7 @@ public class ClearFilter extends ZuulFilter {
             isSuccess = "0";
         }
         if (pm != null && user != null) {
-            LogInfo logInfo = new LogInfo(pm.getTitle(), ctx.getRequest().getMethod(), pm.getUri(), new Date(), user.getId(), user.getName(), host, isSuccess);
+            LogInfo logInfo = new LogInfo(pm.getTitle(), ctx.getRequest().getMethod(), pm.getUri(), new Date(), user.getId(), user.getName(), host, isSuccess,user.getUniqueName());
             DBLog.getInstance().setLogService(logService).offerQueue(logInfo);
         }
         BaseContextHandler.remove();
