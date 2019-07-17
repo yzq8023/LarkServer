@@ -68,7 +68,6 @@ public class GateLogBiz extends BaseBiz<GateLogMapper,GateLog> {
         example.setOrderByClause("CRT_TIME DESC");
         Page<Object> result = PageHelper.startPage(query.getPageNo(), query.getPageSize());
         List<GateLog> list = mapper.selectByExample(example);
-        this.transferContent(list);
         return new TableResultResponse<GateLog>(result.getPageSize(), result.getPageNum() ,result.getPages(), result.getTotal(), list);
     }
 
@@ -90,28 +89,8 @@ public class GateLogBiz extends BaseBiz<GateLogMapper,GateLog> {
         }
         Page<Object> result = PageHelper.startPage(query.getPageNo(), query.getPageSize());
         List<GateLog> list = mapper.selectByExample(example);
-        this.transferContent(list);
         return new TableResultResponse<GateLog>(result.getPageSize(), result.getPageNum() ,result.getPages(), result.getTotal(), list);
     }
-
-    private List<GateLog> transferContent(List<GateLog> list){
-        list.stream().forEach((GateLog gatelog) -> {
-            if("GET".equals(gatelog.getOpt())){
-                gatelog.setOpt("查询");
-            }
-            if("POST".equals(gatelog.getOpt())){
-                gatelog.setOpt("添加");
-            }
-            if("PUT".equals(gatelog.getOpt())){
-                gatelog.setOpt("修改");
-            }
-            if("DELETE".equals(gatelog.getOpt())){
-                gatelog.setOpt("删除");
-            }
-        });
-        return list;
-    }
-
     private Date stringToDate(String source, String pattern) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         Date date = null;
