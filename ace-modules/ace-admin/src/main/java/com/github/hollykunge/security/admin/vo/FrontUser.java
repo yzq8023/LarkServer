@@ -1,74 +1,39 @@
 package com.github.hollykunge.security.admin.vo;
 
-import com.github.hollykunge.security.api.vo.authority.PermissionInfo;
-
-import java.util.List;
+import lombok.Data;
 
 /**
- * Created by 协同设计小组 on 2017/8/22.
+ * 业务对象：前端获取用户信息
+ * @author 协同设计小组
+ * @date 2017/8/22
  */
+@Data
 public class FrontUser {
-    public String id;
-    public String username;
-    public String name;
+    //系统内id
+    private String id;
+    //身份证号 username->pId
+    private String pId;
+    //用户姓名
+    private String name;
+    //性别
+    private String gender;
+
+    private String orgCode;
+    //自述信息
     private String description;
-    private String image;
-    private List<PermissionInfo> menus;
-    private List<PermissionInfo> elements;
-    public String getImage() {
-        return image;
-    }
+    //密级
+    private String secretLevel;
+    //头像
+    private String avatar;
+    //状态0离职1在职
+    private Integer status;
+    //电话 telephone->mobile
+    private Integer mobile;
+    //系统内删除状态0未删除 暂无
+    private Integer deleted;
+    //角色
+    private String roleId;
 
-    public void setImage(String image) {
-        this.image = image;
-    }
+    private UserRole userRole;
 
-
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    public List<PermissionInfo> getMenus() {
-        return menus;
-    }
-
-    public void setMenus(List<PermissionInfo> menus) {
-        this.menus = menus;
-    }
-
-    public List<PermissionInfo> getElements() {
-        return elements;
-    }
-
-    public void setElements(List<PermissionInfo> elements) {
-        this.elements = elements;
-    }
 }

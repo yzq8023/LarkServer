@@ -6,9 +6,27 @@ import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
+/**
+ * @author 云雀
+ */
+
 public interface ElementMapper extends Mapper<Element> {
-    public List<Element> selectAuthorityElementByUserId(@Param("userId")String userId);
-    public List<Element> selectAuthorityMenuElementByUserId(@Param("userId")String userId,@Param("menuId")String menuId);
-    public List<Element> selectAuthorityElementByClientId(@Param("clientId")String clientId);
-    public List<Element> selectAllElementPermissions();
+
+    /**
+     * 根据角色id,菜单id获取ResourceMap中的element
+     *
+     * @param roleId 角色id
+     * @param menuId 菜单id
+     * @param type   资源类型
+     * @return 元素列表
+     */
+    List<Element> getAuthorityMenuElement(@Param("roleId") String roleId, @Param("menuId") String menuId,
+                                          @Param("type") String type);
+
+    /**
+     * 根据角色Id获取权限下的Element
+     * @param roleId 角色Id
+     * @return
+     */
+    List<Element> getElemntByRoleId(@Param("roleId")String roleId);
 }

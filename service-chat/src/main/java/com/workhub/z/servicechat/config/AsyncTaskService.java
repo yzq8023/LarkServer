@@ -2,6 +2,12 @@ package com.workhub.z.servicechat.config;
 
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.UUID;
+import java.util.concurrent.Callable;
 
 /**
 *@Description: 多线程任务处理类
@@ -48,7 +54,13 @@ public class AsyncTaskService {
         System.out.println("关闭群组");
     }
 
+    @Async
+    public void fileUpload(MultipartFile file,String url) throws Exception {
+        fileManage.uploadFile(file,url);
+    }
 
-
-
+//    @Override
+//    public String call() throws Exception {
+//        return null;
+//    }
 }

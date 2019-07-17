@@ -1,11 +1,13 @@
 package com.github.hollykunge.security.common.msg;
 
 /**
- * Created by 协同设计小组 on 2017/6/11.
+ * 对象返回类型
+ * @author 协同设计小组
+ * @date 2017/6/11
  */
 public class ObjectRestResponse<T> extends BaseResponse {
 
-    T data;
+    T result;
     boolean rel;
 
     public boolean isRel() {
@@ -24,16 +26,20 @@ public class ObjectRestResponse<T> extends BaseResponse {
 
 
     public ObjectRestResponse data(T data) {
-        this.setData(data);
+        this.setResult(data);
         return this;
     }
-    public T getData() {
-        return data;
+
+    public ObjectRestResponse msg(String msg) {
+        this.setMessage(msg);
+        return this;
     }
 
-    public void setData(T data) {
-        this.data = data;
+    public T getResult() {
+        return result;
     }
 
-
+    public void setResult(T result) {
+        this.result = result;
+    }
 }

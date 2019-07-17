@@ -3,10 +3,15 @@ package com.github.hollykunge.security.common.util;
 import com.github.hollykunge.security.common.vo.TreeNode;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
- * Created by 协同设计小组 on 2017/6/12.
+ * 树节点方法类
+ *
+ * @author 协同设计小组
+ * @date 2017/6/12
  */
 public class TreeUtil{
   /**
@@ -26,7 +31,7 @@ public class TreeUtil{
       }
 
       for (T it : treeNodes) {
-        if (it.getParentId() == treeNode.getId()) {
+        if (it.getParentId().equals(treeNode.getId())) {
           if (treeNode.getChildren() == null) {
             treeNode.setChildren(new ArrayList<TreeNode>());
           }
@@ -61,7 +66,7 @@ public class TreeUtil{
    */
   public static <T extends TreeNode> T findChildren(T treeNode, List<T> treeNodes) {
     for (T it : treeNodes) {
-      if (treeNode.getId() == it.getParentId()) {
+      if (treeNode.getId().equals(it.getParentId())) {
         if (treeNode.getChildren() == null) {
           treeNode.setChildren(new ArrayList<TreeNode>());
         }

@@ -2,34 +2,50 @@ package com.github.hollykunge.security.admin.rpc.service;
 
 import com.github.hollykunge.security.admin.biz.ElementBiz;
 import com.github.hollykunge.security.admin.biz.MenuBiz;
+import com.github.hollykunge.security.admin.biz.RoleBiz;
 import com.github.hollykunge.security.admin.biz.UserBiz;
-import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
+import com.github.hollykunge.security.admin.config.mq.ProduceSenderConfig;
 import com.github.hollykunge.security.admin.entity.Element;
 import com.github.hollykunge.security.admin.entity.Menu;
+import com.github.hollykunge.security.admin.entity.Role;
 import com.github.hollykunge.security.admin.entity.User;
-import com.github.hollykunge.security.admin.vo.FrontUser;
-import com.github.hollykunge.security.admin.vo.MenuTree;
-import com.github.hollykunge.security.api.vo.authority.PermissionInfo;
+import com.github.hollykunge.security.admin.vo.*;
+import com.github.hollykunge.security.api.vo.authority.ActionEntitySet;
+import com.github.hollykunge.security.api.vo.authority.FrontPermission;
 import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.github.hollykunge.security.auth.client.jwt.UserAuthUtil;
-import com.github.hollykunge.security.common.constant.CommonConstants;
-import com.github.hollykunge.security.common.util.TreeUtil;
-import org.apache.commons.lang3.StringUtils;
+
+import com.github.hollykunge.security.common.constant.UserConstant;
+import com.github.hollykunge.security.common.exception.BaseException;
+import com.github.hollykunge.security.common.util.StringHelper;
+
+import com.github.hollykunge.security.common.util.UUIDUtils;
+import com.github.hollykunge.security.common.vo.mq.HotMapVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.chrono.ChronoZonedDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
- * Created by 协同设计小组 on 2017/9/12.
+ * 初始化用户权限服务
+ * @author 协同设计小组
+ * @date 2017/9/12
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class PermissionService {
+    @Autowired
+    private RoleBiz roleBiz;
     @Autowired
     private UserBiz userBiz;
     @Autowired
@@ -38,123 +54,161 @@ public class PermissionService {
     private ElementBiz elementBiz;
     @Autowired
     private UserAuthUtil userAuthUtil;
-    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(UserConstant.PW_ENCORDER_SALT);
 
+    @Autowired
+    private ProduceSenderConfig produceSenderConfig;
 
-    public UserInfo getUserByUsername(String username) {
+    /**
+     * 获取用户信息
+     * @param userId
+     * @return
+     */
+    public UserInfo getUserByUserId(String userId) {
         UserInfo info = new UserInfo();
-        User user = userBiz.getUserByUsername(username);
+        User user = userBiz.getUserByUserId(userId);
         BeanUtils.copyProperties(user, info);
-        info.setId(user.getId().toString());
+        info.setId(user.getId());
         return info;
     }
 
-    public UserInfo validate(String username,String password){
+    /**
+     * 验证用户
+     * @param userPid
+     * @param password
+     * @return
+     */
+    public UserInfo validate(String userPid,String password){
         UserInfo info = new UserInfo();
-        User user = userBiz.getUserByUsername(username);
-        if (encoder.matches(password, user.getPassword())) {
-            BeanUtils.copyProperties(user, info);
-            info.setId(user.getId().toString());
+        User user = userBiz.getUserByUserPid(userPid);
+        if(user==null){
+            throw new BaseException("没有该用户...");
         }
+        if (!encoder.matches(password, user.getPassword())) {
+            throw new BaseException("密码错误...");
+        }
+        BeanUtils.copyProperties(user, info);
+        info.setId(user.getId());
         return info;
     }
 
-    public List<PermissionInfo> getAllPermission() {
+    /**
+     * 获取所有的资源权限，包括菜单和按钮
+     * @return
+     */
+    public List<FrontPermission> getAllPermission() {
         List<Menu> menus = menuBiz.selectListAll();
-        List<PermissionInfo> result = new ArrayList<PermissionInfo>();
-        PermissionInfo info = null;
+        List<FrontPermission> result = new ArrayList<FrontPermission>();
         menu2permission(menus, result);
-        List<Element> elements = elementBiz.getAllElementPermissions();
+
+        List<Element> elements = elementBiz.selectListAll();
         element2permission(result, elements);
         return result;
     }
 
-    private void menu2permission(List<Menu> menus, List<PermissionInfo> result) {
-        PermissionInfo info;
+    /**
+     * 菜单权限
+     * @param menus
+     * @param result
+     */
+    private void menu2permission(List<Menu> menus, List<FrontPermission> result) {
+        FrontPermission info;
         for (Menu menu : menus) {
-            if (StringUtils.isBlank(menu.getHref())) {
-                menu.setHref("/" + menu.getCode());
-            }
-            info = new PermissionInfo();
-            info.setCode(menu.getCode());
-            info.setType(AdminCommonConstant.RESOURCE_TYPE_MENU);
-            info.setName(AdminCommonConstant.RESOURCE_ACTION_VISIT);
-            String uri = menu.getHref();
-            if (!uri.startsWith("/")) {
-                uri = "/" + uri;
-            }
-            info.setUri(uri);
-            info.setMethod(AdminCommonConstant.RESOURCE_REQUEST_METHOD_GET);
-            result.add(info
-            );
-            info.setMenu(menu.getTitle());
-        }
-    }
-
-    public List<PermissionInfo> getPermissionByUsername(String username) {
-        User user = userBiz.getUserByUsername(username);
-        List<Menu> menus = menuBiz.getUserAuthorityMenuByUserId(user.getId());
-        List<PermissionInfo> result = new ArrayList<PermissionInfo>();
-        PermissionInfo info = null;
-        menu2permission(menus, result);
-        List<Element> elements = elementBiz.getAuthorityElementByUserId(user.getId() + "");
-        element2permission(result, elements);
-        return result;
-    }
-
-    private void element2permission(List<PermissionInfo> result, List<Element> elements) {
-        PermissionInfo info;
-        for (Element element : elements) {
-            info = new PermissionInfo();
-            info.setCode(element.getCode());
-            info.setType(element.getType());
-            info.setUri(element.getUri());
-            info.setMethod(element.getMethod());
-            info.setName(element.getName());
-            info.setMenu(element.getMenuId());
+            info = new FrontPermission();
+            info.setMenuId(menu.getId());
+            info.setTitle(menu.getTitle());
+            info.setUri(menu.getUri());
+            info.setPermissionId(menu.getPermissionId());
             result.add(info);
         }
     }
 
-
-    private List<MenuTree> getMenuTree(List<Menu> menus, int root) {
-        List<MenuTree> trees = new ArrayList<MenuTree>();
-        MenuTree node = null;
-        for (Menu menu : menus) {
-            node = new MenuTree();
-            BeanUtils.copyProperties(menu, node);
-            trees.add(node);
+    /**
+     * 根据userId获取角色所属菜单功能
+     * @param userId
+     * @return
+     */
+    public List<FrontPermission> getPermissionByUserId(String userId) {
+        List<Role> roleByUserId = roleBiz.getRoleByUserId(userId);
+        if(roleByUserId.size()==0){
+            throw new BaseException("该人员没有访问权限...");
         }
-        return TreeUtil.bulid(trees, root);
+        List<FrontPermission> authorityMenu = roleBiz.frontAuthorityMenu(roleByUserId.get(0).getId());
+        return authorityMenu;
     }
 
+    /**
+     * 元素权限
+     * @param result
+     * @param elements
+     */
+    private void element2permission(List<FrontPermission> result, List<Element> elements) {
+
+        for(FrontPermission frontPermission : result){
+
+            List<Element> tempElement = elements.stream()
+                    .filter((Element e) -> frontPermission.getMenuId().contains(e.getMenuId()))
+                    .collect(Collectors.toList());
+            ActionEntitySet info;
+            List<ActionEntitySet> actionEntitySets = new ArrayList<>();
+            for (Element element : tempElement) {
+
+
+                info = new ActionEntitySet();
+
+                info.setDefaultCheck(true);
+                info.setDescription(element.getDescription());
+                info.setMethod(element.getMethod());
+
+                actionEntitySets.add(info);
+            }
+            frontPermission.setActionEntitySetList(actionEntitySets);
+            frontPermission.setMethods(StringHelper.getObjectValue(actionEntitySets));
+        }
+
+    }
+
+    /**
+     * 获取前端用户信息
+     * @param token
+     * @return
+     * @throws Exception
+     */
     public FrontUser getUserInfo(String token) throws Exception {
-        String username = userAuthUtil.getInfoFromToken(token).getUniqueName();
-        if (username == null) {
+        String userId = userAuthUtil.getInfoFromToken(token).getId();
+        if (userId == null) {
             return null;
         }
-        UserInfo user = this.getUserByUsername(username);
+        User user = userBiz.getUserByUserId(userId);
+//        UserInfo user = this.getUserByUserId(userId);
         FrontUser frontUser = new FrontUser();
         BeanUtils.copyProperties(user, frontUser);
-        List<PermissionInfo> permissionInfos = this.getPermissionByUsername(username);
-        Stream<PermissionInfo> menus = permissionInfos.parallelStream().filter((permission) -> {
-            return permission.getType().equals(CommonConstants.RESOURCE_TYPE_MENU);
-        });
-        frontUser.setMenus(menus.collect(Collectors.toList()));
-        Stream<PermissionInfo> elements = permissionInfos.parallelStream().filter((permission) -> {
-            return !permission.getType().equals(CommonConstants.RESOURCE_TYPE_MENU);
-        });
-        frontUser.setElements(elements.collect(Collectors.toList()));
+        frontUser.setId(user.getId());
+        UserRole userRole = this.getUserRoleByUserId(userId);
+        frontUser.setUserRole(userRole);
+        //发送消息到mq
+        HotMapVO hotMapVO = new HotMapVO();
+        hotMapVO.setUserId(userId);
+        ZoneId zoneId = ZoneId.systemDefault();
+        ChronoZonedDateTime<LocalDate> zonedDateTime = LocalDate.now().atStartOfDay(zoneId);
+        Date nowDate = Date.from(zonedDateTime.toInstant());
+        hotMapVO.setMapDate(nowDate);
+        produceSenderConfig.sendAndNoConfirm(UUIDUtils.generateShortUuid(),hotMapVO);
         return frontUser;
     }
 
-    public List<MenuTree> getMenusByUsername(String token) throws Exception {
-        String username = userAuthUtil.getInfoFromToken(token).getUniqueName();
-        if (username == null) {
-            return null;
-        }
-        User user = userBiz.getUserByUsername(username);
-        List<Menu> menus = menuBiz.getUserAuthorityMenuByUserId(user.getId());
-        return getMenuTree(menus,AdminCommonConstant.ROOT);
+    /**
+     * 获取用户角色信息
+     * @param userId
+     * @return
+     */
+    public UserRole getUserRoleByUserId(String userId) {
+        List<Role> roleList = roleBiz.getRoleByUserId(userId);
+        UserRole userRole = new UserRole();
+        //使用list可能有点不太对劲
+        BeanUtils.copyProperties(roleList.get(0), userRole);
+        List<FrontPermission> frontPermissionList = this.getPermissionByUserId(userId);
+        userRole.setFrontPermissionList(frontPermissionList);
+        return userRole;
     }
 }

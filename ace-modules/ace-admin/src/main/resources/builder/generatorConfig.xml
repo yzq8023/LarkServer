@@ -14,15 +14,15 @@
             <property name="mappers" value="tk.mybatis.mapper.common.Mapper"/>
         </plugin>
 
-      <!--  <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/dk_project?useUnicode=true&amp;characterEncoding=UTF8"
-                        userId="root"
-                        password="123456">
-        </jdbcConnection>-->
+        <!--<jdbcConnection driverClass="com.mysql.jdbc.Driver"-->
+                        <!--connectionURL="jdbc:mysql://localhost:3306/dk_project?useUnicode=true&amp;characterEncoding=UTF8"-->
+                        <!--userId="root"-->
+                        <!--password="123456">-->
+        <!--</jdbcConnection>-->
 
-        <jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver"
+        <jdbcConnection driverClass="oracle.jdbc.OracleDriver"
                         connectionURL="jdbc:oracle:thin:@10.12.97.30:1521:arltr"
-                        userId="ag_admin"
+                        userId="lark_admin"
                         password="123456">
         </jdbcConnection>
 
@@ -48,26 +48,26 @@
         </table>-->
         <!--<table tableName="base_element" domainObjectName="Element">-->
         <!--</table>-->
-        <table tableName="base_element" domainObjectName="Element">
+        <!--<table tableName="element" domainObjectName="Element">-->
+        <!--</table>-->
+        <!--<table tableName="role" domainObjectName="Role">-->
+        <!--</table>-->
+        <!--<table tableName="gate_log" domainObjectName="GateLog">-->
+        <!--</table>-->
+        <!--<table tableName="resourceRoleMap" domainObjectName="ResourceRoleMap">-->
+        <!--</table>-->
+        <!--<table tableName="menu" domainObjectName="Menu">-->
+        <!--</table>-->
+
+        <!--<table tableName="roleUserMap" domainObjectName="RoleUserMap">-->
+        <!--</table>-->
+        <table tableName="admin_notice" domainObjectName="Notice">
         </table>
-        <table tableName="base_group" domainObjectName="Group">
-        </table>
-        <table tableName="gate_log" domainObjectName="GateLog">
-        </table>
-        <table tableName="base_group_type" domainObjectName="GroupType">
-        </table>
-        <table tableName="base_menu" domainObjectName="Menu">
-        </table>
-        <table tableName="base_org" domainObjectName="Org">
-        </table>
-        <table tableName="base_element" domainObjectName="Element">
-        </table>
-        <table tableName="total_user" domainObjectName="TotalUser">
-        </table>
-        <table tableName="base_resource_authority" domainObjectName="ResourceAuthority">
-        </table>
-        <table tableName="base_user" domainObjectName="User">
-        </table>
+
+        <!--<table tableName="auth_client_service" domainObjectName="ClientService">-->
+        <!--</table>-->
+        <!--<table tableName="orgUserMap" domainObjectName="OrgUserMap">-->
+        <!--</table>-->
     </context>
 </generatorConfiguration>
 

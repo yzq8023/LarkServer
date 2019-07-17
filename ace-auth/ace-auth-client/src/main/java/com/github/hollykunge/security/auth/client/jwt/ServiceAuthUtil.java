@@ -20,6 +20,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import java.util.List;
 
 /**
+ * jwt申请服务
  * Created by 协同设计小组 on 2017/9/15.
  */
 @Configuration
@@ -48,23 +49,28 @@ public class ServiceAuthUtil{
         }
     }
 
+    /**
+     * 定时刷新可访问的服务列表，每30分钟触发一次
+     */
     @Scheduled(cron = "0/30 * * * * ?")
     public void refreshAllowedClient() {
         log.debug("refresh allowedClient.....");
         BaseResponse resp = serviceAuthFeign.getAllowedClient(serviceAuthConfig.getClientId(), serviceAuthConfig.getClientSecret());
         if (resp.getStatus() == 200) {
             ObjectRestResponse<List<String>> allowedClient = (ObjectRestResponse<List<String>>) resp;
-            this.allowedClient = allowedClient.getData();
+            this.allowedClient = allowedClient.getResult();
         }
     }
-
+    /**
+     * 定时刷新可访问的服务JWT，每10分钟触发一次
+     */
     @Scheduled(cron = "0 0/10 * * * ?")
     public void refreshClientToken() {
         log.debug("refresh client token.....");
         BaseResponse resp = serviceAuthFeign.getAccessToken(serviceAuthConfig.getClientId(), serviceAuthConfig.getClientSecret());
         if (resp.getStatus() == 200) {
             ObjectRestResponse<String> clientToken = (ObjectRestResponse<String>) resp;
-            this.clientToken = clientToken.getData();
+            this.clientToken = clientToken.getResult();
         }
     }
 

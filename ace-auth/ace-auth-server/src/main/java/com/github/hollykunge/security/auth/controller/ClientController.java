@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * Created by 协同设计小组 on 2017/9/10.
+ *
+ * @author 协同设计小组
+ * @date 2017/9/10
  */
 @RestController
 @RequestMapping("client")
@@ -27,7 +29,7 @@ public class ClientController{
         return new ObjectRestResponse<String>().data(authClientService.apply(clientId, secret));
     }
 
-    @RequestMapping(value = "/myClient")
+    @RequestMapping(value = "/myClient",method = RequestMethod.POST)
     public ObjectRestResponse getAllowedClient(String serviceId, String secret) {
         return new ObjectRestResponse<List<String>>().data(authClientService.getAllowedClient(serviceId, secret));
     }

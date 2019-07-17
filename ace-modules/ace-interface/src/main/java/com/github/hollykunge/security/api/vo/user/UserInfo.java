@@ -1,34 +1,23 @@
 package com.github.hollykunge.security.api.vo.user;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
 import java.io.Serializable;
-import java.util.Date;
 
 /**
- * ${DESCRIPTION}
+ * rpc对外获取用户信息接口使用
  *
  * @author 协同设计小组
  * @create 2017-06-21 8:12
  */
 public class UserInfo implements Serializable{
     private String id;
-    private String username;
-    private String password;
+    private String pId;
     private String name;
+    private String password;
+    private String secretLevel;
+    private String avatar;
     private String description;
-    private Date updTime;
-    private boolean canAdmin;
-    private boolean canFork;
-    private boolean canCreate;
-
-    public Date getUpdTime() {
-        return updTime;
-    }
-    @JsonDeserialize(using = Custom_Json_Date_Deserializer.class)
-    public void setUpdTime(Date updTime) {
-        this.updTime = updTime;
-    }
+    private String orgCode;
+    private Integer demo;
 
     public String getId() {
         return id;
@@ -36,14 +25,6 @@ public class UserInfo implements Serializable{
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {
@@ -70,27 +51,44 @@ public class UserInfo implements Serializable{
         this.description = description;
     }
 
-    public boolean isCanAdmin() {
-        return canAdmin;
+    public Integer getDemo() {
+        return demo;
     }
 
-    public void setCanAdmin(boolean canAdmin) {
-        this.canAdmin = canAdmin;
+    public void setDemo(Integer demo) {
+        this.demo = demo;
     }
 
-    public boolean isCanFork() {
-        return canFork;
+    public String getpId() {
+        return pId;
     }
 
-    public void setCanFork(boolean canFork) {
-        this.canFork = canFork;
+    public void setpId(String pId) {
+        this.pId = pId;
     }
 
-    public boolean isCanCreate() {
-        return canCreate;
+    public String getSecretLevel() {
+        return secretLevel;
     }
 
-    public void setCanCreate(boolean canCreate) {
-        this.canCreate = canCreate;
+    public void setSecretLevel(String secretLevel) {
+        this.secretLevel = secretLevel;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+
+    public String getOrgCode() {
+        return orgCode;
+    }
+
+    public void setOrgCode(String orgCode) {
+        this.orgCode = orgCode;
     }
 }

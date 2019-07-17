@@ -1,80 +1,72 @@
 package com.github.hollykunge.security.common.msg;
 
+import lombok.Data;
+
 import java.util.List;
 
 /**
- * ${DESCRIPTION}
+ * 分页结果返回
  *
  * @author 协同设计小组
  * @create 2017-06-14 22:40
  */
+@Data
 public class TableResultResponse<T> extends BaseResponse {
 
-    TableData<T> data;
+    TableData<T> result;
 
-    public TableResultResponse(long total, List<T> rows) {
-        this.data = new TableData<T>(total, rows);
+    public TableResultResponse(int pageSize, int pageNo, int totalPage, long totalCount, List<T> data) {
+        this.result = new TableData<T>(data,pageSize,pageNo,totalPage,totalCount);
     }
 
     public TableResultResponse() {
-        this.data = new TableData<T>();
-    }
-
-    TableResultResponse<T> total(int total) {
-        this.data.setTotal(total);
-        return this;
-    }
-
-    TableResultResponse<T> rows(List<T> rows) {
-        this.data.setRows(rows);
-        return this;
-    }
-
-    public List<T> getRows() {
-        return data.getRows();
-}
-
-    public TableData<T> getData() {
-        return data;
-    }
-
-    public void setData(TableData<T> data) {
-        this.data = data;
+        this.result = new TableData<T>();
     }
 
     class TableData<T> {
-        long total;
-        List<T> rows;
+        private List<T> data;
+        private int pageSize;
+        private int pageNo;
+        private int totalPage;
+        private long totalCount;
 
-        public TableData(long total, List<T> rows) {
-            this.total = total;
-            this.rows = rows;
+        public TableData(List<T> data,int pageSize,int pageNo,int totalPage,long totalCount) {
+            this.data = data;
+            this.pageSize = pageSize;
+            this.pageNo = pageNo;
+            this.totalPage = totalPage;
+            this.totalCount = totalCount;
         }
 
-        public TableData() {
+        public TableData(){
+
         }
 
-        public long getTotal() {
-            return total;
+        public List<T> getData() {
+            return data;
         }
 
-        public void setTotal(long total) {
-            this.total = total;
+        public int getPageSize() {
+            return pageSize;
         }
 
-        public List<T> getRows() {
-            return rows;
+        public int getPageNo() {
+            return pageNo;
         }
 
-        public void setRows(List<T> rows) {
-            this.rows = rows;
+        public int getTotalPage() {
+            return totalPage;
+        }
+
+        public long getTotalCount() {
+            return totalCount;
         }
     }
 
     @Override
     public String toString() {
         return "{" +
-                "data=" + data +
+                "result=" + result +
                 "}";
     }
 }

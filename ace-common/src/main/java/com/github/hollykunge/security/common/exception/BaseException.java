@@ -1,10 +1,13 @@
 package com.github.hollykunge.security.common.exception;
 
 /**
- * Created by 协同设计小组 on 2017/9/8.
+ * 基础异常返回类型
+ *
+ * @author 协同设计小组
+ * @date 2017/9/8
  */
 public class BaseException extends RuntimeException {
-    private int status = 200;
+    private int status = 500;
 
     public int getStatus() {
         return status;

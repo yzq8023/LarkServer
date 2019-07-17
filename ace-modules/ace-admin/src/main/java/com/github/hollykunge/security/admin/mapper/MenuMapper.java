@@ -1,25 +1,15 @@
 package com.github.hollykunge.security.admin.mapper;
 
 import com.github.hollykunge.security.admin.entity.Menu;
-import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
-
+import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface MenuMapper extends Mapper<Menu> {
-    public List<Menu> selectMenuByAuthorityId(@Param("authorityId") String authorityId,@Param("authorityType") String authorityType);
-
     /**
-     * 根据用户和组的权限关系查找用户可访问菜单
-     * @param userId
+     * 根据角色Id获取权限下的Element
+     * @param roleId 角色Id
      * @return
      */
-    public List<Menu> selectAuthorityMenuByUserId (@Param("userId") int userId);
-
-    /**
-     * 根据用户和组的权限关系查找用户可访问的系统
-     * @param userId
-     * @return
-     */
-    public List<Menu> selectAuthoritySystemByUserId (@Param("userId") int userId);
+    List<Menu> selectMenuByRoleId(@Param("roleId")String roleId);
 }

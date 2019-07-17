@@ -12,36 +12,36 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * ${DESCRIPTION}
- *
  * @author 协同设计小组
  * @create 2017-06-12 8:48
  */
+
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class MenuBiz extends BaseBiz<MenuMapper, Menu> {
+
     @Override
-    @Cache(key="permission:menu")
+//    @Cache(key = "permission:menu")
     public List<Menu> selectListAll() {
         return super.selectListAll();
     }
 
     @Override
-    @CacheClear(keys={"permission:menu","permission"})
+//    @CacheClear(keys = {"permission:menu", "permission"})
     public void insertSelective(Menu entity) {
-        if (AdminCommonConstant.ROOT == entity.getParentId()) {
-            entity.setPath("/" + entity.getCode());
+        if (AdminCommonConstant.ROOT.equals(entity.getParentId())) {
+//            entity.setPath("/" + entity.getCode());
         } else {
-            Menu parent = this.selectById(entity.getParentId());
-            entity.setPath(parent.getPath() + "/" + entity.getCode());
+//            Menu parent = this.selectById(entity.getParentId());
+//            entity.setPath(parent.getPath() + "/" + entity.getCode());
         }
         super.insertSelective(entity);
     }
 
     @Override
-    @CacheClear(keys={"permission:menu","permission"})
+//    @CacheClear(keys = {"permission:menu", "permission"})
     public void updateById(Menu entity) {
-        if (AdminCommonConstant.ROOT == entity.getParentId()) {
+        if (AdminCommonConstant.ROOT.equals(entity.getParentId())) {
             entity.setPath("/" + entity.getCode());
         } else {
             Menu parent = this.selectById(entity.getParentId());
@@ -51,7 +51,13 @@ public class MenuBiz extends BaseBiz<MenuMapper, Menu> {
     }
 
     @Override
-    @CacheClear(keys={"permission:menu","permission"})
+//    @CacheClear(keys = {"permission:menu", "permission"})
+    public void deleteById(String id) {
+        super.deleteById(id);
+    }
+
+    @Override
+//    @CacheClear(keys = {"permission:menu", "permission"})
     public void updateSelectiveById(Menu entity) {
         super.updateSelectiveById(entity);
     }
@@ -64,12 +70,13 @@ public class MenuBiz extends BaseBiz<MenuMapper, Menu> {
     /**
      * 获取用户可以访问的菜单
      *
-     * @param id
+     * @param id 用户id
      * @return
      */
-    @Cache(key = "permission:menu:u{1}")
-    public List<Menu> getUserAuthorityMenuByUserId(int id) {
-        return mapper.selectAuthorityMenuByUserId(id);
+//    @Cache(key = "permission:menu:u{1}")
+    public List<Menu> getUserAuthorityMenuByUserId(String id) {
+        return null;
+        //TODO: return mapper.selectAuthorityMenuByUserId(id);
     }
 
     /**
@@ -78,7 +85,8 @@ public class MenuBiz extends BaseBiz<MenuMapper, Menu> {
      * @param id
      * @return
      */
-    public List<Menu> getUserAuthoritySystemByUserId(int id) {
-        return mapper.selectAuthoritySystemByUserId(id);
+    public List<Menu> getUserAuthoritySystemByUserId(String id) {
+        return null;
+        //TODO: return mapper.selectAuthoritySystemByUserId(id);
     }
 }

@@ -2,6 +2,7 @@ package com.github.hollykunge.security.common.rest;
 
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.context.BaseContextHandler;
+import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.hollykunge.security.common.util.Query;
@@ -30,15 +31,15 @@ public class BaseController<Biz extends BaseBiz, Entity> {
     @ResponseBody
     public ObjectRestResponse<Entity> add(@RequestBody Entity entity) {
         baseBiz.insertSelective(entity);
-        return new ObjectRestResponse<Entity>();
+        return new ObjectRestResponse<Entity>().rel(true);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public ObjectRestResponse<Entity> get(@PathVariable Integer id) {
+    public ObjectRestResponse<Entity> get(@PathVariable String id) {
         ObjectRestResponse<Entity> entityObjectRestResponse = new ObjectRestResponse<>();
         Object o = baseBiz.selectById(id);
-        entityObjectRestResponse.data((Entity) o);
+        entityObjectRestResponse.data((Entity) o).rel(true);
         return entityObjectRestResponse;
     }
 
@@ -46,25 +47,26 @@ public class BaseController<Biz extends BaseBiz, Entity> {
     @ResponseBody
     public ObjectRestResponse<Entity> update(@RequestBody Entity entity) {
         baseBiz.updateSelectiveById(entity);
-        return new ObjectRestResponse<Entity>();
+        return new ObjectRestResponse<Entity>().rel(true);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ObjectRestResponse<Entity> remove(@PathVariable Integer id) {
+    public ObjectRestResponse<Entity> remove(@PathVariable String id) {
         baseBiz.deleteById(id);
-        return new ObjectRestResponse<Entity>();
+        return new ObjectRestResponse<Entity>().rel(true);
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseBody
-    public List<Entity> all() {
-        return baseBiz.selectListAll();
+    public ListRestResponse<List<Entity>> all() {
+        List list = baseBiz.selectListAll();
+        return new ListRestResponse("",list.size(),list);
     }
 
     @RequestMapping(value = "/page", method = RequestMethod.GET)
     @ResponseBody
-    public TableResultResponse<Entity> list(@RequestParam Map<String, Object> params) {
+    public TableResultResponse<Entity> page(@RequestParam Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
         return baseBiz.selectByQuery(query);

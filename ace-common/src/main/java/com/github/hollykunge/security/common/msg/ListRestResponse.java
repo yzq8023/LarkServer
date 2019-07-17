@@ -1,60 +1,41 @@
 package com.github.hollykunge.security.common.msg;
 
 /**
- * ${DESCRIPTION}
+ * 列表返回类型
  *
  * @author 协同设计小组
  * @create 2017-06-09 7:32
  */
-public class ListRestResponse<T> {
+public class ListRestResponse<T> extends BaseResponse {
     String msg;
-    T result;
-    int count;
+
+    ListData<T> result;
 
 
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public T getResult() {
+    public ListData<T> getResult() {
         return result;
     }
 
-    public void setResult(T result) {
-        this.result = result;
+    public ListRestResponse(String msg, int count, T data){
+        this.setMessage(msg);
+        this.msg = msg;
+        this.result = new ListData<>(data,count);
     }
 
-    public int getCount() {
-        return count;
-    }
+    class ListData<T>{
+        private T data;
+        private int count;
+        public ListData(T data,int count){
+            this.data = data;
+            this.count = count;
+        }
 
-    public void setCount(int count) {
-        this.count = count;
-    }
+        public T getData() {
+            return data;
+        }
 
-    public ListRestResponse count(int count) {
-        this.setCount(count);
-        return this;
+        public int getCount() {
+            return count;
+        }
     }
-
-    public ListRestResponse count(Long count) {
-        this.setCount(count.intValue());
-        return this;
-    }
-
-    public ListRestResponse msg(String msg) {
-        this.setMsg(msg);
-        return this;
-    }
-
-    public ListRestResponse result(T result) {
-        this.setResult(result);
-        return this;
-    }
-
 }

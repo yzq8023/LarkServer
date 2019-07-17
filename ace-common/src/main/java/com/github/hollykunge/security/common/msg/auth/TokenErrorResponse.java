@@ -4,7 +4,9 @@ import com.github.hollykunge.security.common.constant.RestCodeConstants;
 import com.github.hollykunge.security.common.msg.BaseResponse;
 
 /**
- * Created by 协同设计小组 on 2017/8/23.
+ * token错误返回类型
+ * @author 协同设计小组
+ * @date 2017/8/23
  */
 public class TokenErrorResponse extends BaseResponse {
     public TokenErrorResponse(String message) {

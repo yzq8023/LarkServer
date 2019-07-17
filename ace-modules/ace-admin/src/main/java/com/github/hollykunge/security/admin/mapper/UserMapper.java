@@ -7,8 +7,11 @@ import tk.mybatis.mapper.common.Mapper;
 import java.util.List;
 
 public interface UserMapper extends Mapper<User> {
-    public List<User> selectMemberByGroupId(@Param("groupId") int groupId);
-    public List<User> selectLeaderByGroupId(@Param("groupId") int groupId);
-    public List<User> selectMemberByOrgId(@Param("orgId") int orgId);
-    public List<User> selectLeaderByOrgId(@Param("orgId") int orgId);
+    /**
+     * 通过角色ID查询用户列表，关联表中查询
+     *
+     * @param roleId 角色ID
+     * @return 用户列表
+     */
+    List<User> selectUsersByRoleId(@Param("roleId") String roleId);
 }
