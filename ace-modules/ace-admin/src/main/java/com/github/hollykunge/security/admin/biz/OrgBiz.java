@@ -116,9 +116,15 @@ public class OrgBiz extends BaseBiz<OrgMapper, Org> {
                 OrgUser children = findChildren(it, treeNodes);
                 //如果children中的children为空则为底层子节点，赋值用户信息
                 if(children.getChildren().size()==0){
-                    User params = new User();
-                    params.setOrgCode(super.selectById(children.getId()).getOrgCode());
-                    List<User> users = userBiz.selectList(params);
+                    //使用Example,为了增加排序
+                    Example example = new Example(User.class);
+                    Org org = super.selectById(children.getId());
+                    if(org != null && !StringUtils.isEmpty(org.getOrgCode())){
+                        Example.Criteria criteria = example.createCriteria();
+                        criteria.andEqualTo("orgCode",org.getOrgCode());
+                        example.setOrderByClause("ORDER_ID ASC");
+                    }
+                    List<User> users = userBiz.selectByExample(example);
                     Collections.sort(users, Comparator.comparing(User::getOrderId));
                     //TODO:处理删除人员。deleted为2或者null
                     users.stream().filter(user -> !StringUtils.isEmpty(user.getDeleted()) && !user.getDeleted().equals("2")).forEach(user ->{
