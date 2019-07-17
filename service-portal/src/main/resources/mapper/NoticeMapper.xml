@@ -12,5 +12,6 @@
     <result column="TOP" property="top" jdbcType="VARCHAR" />
     <result column="ORG_CODE" property="orgCode" jdbcType="VARCHAR" />
     <result column="SEND_TIME" property="sendTime" jdbcType="TIMESTAMP" />
+    <result column="SECRET_LEVEL" property="secretLevel" jdbcType="VARCHAR" />
   </resultMap>
 </mapper>
