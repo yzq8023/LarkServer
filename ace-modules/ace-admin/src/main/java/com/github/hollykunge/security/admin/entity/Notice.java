@@ -51,4 +51,7 @@ public class Notice extends BaseEntity {
      */
     @Column(name = "IS_SEND")
     private String isSend;
+
+    @Column(name = "SECRET_LEVEL")
+    private String secretLevel;
 }
