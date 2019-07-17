@@ -61,10 +61,27 @@ public class ClearFilter extends ZuulFilter {
             isSuccess = "0";
         }
         if (pm != null && user != null) {
-            LogInfo logInfo = new LogInfo(pm.getTitle(), ctx.getRequest().getMethod(), pm.getUri(), new Date(), user.getId(), user.getName(), host, isSuccess,user.getUniqueName());
+            LogInfo logInfo = new LogInfo(pm.getTitle(),this.transferContent(ctx.getRequest().getMethod()), ctx.getRequest().getRequestURI(),
+                    new Date(), user.getId(), user.getName(), host, isSuccess,user.getUniqueName());
             DBLog.getInstance().setLogService(logService).offerQueue(logInfo);
         }
         BaseContextHandler.remove();
+        return null;
+    }
+
+    private String transferContent(String methodCode){
+        if("GET".equals(methodCode)){
+            return "获取";
+        }
+        if("POST".equals(methodCode)){
+            return "添加";
+        }
+        if("PUT".equals(methodCode)){
+            return "编辑";
+        }
+        if("DELETE".equals(methodCode)){
+            return "删除";
+        }
         return null;
     }
 
