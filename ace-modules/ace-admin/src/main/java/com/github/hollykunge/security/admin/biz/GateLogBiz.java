@@ -54,13 +54,9 @@ public class GateLogBiz extends BaseBiz<GateLogMapper,GateLog> {
         if(query.entrySet().size()>0) {
             Example.Criteria criteria = example.createCriteria();
             for (Map.Entry<String, Object> entry : query.entrySet()) {
-                if("crtTime".equals(entry.getKey())){
-                    if(StringUtils.isEmpty(entry.getValue())){
-                        throw new BaseException("输入时间不能为空...");
-                    }
-                    Date date = this.stringToDate(entry.getValue().toString(), "yyyy-MM-dd");
-                    criteria.andEqualTo(entry.getKey(),date);
-                    break;
+                boolean exitTime = this.setCreTimeCondition(criteria, entry);
+                if(exitTime){
+                    continue;
                 }
                 criteria.andLike(entry.getKey(), "%" + entry.getValue().toString() + "%");
             }
@@ -85,6 +81,10 @@ public class GateLogBiz extends BaseBiz<GateLogMapper,GateLog> {
                 else if (type.equals("Security")){
                     criteria.orEqualTo(entry.getKey(),  valueList.get(0) ).orEqualTo(entry.getKey(),  valueList.get(1) );
                 }
+                boolean exitTime = this.setCreTimeCondition(criteria, entry);
+                if(exitTime){
+                    continue;
+                }
             }
         }
         Page<Object> result = PageHelper.startPage(query.getPageNo(), query.getPageSize());
@@ -99,5 +99,18 @@ public class GateLogBiz extends BaseBiz<GateLogMapper,GateLog> {
         } catch (Exception e) {
         }
         return date;
+    }
+    private boolean setCreTimeCondition(Example.Criteria criteria,Map.Entry<String, Object> entry ){
+        if("crtTime".equals(entry.getKey())){
+            if(StringUtils.isEmpty(entry.getValue())){
+                throw new BaseException("输入时间不能为空...");
+            }
+            String[] dateSplits = entry.getValue().toString().trim().split(",");
+            Date beginDate = this.stringToDate(dateSplits[0], "yyyy-MM-dd");
+            Date endDate = this.stringToDate(dateSplits[1], "yyyy-MM-dd");
+            criteria.andBetween(entry.getKey(),beginDate,endDate);
+            return true;
+        }
+        return false;
     }
 }
