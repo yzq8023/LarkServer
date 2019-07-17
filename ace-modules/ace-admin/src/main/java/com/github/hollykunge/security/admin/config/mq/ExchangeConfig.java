@@ -30,7 +30,10 @@ public class ExchangeConfig {
         return directExchange;
     }
 
-    // 创建死信交换机
+    /**
+     * 创建死信交换机
+     * @return
+     */
     @Bean
     @Order(value = 1)
     public DirectExchange noticDeadExchange() {
