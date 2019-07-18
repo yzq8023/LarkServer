@@ -53,7 +53,7 @@ spring:
           filter: stat,wall,log4j
     rabbitmq:
       #需要修改地址
-        host: ${RABBIT_MQ_HOST:10.11.24.135}
+        host: ${RABBIT_MQ_HOST:127.0.0.1}
         port:  ${RABBIT_MQ_PORT:5672}
         username: hollykunge
         password: 123456
@@ -145,7 +145,7 @@ redis:
          maxIdle: 100
          maxWait: 10000
       #需要修改地址
-    host: ${REDIS_HOST:10.11.24.135}
+    host: ${REDIS_HOST:127.0.0.1}
     port:  ${REDIS_PORT:6379}
     password:
     timeout: 20000
