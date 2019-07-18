@@ -53,7 +53,7 @@ spring:
           filter: stat,wall,log4j
     rabbitmq:
       #需要修改地址
-        host: ${RABBIT_MQ_HOST:127.0.0.1}
+        host: ${RABBIT_MQ_HOST:10.11.24.136}
         port:  ${RABBIT_MQ_PORT:5672}
         username: hollykunge
         password: 123456
