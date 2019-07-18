@@ -167,7 +167,6 @@ public abstract class BaseBiz<M extends Mapper<T>, T> {
         return new TableResultResponse<T>(result.getPageSize(), result.getPageNum() ,result.getPages(), result.getTotal(), list);
     }
 
-
     protected abstract String getPageName();
 
     private boolean isContantsCrtTime(Class<T> t){

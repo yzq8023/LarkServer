@@ -36,4 +36,8 @@ public class GateLog {
 
     @Column(name = "IS_SUCCESS")
     private String isSuccess;
+
+    @Column(name = "P_ID")
+    private String pid;
+
 }

@@ -50,4 +50,9 @@ public class ClientInfo implements IJWTInfo {
     public String getName() {
         return name;
     }
+
+    @Override
+    public String getSecretLevel() {
+        return null;
+    }
 }
