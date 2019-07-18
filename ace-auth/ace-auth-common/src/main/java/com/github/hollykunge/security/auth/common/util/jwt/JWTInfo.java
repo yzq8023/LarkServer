@@ -9,11 +9,13 @@ public class JWTInfo implements Serializable,IJWTInfo {
     private String username;
     private String userId;
     private String name;
+    private String secretLevel;
 
-    public JWTInfo(String username, String userId, String name) {
+    public JWTInfo(String username, String userId, String name,String secretLevel) {
         this.username = username;
         this.userId = userId;
         this.name = name;
+        this.secretLevel = secretLevel;
     }
 
     @Override
@@ -37,6 +39,11 @@ public class JWTInfo implements Serializable,IJWTInfo {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String getSecretLevel() {
+        return this.secretLevel;
     }
 
     public void setName(String name) {

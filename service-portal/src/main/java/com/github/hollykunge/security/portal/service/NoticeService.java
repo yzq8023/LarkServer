@@ -33,28 +33,44 @@ public class NoticeService extends BaseBiz<NoticeMapper, Notice> {
         return null;
     }
 
-    @Override
-    public List<Notice> selectList(Notice entity) {
-        if(StringUtils.isEmpty(entity.getOrgCode())){
+    public List<Notice> selectList(Notice entity, String userSecretLevel) {
+        if (StringUtils.isEmpty(entity.getOrgCode())) {
             throw new BaseException("当前登录人没有组织编码...");
         }
         Example example = new Example(Notice.class);
         example.setOrderByClause("SEND_TIME DESC");
-        List<Notice> notices =  mapper.selectByExample(example);
+        List<Notice> notices = mapper.selectByExample(example);
 //        List<Notice> notices = mapper.selectAll();
         notices = notices.stream().filter(new Predicate<Notice>() {
             @Override
             public boolean test(Notice notice) {
-                if(StringUtils.isEmpty(notice.getOrgCode())){
+                //组织编码为空的不显示
+                if (StringUtils.isEmpty(notice.getOrgCode())) {
                     return false;
                 }
-                if(entity.getOrgCode().contains(notice.getOrgCode())){
-                    return true;
+                if (entity.getOrgCode().contains(notice.getOrgCode())) {
+                    //密级小于当前人的密级显示
+                    if (isShow(userSecretLevel,notice.getSecretLevel())) {
+                        return true;
+                    }
+                    return false;
                 }
                 return false;
             }
         }).collect(Collectors.toList());
         Collections.sort(notices);
         return notices;
+    }
+
+    private boolean isShow(String userSecretLevel, String noticeSecretLevel) {
+        if (StringUtils.isEmpty(userSecretLevel) || StringUtils.isEmpty(noticeSecretLevel)) {
+            return false;
+        }
+        int userLevel = Integer.parseInt(userSecretLevel);
+        int noticeLevel = Integer.parseInt(noticeSecretLevel);
+        if (userLevel >= noticeLevel) {
+            return true;
+        }
+        return false;
     }
 }

@@ -29,7 +29,7 @@ public class AuthServiceImpl implements AuthService {
         UserInfo info = userService.validate(pid,password);
         String token = "";
         if (!StringUtils.isEmpty(info.getId())) {
-            token = jwtTokenUtil.generateToken(new JWTInfo(info.getpId(), info.getId() + "", info.getName()));
+            token = jwtTokenUtil.generateToken(new JWTInfo(info.getpId(), info.getId() + "", info.getName(),info.getSecretLevel()));
         }
         return token;
     }
