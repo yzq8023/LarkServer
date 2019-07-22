@@ -3,6 +3,7 @@ package com.workhub.z.servicechat.dao;
 import com.workhub.z.servicechat.VO.FileMonitoringVO;
 import com.workhub.z.servicechat.VO.GroupFileVo;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
+import com.workhub.z.servicechat.entity.ZzUploadFile;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
@@ -77,6 +78,6 @@ public interface ZzGroupFileDao extends Mapper<ZzGroupFile> {
     //查询附件大小(日期范围)
     List<Map> queryFileSizeRange(@Param("dateFmat") String dateFmat, @Param("dateBegin") String dateBegin, @Param("dateEnd") String dateEnd, @Param("unit") long unit );
     //文件信息补全
-    int fileUpdate(@Param("fileId") String fileId,@Param("receiverId") String receiverId,@Param("level") String level,@Param("sendId") String sendId,@Param("sendName") String sendName,@Param("receiverName") String receiverName);
+    int fileRecord(@Param("param") ZzUploadFile zzUploadFile);
     List<FileMonitoringVO> fileMonitoring(@Param("params")  Map<String,Object> param);
 }

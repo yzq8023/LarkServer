@@ -77,6 +77,12 @@ public class FastDFSClientWrapper {
         StorePath storePath = storageClient.uploadFile(stream,buff.length, fileExtension,null);
         return storePath.getFullPath();
     }
+    public String uploadFile(byte[] bytes, String fileExtension) {
+        ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
+        StorePath storePath = storageClient.uploadFile(stream,bytes.length, fileExtension,null);
+        return storePath.getFullPath();
+    }
+
 
     // 封装图片完整URL地址
 //    private String getResAccessUrl(StorePath storePath) {

@@ -221,15 +221,33 @@
 
     </select>
 
-    <update id="fileUpdate">
-        update ZZ_GROUP_FILE
-        set SEND_FLG='1',
-        LEVELS=#{level},
-        GROUP_ID=#{receiverId},
-        CREATOR=#{sendId},
-        CREATOR_NAME=#{sendName}
-        where FILE_ID=#{fileId}
-    </update>
+    <insert id="fileRecord">
+        insert into ZZ_UPLOAD_FILE
+        (
+          id,
+          user_id,
+          user_name,
+          upload_time,
+          success_flg,
+          is_group,
+          receiver,
+          receiver_name,
+          file_id,
+          levels
+        )
+        values (
+        #{param.id},
+        #{param.userId},
+        #{param.userName},
+        sysdate,
+        #{param.successFlg},
+        #{param.isGroup},
+        #{param.receiver},
+        #{param.receiverName},
+        #{param.fileId},
+        #{param.levels}
+        )
+    </insert>
 
     <!--文件监控查询-->
     <select id="fileMonitoring" resultMap="FileMonitoringVO">
