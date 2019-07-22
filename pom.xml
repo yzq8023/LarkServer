@@ -30,7 +30,7 @@
 <!--        <module>service-discuss</module>-->
         <module>service-portal</module>
 <!--        <module>ace-config</module>-->
-        <module>service-webservice</module>
+<!--        <module>service-webservice</module>-->
         <module>service-dfsfile</module>
     </modules>
     <packaging>pom</packaging>
