@@ -60,6 +60,17 @@ spring:
         virtual-host: /
         ###使用rabbitmq消息发送确认机制
         publisher-confirms: true
+        listener:
+          simple:
+            #开启手动ack
+            acknowledge-mode: manual
+            retry:
+              #重试机制适用于门户服务数据库暂时24秒内连接不上等情况
+              enabled: true
+              #最大重试次数
+              max-attempts: 8
+              #重试间隔次数
+              initial-interval: 3000ms
     sleuth:
       sampler:
         percentage: 1
