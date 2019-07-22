@@ -58,7 +58,7 @@ public class UserRest {
     public @ResponseBody UserInfo info(String userId){
         User user = userBiz.getUserByUserId(userId);
         UserInfo info = new UserInfo();
-        if(user==null){//研讨服务的用户和表数据出现不一致时候
+        if(user==null){
             return info;
         }
         BeanUtils.copyProperties(user, info);
@@ -74,7 +74,7 @@ public class UserRest {
             for (String m : ids) {
                 User user = userBiz.getUserByUserId(m);
                 UserInfo info = new UserInfo();
-                if(user==null){//研讨服务的用户和表数据出现不一致时候
+                if(user==null){
                     continue;
                 }
                 BeanUtils.copyProperties(user, info);
@@ -105,5 +105,32 @@ public class UserRest {
         }
         List<OrgUser> tree = orgBiz.getOrg(parentTreeId);
         return JSON.toJSONString(tree);
+    }
+
+    /**
+    *@Description: 人员列表是否跨场所
+    *@Param: String userId集合(","分隔)
+    *@return: bool
+    *@Author: 忠
+    *@date: 2019/7/16
+    */
+    @RequestMapping(value = "/isCross", method = RequestMethod.GET)
+    public @ResponseBody Boolean isCross(String userList){
+        List<UserInfo> userInfos = new ArrayList<UserInfo>();
+        String userOrg = "";
+        if (!StringUtils.isEmpty(userList)) {
+            String[] ids = userList.split(",");
+            for (String m : ids) {
+                User user = userBiz.getUserByUserId(m);
+                if (userOrg.isEmpty()){
+                    userOrg = user.getOrgCode();
+                }else {
+                    if (!userOrg.equals(user.getOrgCode())){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

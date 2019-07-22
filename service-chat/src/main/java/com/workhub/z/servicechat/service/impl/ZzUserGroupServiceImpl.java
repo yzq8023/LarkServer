@@ -208,10 +208,10 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
         }*/
         //mq添加消息发送 开发测试用end
         List<NoReadVo> noReadVos = zzMsgReadRelationService.queryNoReadCountList(id);
-        if(userNewMsgList == null|| userNewMsgList.isEmpty()) return list;
+        if(userNewMsgList == null|| userNewMsgList.isEmpty()){ return list;}
         userNewMsgList.stream().forEach(n ->{
             ContactVO contactVO = new ContactVO();
-            if (n.getTableType().equals("GROUP")) {
+            if ("GROUP".equals(n.getTableType())) {
                 ZzGroup group = new ZzGroup();
                 group = zzGroupService.queryById(n.getMsgSener());
                 contactVO.setId(n.getMsgSener());
@@ -240,7 +240,7 @@ public class ZzUserGroupServiceImpl implements ZzUserGroupService {
                 }
                 contactVO.setIsGroup(n.getTableType().equals("GROUP"));
                 contactVO.setUnreadNum(zzMsgReadRelationService.queryNoReadMsgBySenderAndReceiver(group.getGroupId(),id));
-            } else if (n.getTableType().equals("USER")) {
+            } else if ("USER".equals(n.getTableType())) {
                 UserInfo userInfo = iUserService.info(n.getMsgSener());
                 contactVO.setId(n.getMsgSener());
                 contactVO.setLastMessage(JSON.toJavaObject(JSON.parseObject(n.getMsg()), MessageContent.class));
