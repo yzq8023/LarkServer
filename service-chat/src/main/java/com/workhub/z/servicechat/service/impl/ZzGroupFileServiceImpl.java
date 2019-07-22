@@ -1,5 +1,6 @@
 package com.workhub.z.servicechat.service.impl;
 
+import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -8,6 +9,8 @@ import com.workhub.z.servicechat.VO.GroupFileVo;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.dao.ZzGroupFileDao;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
+import com.workhub.z.servicechat.entity.ZzUploadFile;
+import com.workhub.z.servicechat.feign.IFileUploadService;
 import com.workhub.z.servicechat.service.ZzGroupFileService;
 import jodd.util.StringUtil;
 import org.slf4j.Logger;
@@ -35,7 +38,8 @@ public class ZzGroupFileServiceImpl implements ZzGroupFileService {
     private static Logger log = LoggerFactory.getLogger(ZzGroupFileServiceImpl.class);
     @Resource
     private ZzGroupFileDao zzGroupFileDao;
-
+    @Resource
+    private IFileUploadService iFileUploadService;
     /**
      * 通过ID查询单条数据
      *
@@ -227,8 +231,10 @@ public class ZzGroupFileServiceImpl implements ZzGroupFileService {
     }
 
     //文件数据库信息补全
-    public int fileUpdate(String fileId,String receiverId,String level,String sendId,String sendName,String receiverName) throws Exception{
-        return this.zzGroupFileDao.fileUpdate( fileId,receiverId, level,sendId,sendName,receiverName);
+    public int fileRecord(ZzUploadFile zzUploadFile) throws Exception{
+        //更新文件上传系统的文件属性 0代表是研讨服务
+        ObjectRestResponse objectRestResponse = iFileUploadService.fileUpdate(zzUploadFile.getFileId(),zzUploadFile.getLevels(),"0");
+        return this.zzGroupFileDao.fileRecord(zzUploadFile);
     }
     //文件监控查询
     //参数说明：page 页码 size 每页几条 userName上传用户名称 dateBegin、dateEnd上传时间开始结束 isGroup 是否群主1是0否

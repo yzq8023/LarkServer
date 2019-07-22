@@ -1,7 +1,9 @@
 package com.workhub.z.servicechat.processor;
 
 import com.alibaba.fastjson.JSONObject;
+import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.config.common;
+import com.workhub.z.servicechat.entity.ZzUploadFile;
 import com.workhub.z.servicechat.service.ZzGroupFileService;
 import com.workhub.z.servicechat.service.ZzGroupService;
 import com.workhub.z.servicechat.service.ZzUserGroupService;
@@ -10,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tio.core.ChannelContext;
+
+import java.util.Date;
 
 import static com.workhub.z.servicechat.config.MessageType.*;
 
@@ -44,13 +48,21 @@ public class ProcessMsg extends AbstractMsgProcessor{
                 String msgType = common.nulToEmptyString(common.getJsonStringKeyValue(message,"content.type"));
                 //如果是文件或者图片上传
                 if("2".equals(msgType)||"3".equals(msgType)){
-                    String fileId = common.nulToEmptyString(common.getJsonStringKeyValue(message,"content.id"));
-                    String level = common.nulToEmptyString(common.getJsonStringKeyValue(message,"content.secretLevel"));
-                    String receiverId = common.nulToEmptyString(common.getJsonStringKeyValue(message,"toId"));
-                    String sendId = common.nulToEmptyString(common.getJsonStringKeyValue(message,"fromId"));
-                    String sendName = common.nulToEmptyString(common.getJsonStringKeyValue(message,"username"));
-                    String receiverName = common.nulToEmptyString(common.getJsonStringKeyValue(message,"contactInfo.name"));
-                    zzGroupFileService.fileUpdate(fileId,receiverId,level,sendId,sendName,receiverName);
+                    ZzUploadFile zzUploadFile = new ZzUploadFile();
+                    zzUploadFile.setId(RandomId.getUUID());
+                    zzUploadFile.setUploadTime(new Date());
+                    boolean isGroup = (Boolean) common.getJsonStringKeyValue(message,"isGroup");
+                    zzUploadFile.setIsGroup(isGroup?"1":"0");
+                    zzUploadFile.setFileId(common.nulToEmptyString(common.getJsonStringKeyValue(message,"content.id")));
+                    zzUploadFile.setLevels(common.nulToEmptyString(common.getJsonStringKeyValue(message,"content.secretLevel")));
+                    zzUploadFile.setReceiver(common.nulToEmptyString(common.getJsonStringKeyValue(message,"toId")));
+                    zzUploadFile.setUserId(common.nulToEmptyString(common.getJsonStringKeyValue(message,"fromId")));
+                    //ToDo
+                    //这里需要改前端返回消息的json，因为username、contactInfo.name都是发送人，缺少一个接收人姓名
+                    zzUploadFile.setUserName(common.nulToEmptyString(common.getJsonStringKeyValue(message,"username")));
+                    zzUploadFile.setReceiverName(common.nulToEmptyString(common.getJsonStringKeyValue(message,"contactInfo.name")));
+                    zzUploadFile.setSuccessFlg("1");//是否发送成功
+                    zzGroupFileService.fileRecord(zzUploadFile);
                 }
             } catch (Exception e) {
                 //异常记录到日志

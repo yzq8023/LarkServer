@@ -58,7 +58,7 @@ public class UserRest {
     public @ResponseBody UserInfo info(String userId){
         User user = userBiz.getUserByUserId(userId);
         UserInfo info = new UserInfo();
-        if(user==null){//研讨服务的用户和表数据出现不一致时候
+        if(user==null){
             return info;
         }
         BeanUtils.copyProperties(user, info);
@@ -74,7 +74,7 @@ public class UserRest {
             for (String m : ids) {
                 User user = userBiz.getUserByUserId(m);
                 UserInfo info = new UserInfo();
-                if(user==null){//研讨服务的用户和表数据出现不一致时候
+                if(user==null){
                     continue;
                 }
                 BeanUtils.copyProperties(user, info);
