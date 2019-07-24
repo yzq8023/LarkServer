@@ -1,8 +1,5 @@
 package com.github.hollykunge.security.admin.util;
 
-import com.github.hollykunge.security.admin.entity.User;
-import lombok.extern.slf4j.Slf4j;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
