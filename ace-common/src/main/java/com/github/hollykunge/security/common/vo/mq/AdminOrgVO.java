@@ -2,6 +2,7 @@ package com.github.hollykunge.security.common.vo.mq;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.io.Serializable;
 
@@ -12,6 +13,7 @@ import java.io.Serializable;
  */
 @Data
 @NoArgsConstructor
+@ToString
 public class AdminOrgVO implements Serializable {
 
     private static final long serialVersionUID = 3215731879666698331L;
