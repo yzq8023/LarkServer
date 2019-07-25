@@ -23,6 +23,8 @@ public class CommonConstants {
     public static final String CONTEXT_KEY_USER_TOKEN = "currentUserToken";
     public static final String JWT_KEY_USER_ID = "userId";
     public static final String JWT_KEY_NAME = "name";
+    //adminUser默认密码
+    public static final String ADMIN_PASSWORD = "$2a$12$0pS6RoQtr2ASZyhpdUwmvO/VPBdYu.S.BFASQiJVo0ZblGrlqmABm";
     /** 公告通知交换机名称*/
     public static final String NOTICE_EXCHANGE = "noticeExchange";
     /** 公告队列名称 */
@@ -43,6 +45,28 @@ public class CommonConstants {
      * 通知死信队列名称
      */
     public final static String NOTICE_DEAD_QUEUENAME = "notic_dead_queue";
+
+    /**
+     * ADMIN组织用户交换机名称
+     */
+    public final static String WERSERVICE_ADMIN_USERANDORG_EXCHANGE = "webAdminUserAndOrgExchange";
+
+    /**
+     * 用户队列名称
+     */
+    public final static String ADMINUSER_QUEUE_NAME = "adminUserQueue";
+    /**
+     * 组织队列名称
+     */
+    public final static String ADMINORG_QUEUE_NAME = "adminOrgQueue";
+    /**
+     * 用户路由键
+     */
+    public static final String ADMINUSER_ROTEING_KEY = "admin_user";
+    /**
+     * 组织路由键
+     */
+    public static final String ADMINORG_ROTEING_KEY = "admin_org";
 
     /** tio用ip数据监控统计，时间段*/
     public static final Long DURATION_1 = Time.MINUTE_1 * 5;
