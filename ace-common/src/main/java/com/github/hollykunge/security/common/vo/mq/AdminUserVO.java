@@ -87,4 +87,8 @@ public class AdminUserVO implements Serializable {
      * 描述
      */
     private String description;
+    /**
+     * 密码  $2a$12$0pS6RoQtr2ASZyhpdUwmvO/VPBdYu.S.BFASQiJVo0ZblGrlqmABm
+     */
+    private  String password;
 }
