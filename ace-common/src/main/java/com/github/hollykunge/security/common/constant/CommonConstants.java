@@ -62,4 +62,27 @@ public class CommonConstants {
      * 院网关解码
      */
     public static final String PERSON_CHAR_SET = "ISO8859-1";
+
+
+    /**
+     * 未消费掉的人员或组织使用的交换机
+     */
+    public static final String ADMIN_USERORORG_EXCHANGE = "adminUserAndOrgExchange";
+    /**
+     * admin服务中人员未被消费队列
+     */
+    public static final String ADMIN_UNACK_USER = "admin_unack_user_queue";
+    /**
+     * 路由键
+     */
+    public static final String ADMIN_UNACK_USER_KEY = "admin_unack_user_key";
+    /**
+     * admin服务中组织未被的队列
+     */
+    public static final String ADMIN_UNACK_ORG = "admin_unack_org_queue";
+    /**
+     * 路由键
+     */
+    public static final String ADMIN_UNACK_ORG_KEY = "admin_unack_org_key";
+
 }
