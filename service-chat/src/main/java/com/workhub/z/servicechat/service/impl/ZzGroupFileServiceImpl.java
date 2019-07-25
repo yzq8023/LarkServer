@@ -136,14 +136,15 @@ public class ZzGroupFileServiceImpl implements ZzGroupFileService {
      * @param id
      * @param page
      * @param size
+     * @param query 文件名称
      * @return
      * @throws Exception
      */
     @Override
-    public TableResultResponse<GroupFileVo> groupFileList(String id, int page, int size) throws Exception {
+    public TableResultResponse<GroupFileVo> groupFileList(String id,String query, int page, int size) throws Exception {
         if (StringUtil.isEmpty(id)) throw new NullPointerException("id is null");
         PageHelper.startPage(page, size);
-        List<GroupFileVo> dataList =this.zzGroupFileDao.groupFileList(id);
+        List<GroupFileVo> dataList =this.zzGroupFileDao.groupFileList(id,query);
         //null的String类型属性转换空字符串
         common.putVoNullStringToEmptyString(dataList);
         PageInfo<GroupFileVo> pageInfo = new PageInfo<>(dataList);
