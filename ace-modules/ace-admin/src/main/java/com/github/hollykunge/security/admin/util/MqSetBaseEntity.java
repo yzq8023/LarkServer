@@ -20,11 +20,11 @@ public class MqSetBaseEntity {
         Method setCrtUser = aClass.getMethod("setCrtUser",String.class);
         Method setCrtName = aClass.getMethod("setCrtName",String.class);
         Method setCrtHost = aClass.getMethod("setCrtHost",String.class);
-        Method setId = aClass.getMethod("setId", String.class);
+//        Method setId = aClass.getMethod("setId", String.class);
         setCrtTime.invoke(t,new Date());
         setCrtUser.invoke(t,"mq");
         setCrtName.invoke(t,"mq");
-        setId.invoke(t, UUIDUtils.generateShortUuid());
+//        setId.invoke(t, UUIDUtils.generateShortUuid());
         setCrtHost.invoke(t,InetAddress.getLocalHost().toString());
     }
 
