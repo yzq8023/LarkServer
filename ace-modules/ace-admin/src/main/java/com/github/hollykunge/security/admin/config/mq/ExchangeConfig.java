@@ -3,7 +3,6 @@ package com.github.hollykunge.security.admin.config.mq;
 import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
 import com.github.hollykunge.security.common.constant.CommonConstants;
 import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -39,4 +38,12 @@ public class ExchangeConfig {
     public DirectExchange noticDeadExchange() {
         return new DirectExchange(AdminCommonConstant.NOTICE_DEAD_EXCHANGENAME);
     }
+
+    @Bean
+    @Order(value = 3)
+    public DirectExchange adminDirectExchange(){
+        DirectExchange directExchange = new DirectExchange(CommonConstants.ADMIN_USERORORG_EXCHANGE, true, false);
+        return directExchange;
+    }
+
 }
