@@ -67,7 +67,7 @@ public class UserConsumer {
             //数据库中含有人员信息，属于修改
             String priKey = existUser.getId();
             BeanUtils.copyProperties(adminUserVO, existUser);
-            existUser.setPId(priKey);
+            existUser.setId(priKey);
             MqSetBaseEntity.setUpdate(existUser);
             userMapper.updateByPrimaryKeySelective(existUser);
         }
