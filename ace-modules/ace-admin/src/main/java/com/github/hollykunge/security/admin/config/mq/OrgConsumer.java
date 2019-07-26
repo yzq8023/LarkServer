@@ -60,6 +60,7 @@ public class OrgConsumer {
             Org exitOrg = orgMapper.selectOne(org);
             //1.数据库中不存在这个组织属于插入
             if (exitOrg == null) {
+                exitOrg = new Org();
                 BeanUtils.copyProperties(adminOrgVO, exitOrg);
                 MqSetBaseEntity.setCreatData(exitOrg);
                 orgMapper.insertSelective(exitOrg);

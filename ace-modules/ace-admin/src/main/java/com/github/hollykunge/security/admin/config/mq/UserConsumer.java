@@ -58,6 +58,7 @@ public class UserConsumer {
             User existUser = userMapper.selectOne(user);
             //数据库中没有改人员信息，属于新增
             if (existUser == null) {
+                existUser = new User();
                 BeanUtils.copyProperties(adminUserVO, existUser);
                 MqSetBaseEntity.setCreatData(existUser);
                 userMapper.insertSelective(existUser);
