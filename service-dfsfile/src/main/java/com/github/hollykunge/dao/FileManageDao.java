@@ -1,6 +1,7 @@
 package com.github.hollykunge.dao;
 
 import com.github.hollykunge.entity.FileManageInf;
+import com.github.hollykunge.vo.FileMonitoringVO;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
@@ -17,6 +18,6 @@ public interface FileManageDao  extends Mapper<FileManageInf> {
     double queryFileSize(@Param("dateFmat") String dateFmat, @Param("date") String date, @Param("unit") long unit);
     //查询附件大小(日期范围)
     List<Map> queryFileSizeRange(@Param("dateFmat") String dateFmat, @Param("dateBegin") String dateBegin, @Param("dateEnd") String dateEnd, @Param("unit") long unit);
-
+    List<FileMonitoringVO> fileMonitoring(@Param("params")  Map<String,Object> param);
 }
 

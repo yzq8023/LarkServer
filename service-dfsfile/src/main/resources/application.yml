@@ -57,6 +57,6 @@ mybatis:
 logging:
   level:
     com.github.hollykunge.dao: debug
-
-
-
+#处理无用附件的定时任务时间
+#每天凌晨两点
+deal_unused_file_job_cron: 0 0 2 * * ?

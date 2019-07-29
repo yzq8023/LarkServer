@@ -52,7 +52,7 @@ spring:
     timeout: 3000s
 #处理无用附件的定时任务时间
 #每天凌晨两点
-deal_unused_file_job_cron: 0 0 2 * * ?
+#deal_unused_file_job_cron: 0 0 2 * * ?
 #来自ace-adimin通知新消息的消息队列名称
 aceNoticeRabbitMqQueueName: noticeToChatService
 
