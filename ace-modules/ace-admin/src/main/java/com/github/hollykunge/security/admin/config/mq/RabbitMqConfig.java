@@ -4,17 +4,12 @@ import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
 import com.github.hollykunge.security.admin.entity.Notice;
 import com.github.hollykunge.security.admin.mapper.NoticeMapper;
 import com.github.hollykunge.security.common.constant.CommonConstants;
-import com.github.hollykunge.security.common.exception.BaseException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.support.CorrelationData;
-import org.springframework.amqp.rabbit.transaction.RabbitTransactionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -51,14 +46,14 @@ public class RabbitMqConfig {
      将消息队列和交换机进行绑定
      */
     @Bean
-    @Order(value = 6)
+    @Order(value = 9)
     public Binding binding_portal() {
         Binding binding = BindingBuilder.bind(queueConfig.noticeQueue()).to(exchangeConfig.directExchange()).with(CommonConstants.NOTICE_TOPORTAL_ROTEING_KEY);
         return binding;
     }
     //// 死信队列与死信交换机进行绑定
     @Bean
-    @Order(value = 7)
+    @Order(value = 10)
     public Binding bindingDeadExchange() {
         return BindingBuilder.bind(queueConfig.noticDeadQueue()).to(exchangeConfig.noticDeadExchange()).with(AdminCommonConstant.DEAD_LETTER_ROUTING_KEY);
     }
@@ -68,9 +63,23 @@ public class RabbitMqConfig {
      * @return
      */
     @Bean
-    @Order(value = 8)
+    @Order(value = 11)
     public Binding binding_chat() {
         Binding binding = BindingBuilder.bind(queueConfig.noticToChatQueue()).to(exchangeConfig.directExchange()).with(CommonConstants.NOTICE_TOCHAT_ROTEING_KEY);
+        return binding;
+    }
+
+    @Bean
+    @Order(value = 12)
+    public Binding binding_admin_user() {
+        Binding binding = BindingBuilder.bind(queueConfig.adminToUser()).to(exchangeConfig.adminDirectExchange()).with(CommonConstants.ADMIN_UNACK_USER_KEY);
+        return binding;
+    }
+
+    @Bean
+    @Order(value = 13)
+    public Binding binding_admin_org() {
+        Binding binding = BindingBuilder.bind(queueConfig.adminToOrg()).to(exchangeConfig.adminDirectExchange()).with(CommonConstants.ADMIN_UNACK_ORG_KEY);
         return binding;
     }
 
@@ -97,8 +106,8 @@ public class RabbitMqConfig {
         return template;
     }
     @Bean
-    @Qualifier("hotMapRabbitTemplate")
-    public RabbitTemplate hotMapRabbitTemplate(){
+    @Qualifier("adminRabbitTemplate")
+    public RabbitTemplate adminRabbitTemplate(){
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
         return template;
     }

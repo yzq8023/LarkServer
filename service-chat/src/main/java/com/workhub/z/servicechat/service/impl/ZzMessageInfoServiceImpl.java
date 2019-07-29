@@ -153,7 +153,8 @@ public class ZzMessageInfoServiceImpl implements ZzMessageInfoService {
         s1 +="]";
         return  s1;
     }
-    public TableResultResponse queryHistoryMessageForSingle(String userId, String contactId, String isGroup, String page, String size){
+    //query 聊天内容
+    public TableResultResponse queryHistoryMessageForSingle(String userId, String contactId, String isGroup,String query, String page, String size){
         int pageNum=1;
         int pageSize=10;
         try {
@@ -166,9 +167,9 @@ public class ZzMessageInfoServiceImpl implements ZzMessageInfoService {
         PageHelper.startPage(pageNum, pageSize);
         List<String> dataList=null;
         if("true".equals(isGroup)){
-            dataList=this.zzMessageInfoDao.queryHistoryMessageForSingleGroup(userId,contactId);
+            dataList=this.zzMessageInfoDao.queryHistoryMessageForSingleGroup(userId,contactId,query);
         }else{
-            dataList=this.zzMessageInfoDao.queryHistoryMessageForSinglePrivate(userId,contactId);
+            dataList=this.zzMessageInfoDao.queryHistoryMessageForSinglePrivate(userId,contactId,query);
         }
         SimpleDateFormat fullf = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
         SimpleDateFormat dayf = new SimpleDateFormat("YYYY-MM-dd");
