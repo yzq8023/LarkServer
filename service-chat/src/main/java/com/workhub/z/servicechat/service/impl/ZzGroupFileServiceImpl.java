@@ -1,6 +1,5 @@
 package com.workhub.z.servicechat.service.impl;
 
-import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -234,8 +233,10 @@ public class ZzGroupFileServiceImpl implements ZzGroupFileService {
     //文件数据库信息补全
     public int fileRecord(ZzUploadFile zzUploadFile) throws Exception{
         //更新文件上传系统的文件属性 0代表是研讨服务
-        ObjectRestResponse objectRestResponse = iFileUploadService.fileUpdate(zzUploadFile.getFileId(),zzUploadFile.getLevels(),"0");
-        return this.zzGroupFileDao.fileRecord(zzUploadFile);
+        //ObjectRestResponse objectRestResponse = iFileUploadService.fileUpdate(zzUploadFile.getFileId(),zzUploadFile.getLevels(),"0");
+        //return this.zzGroupFileDao.fileRecord(zzUploadFile);
+        return this.zzGroupFileDao.fileUpdate(zzUploadFile);
+
     }
     //文件监控查询
     //参数说明：page 页码 size 每页几条 userName上传用户名称 dateBegin、dateEnd上传时间开始结束 isGroup 是否群主1是0否

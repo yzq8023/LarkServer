@@ -241,7 +241,13 @@
         group by a.create_time
 
     </select>
-
+    <update id="fileUpdate">
+        update ZZ_GROUP_FILE
+        set SEND_FLG='1',
+        LEVELS=#{param.levels},
+        GROUP_ID=#{param.receiver},
+        where FILE_ID=#{param.fileId}
+    </update>
     <insert id="fileRecord">
         insert into ZZ_UPLOAD_FILE
         (
