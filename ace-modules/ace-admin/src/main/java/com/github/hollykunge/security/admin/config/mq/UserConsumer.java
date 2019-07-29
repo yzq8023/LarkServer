@@ -58,7 +58,9 @@ public class UserConsumer {
             User existUser = userMapper.selectOne(user);
             //数据库中没有改人员信息，属于新增
             if (existUser == null) {
-                BeanUtils.copyProperties(adminUserVO, existUser);
+                existUser = new User();
+//                BeanUtils.copyProperties(adminUserVO, existUser);
+                existUser = JSONObject.parseObject(JSONObject.toJSONString(adminUserVO), User.class);
                 MqSetBaseEntity.setCreatData(existUser);
                 userMapper.insertSelective(existUser);
                 continue;
@@ -66,7 +68,7 @@ public class UserConsumer {
             //数据库中含有人员信息，属于修改
             String priKey = existUser.getId();
             BeanUtils.copyProperties(adminUserVO, existUser);
-            existUser.setPId(priKey);
+            existUser.setId(priKey);
             MqSetBaseEntity.setUpdate(existUser);
             userMapper.updateByPrimaryKeySelective(existUser);
         }

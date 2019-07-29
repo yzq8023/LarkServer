@@ -3,6 +3,7 @@ package com.github.hollykunge.security.admin.config.mq;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.hollykunge.security.admin.entity.Org;
+import com.github.hollykunge.security.admin.entity.User;
 import com.github.hollykunge.security.admin.mapper.OrgMapper;
 import com.github.hollykunge.security.admin.util.MqSetBaseEntity;
 import com.github.hollykunge.security.common.constant.CommonConstants;
@@ -60,7 +61,9 @@ public class OrgConsumer {
             Org exitOrg = orgMapper.selectOne(org);
             //1.数据库中不存在这个组织属于插入
             if (exitOrg == null) {
-                BeanUtils.copyProperties(adminOrgVO, exitOrg);
+                exitOrg = new Org();
+//                BeanUtils.copyProperties(adminOrgVO, exitOrg);
+                exitOrg = JSONObject.parseObject(JSONObject.toJSONString(adminOrgVO), Org.class);
                 MqSetBaseEntity.setCreatData(exitOrg);
                 orgMapper.insertSelective(exitOrg);
                 continue;
