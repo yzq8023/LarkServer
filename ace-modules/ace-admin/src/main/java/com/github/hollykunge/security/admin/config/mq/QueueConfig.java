@@ -3,7 +3,6 @@ package com.github.hollykunge.security.admin.config.mq;
 import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
 import com.github.hollykunge.security.common.constant.CommonConstants;
 import org.springframework.amqp.core.Queue;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -21,21 +20,21 @@ public class QueueConfig {
 
 
     @Bean
-    @Order(value = 3)
+    @Order(value = 4)
     public Queue noticDeadQueue() {
         Queue queue = new Queue(CommonConstants.NOTICE_DEAD_QUEUENAME, true);
         return queue;
     }
 
     @Bean
-    @Order(value = 4)
+    @Order(value = 5)
     public Queue noticToChatQueue() {
         Queue queue = new Queue(CommonConstants.NOTICE_TOWECHAT_QUEUE_NAMA, true);
         return queue;
     }
 
     @Bean
-    @Order(value = 5)
+    @Order(value = 6)
     public Queue noticeQueue() {
 
         // 消息发布队列绑定死信（备胎交换机和备胎队列）
@@ -49,5 +48,19 @@ public class QueueConfig {
          exclusive  表示该消息队列是否只在当前connection生效,默认是false
          */
         return new Queue(CommonConstants.NOTICE_QUEUE_NAMA,true,false,false,args);
+    }
+
+    @Bean
+    @Order(value = 7)
+    public Queue adminToUser() {
+        Queue queue = new Queue(CommonConstants.ADMIN_UNACK_USER, true);
+        return queue;
+    }
+
+    @Bean
+    @Order(value = 8)
+    public Queue adminToOrg() {
+        Queue queue = new Queue(CommonConstants.ADMIN_UNACK_ORG, true);
+        return queue;
     }
 }
