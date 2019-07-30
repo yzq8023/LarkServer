@@ -41,21 +41,32 @@ public class FastDFSClientWrapper {
     }
 
     /**
-     * 上传文件(上传到服务器后为加密文件)
+     * 上传文件(base64加密方式上传到服务器后为加密文件)
      * @param file 文件对象
      * @return 文件访问地址相对路径，如果想要访问该文件使用全路径如：http://nginxIP:80/ + 返回值
      * @throws IOException
      */
-    public String uploadSensitiveFile(MultipartFile file) throws IOException{
+    public String uploadbase64SensitiveFile(MultipartFile file) throws IOException{
         String fileStr = Base64Utils.fileToBase64(file);
         return this.uploadFile(fileStr,FilenameUtils.getExtension(sensitiveOriginalFile));
+    }
+
+    /**
+     * 上传文件(位移加密加密方式上传到服务器后为加密文件)
+     * @param file
+     * @return
+     * @throws Exception
+     */
+    public String uploadByteMoveSensitiveFile(MultipartFile file) throws Exception {
+        byte[] bytes = EncryptionAndDeciphering.encryptFile(file);
+        return this.uploadFile(bytes,FilenameUtils.getExtension(sensitiveOriginalFile));
     }
     /**
      * 下载文件(加密文件下载)
      * @param fileUrl 文件url
      * @return
      */
-    public byte[]  downloadSensitiveFile(String fileUrl) throws IOException {
+    public byte[]  downloadBase64SensitiveFile(String fileUrl) throws IOException {
         String group = fileUrl.substring(0, fileUrl.indexOf("/"));
         String path = fileUrl.substring(fileUrl.indexOf("/") + 1);
         byte[] bytes = storageClient.downloadFile(group, path, new DownloadByteArray());
@@ -65,6 +76,19 @@ public class FastDFSClientWrapper {
         return bytes;
     }
 
+    /**
+     * 位移加密下载
+     * @param fileUrl
+     * @return
+     * @throws IOException
+     */
+    public byte[]  downloadByteMoveSensitiveFile(String fileUrl) throws IOException {
+        String group = fileUrl.substring(0, fileUrl.indexOf("/"));
+        String path = fileUrl.substring(fileUrl.indexOf("/") + 1);
+        byte[] bytes = storageClient.downloadFile(group, path, new DownloadByteArray());
+        bytes=EncryptionAndDeciphering.decipherFile(bytes);
+        return bytes;
+    }
     /**
      * 将一段字符串生成一个文件上传
      * @param content 文件访问地址相对路径，如果想要访问该文件使用全路径如：http://nginxIP:80/ 返回值
