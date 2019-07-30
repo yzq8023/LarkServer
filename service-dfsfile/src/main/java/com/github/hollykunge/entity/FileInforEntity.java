@@ -53,5 +53,10 @@ public class FileInforEntity extends BaseEntity {
      */
     @Column(name = "READ_PATH")
     private String readPath;
+    /**
+     * 数据有效状态（1为有效，0为无效）
+     */
+    @Column(name = "STATUS")
+    private String status;
 
 }
