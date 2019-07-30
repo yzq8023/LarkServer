@@ -5,11 +5,18 @@
     <springProperty scope="context" name="showConsoleInf" source="showConsoleInf" defaultValue="1"/>
     <!-- 开发时候console输出 -->
     <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
+        <!--
         <layout class="ch.qos.logback.classic.PatternLayout">
             <pattern>
                 %d - %msg%n
             </pattern>
         </layout>
+        -->
+        <!-- 彩色控制台日志 -->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %highlight(%-5level) %cyan(%logger{50}) - %highlight(%msg) %n</pattern>
+        </encoder>
     </appender>
     <!-- 专门用来存放sql语句打印的日志-->
     <appender name="sqlLog" class="ch.qos.logback.core.rolling.RollingFileAppender">

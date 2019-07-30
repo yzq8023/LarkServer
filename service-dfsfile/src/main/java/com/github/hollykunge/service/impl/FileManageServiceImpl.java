@@ -2,8 +2,12 @@ package com.github.hollykunge.service.impl;
 
 import com.github.hollykunge.dao.FileManageDao;
 import com.github.hollykunge.entity.FileManageInf;
+import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.hollykunge.service.FileMangeService;
 import com.github.hollykunge.util.CommonUtil;
+import com.github.hollykunge.vo.FileMonitoringVO;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -99,6 +103,26 @@ public class FileManageServiceImpl implements FileMangeService {
             map.put("size",size);
             res.add(map);
         }
+        return res;
+    }
+    //文件监控查询
+    //参数说明：page 页码 size 每页几条 userName上传用户名称 dateBegin、dateEnd上传时间开始结束 isGroup 是否群主1是0否
+    //fileName文件名称 level密级
+    public TableResultResponse<FileMonitoringVO> fileMonitoring(Map<String,Object> params) throws Exception{
+        int page=Integer.valueOf(CommonUtil.nulToEmptyString(params.get("page")));
+        int size=Integer.valueOf(CommonUtil.nulToEmptyString(params.get("size")));
+        PageHelper.startPage(page, size);
+        List<FileMonitoringVO> dataList =this.fileManageDao.fileMonitoring(params);
+        //null的String类型属性转换空字符串
+        CommonUtil.putVoNullStringToEmptyString(dataList);
+        PageInfo<FileMonitoringVO> pageInfo = new PageInfo<>(dataList);
+        TableResultResponse<FileMonitoringVO> res = new TableResultResponse<FileMonitoringVO>(
+                pageInfo.getPageSize(),
+                pageInfo.getPageNum(),
+                pageInfo.getPages(),
+                pageInfo.getTotal(),
+                pageInfo.getList()
+        );
         return res;
     }
 }

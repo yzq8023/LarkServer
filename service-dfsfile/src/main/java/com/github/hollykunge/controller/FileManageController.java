@@ -2,12 +2,14 @@ package com.github.hollykunge.controller;
 
 import com.github.hollykunge.entity.FileManageInf;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
+import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.hollykunge.security.common.util.UUIDUtils;
 import com.github.hollykunge.service.FileMangeService;
 import com.github.hollykunge.util.CommonUtil;
 import com.github.hollykunge.util.EncryptionAndDeciphering;
 import com.github.hollykunge.util.FastDFSClientWrapper;
 import com.github.hollykunge.util.FileTypeEnum;
+import com.github.hollykunge.vo.FileMonitoringVO;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -459,4 +461,21 @@ public class FileManageController {
         return res;
     }
 */
+
+    /**
+     * 上传文件监控
+     *参数说明：page 页码 size 每页几条 userName上传用户名称 dateBegin、dateEnd上传时间开始结束 isGroup 是否群主1是0否
+     * fileName文件名称 level密级
+     * @return
+     */
+    @PostMapping("/fileMonitoring")
+    public TableResultResponse<FileMonitoringVO> fileMonitoring(@RequestParam Map<String,Object> params){
+        TableResultResponse<FileMonitoringVO> pageInfo = null;
+        try {
+            pageInfo = this.fileMangeService.fileMonitoring(params);
+        } catch (Exception e) {
+            log.error(CommonUtil.getExceptionMessage(e));
+        }
+        return pageInfo;
+    }
 }

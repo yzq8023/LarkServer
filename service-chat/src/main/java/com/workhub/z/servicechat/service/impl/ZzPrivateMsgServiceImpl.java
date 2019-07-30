@@ -184,9 +184,10 @@ public class ZzPrivateMsgServiceImpl implements ZzPrivateMsgService {
      * @throws Exception
      */
     @Override
-    public TableResultResponse<PrivateFileVO> getFileList(String userId,String receiverId, int page, int size) throws Exception {
+    //query 查询附件名称
+    public TableResultResponse<PrivateFileVO> getFileList(String userId,String receiverId,String query, int page, int size) throws Exception {
         PageHelper.startPage(page, size);
-        List<PrivateFileVO> dataList =this.zzPrivateMsgDao.getFileList(userId,receiverId);
+        List<PrivateFileVO> dataList =this.zzPrivateMsgDao.getFileList(userId,receiverId,query);
         //null的String类型属性转换空字符串
         common.putVoNullStringToEmptyString(dataList);
         PageInfo<PrivateFileVO> pageInfo = new PageInfo<>(dataList);

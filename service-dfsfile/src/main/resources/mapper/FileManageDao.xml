@@ -20,7 +20,16 @@
         <result property="fileEncrypeFlg" column="FILE_ENCRYPE_FLG" jdbcType="VARCHAR"/>
         <result property="workType" column="WORK_TYPE" jdbcType="VARCHAR"/>
     </resultMap>
-
+    <resultMap id="FileMonitoringVO" type="com.github.hollykunge.vo.FileMonitoringVO">
+        <result property="fileId" column="FILE_ID" jdbcType="VARCHAR"></result>
+        <result property="fileName" column="FILE_NAME" jdbcType="VARCHAR"></result>
+        <result property="filePath" column="FILE_PATH" jdbcType="VARCHAR"></result>
+        <result property="fileSize" column="FILE_SIZE" jdbcType="VARCHAR"></result>
+        <result property="uploadTime" column="UPLOAD_TIME" jdbcType="VARCHAR"></result>
+        <result property="levels" column="LEVELS" jdbcType="VARCHAR"></result>
+        <result property="uploadUserName" column="CREATOR_NAME" jdbcType="VARCHAR"></result>
+        <result property="isGroup" column="IS_GROUP" jdbcType="VARCHAR"></result>
+    </resultMap>
     <!--查询单个-->
     <select id="queryById" resultMap="FileManageInf">
         select
@@ -102,5 +111,39 @@
         and a.create_time &lt;= #{dateEnd}
         and a.create_time &gt;= #{dateBegin}
         group by a.create_time
+    </select>
+    <!--文件监控查询-->
+    <select id="fileMonitoring" resultMap="FileMonitoringVO">
+        select f.file_id,
+        f.file_name || decode(nvl(f.file_ext, 'null'), 'null', '', '.' || f.file_ext) as file_name,
+        TO_CHAR(nvl(f.sizes, 0) / 1024 / 1024,'FM999999999990.00') as file_size,
+        f.path as file_path,
+        to_char(f.create_time,'yyyy-mm-dd hh24:mi:ss') as upload_time,
+        f.levels,
+        f.creator_name,
+        (case when f.file_id in ( select u.file_id from zz_upload_file u where u.is_group='1')  then '1' else '0' END) is_group
+        from zz_group_file f
+        where f.send_flg = '1'
+        <if test="params.fileName != null and params.fileName != ''">
+            and f.file_name || decode(nvl(f.file_ext, 'null'), 'null', '', '.' || f.file_ext) like '%'||#{params.fileName}||'%'
+        </if>
+        <if test="params.userName != null and params.userName != ''">
+            and f.creator_name like '%'||#{params.userName}||'%'
+        </if>
+        <if test="params.level != null and params.level != ''">
+            and f.levels = #{params.level}
+        </if>
+        <if test="params.dateBegin != null and params.dateBegin != ''">
+            and to_char(f.create_time, 'yyyy-mm-dd') &gt;= #{params.dateBegin}
+        </if>
+        <if test="params.dateEnd != null and params.dateEnd != ''">
+            and to_char(f.create_time, 'yyyy-mm-dd') &lt;= #{params.dateEnd}
+        </if>
+        <if test="params.isGroup != null and params.isGroup != '' and params.isGroup=='1'.toString()">
+            and exists (select 1 from zz_upload_file g where g.file_id=f.file_id and g.is_group='1')
+        </if>
+        <if test="params.isGroup != null and params.isGroup != '' and params.isGroup=='0'.toString()">
+            and not exists (select 1 from zz_upload_file g where g.file_id=f.file_id and g.is_group='1')
+        </if>
     </select>
 </mapper>

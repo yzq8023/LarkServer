@@ -70,10 +70,31 @@
        FROM ZZ_GROUP ZG, ZZ_GROUP_FILE ZGF
       WHERE ZG.GROUP_ID = ZGF.GROUP_ID
       AND ZGF.SEND_FLG='1'
+      <if test="query!=null and query != ''">
+          AND ZGF.FILE_NAME||decode(nvl(ZGF.FILE_EXT,'null'),'null','','.'||ZGF.FILE_EXT) like '%'||#{query}||'%'
+      </if>
       AND ZG.GROUP_ID = #{id}
       ORDER BY ZGF.CREATE_TIME DESC
     </select>
-
+    <!-- 文件上传转换到fastdfs系统后，启用该方法
+    <select id="groupFileList" resultMap="GroupFileVo">
+        select zgf.receiver as group_id,
+                zgf.file_id as file_id,
+                f.file_name || decode(nvl(f.file_ext, 'null'), 'null', '', '.' || f.file_ext) as file_name,
+                zgf.levels as levels,
+                zgf.user_id as reviser,
+                to_char(zgf.upload_time, 'YYYY-MM-DD HH24:MI:SS') as time
+        from ZZ_UPLOAD_FILE ZGF, ZZ_GROUP ZG, FILE_MANAGE_INF F
+        where zgf.file_id = f.file_id
+        and zgf.receiver = zg.group_id
+        and zgf.is_group = '1'
+        and zg.group_id=#{id}
+        <if test="query!=null and query != ''">
+            and f.file_name || decode(nvl(f.file_ext, 'null'), 'null', '', '.' || f.file_ext) like '%'||#{query}||'%'
+        </if>
+        order by zgf.upload_time desc
+    </select>
+    -->
     <!--查询群组文件总记录数-->
     <select id="groupFileListTotal" resultType="java.lang.Long">
      SELECT COUNT(*)
@@ -220,7 +241,13 @@
         group by a.create_time
 
     </select>
-
+    <update id="fileUpdate">
+        update ZZ_GROUP_FILE
+        set SEND_FLG='1',
+        LEVELS=#{param.levels},
+        GROUP_ID=#{param.receiver},
+        where FILE_ID=#{param.fileId}
+    </update>
     <insert id="fileRecord">
         insert into ZZ_UPLOAD_FILE
         (

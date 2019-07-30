@@ -72,12 +72,14 @@ public interface ZzGroupFileDao extends Mapper<ZzGroupFile> {
 
     Long groupFileListTotal(@Param("id")String id);
 
-    List<GroupFileVo> groupFileList(@Param("id") String id);
+    List<GroupFileVo> groupFileList(@Param("id") String id,@Param("query") String query);
     //查询附件大小
     double queryFileSize(@Param("dateFmat") String dateFmat,@Param("date") String date,@Param("unit") long unit );
     //查询附件大小(日期范围)
     List<Map> queryFileSizeRange(@Param("dateFmat") String dateFmat, @Param("dateBegin") String dateBegin, @Param("dateEnd") String dateEnd, @Param("unit") long unit );
     //文件信息补全
     int fileRecord(@Param("param") ZzUploadFile zzUploadFile);
+    //文件信息补全
+    int fileUpdate(@Param("param") ZzUploadFile zzUploadFile);
     List<FileMonitoringVO> fileMonitoring(@Param("params")  Map<String,Object> param);
 }
