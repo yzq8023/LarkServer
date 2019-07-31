@@ -483,13 +483,14 @@ public class common {
      *@Author: zhuqz
      *@date: 2019/07/03
      */
-    public static Object   getJsonStringKeyValue (String jsonStr,String key) throws Exception{
+    public static Object getJsonStringKeyValue (String jsonStr,String key) throws Exception{
         if(jsonStr==null){
             return null;
         }
         Map<String,Object> jsonMap= JSON.parseObject(jsonStr, new TypeReference<Map<String, Object>>() {});
         return getMapKeyValue(jsonMap,key);
     }
+
     //递归json的key
     public static Object getMapKeyValue(Map<String,Object> map,String key) throws  Exception {
         String[] keyArr=key.split("\\.");

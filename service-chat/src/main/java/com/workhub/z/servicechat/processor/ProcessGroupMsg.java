@@ -23,7 +23,7 @@ public class ProcessGroupMsg extends AbstractMsgProcessor {
     @Autowired
     protected ZzGroupService groupService;
 
-    public boolean sendMsg(ChannelContext channelContext, String msg){
+    public boolean sendMsg(ChannelContext channelContext, String msg) throws Exception {
         JSONObject jsonObject = JSONObject.parseObject(msg);
 //      String code = jsonObject.getString("code");
         String message = jsonObject.getString("data");
@@ -33,6 +33,7 @@ public class ProcessGroupMsg extends AbstractMsgProcessor {
         //存储消息信息（新）
         super.saveMessageInfo("GROUP",zzGroupMsg.getMsgSender(),zzGroupMsg.getMsgReceiver()
                 ,zzGroupMsg.getLevels(),zzGroupMsg.getSendTime(),message,zzGroupMsg.getMsgId());
+        super.msgAnswer(msg,zzGroupMsg.getMsgId(),channelContext);
         return true;
     }
 
