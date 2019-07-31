@@ -98,7 +98,7 @@ public class FileManageController {
     @PostMapping("/sensitiveUpload")
     @ResponseBody
     public ObjectRestResponse<String> uploadSensitiveFile(@RequestParam("file") MultipartFile file) throws Exception {
-        String imgUrl = dfsClient.uploadSensitiveFile(file);
+        String imgUrl = dfsClient.uploadbase64SensitiveFile(file);
         String userId = (request.getHeader("userId")==null)?"":request.getHeader("userId");
         String userName = URLDecoder.decode((request.getHeader("userName")==null)?"":request.getHeader("userName"),"UTF-8");
         String fileId = UUIDUtils.generateShortUuid();
@@ -242,7 +242,7 @@ public class FileManageController {
         if(!"".equals(fileExt)){
             fileName=fileName+"."+fileExt;
         }
-        byte[] data = dfsClient.downloadSensitiveFile(fileManageInf.getPath());
+        byte[] data = dfsClient.downloadBase64SensitiveFile(fileManageInf.getPath());
         response.setCharacterEncoding("UTF-8");
         response.setHeader("Content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
         ServletOutputStream outputStream = response.getOutputStream();
@@ -322,7 +322,7 @@ public class FileManageController {
             FileManageInf fileManageInf = this.fileMangeService.queryById(fileId);
             //读取路径下面的文件
             if(fileManageInf == null) return;
-            byte[] data = dfsClient.downloadSensitiveFile(fileManageInf.getPath());
+            byte[] data = dfsClient.downloadBase64SensitiveFile(fileManageInf.getPath());
             //获取文件后缀名格式
             String ext = ((fileManageInf.getFileExt()==null)?"":fileManageInf.getFileExt());
             //判断图片格式,设置相应的输出文件格式
