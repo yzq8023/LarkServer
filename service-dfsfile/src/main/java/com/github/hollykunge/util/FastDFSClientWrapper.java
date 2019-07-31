@@ -1,5 +1,6 @@
 package com.github.hollykunge.util;
 
+import com.github.hollykunge.comtants.FileComtants;
 import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.tobato.fastdfs.domain.StorePath;
 import com.github.tobato.fastdfs.exception.FdfsUnsupportStorePathException;
@@ -8,6 +9,8 @@ import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -16,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Date;
 
 @Slf4j
 @Component
@@ -27,6 +31,14 @@ public class FastDFSClientWrapper {
 
     @Autowired
     private FastFileStorageClient storageClient;
+
+    private DateTime sentiveStartDate;
+
+    private DateTime sentiveEndDate;
+
+    private DateTime uploadStartDate;
+
+    private DateTime uploadEndDate;
 
 
     /**
@@ -61,6 +73,30 @@ public class FastDFSClientWrapper {
         byte[] bytes = EncryptionAndDeciphering.encryptFile(file);
         return this.uploadFile(bytes,FilenameUtils.getExtension(sensitiveOriginalFile));
     }
+
+    /**
+     * 使用文件流加密
+     * @param file
+     * @return
+     * @throws Exception
+     */
+    public String uploadCipherSensitiveFile(MultipartFile file) throws Exception {
+        this.sentiveStartDate = new DateTime();
+        FileDeEncrypt deEncrypt = new FileDeEncrypt(FileComtants.ENCRYPT_ROLE);
+        byte[] bytes = deEncrypt.encryptFile(file.getBytes());
+        this.sentiveEndDate = new DateTime();
+        this.getDatePoor(sentiveStartDate,sentiveEndDate);
+        uploadStartDate = new DateTime();
+        String path = this.uploadFile(bytes, FilenameUtils.getExtension(sensitiveOriginalFile));
+        uploadEndDate = new DateTime();
+        this.getDatePoor(uploadStartDate,uploadEndDate);
+        return path;
+    }
+    public String getDatePoor(DateTime startTime, DateTime endTime) {
+        Interval interval = new Interval(startTime, endTime);
+        log.info("响应时间:{}毫秒", interval.toDurationMillis());
+        return "";
+    }
     /**
      * 下载文件(加密文件下载)
      * @param fileUrl 文件url
@@ -88,6 +124,20 @@ public class FastDFSClientWrapper {
         byte[] bytes = storageClient.downloadFile(group, path, new DownloadByteArray());
         bytes=EncryptionAndDeciphering.decipherFile(bytes);
         return bytes;
+    }
+
+    /**
+     * 使用cipherFile解密下载文件
+     * @param fileUrl
+     * @return
+     * @throws IOException
+     */
+    public byte[]  downloadCipherSensitiveFile(String fileUrl) throws IOException {
+        String group = fileUrl.substring(0, fileUrl.indexOf("/"));
+        String path = fileUrl.substring(fileUrl.indexOf("/") + 1);
+        byte[] bytes = storageClient.downloadFile(group, path, new DownloadByteArray());
+        FileDeEncrypt deEncrypt = new FileDeEncrypt(FileComtants.ENCRYPT_ROLE);
+        return deEncrypt.decryptFileContent(bytes);
     }
     /**
      * 将一段字符串生成一个文件上传
