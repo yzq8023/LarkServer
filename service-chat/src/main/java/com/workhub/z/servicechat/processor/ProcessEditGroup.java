@@ -1,19 +1,21 @@
 package com.workhub.z.servicechat.processor;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.workhub.z.servicechat.VO.GroupEditVO;
 import com.workhub.z.servicechat.config.ImageUtil;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.entity.ZzGroup;
 import com.workhub.z.servicechat.entity.ZzUserGroup;
+import com.workhub.z.servicechat.feign.IUserService;
 import com.workhub.z.servicechat.model.GroupTaskDto;
 import com.workhub.z.servicechat.model.UserListDto;
 import com.workhub.z.servicechat.service.ZzGroupService;
 import com.workhub.z.servicechat.service.ZzUserGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.tio.core.ChannelContext;
 import org.tio.core.Tio;
 
@@ -24,7 +26,6 @@ import java.util.List;
 
 import static com.workhub.z.servicechat.config.MessageType.*;
 import static com.workhub.z.servicechat.config.RandomId.getUUID;
-import static com.workhub.z.servicechat.config.VoToEntity.toGroupTaskDto;
 import static com.workhub.z.servicechat.config.common.imgUrl;
 
 @Service
@@ -34,7 +35,8 @@ public class ProcessEditGroup extends AbstractMsgProcessor{
     ZzUserGroupService userGroupService;
     @Autowired
     ZzGroupService groupService;
-
+    @Autowired
+    private IUserService iUserService;
     // TODO: 2019/6/4 分类处理群组编辑
     public boolean processManage(ChannelContext channelContext, String message) throws IOException {
 //        GroupTaskDto groupTaskDto = toGroupTaskDto(message);
@@ -126,12 +128,15 @@ public class ProcessEditGroup extends AbstractMsgProcessor{
     // TODO: 2019/6/3 退出群组
 
     //群创建
+    @Transactional
     public boolean createGroup(ChannelContext channelContext,String msg) throws IOException {
         //创建群begin
         ZzGroup zzGroupInfo = new ZzGroup();
         JSONObject jsonObject = JSONObject.parseObject(msg);
         String message = jsonObject.getString("data");
         JSONObject groupJson = JSONObject.parseObject(message);
+        JSONArray userJsonArray = JSONObject.parseArray(groupJson.getString("userList"));
+
         zzGroupInfo.setGroupId(getUUID());
         zzGroupInfo.setGroupName(groupJson.getString("groupName"));
         zzGroupInfo.setCreator(groupJson.getString("creator"));
@@ -147,6 +152,22 @@ public class ProcessEditGroup extends AbstractMsgProcessor{
         zzGroupInfo.setUpdateTime(new Date());
 //      根据全部人员生成群组头像
         zzGroupInfo.setGroupImg(imgUrl);
+       // groupService.insert(zzGroupInfo);//创建讨论组
+        //判断是否跨场所
+        String userIds = "";//获取群成员信息，判断是否跨场所
+        for (int i = 0; i < userJsonArray.size(); i++) {
+            JSONObject userJson = JSONObject.parseObject(userJsonArray.getString(i));
+            userIds += ","+userJson.getString("userId");
+        }
+        //判断是否跨域场所
+        boolean iscross = false;
+        if(!userIds.equals("")){
+            userIds = userIds.substring(1);
+            List<UserInfo> userInfoList = iUserService.userList(userIds);
+            iscross = common.isGroupCross(userInfoList);
+        }
+        zzGroupInfo.setIscross(iscross?"1":"0");
+
         groupService.insert(zzGroupInfo);//创建讨论组
         //创建群end
 
@@ -159,11 +180,8 @@ public class ProcessEditGroup extends AbstractMsgProcessor{
         groupTaskDto.setUserList(null);
         groupTaskDto.setTimestamp(zzGroupInfo.getCreateTime());
         groupTaskDto.setZzGroup(zzGroupInfo);
-
-
         //通知被邀请人员
         //遍历用户begin
-        JSONArray userJsonArray = JSONObject.parseArray(groupJson.getString("userList"));
         for (int i = 0; i < userJsonArray.size(); i++) {
             JSONObject userJson = JSONObject.parseObject(userJsonArray.getString(i));
             UserListDto userListDto = new UserListDto();
@@ -199,7 +217,6 @@ public class ProcessEditGroup extends AbstractMsgProcessor{
             String res1 = JSONObject.toJSONString(groupEditVO);
             Tio.sendToUser(channelContext.getGroupContext(),userJson.getString("userId"),this.getWsResponse(res1));
         }
-
 
 //        groupTaskDto.setUserList(userList);
         /*ArrayList<String> picUrls = new ArrayList<>();

@@ -87,5 +87,6 @@ public interface ZzPrivateMsgDao extends Mapper<ZzPrivateMsg> {
      */
     List<ZzPrivateMsg> queryMsgCurrentAndHis(Map<String,String> param);
     //查询私有聊天文件
-    List<PrivateFileVO> getFileList(@Param("userId") String userId,@Param("receiverId") String receiverId);
+    //query文件名称
+    List<PrivateFileVO> getFileList(@Param("userId") String userId,@Param("receiverId") String receiverId,@Param("query") String query);
 }

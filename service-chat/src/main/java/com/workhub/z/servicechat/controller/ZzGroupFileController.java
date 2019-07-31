@@ -53,14 +53,17 @@ public class ZzGroupFileController {
      * @param id
      * @return
      */
+    //query 查询文件名称
     @PostMapping("/groupfile")
     public TableResultResponse<GroupFileVo> groupFileList(@RequestParam("id")String id,
+                                                          //@RequestParam("query")String query,
                                                           @RequestParam(value = "page",defaultValue = "1")Integer page,
                                                           @RequestParam(value = "size",defaultValue = "10")Integer size){
+        String query="";//前端查询添加，文件名称，暂时没有加，这里先传个空就行
         TableResultResponse<GroupFileVo> pageInfo = null;
         Long total = 0L;
         try {
-            pageInfo = this.zzGroupFileService.groupFileList(id, page, size);
+            pageInfo = this.zzGroupFileService.groupFileList(id, query, page, size);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -2,12 +2,14 @@ package com.github.hollykunge.controller;
 
 import com.github.hollykunge.entity.FileManageInf;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
+import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.hollykunge.security.common.util.UUIDUtils;
 import com.github.hollykunge.service.FileMangeService;
 import com.github.hollykunge.util.CommonUtil;
 import com.github.hollykunge.util.EncryptionAndDeciphering;
 import com.github.hollykunge.util.FastDFSClientWrapper;
 import com.github.hollykunge.util.FileTypeEnum;
+import com.github.hollykunge.vo.FileMonitoringVO;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,7 +98,7 @@ public class FileManageController {
     @PostMapping("/sensitiveUpload")
     @ResponseBody
     public ObjectRestResponse<String> uploadSensitiveFile(@RequestParam("file") MultipartFile file) throws Exception {
-        String imgUrl = dfsClient.uploadSensitiveFile(file);
+        String imgUrl = dfsClient.uploadbase64SensitiveFile(file);
         String userId = (request.getHeader("userId")==null)?"":request.getHeader("userId");
         String userName = URLDecoder.decode((request.getHeader("userName")==null)?"":request.getHeader("userName"),"UTF-8");
         String fileId = UUIDUtils.generateShortUuid();
@@ -240,7 +242,7 @@ public class FileManageController {
         if(!"".equals(fileExt)){
             fileName=fileName+"."+fileExt;
         }
-        byte[] data = dfsClient.downloadSensitiveFile(fileManageInf.getPath());
+        byte[] data = dfsClient.downloadBase64SensitiveFile(fileManageInf.getPath());
         response.setCharacterEncoding("UTF-8");
         response.setHeader("Content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
         ServletOutputStream outputStream = response.getOutputStream();
@@ -320,7 +322,7 @@ public class FileManageController {
             FileManageInf fileManageInf = this.fileMangeService.queryById(fileId);
             //读取路径下面的文件
             if(fileManageInf == null) return;
-            byte[] data = dfsClient.downloadSensitiveFile(fileManageInf.getPath());
+            byte[] data = dfsClient.downloadBase64SensitiveFile(fileManageInf.getPath());
             //获取文件后缀名格式
             String ext = ((fileManageInf.getFileExt()==null)?"":fileManageInf.getFileExt());
             //判断图片格式,设置相应的输出文件格式
@@ -459,4 +461,21 @@ public class FileManageController {
         return res;
     }
 */
+
+    /**
+     * 上传文件监控
+     *参数说明：page 页码 size 每页几条 userName上传用户名称 dateBegin、dateEnd上传时间开始结束 isGroup 是否群主1是0否
+     * fileName文件名称 level密级
+     * @return
+     */
+    @PostMapping("/fileMonitoring")
+    public TableResultResponse<FileMonitoringVO> fileMonitoring(@RequestParam Map<String,Object> params){
+        TableResultResponse<FileMonitoringVO> pageInfo = null;
+        try {
+            pageInfo = this.fileMangeService.fileMonitoring(params);
+        } catch (Exception e) {
+            log.error(CommonUtil.getExceptionMessage(e));
+        }
+        return pageInfo;
+    }
 }

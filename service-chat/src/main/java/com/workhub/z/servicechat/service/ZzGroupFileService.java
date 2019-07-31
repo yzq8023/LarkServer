@@ -64,7 +64,7 @@ public interface ZzGroupFileService {
      * @return
      * @throws Exception
      */
-    TableResultResponse<GroupFileVo> groupFileList(String id, int page, int size) throws Exception;
+    TableResultResponse<GroupFileVo> groupFileList(String id,String query, int page, int size) throws Exception;
 
     /**
      * 查询群组的文件信息记录数
