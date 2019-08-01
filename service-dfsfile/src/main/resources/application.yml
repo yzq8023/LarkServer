@@ -88,3 +88,5 @@ redis:
   sysName: service-fastdfs
   enable: true
   database: 4
+prop:
+  upload-folder: ./files
