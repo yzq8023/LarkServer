@@ -2,13 +2,10 @@ package com.github.hollykunge.controller;
 
 import com.github.hollykunge.biz.FileInfoBiz;
 import com.github.hollykunge.comtants.FileComtants;
-import com.github.hollykunge.entity.FileInfoEntity;
-import com.github.hollykunge.entity.FileManageInf;
+import com.github.hollykunge.entity.FileInforEntity;
 import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.github.hollykunge.security.common.rest.BaseController;
-import com.github.hollykunge.security.common.vo.FileInfoVO;
-import com.github.hollykunge.util.CommonUtil;
-import com.github.hollykunge.util.EncryptionAndDeciphering;
+import com.github.hollykunge.security.common.vo.FileInforVO;
 import com.github.hollykunge.util.FastDFSClientWrapper;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.Map;
 
@@ -69,10 +63,10 @@ public class FastDfsController extends BaseController<FileInfoBiz, FileInfoEntit
      */
     @PostMapping("/sensitiveUpload")
     @ResponseBody
-    public ObjectRestResponse<String> uploadBase64SensitiveFile(@RequestParam("file") MultipartFile file) throws Exception {
+    public ObjectRestResponse<String> uploadChiperSensitiveFile(@RequestParam("file") MultipartFile file) throws Exception {
         //使用base64进行加密
-        FileInfoVO fileInfoVO = baseBiz.uploadSensitiveFile(file, FileComtants.SENSITIVE_BASE64_TYPE);
-        return new ObjectRestResponse<>().data(fileInfoVO).rel(true);
+        FileInforVO fileInforVO = baseBiz.uploadSensitiveFile(file, FileComtants.SENSITIVE_CIPHER_TYPE);
+        return new ObjectRestResponse<>().data(fileInforVO).rel(true);
     }
 
     /**
@@ -127,7 +121,7 @@ public class FastDfsController extends BaseController<FileInfoBiz, FileInfoEntit
      */
     @GetMapping("/sensitiveDownload")
     public void  downloadBase64SensitiveFile(@RequestParam String fileId, HttpServletResponse response) throws Exception{
-        Map<String, Object> stringObjectMap = baseBiz.downLoadFile(fileId,FileComtants.SENSITIVE_BASE64_TYPE);
+        Map<String, Object> stringObjectMap = baseBiz.downLoadFile(fileId,FileComtants.SENSITIVE_CIPHER_TYPE);
         String fileName = (String) stringObjectMap.get("fileName");
         byte[] data = (byte[]) stringObjectMap.get("fileByte");
         response.setCharacterEncoding("UTF-8");
