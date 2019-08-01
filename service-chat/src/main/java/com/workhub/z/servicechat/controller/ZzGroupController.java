@@ -241,16 +241,16 @@ public class ZzGroupController  {
         String userIds= this.zzGroupService.getGroupUserList(groupId);
         List<UserInfo> list  = iUserService.userList(userIds);
         List<UserInfoVO> dataList = new ArrayList<>();
-        for(UserInfo temp:list){
+        for(UserInfo userTemp:list){
             UserInfoVO vo = new UserInfoVO();
-            vo.setAvartar(temp.getAvatar());
-            vo.setId(temp.getId());
+            vo.setAvartar(userTemp.getAvatar());
+            vo.setId(userTemp.getId());
             vo.setOnline("1");//是否在线有待后续开发
-            vo.setName(temp.getName());
+            vo.setName(userTemp.getName());
             dataList.add(vo);
         }
         ListRestResponse res=new ListRestResponse("200",dataList.size(),dataList);
-        return  res;
+        return res;
     }
     /**
      * 群列表监控
