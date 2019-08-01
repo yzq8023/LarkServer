@@ -1,25 +1,33 @@
 package com.workhub.z.servicechat.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+
 import com.workhub.z.servicechat.VO.GroupUserListVo;
 import com.workhub.z.servicechat.VO.GroupVO;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.dao.ZzGroupDao;
+import com.workhub.z.servicechat.dao.ZzUserGroupDao;
 import com.workhub.z.servicechat.entity.ZzGroup;
+import com.workhub.z.servicechat.entity.ZzUserGroup;
 import com.workhub.z.servicechat.feign.IUserService;
 import com.workhub.z.servicechat.service.ZzGroupService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.workhub.z.servicechat.config.RandomId.getUUID;
 import static com.workhub.z.servicechat.config.common.putEntityNullToEmptyString;
 
 /**
@@ -32,6 +40,9 @@ import static com.workhub.z.servicechat.config.common.putEntityNullToEmptyString
 public class ZzGroupServiceImpl implements ZzGroupService {
     @Resource
     private ZzGroupDao zzGroupDao;
+
+    @Resource
+    private ZzUserGroupDao zzUserGroupDao;
 
     @Autowired
     private IUserService iUserService;
@@ -181,12 +192,16 @@ public class ZzGroupServiceImpl implements ZzGroupService {
      * @author zhuqz
      * @since 2019-06-11
      */
-    public String deleteGroupLogic(String groupId, String delFlg) throws Exception{
+    @Override
+    public String deleteGroupLogic(String groupId, String delFlg) {
         int i=this.zzGroupDao.deleteGroupLogic( groupId, delFlg);
         return  "1";
     }
-    //获取群成员列表
-    public String getGroupUserList(String groupId) throws Exception{
+    /**
+     * 获取群成员列表
+     */
+    @Override
+    public String getGroupUserList(String groupId) {
 
             List<String> userIdList = this.zzGroupDao.queryGroupUserIdListByGroupId(groupId);
             StringBuilder ids = new StringBuilder();
@@ -213,6 +228,7 @@ public class ZzGroupServiceImpl implements ZzGroupService {
     //群组信息监控
     //param:page 页码 size 每页几条;group_name群组名称；creator创建人姓名；level密级；
     // dateBegin创建时间开始；dateEnd创建时间结束；pname项目名称；isclose是否关闭
+    @Override
     public TableResultResponse<GroupVO> groupListMonitoring(Map<String,String> params) throws Exception{
         int page=Integer.valueOf(common.nulToEmptyString(params.get("page")));
         int size=Integer.valueOf(common.nulToEmptyString(params.get("size")));
@@ -234,5 +250,54 @@ public class ZzGroupServiceImpl implements ZzGroupService {
                 pageInfo.getList()
         );
         return res;
+    }
+
+    @Override
+    @Transactional(rollbackFor={RuntimeException.class, Exception.class})
+    public void dissolveGroup(String groupId){
+            zzUserGroupDao.deleteByGroupId(groupId);
+            ZzGroup group = new ZzGroup();
+            group.setGroupId(groupId);
+            group.setIsdelete("1");
+            zzGroupDao.update(group);
+    }
+
+    @Override
+    public void removeMember(String groupId, String userId){
+        zzUserGroupDao.deleteByGroupIdAndUserId(groupId, userId);
+    }
+
+    @Override
+    @Transactional(rollbackFor={RuntimeException.class, Exception.class})
+    public void addMember(String groupId, String userIds){
+        String userIdsTemp = "";
+        JSONArray userIdJson = JSONObject.parseArray(userIds);
+
+        //更新关联表
+        zzUserGroupDao.deleteByGroupId(groupId);
+        for (int i = 0; i < userIdJson.size(); i++) {
+            ZzUserGroup userGroup = new ZzUserGroup();
+            userGroup.setCreatetime(new Date());
+            userGroup.setId(getUUID());
+            userGroup.setGroupId(groupId);
+            userGroup.setUserId(userIdJson.getString(i));
+            zzUserGroupDao.insert(userGroup);
+        }
+
+        for (int i = 0; i < userIdJson.size(); i++) {
+            userIdsTemp += ","+userIdJson.getString(i);
+        }
+        //判断是否跨域场所,直接用的ProcessEditGroup里面那个
+        boolean isCross = false;
+        if(!userIdsTemp.equals("")){
+            userIdsTemp = userIdsTemp.substring(1);
+            List<UserInfo> userInfoList = iUserService.userList(userIdsTemp);
+            isCross = common.isGroupCross(userInfoList);
+        }
+        ZzGroup zzGroupInfo = new ZzGroup();
+        zzGroupInfo.setGroupId(groupId);
+        zzGroupInfo.setIscross(isCross?"1":"0");
+        zzGroupDao.update(zzGroupInfo);
+
     }
 }

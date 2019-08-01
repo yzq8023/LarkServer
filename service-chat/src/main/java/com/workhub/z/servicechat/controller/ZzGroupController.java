@@ -61,6 +61,15 @@ public class ZzGroupController  {
     private IUserService iUserService;
     @Autowired
     private HttpServletRequest request;
+
+    /**
+     * 成功
+     */
+    private static final String SUCCESS = "1";
+    /**
+     * 失败
+     */
+    private static final String FAIL = "-1";
     /**
      * 通过主键查询单条数据
      *
@@ -132,6 +141,12 @@ public class ZzGroupController  {
         return objectRestResponse;
     }
 
+    /**
+     * 删除研讨组
+     * @Author: dd
+     * @param id
+     * @return
+     */
     @DeleteMapping("/delete")
     public ObjectRestResponse delete(@RequestParam("id")String id){
         boolean flag = this.zzGroupService.deleteById(id);
@@ -209,21 +224,32 @@ public class ZzGroupController  {
             this.zzGroupService.deleteGroupLogic(groupId,delFlg);
         }catch (Exception e){
             e.printStackTrace();
-            oppRes="-1";
+            oppRes = FAIL;
         }
-        if("1".equals(oppRes)){
-            objectRestResponse.data("成功");//成功
+        if(SUCCESS.equals(oppRes)){
+            objectRestResponse.data("成功");
             objectRestResponse.rel(true);
             objectRestResponse.msg("200");
         }else{
-            objectRestResponse.data("失败");//失败
+            objectRestResponse.data("失败");
             objectRestResponse.rel(false);
             objectRestResponse.msg("200");
         }
         return objectRestResponse;
     }
-    //当前登录人查询具体某个人或者群的聊天记录,contactId表示个人或者群id
-    //query 聊天内容、接收人
+
+    /**
+     * 当前登录人查询具体某个人或者群的聊天记录,contactId表示个人或者群id
+     * query 聊天内容、接收人
+     * @param userId
+     * @param contactId
+     * @param isGroup
+     * @param query
+     * @param page
+     * @param size
+     * @return
+     * @throws Exception
+     */
     @GetMapping("/queryHistoryMessageForSingle")
     public TableResultResponse queryHistoryMessageForSingle(@RequestParam("userId")String userId,@RequestParam("contactId")String contactId,@RequestParam("isGroup")String isGroup,@RequestParam("query")String query,@RequestParam("page")String page,@RequestParam("size")String size) throws Exception {
         TableResultResponse resultResponse = messageInfoService.queryHistoryMessageForSingle(userId,contactId,isGroup,query,page,size);
@@ -243,10 +269,13 @@ public class ZzGroupController  {
         List<UserInfoVO> dataList = new ArrayList<>();
         for(UserInfo userTemp:list){
             UserInfoVO vo = new UserInfoVO();
-            vo.setAvartar(userTemp.getAvatar());
             vo.setId(userTemp.getId());
-            vo.setOnline("1");//是否在线有待后续开发
             vo.setName(userTemp.getName());
+            vo.setSecretLevel(userTemp.getSecretLevel());
+            vo.setOrgId(userTemp.getOrgCode());
+            vo.setOrgName(userTemp.getOrgName());
+            vo.setAvatar(userTemp.getAvatar());
+            vo.setOnline("1");
             dataList.add(vo);
         }
         ListRestResponse res=new ListRestResponse("200",dataList.size(),dataList);
@@ -267,5 +296,32 @@ public class ZzGroupController  {
             log.error(common.getExceptionMessage(e));
         }
         return pageInfo;
+    }
+
+    /**
+     * 解散本研讨组
+     */
+    @GetMapping("dissolve")
+    public ObjectRestResponse dissolve(@RequestParam("groupId") String groupId) {
+        zzGroupService.dissolveGroup(groupId);
+        return new ObjectRestResponse().rel(true).msg("研讨组已解散");
+    }
+
+    /**
+     * 移除研讨组成员
+     */
+    @GetMapping("removeMember")
+    public ObjectRestResponse removeMember(@RequestParam("groupId") String groupId, @RequestParam("userId") String userId) {
+        zzGroupService.removeMember(groupId, userId);
+        return new ObjectRestResponse().rel(true).msg("研讨组已解散");
+    }
+
+    /**
+     * 添加研讨组成员
+     */
+    @GetMapping("addMember")
+    public ObjectRestResponse addMember(@RequestParam("groupId") String groupId, @RequestParam("userIds") String userIds) {
+        zzGroupService.addMember(groupId, userIds);
+        return new ObjectRestResponse().rel(true).msg("研讨组已解散");
     }
 }

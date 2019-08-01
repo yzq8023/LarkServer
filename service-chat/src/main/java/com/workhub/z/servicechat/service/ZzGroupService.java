@@ -87,4 +87,27 @@ public interface ZzGroupService {
     //param:group_name群组名称；creator创建人姓名；level密级；
     // dateBegin创建时间开始；dateEnd创建时间结束；pname项目名称；isclose是否关闭
     TableResultResponse<GroupVO> groupListMonitoring(Map<String,String> params) throws Exception;
+
+    /**
+     * 解散研讨组
+     * @author dd
+     * @param groupId
+     */
+    void dissolveGroup(String groupId);
+
+    /**
+     * 移除研讨组成员
+     * @author dd
+     * @param groupId
+     * @param userId
+     */
+    void removeMember(String groupId, String userId);
+
+    /**
+     * 添加研讨组成员
+     * @author dd
+     * @param groupId
+     * @param userId
+     */
+    void addMember(String groupId, String userId);
 }

@@ -66,11 +66,11 @@ public class UserRest {
         return info;
     }
 
-    @RequestMapping(value = "/user/userlist", method = RequestMethod.POST)
-    public @ResponseBody List<UserInfo> userList(String userIdSet){
+    @RequestMapping(value = "/user/list", method = RequestMethod.POST)
+    public @ResponseBody List<UserInfo> userList(String userIds){
         List<UserInfo> userInfos = new ArrayList<UserInfo>();
-        if (!StringUtils.isEmpty(userIdSet)) {
-            String[] ids = userIdSet.split(",");
+        if (!StringUtils.isEmpty(userIds)) {
+            String[] ids = userIds.split(",");
             for (String m : ids) {
                 User user = userBiz.getUserByUserId(m);
                 UserInfo info = new UserInfo();

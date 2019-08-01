@@ -4,18 +4,32 @@ import lombok.Data;
 
 @Data
 public class UserInfoVO {
-    //用户id
+    /**
+     * 用户id
+     */
     private String id;
-    //用户名称
+    /**
+     * 用户名称
+     */
     private String name;
-    //密级
-    private Integer secretLevel;
-    //组织名称
+    /**
+     * 密级
+     */
+    private String secretLevel;
+    /**
+     * 组织名称
+     */
     private String orgName;
-    //组织id
+    /**
+     * 组织id
+     */
     private String orgId;
-    //用户头像路径
+    /**
+     * 用户头像路径
+     */
     private String avatar;
-    //是否在线1在线0离线
+    /**
+     * 是否在线1在线0离线
+     */
     private String online;
 }
