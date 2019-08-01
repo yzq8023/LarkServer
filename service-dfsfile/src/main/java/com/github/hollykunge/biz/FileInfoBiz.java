@@ -9,7 +9,7 @@ import com.github.hollykunge.mapper.FileInforMapper;
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.hollykunge.security.common.util.EntityUtils;
-import com.github.hollykunge.security.common.vo.FileInforVO;
+import com.github.hollykunge.security.common.vo.FileInfoVO;
 import com.github.hollykunge.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.framework.AopContext;
@@ -36,7 +36,7 @@ import java.util.Map;
 @Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class FileInforBiz extends BaseBiz<FileInforMapper, FileInforEntity> {
+public class FileInfoBiz extends BaseBiz<FileInfoMapper, FileInfoEntity> {
     @Autowired
     private FastDFSClientWrapper dfsClient;
     @Autowired
@@ -55,7 +55,7 @@ public class FileInforBiz extends BaseBiz<FileInforMapper, FileInforEntity> {
      * @return
      * @throws Exception
      */
-    public FileInforVO uploadFile(MultipartFile file) throws Exception {
+    public FileInfoVO uploadFile(MultipartFile file) throws Exception {
         String md5Key = MD5Util.MD5(file.getBytes());
         String fileServerPathId = "";
         //先从缓存中获取文件
@@ -89,7 +89,7 @@ public class FileInforBiz extends BaseBiz<FileInforMapper, FileInforEntity> {
      * @return
      * @throws Exception
      */
-    public FileInforVO uploadSensitiveFile(MultipartFile file, String sensitiveType) throws Exception {
+    public FileInfoVO uploadSensitiveFile(MultipartFile file, String sensitiveType) throws Exception {
         String md5Key = MD5Util.MD5(file.getBytes());
         String fileServerPathId = "";
         //先从缓存中获取文件
@@ -138,15 +138,15 @@ public class FileInforBiz extends BaseBiz<FileInforMapper, FileInforEntity> {
         if (StringUtils.isEmpty(fileId)) {
             throw new BaseException("fileId is null...");
         }
-        FileInforEntity fileInforEntity = new FileInforEntity();
-        fileInforEntity.setId(fileId);
-        fileInforEntity = mapper.selectByPrimaryKey(fileInforEntity);
-        if (fileInforEntity == null) {
+        FileInfoEntity fileInfoEntity = new FileInfoEntity();
+        fileInfoEntity.setId(fileId);
+        fileInfoEntity = mapper.selectByPrimaryKey(fileInfoEntity);
+        if (fileInfoEntity == null) {
             throw new BaseException("没有改文件...");
         }
         //保留文件历史，只是将数据库中文件信息设置为无效状态
-        fileInforEntity.setStatus(FileComtants.INVALID_FILE);
-        mapper.updateByPrimaryKeySelective(fileInforEntity);
+        fileInfoEntity.setStatus(FileComtants.INVALID_FILE);
+        mapper.updateByPrimaryKeySelective(fileInfoEntity);
     }
 
     /**
@@ -160,10 +160,10 @@ public class FileInforBiz extends BaseBiz<FileInforMapper, FileInforEntity> {
         if (StringUtils.isEmpty(fileId)) {
             throw new BaseException("fileId is null ... ");
         }
-        FileInforEntity fileInforEntity = new FileInforEntity();
-        fileInforEntity.setId(fileId);
-        fileInforEntity = mapper.selectByPrimaryKey(fileInforEntity);
-        if (fileInforEntity == null) {
+        FileInfoEntity fileInfoEntity = new FileInfoEntity();
+        fileInfoEntity.setId(fileId);
+        fileInfoEntity = mapper.selectByPrimaryKey(fileInfoEntity);
+        if (fileInfoEntity == null) {
             throw new BaseException("没有该文件...");
         }
         if (StringUtils.isEmpty(fileInforEntity.getFilePathId())) {
@@ -175,9 +175,9 @@ public class FileInforBiz extends BaseBiz<FileInforMapper, FileInforEntity> {
         }
         String path = fileServerPathEntity.getPath();
         //文件名称
-        String fileName = fileInforEntity.getFileName();
+        String fileName = fileInfoEntity.getFileName();
         //文件后缀
-        String fileExt = fileInforEntity.getFileExt();
+        String fileExt = fileInfoEntity.getFileExt();
         if (StringUtils.isEmpty(fileName)) {
             fileName = FileComtants.DOWNLOAD_FILE_NAME;
         }
@@ -220,10 +220,10 @@ public class FileInforBiz extends BaseBiz<FileInforMapper, FileInforEntity> {
         OutputStream outputStream = null;
         try {
             //读取路径下面的文件
-            FileInforEntity fileInforEntity = new FileInforEntity();
-            fileInforEntity.setId(fileId);
-            fileInforEntity = mapper.selectByPrimaryKey(fileInforEntity);
-            if (fileInforEntity == null) {
+            FileInfoEntity fileInfoEntity = new FileInfoEntity();
+            fileInfoEntity.setId(fileId);
+            fileInfoEntity = mapper.selectByPrimaryKey(fileInfoEntity);
+            if (fileInfoEntity == null) {
                 throw new BaseException("查询不到该文件 ... ");
             }
             if (StringUtils.isEmpty(fileInforEntity.getFilePathId())) {
@@ -245,7 +245,7 @@ public class FileInforBiz extends BaseBiz<FileInforMapper, FileInforEntity> {
                 data = dfsClient.downloadByteMoveSensitiveFile(path);
             }
             //获取文件后缀名格式
-            String ext = ((fileInforEntity.getFileExt() == null) ? "" : fileInforEntity.getFileExt());
+            String ext = ((fileInfoEntity.getFileExt() == null) ? "" : fileInfoEntity.getFileExt());
             //判断图片格式,设置相应的输出文件格式
             if ("jpg".equals(ext) || "JPG".equals(ext)) {
                 response.setContentType("image/jpeg");
@@ -328,11 +328,11 @@ public class FileInforBiz extends BaseBiz<FileInforMapper, FileInforEntity> {
         return;
     }
 
-    private FileInforVO transferEntityToVo(FileInforEntity fileInforEntity) {
-        FileInforVO fileInforVO = new FileInforVO();
-        BeanUtils.copyProperties(fileInforEntity, fileInforVO);
-        fileInforVO.setFileId(fileInforEntity.getId());
-        return fileInforVO;
+    private FileInfoVO transferEntityToVo(FileInfoEntity fileInfoEntity) {
+        FileInfoVO fileInfoVO = new FileInfoVO();
+        BeanUtils.copyProperties(fileInfoEntity, fileInfoVO);
+        fileInfoVO.setFileId(fileInfoEntity.getId());
+        return fileInfoVO;
     }
 
     @Cache(key = "files{1}", result = String.class)
