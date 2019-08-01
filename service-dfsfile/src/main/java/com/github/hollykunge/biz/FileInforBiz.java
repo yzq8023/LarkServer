@@ -4,7 +4,7 @@ import com.ace.cache.annotation.Cache;
 import com.alibaba.fastjson.JSON;
 import com.github.hollykunge.comtants.FileComtants;
 import com.github.hollykunge.entity.FileInforEntity;
-import com.github.hollykunge.entity.FileManageInf;
+import com.github.hollykunge.entity.FileServerPathEntity;
 import com.github.hollykunge.mapper.FileInforMapper;
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.exception.BaseException;
@@ -39,6 +39,8 @@ import java.util.Map;
 public class FileInforBiz extends BaseBiz<FileInforMapper, FileInforEntity> {
     @Autowired
     private FastDFSClientWrapper dfsClient;
+    @Autowired
+    private FileServerPathBiz fileServerPathBiz;
 
 
     @Override
@@ -48,24 +50,33 @@ public class FileInforBiz extends BaseBiz<FileInforMapper, FileInforEntity> {
 
     /**
      * 上传非加密文件业务处理
+     *
      * @param file
      * @return
      * @throws Exception
      */
     public FileInforVO uploadFile(MultipartFile file) throws Exception {
         String md5Key = MD5Util.MD5(file.getBytes());
-        String fileId = "";
+        String fileServerPathId = "";
         //先从缓存中获取文件
-        fileId = ((FileInforBiz) AopContext.currentProxy()).uploadFileCache(md5Key, null);
-        FileInforEntity fileInforEntity = this.fileToEntity(file, "0");
+        fileServerPathId = ((FileInforBiz) AopContext.currentProxy()).uploadFileCache(md5Key, null);
+        FileInforEntity fileInforEntity = new FileInforEntity();
+        FileServerPathEntity fileServerPathEntity = new FileServerPathEntity();
         //如果缓存中没有该文件
-        if (StringUtils.isEmpty(fileId)) {
+        if (StringUtils.isEmpty(fileServerPathId)) {
             String path = dfsClient.uploadFile(file);
-            fileInforEntity.setPath(path);
-            this.insertEntityAce(fileInforEntity, md5Key);
+            fileServerPathEntity.setPath(path);
+            fileServerPathEntity.setFileEncrype(FileComtants.NO_SENSITIVE_TYPE);
+            this.fileToEntity(file, fileInforEntity, fileServerPathEntity);
+            this.insertEntityAce(fileInforEntity, fileServerPathEntity, md5Key);
         }
-        //如果缓存中有该文件，则直接返回成功上传从而实现秒传效果
-        fileInforEntity.setId(fileId);
+        //如果缓存中有该文件，则进行插入数据库表到文件基本信息表，然后直接返回成功上传到服务器
+        // 从而实现秒传效果
+        if (!StringUtils.isEmpty(fileServerPathId)) {
+            this.fileToEntity(file, fileInforEntity, null);
+            fileInforEntity.setFilePathId(fileServerPathId);
+            mapper.insertSelective(fileInforEntity);
+        }
         FileInforVO fileInforVO = this.transferEntityToVo(fileInforEntity);
         return fileInforVO;
     }
@@ -74,34 +85,46 @@ public class FileInforBiz extends BaseBiz<FileInforMapper, FileInforEntity> {
      * 上传加密文件（采用base64加密方式）
      *
      * @param file          文件
-     * @param sensitiveType 加密类型（1为base64加密，2为位移加密法）
+     * @param sensitiveType 加密类型（1为base64加密，2为位移加密法，3为文件流加密）
      * @return
      * @throws Exception
      */
     public FileInforVO uploadSensitiveFile(MultipartFile file, String sensitiveType) throws Exception {
         String md5Key = MD5Util.MD5(file.getBytes());
-        String fileId = "";
+        String fileServerPathId = "";
         //先从缓存中获取文件
-        fileId = ((FileInforBiz) AopContext.currentProxy()).uploadFileCache(md5Key, null);
-        FileInforEntity fileInforEntity = this.fileToEntity(file, sensitiveType);
+        fileServerPathId = ((FileInforBiz) AopContext.currentProxy()).uploadFileCache(md5Key, null);
+        FileInforEntity fileInforEntity = new FileInforEntity();
+        FileServerPathEntity fileServerPathEntity = new FileServerPathEntity();
         //如果缓存中没有该文件
-        if (StringUtils.isEmpty(fileId)) {
+        if (StringUtils.isEmpty(fileServerPathId)) {
             String path = "";
-            //采用base64
+            //采用文件流加密
             if (FileComtants.SENSITIVE_BASE64_TYPE.equals(sensitiveType)) {
-//                path = dfsClient.uploadbase64SensitiveFile(file);
+                path = dfsClient.uploadbase64SensitiveFile(file);
+                fileServerPathEntity.setFileEncrype(FileComtants.SENSITIVE_BASE64_TYPE);
+            }
+            //采用文件流加密
+            if (FileComtants.SENSITIVE_CIPHER_TYPE.equals(sensitiveType)) {
                 path = dfsClient.uploadCipherSensitiveFile(file);
+                fileServerPathEntity.setFileEncrype(FileComtants.SENSITIVE_CIPHER_TYPE);
             }
             //采用位移加密
             if (FileComtants.SENSITIVE_BYTEMOVE_TYPE.equals(sensitiveType)) {
                 path = dfsClient.uploadByteMoveSensitiveFile(file);
+                fileServerPathEntity.setFileEncrype(FileComtants.SENSITIVE_BYTEMOVE_TYPE);
             }
-            fileInforEntity.setPath(path);
-            this.insertEntityAce(fileInforEntity, md5Key);
-            fileId = fileInforEntity.getId();
+            fileServerPathEntity.setPath(path);
+            this.fileToEntity(file, fileInforEntity, fileServerPathEntity);
+            this.insertEntityAce(fileInforEntity, fileServerPathEntity, md5Key);
         }
-        //如果缓存中有该文件，则直接返回成功上传从而实现秒传效果
-        fileInforEntity.setId(fileId);
+        //如果缓存中有该文件，则进行插入数据库表到文件基本信息表，然后直接返回成功上传到服务器
+        // 从而实现秒传效果
+        if (!StringUtils.isEmpty(fileServerPathId)) {
+            this.fileToEntity(file, fileInforEntity, null);
+            fileInforEntity.setFilePathId(fileServerPathId);
+            mapper.insertSelective(fileInforEntity);
+        }
         FileInforVO fileInforVO = this.transferEntityToVo(fileInforEntity);
         return fileInforVO;
     }
@@ -143,9 +166,14 @@ public class FileInforBiz extends BaseBiz<FileInforMapper, FileInforEntity> {
         if (fileInforEntity == null) {
             throw new BaseException("没有该文件...");
         }
-        if (StringUtils.isEmpty(fileInforEntity.getPath())) {
-            throw new BaseException(fileInforEntity.getId() + "数据中文件没有fastdfs路径");
+        if (StringUtils.isEmpty(fileInforEntity.getFilePathId())) {
+            throw new BaseException("该文件没有对应的服务器路径...");
         }
+        FileServerPathEntity fileServerPathEntity = fileServerPathBiz.selectById(fileInforEntity.getFilePathId());
+        if (fileServerPathEntity == null || StringUtils.isEmpty(fileServerPathEntity.getPath())) {
+            throw new BaseException("文件没有存在在服务器中...");
+        }
+        String path = fileServerPathEntity.getPath();
         //文件名称
         String fileName = fileInforEntity.getFileName();
         //文件后缀
@@ -160,14 +188,16 @@ public class FileInforBiz extends BaseBiz<FileInforMapper, FileInforEntity> {
         byte[] fileIO = null;
         //非涉密文件下载
         if (FileComtants.NO_SENSITIVE_TYPE.equals(sensitiveType)) {
-            fileIO = dfsClient.download(fileInforEntity.getPath());
+            fileIO = dfsClient.download(path);
         }
         if (FileComtants.SENSITIVE_BASE64_TYPE.equals(sensitiveType)) {
-//            fileIO = dfsClient.downloadBase64SensitiveFile(fileInforEntity.getPath());
-            fileIO = dfsClient.downloadCipherSensitiveFile(fileInforEntity.getPath());
+            fileIO = dfsClient.downloadBase64SensitiveFile(path);
+        }
+        if (FileComtants.SENSITIVE_CIPHER_TYPE.equals(sensitiveType)) {
+            fileIO = dfsClient.downloadCipherSensitiveFile(path);
         }
         if (FileComtants.SENSITIVE_BYTEMOVE_TYPE.equals(sensitiveType)) {
-            fileIO = dfsClient.downloadByteMoveSensitiveFile(fileInforEntity.getPath());
+            fileIO = dfsClient.downloadByteMoveSensitiveFile(path);
         }
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("fileName", fileName);
@@ -196,18 +226,23 @@ public class FileInforBiz extends BaseBiz<FileInforMapper, FileInforEntity> {
             if (fileInforEntity == null) {
                 throw new BaseException("查询不到该文件 ... ");
             }
-            if (StringUtils.isEmpty(fileInforEntity.getPath())) {
-                throw new BaseException("文件没有在fastdfs中 ... ");
+            if (StringUtils.isEmpty(fileInforEntity.getFilePathId())) {
+                throw new BaseException("该文件没有存储文件路径 ... ");
             }
+            FileServerPathEntity fileServerPathEntity = fileServerPathBiz.selectById(fileInforEntity.getFilePathId());
+            if (fileServerPathEntity == null || StringUtils.isEmpty(fileServerPathEntity.getPath())) {
+                throw new BaseException("文件没有在文件服务中 ... ");
+            }
+            String path = fileServerPathEntity.getPath();
             byte[] data = null;
             if (FileComtants.NO_SENSITIVE_TYPE.equals(sensitiveType)) {
-                data = dfsClient.download(fileInforEntity.getPath());
+                data = dfsClient.download(path);
             }
             if (FileComtants.SENSITIVE_BASE64_TYPE.equals(sensitiveType)) {
-                data = dfsClient.downloadBase64SensitiveFile(fileInforEntity.getPath());
+                data = dfsClient.downloadBase64SensitiveFile(path);
             }
             if (FileComtants.SENSITIVE_BYTEMOVE_TYPE.equals(sensitiveType)) {
-                data = dfsClient.downloadByteMoveSensitiveFile(fileInforEntity.getPath());
+                data = dfsClient.downloadByteMoveSensitiveFile(path);
             }
             //获取文件后缀名格式
             String ext = ((fileInforEntity.getFileExt() == null) ? "" : fileInforEntity.getFileExt());
@@ -231,56 +266,66 @@ public class FileInforBiz extends BaseBiz<FileInforMapper, FileInforEntity> {
         }
     }
 
-    private String insertEntityAce(FileInforEntity fileInforEntity, String md5Key) throws Exception {
+    private String insertEntityAce(FileInforEntity fileInforEntity, FileServerPathEntity fileServerPathEntity,
+                                   String md5Key) throws Exception {
+        //首先插入文件服务路径表中记录
+        fileServerPathBiz.insertSelective(fileServerPathEntity);
+        fileInforEntity.setFilePathId(fileServerPathEntity.getId());
         //todo:欠一个redis和数据库事务一致性,这个方法可能不需要
         mapper.insertSelective(fileInforEntity);
-        //插入成功将唯一性的base64编码key缓存到缓存中
-        String fileId = null;
+        //插入成功将唯一性的md5编码key缓存到缓存中
+        String fileServerPathId = null;
         try {
-            fileId = ((FileInforBiz) AopContext.currentProxy()).uploadFileCache(md5Key, JSON.toJSONString(fileInforEntity.getId()));
+            fileServerPathId = ((FileInforBiz) AopContext.currentProxy()).uploadFileCache(md5Key, JSON.toJSONString(fileServerPathEntity.getId()));
         } catch (Exception e) {
             log.error(CommonUtil.getExceptionMessage(e));
-            dfsClient.deleteFile(fileInforEntity.getPath());
+            dfsClient.deleteFile(fileServerPathEntity.getPath());
             throw e;
         }
-        return fileId;
+        return fileServerPathId;
     }
 
     /**
      * 将file文件转为数据库实体（path字段需要单独赋值）
      *
-     * @param file
+     * @param file                 文件
+     * @param fileInforEntity      文件基本信息实体类
+     * @param fileServerPathEntity 上传文件到服务器路径实体类
      * @return
      * @throws Exception
      */
-    private FileInforEntity fileToEntity(MultipartFile file, String sensitiveType) throws Exception {
+    private void fileToEntity(MultipartFile file, FileInforEntity fileInforEntity,
+                              FileServerPathEntity fileServerPathEntity) throws Exception {
         if (file == null) {
             throw new BaseException("上传文件不能为空...");
         }
-        FileInforEntity fileInforEntity = new FileInforEntity();
-        String fileName = file.getOriginalFilename();
-        String suffix = "";
-        String fileExt = "";
-        String regixValue = FileComtants.FILE_REGIX_VALUE;
-        if (fileName.indexOf(regixValue) != -1) {
-            suffix = fileName.substring(fileName.lastIndexOf(regixValue));
-            fileName = fileName.substring(0, fileName.lastIndexOf(regixValue));
+        if (fileInforEntity != null) {
+            String fileName = file.getOriginalFilename();
+            String suffix = "";
+            String fileExt = "";
+            String regixValue = FileComtants.FILE_REGIX_VALUE;
+            if (fileName.indexOf(regixValue) != -1) {
+                suffix = fileName.substring(fileName.lastIndexOf(regixValue));
+                fileName = fileName.substring(0, fileName.lastIndexOf(regixValue));
+            }
+            if (!"".equals(suffix) && !regixValue.equals(suffix)) {
+                fileExt = suffix.substring(suffix.indexOf(regixValue) + 1);
+            }
+            fileInforEntity.setFileExt(fileExt);
+            fileInforEntity.setFileName(fileName);
+            String fileType = "";
+            FileTypeEnum fileTypeEnum = FileTypeEnum.getEnumByValue(fileExt);
+            fileType = fileTypeEnum.getType();
+            fileInforEntity.setFileType(fileType.toLowerCase());
+            fileInforEntity.setFileSize(Double.valueOf(file.getSize()));
+            fileInforEntity.setStatus(FileComtants.EFECTIVE_FILE);
+            EntityUtils.setCreatAndUpdatInfo(fileInforEntity);
         }
-        if (!"".equals(suffix) && !regixValue.equals(suffix)) {
-            fileExt = suffix.substring(suffix.indexOf(regixValue) + 1);
+        if (fileServerPathEntity != null) {
+            fileServerPathEntity.setStatus(FileComtants.EFECTIVE_FILE);
+            EntityUtils.setCreatAndUpdatInfo(fileServerPathEntity);
         }
-        fileInforEntity.setFileExt(fileExt);
-        fileInforEntity.setFileName(fileName);
-        String fileType = "";
-        FileTypeEnum fileTypeEnum = FileTypeEnum.getEnumByValue(fileExt);
-        fileType = fileTypeEnum.getType();
-        fileInforEntity.setFileType(fileType.toLowerCase());
-        fileInforEntity.setFileSize(Double.valueOf(file.getSize()));
-        fileInforEntity.setFileEncrype(sensitiveType);
-        //有效
-        fileInforEntity.setStatus(FileComtants.EFECTIVE_FILE);
-        EntityUtils.setCreatAndUpdatInfo(fileInforEntity);
-        return fileInforEntity;
+        return;
     }
 
     private FileInforVO transferEntityToVo(FileInforEntity fileInforEntity) {
