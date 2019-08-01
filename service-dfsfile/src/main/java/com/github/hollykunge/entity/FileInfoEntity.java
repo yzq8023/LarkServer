@@ -11,7 +11,7 @@ import javax.persistence.Table;
  */
 @Data
 @Table(name = "FILE_INFO")
-public class FileInforEntity extends BaseEntity {
+public class FileInfoEntity extends BaseEntity {
     /**
      * 附件名称
      */

@@ -7,7 +7,7 @@ import lombok.Data;
  * fastdfs上传文件后返回文件基本信息实体类
  */
 @Data
-public class FileInforVO {
+public class FileInfoVO {
     /**
      * 附件id
      */
