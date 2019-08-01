@@ -48,7 +48,6 @@ public class FileInfoBiz extends BaseBiz<FileInfoMapper, FileInfoEntity> {
 
     /**
      * 上传非加密文件业务处理
-     *
      * @param file
      * @return
      * @throws Exception
@@ -90,7 +89,8 @@ public class FileInfoBiz extends BaseBiz<FileInfoMapper, FileInfoEntity> {
             String path = "";
             //采用base64
             if (FileComtants.SENSITIVE_BASE64_TYPE.equals(sensitiveType)) {
-                path = dfsClient.uploadbase64SensitiveFile(file);
+//                path = dfsClient.uploadbase64SensitiveFile(file);
+                path = dfsClient.uploadCipherSensitiveFile(file);
             }
             //采用位移加密
             if (FileComtants.SENSITIVE_BYTEMOVE_TYPE.equals(sensitiveType)) {

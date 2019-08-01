@@ -1,5 +1,6 @@
 package com.workhub.z.servicechat.processor;
 
+import com.workhub.z.servicechat.VO.MsgAnswerVO;
 import com.workhub.z.servicechat.entity.ZzDictionaryWords;
 import com.workhub.z.servicechat.entity.ZzMessageInfo;
 import com.workhub.z.servicechat.entity.ZzMsgReadRelation;
@@ -16,6 +17,7 @@ import org.tio.websocket.common.WsResponse;
 import java.util.Date;
 import java.util.List;
 
+import static com.workhub.z.servicechat.config.MessageType.*;
 import static com.workhub.z.servicechat.config.RandomId.getUUID;
 import static com.workhub.z.servicechat.config.common.*;
 @Service
@@ -93,4 +95,22 @@ public class AbstractMsgProcessor {
         messageInfo.setType(type);
         messageInfoService.insert(messageInfo);
     }
+
+    /**
+    *@Description: 应答信息
+    *@Param:消息内容
+    *@return:
+    *@Author: 忠
+    *@date: 2019/7/30
+    */
+    public void msgAnswer(String msg,String nId,ChannelContext channelContext) throws Exception {
+        MsgAnswerVO msgAnswerVO = new MsgAnswerVO();
+        msgAnswerVO.setCode(MSG_ANSWER);
+        msgAnswerVO.setContactId((String)getJsonStringKeyValue(msg,"toId"));
+        msgAnswerVO.setnId(nId);
+        msgAnswerVO.setoId((String)getJsonStringKeyValue(msg,"id"));
+        msgAnswerVO.setStatus(SUCCESS_ANSWER);
+        Tio.sendToUser(channelContext.getGroupContext(),(String)getJsonStringKeyValue(msg,"fromId"),this.getWsResponse(msgAnswerVO.toString()));
+    }
+
 }

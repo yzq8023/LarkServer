@@ -43,45 +43,6 @@ public class ZzFileManageController {
     private ZzGroupFileService zzGroupFileService;
     @Autowired
     private HttpServletRequest request;
-    @RequestMapping("/login")
-    @ResponseBody
-    //上传
-    public void login(HttpServletRequest request, HttpSession session, HttpServletResponse response) throws Exception {
-        //System.out.println("===================================================file upload=============================================================");
-//		//用户身份证
-        String userId = "";
-        String dnname = ((HttpServletRequest) request).getHeader("dnname");
-        String url = request.getParameter("url");
-
-        // 模拟CA
-//		System.out.println("<-----");
-        // dnname==null 则没有通过CA来进行登录
-        if (dnname == null) {
-            return;
-        } else {
-
-            try {
-                dnname = new String(dnname.getBytes("iso8859-1"), "gbk");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            String dnsplit[] = dnname.trim().split(",", 0);
-            String cn, dc, t = null;
-            for (String val : dnsplit) {
-                val = val.trim();
-                // cn dc t
-                if (val.indexOf("t=") > -1 || val.indexOf("T=") > -1) {
-                    t = val.substring(2, val.length());
-                }
-            }
-
-            userId = t;
-//            return zzFileManageService.login(t);
-        }
-
-       response.sendRedirect("http://10.11.24.129:8080?userId="+userId);
-
-    }
 
     /*@RequestMapping("/singleFileUpload")
     @ResponseBody
