@@ -3,9 +3,9 @@ package com.github.hollykunge.biz;
 import com.ace.cache.annotation.Cache;
 import com.alibaba.fastjson.JSON;
 import com.github.hollykunge.comtants.FileComtants;
-import com.github.hollykunge.entity.FileInforEntity;
+import com.github.hollykunge.entity.FileInfoEntity;
 import com.github.hollykunge.entity.FileServerPathEntity;
-import com.github.hollykunge.mapper.FileInforMapper;
+import com.github.hollykunge.mapper.FileInfoMapper;
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.hollykunge.security.common.util.EntityUtils;
@@ -59,8 +59,8 @@ public class FileInfoBiz extends BaseBiz<FileInfoMapper, FileInfoEntity> {
         String md5Key = MD5Util.MD5(file.getBytes());
         String fileServerPathId = "";
         //先从缓存中获取文件
-        fileServerPathId = ((FileInforBiz) AopContext.currentProxy()).uploadFileCache(md5Key, null);
-        FileInforEntity fileInforEntity = new FileInforEntity();
+        fileServerPathId = ((FileInfoBiz) AopContext.currentProxy()).uploadFileCache(md5Key, null);
+        FileInfoEntity fileInforEntity = new FileInfoEntity();
         FileServerPathEntity fileServerPathEntity = new FileServerPathEntity();
         //如果缓存中没有该文件
         if (StringUtils.isEmpty(fileServerPathId)) {
@@ -77,7 +77,7 @@ public class FileInfoBiz extends BaseBiz<FileInfoMapper, FileInfoEntity> {
             fileInforEntity.setFilePathId(fileServerPathId);
             mapper.insertSelective(fileInforEntity);
         }
-        FileInforVO fileInforVO = this.transferEntityToVo(fileInforEntity);
+        FileInfoVO fileInforVO = this.transferEntityToVo(fileInforEntity);
         return fileInforVO;
     }
 
@@ -93,8 +93,8 @@ public class FileInfoBiz extends BaseBiz<FileInfoMapper, FileInfoEntity> {
         String md5Key = MD5Util.MD5(file.getBytes());
         String fileServerPathId = "";
         //先从缓存中获取文件
-        fileServerPathId = ((FileInforBiz) AopContext.currentProxy()).uploadFileCache(md5Key, null);
-        FileInforEntity fileInforEntity = new FileInforEntity();
+        fileServerPathId = ((FileInfoBiz) AopContext.currentProxy()).uploadFileCache(md5Key, null);
+        FileInfoEntity fileInforEntity = new FileInfoEntity();
         FileServerPathEntity fileServerPathEntity = new FileServerPathEntity();
         //如果缓存中没有该文件
         if (StringUtils.isEmpty(fileServerPathId)) {
@@ -125,7 +125,7 @@ public class FileInfoBiz extends BaseBiz<FileInfoMapper, FileInfoEntity> {
             fileInforEntity.setFilePathId(fileServerPathId);
             mapper.insertSelective(fileInforEntity);
         }
-        FileInforVO fileInforVO = this.transferEntityToVo(fileInforEntity);
+        FileInfoVO fileInforVO = this.transferEntityToVo(fileInforEntity);
         return fileInforVO;
     }
 
@@ -166,10 +166,10 @@ public class FileInfoBiz extends BaseBiz<FileInfoMapper, FileInfoEntity> {
         if (fileInfoEntity == null) {
             throw new BaseException("没有该文件...");
         }
-        if (StringUtils.isEmpty(fileInforEntity.getFilePathId())) {
+        if (StringUtils.isEmpty(fileInfoEntity.getFilePathId())) {
             throw new BaseException("该文件没有对应的服务器路径...");
         }
-        FileServerPathEntity fileServerPathEntity = fileServerPathBiz.selectById(fileInforEntity.getFilePathId());
+        FileServerPathEntity fileServerPathEntity = fileServerPathBiz.selectById(fileInfoEntity.getFilePathId());
         if (fileServerPathEntity == null || StringUtils.isEmpty(fileServerPathEntity.getPath())) {
             throw new BaseException("文件没有存在在服务器中...");
         }
@@ -226,10 +226,10 @@ public class FileInfoBiz extends BaseBiz<FileInfoMapper, FileInfoEntity> {
             if (fileInfoEntity == null) {
                 throw new BaseException("查询不到该文件 ... ");
             }
-            if (StringUtils.isEmpty(fileInforEntity.getFilePathId())) {
+            if (StringUtils.isEmpty(fileInfoEntity.getFilePathId())) {
                 throw new BaseException("该文件没有存储文件路径 ... ");
             }
-            FileServerPathEntity fileServerPathEntity = fileServerPathBiz.selectById(fileInforEntity.getFilePathId());
+            FileServerPathEntity fileServerPathEntity = fileServerPathBiz.selectById(fileInfoEntity.getFilePathId());
             if (fileServerPathEntity == null || StringUtils.isEmpty(fileServerPathEntity.getPath())) {
                 throw new BaseException("文件没有在文件服务中 ... ");
             }
@@ -243,6 +243,9 @@ public class FileInfoBiz extends BaseBiz<FileInfoMapper, FileInfoEntity> {
             }
             if (FileComtants.SENSITIVE_BYTEMOVE_TYPE.equals(sensitiveType)) {
                 data = dfsClient.downloadByteMoveSensitiveFile(path);
+            }
+            if (FileComtants.SENSITIVE_CIPHER_TYPE.equals(sensitiveType)) {
+                data = dfsClient.downloadCipherSensitiveFile(path);
             }
             //获取文件后缀名格式
             String ext = ((fileInfoEntity.getFileExt() == null) ? "" : fileInfoEntity.getFileExt());
@@ -266,7 +269,7 @@ public class FileInfoBiz extends BaseBiz<FileInfoMapper, FileInfoEntity> {
         }
     }
 
-    private String insertEntityAce(FileInforEntity fileInforEntity, FileServerPathEntity fileServerPathEntity,
+    private String insertEntityAce(FileInfoEntity fileInforEntity, FileServerPathEntity fileServerPathEntity,
                                    String md5Key) throws Exception {
         //首先插入文件服务路径表中记录
         fileServerPathBiz.insertSelective(fileServerPathEntity);
@@ -276,7 +279,7 @@ public class FileInfoBiz extends BaseBiz<FileInfoMapper, FileInfoEntity> {
         //插入成功将唯一性的md5编码key缓存到缓存中
         String fileServerPathId = null;
         try {
-            fileServerPathId = ((FileInforBiz) AopContext.currentProxy()).uploadFileCache(md5Key, JSON.toJSONString(fileServerPathEntity.getId()));
+            fileServerPathId = ((FileInfoBiz) AopContext.currentProxy()).uploadFileCache(md5Key, JSON.toJSONString(fileServerPathEntity.getId()));
         } catch (Exception e) {
             log.error(CommonUtil.getExceptionMessage(e));
             dfsClient.deleteFile(fileServerPathEntity.getPath());
@@ -294,7 +297,7 @@ public class FileInfoBiz extends BaseBiz<FileInfoMapper, FileInfoEntity> {
      * @return
      * @throws Exception
      */
-    private void fileToEntity(MultipartFile file, FileInforEntity fileInforEntity,
+    private void fileToEntity(MultipartFile file, FileInfoEntity fileInforEntity,
                               FileServerPathEntity fileServerPathEntity) throws Exception {
         if (file == null) {
             throw new BaseException("上传文件不能为空...");
