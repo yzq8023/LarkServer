@@ -304,7 +304,7 @@ public class ZzGroupController  {
     @GetMapping("dissolve")
     public ObjectRestResponse dissolve(@RequestParam("groupId") String groupId) {
         zzGroupService.dissolveGroup(groupId);
-        return new ObjectRestResponse().rel(true).msg("研讨组已解散");
+        return new ObjectRestResponse().rel(true).msg("研讨组已解散...");
     }
 
     /**
@@ -313,7 +313,7 @@ public class ZzGroupController  {
     @GetMapping("removeMember")
     public ObjectRestResponse removeMember(@RequestParam("groupId") String groupId, @RequestParam("userId") String userId) {
         zzGroupService.removeMember(groupId, userId);
-        return new ObjectRestResponse().rel(true).msg("研讨组已解散");
+        return new ObjectRestResponse().rel(true).msg("群成员已经移除...");
     }
 
     /**
@@ -322,6 +322,6 @@ public class ZzGroupController  {
     @GetMapping("addMember")
     public ObjectRestResponse addMember(@RequestParam("groupId") String groupId, @RequestParam("userIds") String userIds) {
         zzGroupService.addMember(groupId, userIds);
-        return new ObjectRestResponse().rel(true).msg("研讨组已解散");
+        return new ObjectRestResponse().rel(true).msg("添加群成员成功...");
     }
 }
