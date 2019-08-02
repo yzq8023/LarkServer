@@ -3,6 +3,7 @@ package com.workhub.z.servicechat.config;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
+import com.github.hollykunge.security.api.vo.user.UserInfo;
 import com.workhub.z.servicechat.entity.ZzDictionaryWords;
 import com.workhub.z.servicechat.model.ContactsMessageDto;
 import org.slf4j.Logger;
@@ -482,13 +483,14 @@ public class common {
      *@Author: zhuqz
      *@date: 2019/07/03
      */
-    public static Object   getJsonStringKeyValue (String jsonStr,String key) throws Exception{
+    public static Object getJsonStringKeyValue (String jsonStr,String key) throws Exception{
         if(jsonStr==null){
             return null;
         }
         Map<String,Object> jsonMap= JSON.parseObject(jsonStr, new TypeReference<Map<String, Object>>() {});
         return getMapKeyValue(jsonMap,key);
     }
+
     //递归json的key
     public static Object getMapKeyValue(Map<String,Object> map,String key) throws  Exception {
         String[] keyArr=key.split("\\.");
@@ -528,5 +530,21 @@ public class common {
             log.error(getExceptionMessage(e));
         }
         return  null;
+    }
+    //判断群组织是否跨越场所，参数是所有的成员列表,true跨越场所 false不跨越
+    public static boolean  isGroupCross(List<UserInfo> userInfoList){
+        boolean iscross = false;
+        String userOrgCode="";
+        for(UserInfo userInfo:userInfoList){
+            if(userOrgCode.equals("")){//遍历的第一条
+                userOrgCode = userInfo.getOrgCode();
+            }else{//判断如果组织id不一样，立刻判定是跨场所，终止循环
+                if(!userOrgCode.equals(userInfo.getOrgCode())){
+                    iscross = true;
+                    break;
+                }
+            }
+        }
+        return iscross;
     }
 }

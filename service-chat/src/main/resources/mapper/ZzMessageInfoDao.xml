@@ -134,6 +134,23 @@
              where 1 = 1
                and receiver = #{userId}
                and sender = #{contactId}
+               <if test = "query!=null and query != ''">
+                   and
+                   (
+                   substr(content,
+                   instr(content, ',"username":"', 1, 1) +
+                   length(',"username":"'),
+                   instr(content, '"}', 1, 2) -
+                   instr(content, ',"username":"', 1, 1) -
+                   length(',"username":"')) like '%'||#{query}||'%'
+                       or
+                       substr(content,
+                       instr(content, ',"title":"', 1, 1) + length(',"title":"'),
+                       instr(content, '","secretLevel":', 1, 1) -
+                       instr(content, ',"title":"', 1, 1) - length(',"title":"'))
+                        like '%'||#{query}||'%'
+                   )
+               </if>
                and type='USER'
               union
               select content,createtime
@@ -141,6 +158,23 @@
              where 1 = 1
                and receiver = #{contactId}
                and sender = #{userId}
+                <if test = "query!=null and query != ''">
+                    and
+                    (
+                    substr(content,
+                    instr(content, ',"username":"', 1, 1) +
+                    length(',"username":"'),
+                    instr(content, '"}', 1, 2) -
+                    instr(content, ',"username":"', 1, 1) -
+                    length(',"username":"')) like '%'||#{query}||'%'
+                    or
+                    substr(content,
+                    instr(content, ',"title":"', 1, 1) + length(',"title":"'),
+                    instr(content, '","secretLevel":', 1, 1) -
+                    instr(content, ',"title":"', 1, 1) - length(',"title":"'))
+                    like '%'||#{query}||'%'
+                    )
+                </if>
                and type='USER'
               ) a
          order by a.createtime desc
@@ -151,6 +185,23 @@
         from zz_message_info mes
         where 1 = 1
         and receiver = #{contactId}
+        <if test = "query!=null and query != ''">
+            and
+            (
+            substr(content,
+            instr(content, ',"username":"', 1, 1) +
+            length(',"username":"'),
+            instr(content, '"}', 1, 2) -
+            instr(content, ',"username":"', 1, 1) -
+            length(',"username":"')) like '%'||#{query}||'%'
+            or
+            substr(content,
+            instr(content, ',"title":"', 1, 1) + length(',"title":"'),
+            instr(content, '","secretLevel":', 1, 1) -
+            instr(content, ',"title":"', 1, 1) - length(',"title":"'))
+            like '%'||#{query}||'%'
+            )
+        </if>
         and type = 'GROUP'
         and exists (select 1
                     from zz_user_group c

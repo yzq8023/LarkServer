@@ -29,4 +29,6 @@ public class NoticeVO implements Serializable {
     private String orgCode;
 
     private Date sendTime;
+
+    private String secretLevel;
 }

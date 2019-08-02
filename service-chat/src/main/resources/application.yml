@@ -5,6 +5,10 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
+        ###向注册中心上注册自己
+      register-with-eureka: true
+        ###是否需要从eureka上获取注册信息
+      fetch-registry: true
 
 spring:
   application:
@@ -46,20 +50,24 @@ spring:
         max-wait: 200s
     host: 127.0.0.1
     timeout: 3000s
-
-deal_unused_file_job_cron: 0 0 2 * * ?
-
+#处理无用附件的定时任务时间
+#每天凌晨两点
+#deal_unused_file_job_cron: 0 0 2 * * ?
+#来自ace-adimin通知新消息的消息队列名称
 aceNoticeRabbitMqQueueName: noticeToChatService
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
-
+#是否显示控制台输出，1显示0不显示，生产环境配置0即可
 showConsoleInf: 1
-
+#处理历史消息的定时任务时间
+#每月凌晨一点
 deal_his_msg_job_cron: 0 0 1 1 * ?
-
+#运行日志
 logging:
   file: ${user.home}/logs/chat.log
+#文件上传配置（用户级别）
+#文件上传目录（最后要有斜杠）
 file_save_path_group: C:/file-management-center/upload/group/
 
 feign:
@@ -76,9 +84,9 @@ auth:
   serviceId: ace-auth
   user:
     token-header: Authorization
-
+# logback日志配置
 log:
   env:
     module: service-chat
-
+#用户上传文件大小限制（单位M）
 file_size_max: 500

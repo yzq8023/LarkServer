@@ -38,5 +38,13 @@ public class MessageType {
 
     //工作台
 
-
+    //消息应答
+    //消息应答码
+    public static final int MSG_ANSWER = 11;
+    //成功
+    public static final int SUCCESS_ANSWER = 200;
+    //失败
+    public static final int FAIL_ANSWER = 201;
+    //提示
+    public static final int TIPS_ANSWER = 202;
 }

@@ -85,8 +85,11 @@ public interface ZzGroupDao extends Mapper<ZzGroup> {
      * @since 2019-06-11
      */
     int deleteGroupLogic(@Param("groupId") String groupId, @Param("delFlg") String delFlg);
-    //群组信息监控
-    //param:group_name群组名称；creator创建人姓名；level密级；
-    // dateBegin创建时间开始；dateEnd创建时间结束；pname项目名称；isclose是否关闭
+
+    /**
+     * 群组信息监控
+     * param:group_name群组名称；creator创建人姓名；level密级；
+     * dateBegin创建时间开始；dateEnd创建时间结束；pname项目名称；isclose是否关闭
+     */
     List<GroupVO> groupListMonitoring(@Param("params") Map<String,String> param);
 }

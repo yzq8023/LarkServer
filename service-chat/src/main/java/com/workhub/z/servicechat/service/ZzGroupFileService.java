@@ -4,6 +4,7 @@ import com.github.hollykunge.security.common.msg.TableResultResponse;
 import com.workhub.z.servicechat.VO.FileMonitoringVO;
 import com.workhub.z.servicechat.VO.GroupFileVo;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
+import com.workhub.z.servicechat.entity.ZzUploadFile;
 
 import java.util.List;
 import java.util.Map;
@@ -63,7 +64,7 @@ public interface ZzGroupFileService {
      * @return
      * @throws Exception
      */
-    TableResultResponse<GroupFileVo> groupFileList(String id, int page, int size) throws Exception;
+    TableResultResponse<GroupFileVo> groupFileList(String id,String query, int page, int size) throws Exception;
 
     /**
      * 查询群组的文件信息记录数
@@ -93,7 +94,7 @@ public interface ZzGroupFileService {
     public List<Map<String,String>>  getGroupChatFileSizeRangeByDB(String queryType, String queryDateBegin, String queryDateEnd, String returnUnit) throws Exception;
 
     //文件数据库信息补全
-    public int fileUpdate(String fileId,String receiverId,String level,String sendId,String sendName,String receiverName) throws Exception;
+    public int fileRecord(ZzUploadFile zzUploadFile) throws Exception;
     //文件监控查询
     public TableResultResponse<FileMonitoringVO> fileMonitoring(Map<String,Object> params) throws Exception;
 }

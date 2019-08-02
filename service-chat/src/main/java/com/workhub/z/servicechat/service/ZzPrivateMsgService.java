@@ -87,5 +87,5 @@ public interface ZzPrivateMsgService {
     */
     String getReceiverByMsgId(String msgId) throws Exception;
     //私有聊天文件查询
-    public TableResultResponse<PrivateFileVO> getFileList(String userId, String receiverId, int page, int size) throws Exception ;
+    public TableResultResponse<PrivateFileVO> getFileList(String userId, String receiverId,String query, int page, int size) throws Exception ;
 }

@@ -68,10 +68,11 @@ public class UserCommonToolsService extends BaseBiz<UserCommonToolsMapper, UserC
         String orgCode = "";
         if(query.entrySet().size()>0) {
             for (Map.Entry<String, Object> entry : query.entrySet()) {
-                criteria.andLike(entry.getKey(), "%" + entry.getValue().toString() + "%");
                 if("orgCode".equals(entry.getKey())){
                     orgCode = entry.getValue().toString();
+                    continue;
                 }
+                criteria.andLike(entry.getKey(), "%" + entry.getValue().toString() + "%");
             }
         }
         if(StringUtils.isEmpty(orgCode)||"".equals(orgCode)){

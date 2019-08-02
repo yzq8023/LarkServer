@@ -4,6 +4,7 @@ import com.github.hollykunge.security.common.msg.ObjectRestResponse;
 import com.workhub.z.servicechat.config.EncryptionAndDeciphering;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
+import com.workhub.z.servicechat.entity.ZzUploadFile;
 import com.workhub.z.servicechat.service.ZzFileManageService;
 import com.workhub.z.servicechat.service.ZzGroupFileService;
 import org.slf4j.Logger;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.URLDecoder;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -41,45 +43,6 @@ public class ZzFileManageController {
     private ZzGroupFileService zzGroupFileService;
     @Autowired
     private HttpServletRequest request;
-    @RequestMapping("/login")
-    @ResponseBody
-    //上传
-    public void login(HttpServletRequest request, HttpSession session, HttpServletResponse response) throws Exception {
-        //System.out.println("===================================================file upload=============================================================");
-//		//用户身份证
-        String userId = "";
-        String dnname = ((HttpServletRequest) request).getHeader("dnname");
-        String url = request.getParameter("url");
-
-        // 模拟CA
-//		System.out.println("<-----");
-        // dnname==null 则没有通过CA来进行登录
-        if (dnname == null) {
-            return;
-        } else {
-
-            try {
-                dnname = new String(dnname.getBytes("iso8859-1"), "gbk");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            String dnsplit[] = dnname.trim().split(",", 0);
-            String cn, dc, t = null;
-            for (String val : dnsplit) {
-                val = val.trim();
-                // cn dc t
-                if (val.indexOf("t=") > -1 || val.indexOf("T=") > -1) {
-                    t = val.substring(2, val.length());
-                }
-            }
-
-            userId = t;
-//            return zzFileManageService.login(t);
-        }
-
-       response.sendRedirect("http://10.11.24.129:8080?userId="+userId);
-
-    }
 
     /*@RequestMapping("/singleFileUpload")
     @ResponseBody
@@ -158,7 +121,7 @@ public class ZzFileManageController {
                 zzGroupFile.setFileId(uplodaRes.get("file_id"));
                 //zzGroupFile.setCreator("登陆人id_测试");//TODO
                 String userId = common.nulToEmptyString(request.getHeader("userId"));
-                String userName = common.nulToEmptyString(request.getHeader("userName"));
+                String userName = URLDecoder.decode(common.nulToEmptyString(request.getHeader("userName")),"UTF-8");
                 zzGroupFile.setCreator((userId==null)?"":userId);//TODO
                 zzGroupFile.setCreatorName((userName==null)?"":userName);//TODO
                 zzGroupFile.setCreateTime(new Date());
@@ -262,27 +225,15 @@ public class ZzFileManageController {
         return obj;
     }
 
-    @PostMapping ("/fileUpdate")
+    @PostMapping ("/fileRecord")
     //文件更新（前端上传后，点击发送触发文件信息补全）
-    public ObjectRestResponse fileUpdate(
-                                         @RequestParam("fileId") String fileId,
-                                         @RequestParam("receiverId") String receiverId,
-                                         @RequestParam("level") String level,
-                                         @RequestParam("sendId") String sendId,
-                                         @RequestParam("sendName") String sendName,
-                                         @RequestParam("receiverName") String receiverName
-                                         ) {
+    public ObjectRestResponse fileRecord(@RequestParam ZzUploadFile zzUploadFile) {
         ObjectRestResponse obj = new ObjectRestResponse();
         obj.rel(true);
         obj.msg("200");
         obj.data("成功");
-        if (fileId == null || "".equals(fileId)) {
-            obj.rel(false);
-            obj.data("附件id为空");
-            return  obj;
-        }
         try {
-            int i =this.zzGroupFileService.fileUpdate(fileId,receiverId,level,sendId,sendName,receiverName);
+            int i =this.zzGroupFileService.fileRecord(zzUploadFile);
         } catch (Exception e) {
 
             e.printStackTrace();

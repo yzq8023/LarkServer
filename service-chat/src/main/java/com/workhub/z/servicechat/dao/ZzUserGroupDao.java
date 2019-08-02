@@ -74,6 +74,8 @@ public interface ZzUserGroupDao extends Mapper<ZzUserGroup> {
 
     Long deleteByGroupIdAndUserId(@Param("groupId") String groupId,@Param("userId") String userId);
 
+    int deleteByGroupId(@Param("groupId") String groupId);
+
     List<UserNewMsgVo> getUserNewMsgList(@Param("id")String id);
     /**
      * 修改用户群个性化信息--是否置顶

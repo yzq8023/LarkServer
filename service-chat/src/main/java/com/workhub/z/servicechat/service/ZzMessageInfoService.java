@@ -63,5 +63,5 @@ public interface ZzMessageInfoService {
     */
     String queryContactsMessage(String userId);
     //当前登录人查询具体某个人或者群的聊天记录,contactId表示个人或者群id
-    TableResultResponse queryHistoryMessageForSingle(String userId, String contactId, String isGroup, String page, String size);
+    TableResultResponse queryHistoryMessageForSingle(String userId, String contactId, String isGroup, String query,String page, String size);
 }

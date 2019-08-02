@@ -252,6 +252,9 @@
             TO_CHAR(ZGF.CREATE_TIME, 'YYYY-MM-DD HH24:MI:SS') AS TIME
        FROM ZZ_GROUP_FILE ZGF
       WHERE ZGF.SEND_FLG = '1'
+        <if test="query!=null and query != ''">
+            AND ZGF.FILE_NAME||decode(nvl(ZGF.FILE_EXT,'null'),'null','','.'||ZGF.FILE_EXT) like '%'||#{query}||'%'
+        </if>
         <if test="userId != null and userId != ''">
             and (ZGF.CREATOR  = #{userId} or ZGF.GROUP_ID  = #{userId})
         </if>
@@ -260,4 +263,29 @@
         </if>
       ORDER BY ZGF.CREATE_TIME DESC
     </select>
+    <!-- 文件上传转换到fastdfs系统后，启用该方法
+    <select id="getFileList" resultMap="privateFileVO">
+        select zgf.receiver as receiver,
+                zgf.file_id as file_id,
+                f.file_name || decode(nvl(f.file_ext, 'null'), 'null', '', '.' || f.file_ext) as file_name,
+                zgf.levels as levels,
+                zgf.user_id as reviser,
+                zgf.user_name as revisername,
+                to_char(zgf.upload_time, 'YYYY-MM-DD HH24:MI:SS') as time
+        from ZZ_UPLOAD_FILE ZGF, ZZ_GROUP ZG, FILE_MANAGE_INF F
+        where zgf.file_id = f.file_id
+        and zgf.receiver = zg.group_id
+        and zgf.is_group = '0'
+        <if test="userId != null and userId != ''">
+            and (ZGF.user_id  = #{userId} or ZGF.receiver  = #{userId})
+        </if>
+        <if test="receiverId != null and receiverId != ''">
+            and (ZGF.receiver  = #{receiverId} or ZGF.user_id  = #{receiverId})
+        </if>
+        <if test="query!=null and query != ''">
+            and f.file_name || decode(nvl(f.file_ext, 'null'), 'null', '', '.' || f.file_ext) like '%'||#{query}||'%'
+        </if>
+        order by zgf.upload_time desc
+    </select>
+    -->
 </mapper>

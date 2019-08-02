@@ -64,6 +64,6 @@ public interface ZzMessageInfoDao {
     int deleteById(String msgId);
 
    List<ContactsMessageDto> queryContactsMessage(@Param("userId")String userId);
-   List<String> queryHistoryMessageForSinglePrivate(@Param("userId")String userId,@Param("contactId")String contactId);
-   List<String> queryHistoryMessageForSingleGroup(@Param("userId")String userId,@Param("contactId")String contactId);
+   List<String> queryHistoryMessageForSinglePrivate(@Param("userId")String userId,@Param("contactId")String contactId,@Param("query")String query);
+   List<String> queryHistoryMessageForSingleGroup(@Param("userId")String userId,@Param("contactId")String contactId,@Param("query")String query);
 }

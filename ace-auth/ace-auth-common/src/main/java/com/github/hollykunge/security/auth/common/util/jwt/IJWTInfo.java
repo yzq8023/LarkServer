@@ -21,4 +21,10 @@ public interface IJWTInfo {
      * @return
      */
     String getName();
+
+    /**
+     * 获取人员密级
+     * @return
+     */
+    String getSecretLevel();
 }

@@ -180,14 +180,17 @@ public class ZzPrivateMsgController{
      * @param
      * @return
      */
+    //query 查询文件名称
     @PostMapping("/privateFile")
     public TableResultResponse<PrivateFileVO> getFileList(@RequestParam("userId")String userId,
                                                           @RequestParam("receiver")String receiver,
+                                                          //@RequestParam("query")String query,
                                                           @RequestParam(value = "page",defaultValue = "1")Integer page,
                                                           @RequestParam(value = "size",defaultValue = "10")Integer size){
+        String query="";//前端查询添加，文件名称，暂时没有加，这里先传个空就行
         TableResultResponse<PrivateFileVO> pageInfo = null;
         try {
-            pageInfo = this.zzPrivateMsgService.getFileList(userId,receiver,page,size);
+            pageInfo = this.zzPrivateMsgService.getFileList(userId,receiver,query,page,size);
         } catch (Exception e) {
             e.printStackTrace();
         }

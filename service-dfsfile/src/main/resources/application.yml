@@ -1,6 +1,32 @@
 spring:
   application:
       name: service-dfsfile
+  datasource:
+    url: jdbc:oracle:thin:@${ORACLE_HOST:10.11.24.136}:${ORACLE_PORT:1521}:arltr
+    username: lark_file
+    password: 123456
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: oracle.jdbc.OracleDriver
+    ###优化数据库连接池配置,该配置支持2000并发
+    druid:
+      max-active: 18
+      initial-size: 3
+      min-idle: 3
+      max-wait: 250000
+      time-between-eviction-runs-millis: 250000
+      min-evictable-idle-time-millis: 120000
+      validation-query: select 'x' from dual
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      max-open-prepared-statements: 20
+      filter: stat,wall,log4j
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 600MB
+      max-request-size: 600MB
 server:
   port: 8771
   profiles:
@@ -10,9 +36,10 @@ eureka:
   client:
     service-url:
       defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka/
-#      register-with-eureka: false
-#      #是否需要从eureka上获取注册信息
-#      fetch-registry: false
+        ###向注册中心上注册自己
+      register-with-eureka: true
+        ###是否需要从eureka上获取注册信息
+      fetch-registry: true
 
 
 ###fastdfs配置
@@ -33,11 +60,33 @@ upload:
      mast: jpg,png
    sensitiveFile:
      original: .lark
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+logging:
+  level:
+    com.github.hollykunge.dao: debug
 
-
-
-
-
-
-
-
+##durid数据监控页面配置
+druid:
+  enabled: true
+  whiteip: 127.0.0.1
+  blackip: 192.168.1.1
+  loginUsername: admin
+  loginPassword: 123456
+#redis-cache 相关
+redis:
+  pool:
+      maxActive: 300
+      maxIdle: 100
+      maxWait: 10000
+  #需要修改地址
+  host: 10.11.24.138
+  port:  6379
+  password:
+  timeout: 20000
+  # 服务或应用名
+  sysName: service-fastdfs
+  enable: true
+  database: 4
+prop:
+  upload-folder: ./files

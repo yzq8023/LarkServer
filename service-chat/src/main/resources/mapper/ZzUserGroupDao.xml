@@ -120,6 +120,11 @@
         delete from ZZ_USER_GROUP where GROUP_ID=#{groupId} AND USER_ID = #{userId}
     </delete>
 
+    <!--解散群组使用-->
+    <delete id="deleteByGroupId">
+        delete from ZZ_USER_GROUP where GROUP_ID=#{groupId}
+    </delete>
+
     <!--查询单个-->
     <select id="queryById" resultMap="ZzUserGroupMap">
         select

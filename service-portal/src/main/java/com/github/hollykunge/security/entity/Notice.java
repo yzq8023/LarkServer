@@ -30,6 +30,8 @@ public class Notice implements Comparable<Notice>{
     private String orgCode;
     @Column(name = "SEND_TIME")
     private Date sendTime;
+    @Column(name = "SECRET_LEVEL")
+    private String secretLevel;
 
     @Override
     public int compareTo(Notice o) {
