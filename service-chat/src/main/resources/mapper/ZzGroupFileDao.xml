@@ -311,12 +311,15 @@
                     and not exists (select 1 from zz_group g where g.group_id=f.group_id)
                 </if>
     </select>
-    <update id="setFileApproveFLg">
-        update ZZ_GROUP_FILE
-        set update_time=sysdate,
-             updator=#{param.updator},
-             approve_flg=#{param.approveFlg}
-        where FILE_ID=#{param.fileId}
+    <!-- 更新文件审计标志-->
+    <update id="setFileApproveFLg" parameterType="Map">
+        <foreach collection="params" item="param" separator=";" open="begin" close=";end;">
+            update ZZ_GROUP_FILE
+            set update_time=sysdate,
+            updator=#{param.updator},
+            approve_flg=#{param.approveFlg}
+            where FILE_ID=#{param.fileId}
+        </foreach>
     </update>
 
 </mapper>

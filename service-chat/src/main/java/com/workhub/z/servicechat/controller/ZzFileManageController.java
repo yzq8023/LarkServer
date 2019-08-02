@@ -280,20 +280,18 @@ public class ZzFileManageController {
         return obj;
     }
     @PostMapping ("/setFileApproveFLg")
-    //设置文件审计标记 传递文件id：fileId 和审计是否通过标记 approveFlg
-    public ObjectRestResponse setFileApproveFLg(@RequestParam Map<String,String> param) {
+    //设置文件审计标记 参数格式fileId,approveFlg;fileId,approveFlg;fileId,approveFlg;fileId,approveFlg
+    //组内分割用逗号，第一个表示文件id，第二个表示审计标记；组间分割用分号
+    //例如 adcssdsf,1;dsadgeggsd,0;13353ddeww,1 表示传递了三个文件，分别把它们审计标记改成通过，不通过，通过
+    public ObjectRestResponse setFileApproveFLg(@RequestParam String files) {
         ObjectRestResponse obj = new ObjectRestResponse();
         obj.rel(true);
         obj.msg("200");
         obj.data("成功");
-        String userId = request.getHeader("userId");
-        param.put("updator",userId==null?"":userId);
-        String approveFlg = common.nulToEmptyString(param.get("approveFlg"));
-        if(approveFlg.equals("")){
-            param.put("approveFlg","1");
-        }
+
+        String userId = common.nulToEmptyString(request.getHeader("userId"));
         try {
-            int i =this.zzGroupFileService.setFileApproveFLg(param);
+            int i =this.zzGroupFileService.setFileApproveFLg(files,userId);
         } catch (Exception e) {
 
             e.printStackTrace();
