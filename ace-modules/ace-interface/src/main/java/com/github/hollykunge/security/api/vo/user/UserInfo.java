@@ -1,5 +1,7 @@
 package com.github.hollykunge.security.api.vo.user;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -17,6 +19,7 @@ public class UserInfo implements Serializable{
     private String avatar;
     private String description;
     private String orgCode;
+    private String orgName;
     private Integer demo;
 
     public String getId() {
@@ -90,5 +93,13 @@ public class UserInfo implements Serializable{
 
     public void setOrgCode(String orgCode) {
         this.orgCode = orgCode;
+    }
+
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
     }
 }
