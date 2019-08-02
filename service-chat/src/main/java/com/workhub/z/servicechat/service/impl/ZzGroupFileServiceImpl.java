@@ -258,5 +258,8 @@ public class ZzGroupFileServiceImpl implements ZzGroupFileService {
         );
         return res;
     }
-
+    //设置文件审计标记 fileId 、approveFlg
+    public int setFileApproveFLg(Map<String,String> param) throws Exception{
+        return this.zzGroupFileDao.setFileApproveFLg(param);
+    }
 }
