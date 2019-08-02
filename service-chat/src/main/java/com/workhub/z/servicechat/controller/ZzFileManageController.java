@@ -405,4 +405,17 @@ public class ZzFileManageController {
 
         return res;
     }
+
+    /**
+    *@Description: 获取文件下载状态
+    *@Param: 文件id，多文件
+    *@return:
+    *@Author: 忠
+    *@date: 2019/8/2
+    */
+    @GetMapping("/getFilesStatus")
+    public String getFilesStatus(String fileIds){
+        ZzGroupFile zzGroupFile = zzGroupFileService.queryById(fileIds);
+        return zzGroupFile.getApproveFlg();
+    }
 }

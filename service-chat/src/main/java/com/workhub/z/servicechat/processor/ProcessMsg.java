@@ -27,10 +27,6 @@ public class ProcessMsg extends AbstractMsgProcessor{
     @Autowired
     private ProcessGroupMsg processGroupMsg;
     @Autowired
-    private ZzUserGroupService userGroupService;
-    @Autowired
-    private ZzGroupService groupService;
-    @Autowired
     private ZzGroupFileService zzGroupFileService;
     private static Logger log = LoggerFactory.getLogger(ProcessMsg.class);
     /**
@@ -78,14 +74,8 @@ public class ProcessMsg extends AbstractMsgProcessor{
                    return processGroupMsg.sendMsg(channelContext,msg);
                 case PRIVATE_MSG:
                     return  processPrivateMsg.sendMsg(channelContext,msg);
-                    //
                 case GROUP_EDIT:
                      processEditGroup.processManage(channelContext,message);
-//                    GroupEditVO groupEditVO = JSON.parseObject(message, GroupEditVO.class);
-//                     JSONArray datas = jsonObject.getJSONArray("data");
-//                     List<GroupEditVO> groupEditVO = JSON.parseObject(datas.toJSONString(), new TypeReference<List<GroupEditVO>>() {
-//                     });
-//                     Tio.bindGroup(channelContext,groupEditVO.getGroupId());
                     break;
                 case GROUP_CREATE:
                     return processEditGroup.createGroup(channelContext,msg);
