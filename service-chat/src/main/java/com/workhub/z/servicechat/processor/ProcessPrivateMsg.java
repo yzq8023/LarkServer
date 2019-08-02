@@ -5,6 +5,7 @@ import com.workhub.z.servicechat.VO.GroupEditVO;
 import com.workhub.z.servicechat.entity.ZzPrivateMsg;
 import com.workhub.z.servicechat.server.IworkServerConfig;
 import com.workhub.z.servicechat.service.ZzPrivateMsgService;
+import org.apache.commons.io.TaggedIOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,36 +22,29 @@ public class ProcessPrivateMsg extends AbstractMsgProcessor{
     @Autowired
     protected ZzPrivateMsgService privateMsgService;
 
-    // TODO: 2019/5/31 判断对方是否在线
-
-    // TODO: 2019/5/31 消息发送
-
-    public boolean sendMsg(ChannelContext channelContext, String msg){
+    public boolean sendMsg(ChannelContext channelContext, String msg) throws Exception {
         JSONObject jsonObject = JSONObject.parseObject(msg);
-//        String code = jsonObject.getString("code");
+
+//      String code = jsonObject.getString("code");
         String message = jsonObject.getString("data");
         ZzPrivateMsg privateMsg = (ZzPrivateMsg)MsgVOToModel(message);
         saveMsg(privateMsg);
-        //存储消息信息（新）
+//      存储消息信息（新）
         super.saveMessageInfo("USER",privateMsg.getMsgSender(),privateMsg.getMsgReceiver()
                 ,privateMsg.getLevels(),privateMsg.getSendTime(),message,privateMsg.getMsgId());
-//        如果不在线则不发
+        super.msgAnswer(msg,privateMsg.getMsgId(),channelContext);
+//      如果不在线则不发
         Boolean temp =  checkUserOnline(channelContext,privateMsg.getMsgReceiver());
-//        Boolean temp =  Tio.sendToUser(channelContext.getGroupContext(),privateMsg.getMsgSender(),this.getWsResponse(message));
         if (true) {
             Tio.sendToUser(channelContext.getGroupContext(),privateMsg.getMsgReceiver(),this.getWsResponse(msg));
-
         }else {
 
         }
         return true;
     }
-    // TODO: 2019/5/31 存储到数据库
+
     public void saveMsg(ZzPrivateMsg privateMsg){
         privateMsgService.insert(privateMsg);
         super.saveNoReadMsg(privateMsg.getMsgSender(),privateMsg.getMsgReceiver());
     }
-
-    
-
 }

@@ -483,13 +483,14 @@ public class common {
      *@Author: zhuqz
      *@date: 2019/07/03
      */
-    public static Object   getJsonStringKeyValue (String jsonStr,String key) throws Exception{
+    public static Object getJsonStringKeyValue (String jsonStr,String key) throws Exception{
         if(jsonStr==null){
             return null;
         }
         Map<String,Object> jsonMap= JSON.parseObject(jsonStr, new TypeReference<Map<String, Object>>() {});
         return getMapKeyValue(jsonMap,key);
     }
+
     //递归json的key
     public static Object getMapKeyValue(Map<String,Object> map,String key) throws  Exception {
         String[] keyArr=key.split("\\.");
@@ -536,12 +537,18 @@ public class common {
         String userOrgCode="";
         for(UserInfo userInfo:userInfoList){
             if(userOrgCode.equals("")){//遍历的第一条
-                userOrgCode = userInfo.getOrgCode();
-            }else{//判断如果组织id不一样，立刻判定是跨场所，终止循环
-                if(!userOrgCode.equals(userInfo.getOrgCode())){
-                    iscross = true;
-                    break;
+                if(userInfo.getOrgCode()!=null && !userInfo.getOrgCode().equals("") && userInfo.getOrgCode().length()>=4){
+                    userOrgCode = userInfo.getOrgCode().substring(0,4);
                 }
+
+            }else{//判断如果组织id不一样，立刻判定是跨场所，终止循环
+                if(userInfo.getOrgCode()!=null && !userInfo.getOrgCode().equals("") && userInfo.getOrgCode().length()>=4){
+                    if(!userOrgCode.equals(userInfo.getOrgCode().substring(0,4))){
+                        iscross = true;
+                        break;
+                    }
+                }
+
             }
         }
         return iscross;

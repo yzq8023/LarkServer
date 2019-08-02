@@ -1,6 +1,6 @@
 package com.github.hollykunge.mapper;
 
-import com.github.hollykunge.entity.FileInforEntity;
+import com.github.hollykunge.entity.FileInfoEntity;
 import tk.mybatis.mapper.common.Mapper;
 
 /**
@@ -8,5 +8,5 @@ import tk.mybatis.mapper.common.Mapper;
  * @author zhhongyu
  * @since 2019-07-29
  */
-public interface FileInforMapper extends Mapper<FileInforEntity> {
+public interface FileInfoMapper extends Mapper<FileInfoEntity> {
 }

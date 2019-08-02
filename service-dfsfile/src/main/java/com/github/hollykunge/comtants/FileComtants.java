@@ -13,6 +13,7 @@ public class FileComtants {
      */
     public final static String SENSITIVE_BASE64_TYPE = "1";
     public final static String SENSITIVE_BYTEMOVE_TYPE = "2";
+    public final static String SENSITIVE_CIPHER_TYPE = "3";
     /**
      * 无效文件标识
      */
@@ -29,4 +30,14 @@ public class FileComtants {
      * 如果数据库中没有文件后缀，设置默认后缀
      */
     public final static String DOWNLOAD_FILE_EXT = "txt";
+
+    /**
+     * 加密类型
+     */
+    public static final String ENCRYPT_TYPE = "DES";
+    /**
+     * key生成规则
+     *
+     */
+    public static final String ENCRYPT_ROLE = "FAST FILE DE-ENCRYPT";
 }

@@ -11,7 +11,7 @@ import javax.persistence.Table;
  */
 @Data
 @Table(name = "FILE_INFO")
-public class FileInforEntity extends BaseEntity {
+public class FileInfoEntity extends BaseEntity {
     /**
      * 附件名称
      */
@@ -33,21 +33,21 @@ public class FileInforEntity extends BaseEntity {
     @Column(name = "LEVELS")
     private String levels;
 
-    /**
-     * 加密标记(0为未加密文件，1为使用base64加密文件，2为使用位移加密文件)
-     */
-    @Column(name = "FILE_ENCRYPE")
-    private String fileEncrype;
+//    /**
+//     * 加密标记(0为未加密文件，1为使用base64加密文件，2为使用位移加密文件)
+//     */
+//    @Column(name = "FILE_ENCRYPE")
+//    private String fileEncrype;
     /**
      * 文件大小
      */
     @Column(name = "FILE_SIZE")
     private Double fileSize;
-    /**
-     * 附件路径
-     */
-    @Column(name = "PATH")
-    private String path;
+//    /**
+//     * 附件路径
+//     */
+//    @Column(name = "PATH")
+//    private String path;
     /**
      * 附件转码为可读取的路径
      */
@@ -58,5 +58,13 @@ public class FileInforEntity extends BaseEntity {
      */
     @Column(name = "STATUS")
     private String status;
+
+
+    /**以下为新增字段，以上被注释掉的字段为需要在表中将其删除*/
+    /**
+     * 文件路径id
+     */
+    @Column(name = "FILE_PATH_ID")
+    private String filePathId;
 
 }
