@@ -99,6 +99,6 @@ public interface ZzGroupFileService {
     public TableResultResponse<FileMonitoringVO> fileMonitoring(Map<String,Object> params) throws Exception;
 
     //设置文件审计标记 fileId 、approveFlg
-    public int setFileApproveFLg(Map<String,String> param) throws Exception;
+    public int setFileApproveFLg(String files,String userId) throws Exception;
 
 }

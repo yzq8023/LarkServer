@@ -275,6 +275,7 @@ public class ZzGroupController  {
             vo.setOrgId(userTemp.getOrgCode());
             vo.setOrgName(userTemp.getOrgName());
             vo.setAvatar(userTemp.getAvatar());
+            //ToDo 群成员是否在线需要完善
             vo.setOnline("1");
             dataList.add(vo);
         }
