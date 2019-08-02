@@ -305,7 +305,7 @@ public class ZzGroupController  {
     @GetMapping("dissolve")
     public ObjectRestResponse dissolve(@RequestParam("groupId") String groupId) {
         zzGroupService.dissolveGroup(groupId);
-        return new ObjectRestResponse().rel(true).msg("研讨组已解散");
+        return new ObjectRestResponse().rel(true).msg("研讨组已解散...");
     }
 
     /**
