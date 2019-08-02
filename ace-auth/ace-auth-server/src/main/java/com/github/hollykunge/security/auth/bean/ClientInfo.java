@@ -4,11 +4,15 @@ package com.github.hollykunge.security.auth.bean;
 import com.github.hollykunge.security.auth.common.util.jwt.IJWTInfo;
 
 /**
- * Created by 协同设计小组 on 2017/9/10.
+ *
+ * @author 协同设计小组
+ * @date 2017/9/10
  */
 public class ClientInfo implements IJWTInfo {
+
     String clientId;
     String name;
+    String id;
 
     public ClientInfo(String clientId, String name, String id) {
         this.clientId = clientId;
@@ -20,7 +24,6 @@ public class ClientInfo implements IJWTInfo {
         this.id = id;
     }
 
-    String id;
     public String getClientId() {
         return clientId;
     }
@@ -46,5 +49,10 @@ public class ClientInfo implements IJWTInfo {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String getSecretLevel() {
+        return null;
     }
 }

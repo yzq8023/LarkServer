@@ -10,10 +10,12 @@ spring:
         default-property-inclusion: non_null
     redis:
         database: 1
+        #需要修改地址
+#        host: 10.11.24.5
         host: 127.0.0.1
         jedis:
           pool:
-              max-active: 20
+              max-active: 200
 #    rabbitmq:
 #        host: ${RABBIT_MQ_HOST:localhost}
 #        port:  ${RABBIT_MQ_PORT:5672}
@@ -30,7 +32,7 @@ server:
 #
 zuul:
   ignored-services: "*"
-  sensitive-headers:
+  sensitive-headers: #默认过滤所有的请求头，为空则放行所有的请求头
   prefix: /api #为zuul设置一个公共的前缀
   ratelimit: # 网关限流
     key-prefix: gate_rate
@@ -38,7 +40,7 @@ zuul:
     repository: REDIS #REDIS, JPA, IN_MEMORY
     behind-proxy: true
     default-policy: #optional - will apply unless specific policy exists
-      limit: 200
+      limit: 2000
       refresh-interval: 60 #default value (in seconds)
       type: #optional
         - user
@@ -52,6 +54,18 @@ zuul:
     auth:
       path: /auth/**
       serviceId: ace-auth
+
+    portal:
+      path: /portal/**
+      serviceId: service-portal
+
+    fdfs:
+      path: /fdfs/**
+      serviceId: service-dfsfile
+
+    chat:
+      path: /chat/**
+      serviceId: service-chat
 
 ribbon:
   eureka:
@@ -70,21 +84,21 @@ ribbon:
 hystrix:
   threadpool:
     default:
-      coreSize: 1000 ##并发执行的最大线程数，默认10
-      maxQueueSize: 1000 ##BlockingQueue的最大队列数
-      queueSizeRejectionThreshold: 500 ##即使maxQueueSize没有达到，达到queueSizeRejectionThreshold该值后，请求也会被拒绝
+      coreSize: 10000 ##并发执行的最大线程数，默认10
+      maxQueueSize: 10000 ##BlockingQueue的最大队列数
+      queueSizeRejectionThreshold: 5000 ##即使maxQueueSize没有达到，达到queueSizeRejectionThreshold该值后，请求也会被拒绝
   command:
     default:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 50000
+            timeoutInMilliseconds: 200000
           strategy: SEMAPHORE
 
 
 gate:
   ignore:
-    startWith: /static,/auth/jwt
+    startWith: /static,/auth/jwt,/fdfs/file,/chat/zzFileManage,/admin/org/tree,/admin/org/orgUsers,/admin/org/user
 
 
 auth:

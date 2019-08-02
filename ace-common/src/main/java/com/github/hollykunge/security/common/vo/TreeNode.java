@@ -1,14 +1,15 @@
 package com.github.hollykunge.security.common.vo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by 协同设计小组 on 2017/6/12.
  */
-public class TreeNode {
-    protected int id;
-    protected int parentId;
+public class TreeNode implements Serializable {
+    protected String id;
+    protected String parentId;
 
     public List<TreeNode> getChildren() {
         return children;
@@ -20,19 +21,19 @@ public class TreeNode {
 
     List<TreeNode> children = new ArrayList<TreeNode>();
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getParentId() {
+    public String getParentId() {
         return parentId;
     }
 
-    public void setParentId(int parentId) {
+    public void setParentId(String parentId) {
         this.parentId = parentId;
     }
 

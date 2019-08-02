@@ -1,13 +1,17 @@
 package com.workhub.z.servicechat.service.impl;
 
-import com.github.hollykunge.security.common.biz.BaseBiz;
-import com.workhub.z.servicechat.entity.ZzMsgTabRelation;
+import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.dao.ZzMsgTabRelationDao;
+import com.workhub.z.servicechat.entity.ZzMsgTabRelation;
 import com.workhub.z.servicechat.service.ZzMsgTabRelationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+
+import static com.workhub.z.servicechat.config.common.putEntityNullToEmptyString;
 
 /**
  * 标记消息关系表(ZzMsgTabRelation)表服务实现类
@@ -16,7 +20,8 @@ import java.util.List;
  * @since 2019-05-23 16:12:40
  */
 @Service("zzMsgTabRelationService")
-public class ZzMsgTabRelationServiceImpl extends BaseBiz<ZzMsgTabRelationDao, ZzMsgTabRelation> implements ZzMsgTabRelationService {
+public class ZzMsgTabRelationServiceImpl implements ZzMsgTabRelationService {
+    private static Logger log = LoggerFactory.getLogger(ZzMsgTabRelationServiceImpl.class);
     @Resource
     private ZzMsgTabRelationDao zzMsgTabRelationDao;
 
@@ -28,7 +33,14 @@ public class ZzMsgTabRelationServiceImpl extends BaseBiz<ZzMsgTabRelationDao, Zz
      */
     @Override
     public ZzMsgTabRelation queryById(String id) {
-        return this.zzMsgTabRelationDao.queryById(id);
+        ZzMsgTabRelation zzMsgTabRelation=this.zzMsgTabRelationDao.queryById(id);
+        try {
+            common.putVoNullStringToEmptyString(zzMsgTabRelation);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(common.getExceptionMessage(e));
+        }
+        return zzMsgTabRelation;
     }
 
     /**
@@ -51,14 +63,19 @@ public class ZzMsgTabRelationServiceImpl extends BaseBiz<ZzMsgTabRelationDao, Zz
      */
     @Override
     public void insert(ZzMsgTabRelation zzMsgTabRelation) {
+        try {
+            putEntityNullToEmptyString(zzMsgTabRelation);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         int insert = this.zzMsgTabRelationDao.insert(zzMsgTabRelation);
 //        return insert;
     }
 
-    @Override
+    /*@Override
     protected String getPageName() {
         return null;
-    }
+    }*/
 
     /**
      * 修改数据

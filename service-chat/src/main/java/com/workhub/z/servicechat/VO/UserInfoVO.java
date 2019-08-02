@@ -1,26 +1,35 @@
 package com.workhub.z.servicechat.VO;
 
-/**
-*@Description: 人员信息，前端交互实体类
-*@Author: 忠
-*@date: 2019/5/15
-*/
+import lombok.Data;
+
+@Data
 public class UserInfoVO {
-
-    private String userId;
-    private int userLevels;
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserLevels(int userLevels) {
-        this.userLevels = userLevels;
-    }
-    public int getUserLevels() {
-        return userLevels;
-    }
-
+    /**
+     * 用户id
+     */
+    private String id;
+    /**
+     * 用户名称
+     */
+    private String name;
+    /**
+     * 密级
+     */
+    private String secretLevel;
+    /**
+     * 组织名称
+     */
+    private String orgName;
+    /**
+     * 组织id
+     */
+    private String orgId;
+    /**
+     * 用户头像路径
+     */
+    private String avatar;
+    /**
+     * 是否在线1在线0离线
+     */
+    private String online;
 }

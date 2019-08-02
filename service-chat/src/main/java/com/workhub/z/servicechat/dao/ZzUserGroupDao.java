@@ -1,7 +1,6 @@
 package com.workhub.z.servicechat.dao;
 
 import com.workhub.z.servicechat.VO.GroupListVo;
-import com.workhub.z.servicechat.VO.GroupUserListVo;
 import com.workhub.z.servicechat.VO.UserNewMsgVo;
 import com.workhub.z.servicechat.entity.ZzUserGroup;
 import org.apache.ibatis.annotations.Param;
@@ -68,10 +67,35 @@ public interface ZzUserGroupDao extends Mapper<ZzUserGroup> {
     int deleteById(String id);
 
     List<GroupListVo> groupList(@Param("id")String id, @Param("start")Integer start, @Param("end")Integer end);
+    //以前的分页查询有问题，这里重载一个方法
+    List<GroupListVo> groupList(@Param("id")String id);
 
     Long groupListTotal(@Param("id")String id);
 
     Long deleteByGroupIdAndUserId(@Param("groupId") String groupId,@Param("userId") String userId);
 
+    int deleteByGroupId(@Param("groupId") String groupId);
+
     List<UserNewMsgVo> getUserNewMsgList(@Param("id")String id);
+    /**
+     * 修改用户群个性化信息--是否置顶
+     * @param userId 用户id；groupId 群id；topFlg 1置顶，0不置顶
+     * @return  受影响行数
+     * @author zhuqz
+     * @since 2019-06-11
+     */
+    int setUserGroupTop(@Param("userId") String userId, @Param("groupId") String groupId, @Param("topFlg") String topFlg);
+    /**
+     * 修改用户群个性化信息--是否置顶
+     * @param userId 用户id；groupId 群id；muteFlg 1免打扰，0否
+     * @return  受影响行数
+     * @author zhuqz
+     * @since 2019-06-11
+     */
+    int setUserGroupMute(@Param("userId") String userId, @Param("groupId") String groupId, @Param("muteFlg") String topFlg);
+
+    //获取一个群组有多少成员
+    int getGroupUserCount(@Param("groupId") String groupId);
+    //获取群前九个人的头像地址
+    List<String> getGroupUserHeadList(@Param("groupId") String groupId);
 }

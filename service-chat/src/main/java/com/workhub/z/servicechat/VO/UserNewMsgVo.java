@@ -4,13 +4,22 @@ import java.util.Date;
 
 public class UserNewMsgVo {
 
-    private String msgId;
-    private String tableType;
-    private String msgSener;
-    private Date sendTime;
-    private String msg;
-    private String msgType;
-    private String levels;
+    private String msgId;//消息id
+    private String tableType;//表来源类型
+    private String msgSener;//消息人
+    private String msgReceiver;//发送人
+    private Date sendTime;//消息时间
+    private String msg;//消息
+    private String msgType;//消息类型
+    private String levels;//消息等级
+
+    public String getMsgReceiver() {
+        return msgReceiver;
+    }
+
+    public void setMsgReceiver(String msgReceiver) {
+        this.msgReceiver = msgReceiver;
+    }
 
     public String getMsgId() {
         return msgId;

@@ -2,9 +2,19 @@ package com.workhub.z.servicechat.model;
 
 public class UserListDto {
 
-    private String userId;
+    private String userId;//人id
 
-    private String userLevels;
+    private String userLevels;//人等级
+
+    private String img;//头像
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
 
     public String getUserId() {
         return userId;

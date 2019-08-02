@@ -22,6 +22,10 @@ public class GroupInfoVO
     private String createTime;
 //  创建人
     private String creator;
+    //  创建人
+    private String creatorName;
+//  群组成员数量
+    private Integer memberNum;
 
     public void setId(String id){
         this.id = id;
@@ -70,5 +74,21 @@ public class GroupInfoVO
     }
     public String getCreator(){
         return this.creator;
+    }
+
+    public Integer getMemberNum() {
+        return memberNum;
+    }
+
+    public void setMemberNum(Integer memberNum) {
+        this.memberNum = memberNum;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 }

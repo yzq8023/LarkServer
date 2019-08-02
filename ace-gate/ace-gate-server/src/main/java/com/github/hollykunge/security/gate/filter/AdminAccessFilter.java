@@ -1,14 +1,16 @@
 package com.github.hollykunge.security.gate.filter;
 
 import com.alibaba.fastjson.JSON;
-import com.github.hollykunge.security.api.vo.authority.PermissionInfo;
+import com.github.hollykunge.security.api.vo.authority.FrontPermission;
 import com.github.hollykunge.security.api.vo.log.LogInfo;
 import com.github.hollykunge.security.auth.client.config.ServiceAuthConfig;
 import com.github.hollykunge.security.auth.client.config.UserAuthConfig;
 import com.github.hollykunge.security.auth.client.jwt.ServiceAuthUtil;
 import com.github.hollykunge.security.auth.client.jwt.UserAuthUtil;
 import com.github.hollykunge.security.auth.common.util.jwt.IJWTInfo;
+import com.github.hollykunge.security.common.constant.CommonConstants;
 import com.github.hollykunge.security.common.context.BaseContextHandler;
+import com.github.hollykunge.security.common.exception.BaseException;
 import com.github.hollykunge.security.common.msg.auth.TokenErrorResponse;
 import com.github.hollykunge.security.common.msg.auth.TokenForbiddenResponse;
 import com.github.hollykunge.security.common.util.ClientUtil;
@@ -26,6 +28,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
@@ -87,8 +90,50 @@ public class AdminAccessFilter extends ZuulFilter {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
         final String requestUri = request.getRequestURI().substring(zuulPrefix.length());
-        final String method = request.getMethod();
         BaseContextHandler.setToken(null);
+
+        String dnname = request.getHeader(CommonConstants.PERSON_ID_ARG);
+        if(StringUtils.isEmpty(dnname)){
+//            throw new BaseException("请求头中无身份信息...");
+            /**
+             * 正常用户名密码登录
+             */
+            if (isStartWith(requestUri)) {
+                return null;
+            }
+            IJWTInfo user = null;
+            try {
+                user = getJWTUser(request, ctx);
+            } catch (Exception e) {
+                setFailedRequest(JSON.toJSONString(new TokenErrorResponse(e.getMessage())), 200);
+                return null;
+            }
+            //根据用户id获取资源列表，包括菜单和菜单功能
+            List<FrontPermission> permissionInfos = userService.getPermissionByUserId(user.getId());
+            if(permissionInfos.size()>0){
+                checkUserPermission(requestUri,permissionInfos, ctx, user);
+            }
+            // 申请客户端密钥头，加到header里传递到下方服务
+            ctx.addZuulRequestHeader(serviceAuthConfig.getTokenHeader(), serviceAuthUtil.getClientToken());
+            return null;
+        }
+        try {
+            dnname = new String (dnname.getBytes(CommonConstants.PERSON_CHAR_SET));
+        } catch (UnsupportedEncodingException e) {
+            throw new BaseException("身份信息编码转化错误...");
+        }
+        String[] userObjects = dnname.trim().split(",", 0);
+        String pId = null;
+        for (String val:
+                userObjects) {
+            val = val.trim();
+            if(val.indexOf("t=")>-1||val.indexOf("T=")>-1){
+                pId = val.substring(2,val.length());
+            }
+        }
+
+        //将dnname设置为身份证信息
+        ctx.addZuulRequestHeader(CommonConstants.PERSON_ID_ARG,pId.toLowerCase());
         // 不进行拦截的地址
         if (isStartWith(requestUri)) {
             return null;
@@ -100,16 +145,10 @@ public class AdminAccessFilter extends ZuulFilter {
             setFailedRequest(JSON.toJSONString(new TokenErrorResponse(e.getMessage())), 200);
             return null;
         }
-        //获取所有的资源信息，包括menu和element
-        List<PermissionInfo> permissionIfs = userService.getAllPermissionInfo();
-        // 判断当前资源是否属于权限资源
-        Stream<PermissionInfo> stream = getPermissionIfs(requestUri, method, permissionIfs);
-        List<PermissionInfo> result = stream.collect(Collectors.toList());
-        PermissionInfo[] permissions = result.toArray(new PermissionInfo[]{});
-
-        if (permissions.length > 0) {
-            //判断用户是否有当前资源访问权限
-            checkUserPermission(permissions, ctx, user);
+        //根据用户id获取资源列表，包括菜单和菜单功能
+        List<FrontPermission> permissionInfos = userService.getPermissionByUserId(user.getId());
+        if(permissionInfos.size()>0){
+            checkUserPermission(requestUri,permissionInfos, ctx, user);
         }
         // 申请客户端密钥头，加到header里传递到下方服务
         ctx.addZuulRequestHeader(serviceAuthConfig.getTokenHeader(), serviceAuthUtil.getClientToken());
@@ -124,15 +163,14 @@ public class AdminAccessFilter extends ZuulFilter {
      * @param serviceInfo
      * @return
      */
-    private Stream<PermissionInfo> getPermissionIfs(final String requestUri, final String method, List<PermissionInfo> serviceInfo) {
-        return serviceInfo.parallelStream().filter(new Predicate<PermissionInfo>() {
+    private Stream<FrontPermission> getPermissionIfs(final String requestUri, final String method, List<FrontPermission> serviceInfo) {
+        return serviceInfo.stream().filter(new Predicate<FrontPermission>() {
             @Override
-            public boolean test(PermissionInfo permissionInfo) {
-                String url = permissionInfo.getUri();
-                String uri = url.replaceAll("\\{\\*\\}", "[a-zA-Z\\\\d]+");
+            public boolean test(FrontPermission permissionInfo) {
+                String uriTemp = permissionInfo.getUri();
+                String uri = uriTemp.replaceAll("\\{\\*\\}", "[a-zA-Z\\\\d]+");
                 String regEx = "^" + uri + "$";
-                return (Pattern.compile(regEx).matcher(requestUri).find() || requestUri.startsWith(url + "/"))
-                        && method.equals(permissionInfo.getMethod());
+                return Pattern.compile(regEx).matcher(requestUri).find() && method.equals(permissionInfo.getMethods());
             }
         });
     }
@@ -140,13 +178,18 @@ public class AdminAccessFilter extends ZuulFilter {
     /**
      * 在上下文中设置当前用户信息和操作日志
      */
-    private void setCurrentUserInfoAndLog(RequestContext ctx, IJWTInfo user, PermissionInfo pm) {
+    private void setCurrentUserInfoAndLog(RequestContext ctx, IJWTInfo user, FrontPermission pm) {
         String host = ClientUtil.getClientIp(ctx.getRequest());
         ctx.addZuulRequestHeader("userId", user.getId());
         ctx.addZuulRequestHeader("userName", URLEncoder.encode(user.getName()));
         ctx.addZuulRequestHeader("userHost", ClientUtil.getClientIp(ctx.getRequest()));
-        LogInfo logInfo = new LogInfo(pm.getMenu(), pm.getName(), pm.getUri(), new Date(), user.getId(), user.getName(), host);
-        DBLog.getInstance().setLogService(logService).offerQueue(logInfo);
+        //请求头中增加人员密级
+        ctx.addZuulRequestHeader("userSecretLevel", user.getSecretLevel());
+        //标识已经成功
+//        LogInfo logInfo = new LogInfo(pm.getTitle(), ctx.getRequest().getMethod(), pm.getUri(), new Date(), user.getId(), user.getName(), host,"0");
+//        DBLog.getInstance().setLogService(logService).offerQueue(logInfo);
+        BaseContextHandler.set("pm",pm);
+        BaseContextHandler.set("user",user);
     }
 
     /**
@@ -173,15 +216,15 @@ public class AdminAccessFilter extends ZuulFilter {
      * @param ctx
      * @param user
      */
-    private void checkUserPermission(PermissionInfo[] permissions, RequestContext ctx, IJWTInfo user) {
+    private void checkUserPermission(FrontPermission[] permissions, RequestContext ctx, IJWTInfo user) {
         //根据用户id获取资源列表，包括菜单和菜单功能
-        List<PermissionInfo> permissionInfos = userService.getPermissionByUsername(user.getUniqueName());
-        PermissionInfo current = null;
-        for (PermissionInfo info : permissions) {
-            boolean anyMatch = permissionInfos.parallelStream().anyMatch(new Predicate<PermissionInfo>() {
+        List<FrontPermission> permissionInfos = userService.getPermissionByUserId(user.getId());
+        FrontPermission current = null;
+        for (FrontPermission info : permissions) {
+            boolean anyMatch = permissionInfos.parallelStream().anyMatch(new Predicate<FrontPermission>() {
                 @Override
-                public boolean test(PermissionInfo permissionInfo) {
-                    return permissionInfo.getCode().equals(info.getCode());
+                public boolean test(FrontPermission permissionInfo) {
+                    return permissionInfo.getMenuId().equals(info.getMenuId());
                 }
             });
             if (anyMatch) {
@@ -192,9 +235,10 @@ public class AdminAccessFilter extends ZuulFilter {
         if (current == null) {
             setFailedRequest(JSON.toJSONString(new TokenForbiddenResponse("Token Forbidden!")), 200);
         } else {
-            if (!RequestMethod.GET.toString().equals(current.getMethod())) {
-                setCurrentUserInfoAndLog(ctx, user, current);
-            }
+            setCurrentUserInfoAndLog(ctx, user, current);
+//            if (!RequestMethod.GET.toString().equals(current.get)) {
+//                setCurrentUserInfoAndLog(ctx, user, current);
+//            }
         }
     }
 
@@ -227,7 +271,48 @@ public class AdminAccessFilter extends ZuulFilter {
         ctx.setResponseStatusCode(code);
         if (ctx.getResponseBody() == null) {
             ctx.setResponseBody(body);
+            ctx.getResponse().setContentType("text/json;charset=UTF-8");
             ctx.setSendZuulResponse(false);
+        }
+    }
+
+    /**
+     * 优化查询该请求资源是否在用户所拥有的权限中
+     * @param ctx
+     * @param user
+     */
+    private void checkUserPermission(String requestUri,List<FrontPermission> permissionInfos, RequestContext ctx, IJWTInfo user) {
+        if(StringUtils.isEmpty(requestUri)){
+            throw new BaseException("requestUri 参数异常...");
+        }
+        permissionInfos =  permissionInfos.parallelStream()
+                .filter(new Predicate<FrontPermission>() {
+                    @Override
+                    public boolean test(FrontPermission permissionInfo) {
+                        if(StringUtils.isEmpty(permissionInfo.getUri())){
+                            return false;
+                        }
+                        return requestUri.contains(permissionInfo.getUri());
+                    }
+                }).collect(Collectors.toList());
+
+        if(permissionInfos.size()==0){
+            setFailedRequest(JSON.toJSONString(new TokenForbiddenResponse("Token Forbidden!request url no permission...")), 200);
+        }
+        boolean anyMatch =
+                permissionInfos.parallelStream()
+                .anyMatch(new Predicate<FrontPermission>() {
+                    @Override
+                    public boolean test(FrontPermission permissionInfo) {
+                        return permissionInfo.getActionEntitySetList().stream().anyMatch(actionEntitySet ->
+                                ctx.getRequest().getMethod().equals(actionEntitySet.getMethod()));
+                    }
+                });
+        if (anyMatch) {
+            //该用户有访问路径权限
+            setCurrentUserInfoAndLog(ctx, user, permissionInfos.get(0));
+        } else {
+            setFailedRequest(JSON.toJSONString(new TokenForbiddenResponse("Token Forbidden!request method no permission...")), 200);
         }
     }
 

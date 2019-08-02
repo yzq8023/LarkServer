@@ -4,12 +4,12 @@ import java.util.Date;
 
 public class GroupListVo {
 
-    private String groupId;
-    private String groupName;
-    private Date createTime;
-    private String creator;
-    private String levels;
-    private String groupImg;
+    private String groupId;//群组id
+    private String groupName;//群组名称
+    private Date createTime;//创建时间
+    private String creator;//创建人
+    private String levels;//群等级
+    private String groupImg;//群头像
 
     public String getGroupId() {
         return groupId;

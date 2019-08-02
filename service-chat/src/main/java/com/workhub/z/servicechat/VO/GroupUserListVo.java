@@ -5,23 +5,23 @@ import java.util.Date;
 
 public class GroupUserListVo {
 
-    private Date createTime;
+    private Date createTime;//创建时间
 
-    private String userId;
+    private String userId;//登陆人id
 
-    private String fullName;
+    private String fullName;//登陆人名称
 
-    private String account;
+    private String account;//登陆人信息
 
-    private String password;
+    private String password;//登陆密码
 
-    private String levels;
+    private String levels;//登陆人等级
 
-    private String sex;
+    private String sex;//性别
 
-    private String head;
+    private String head;//头像
 
-    private Integer vip;
+    private Integer vip;//排序等级
 
     public Date getCreateTime() {
         return createTime;

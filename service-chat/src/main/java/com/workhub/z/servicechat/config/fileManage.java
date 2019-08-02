@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,9 +19,9 @@ import java.util.*;
 */
 public class fileManage {
 
-    private static final Long FILE_SIZE = 2*1024*1024*1024L;
+    private static final Long FILE_SIZE = 300 * 1024 * 1024L;
 
-    private static final String PATH = "D:/file-management-center/upload/";
+    private static final String PATH = "C:/file-management-center/upload/";
     // TODO: 2019/5/14 文件上传
     /**
      * 文件上传(任意路径)
@@ -34,7 +35,7 @@ public class fileManage {
             throw new NullPointerException();
         }
         if (FILE_SIZE<file.getSize()){
-            throw new RuntimeException("上传文件超过2G");
+            throw new RuntimeException("上传文件超过" + FILE_SIZE / 1024 + "M");
         }
         file.transferTo(new File(path));
     }
@@ -61,7 +62,7 @@ public class fileManage {
      */
     public static HttpServletResponse downloadFile(HttpServletResponse response,
                                                    String filePath, String fileName) throws Exception {
-        File file = new File(filePath);
+        File file = new File(PATH + "/" + filePath);
         response.setContentType("application/x-download");
         response.setHeader("Pragma", "public");
         response.setHeader("Cache-Control",
@@ -92,7 +93,60 @@ public class fileManage {
         }
         return response;
     }
+    public static HttpServletResponse downloadUploadFile(HttpServletResponse response,
+                                                   String filePath, String fileName) throws Exception {
+        File file = new File(filePath);
+        String newFilePath="";//解密文件路径
+        if(file.exists()){//解密
+            newFilePath = EncryptionAndDeciphering.decipherFile(file);
+        }
+        if("0".equals(newFilePath) || "-1".equals(newFilePath)){
+            return response;
+        }
+        File newFile= new File(newFilePath);
+        response.setContentType("application/x-download");
+        response.setHeader("Pragma", "public");
+        response.setHeader("Cache-Control",
+                "must-revalidate, post-check=0, pre-check=0");
+        OutputStream out = null;
+        InputStream in = null;
+        fileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("%5B", "\\[")
+                .replaceAll("%5D", "\\]").replaceAll("\\+", "%20")
+                .replaceAll("%28", "\\(").replaceAll("%29", "\\)")
+                .replaceAll("%3B", ";").replaceAll("%40", "@")
+                .replaceAll("%23", "\\#").replaceAll("%26", "\\&")
+                .replaceAll("%7B", "\\{").replaceAll("%7D", "\\}")
+                .replaceAll("%21", "\\!").replaceAll("%24", "\\$")
+                .replaceAll("%21", "\\!").replaceAll("%25", "\\%")
+                .replaceAll("%5E", "\\^").replaceAll("%2B", "\\+");
+//        fileName = new String(fileName.getBytes("GBK"), "ISO-8859-1");
+        response.addHeader("Content-disposition", "attachment;filename=" + fileName);// 设定输出文件头
 
+        try {
+            out = response.getOutputStream();
+            in = new FileInputStream(newFile);
+            int len = in.available();
+            byte[] b = new byte[len];
+            in.read(b);
+            out.write(b);
+            out.flush();
+
+        } catch (Exception e) {
+            throw new Exception("下载失败!");
+        } finally {
+            if (in != null) {
+                in.close();
+            }
+            if (out != null) {
+                out.close();
+            }
+            //解密文件删除
+            if(newFile.exists()){
+                newFile.delete();
+            }
+        }
+        return response;
+    }
     /**
      * 服务默认路径
      * @param file
@@ -104,18 +158,68 @@ public class fileManage {
             throw new NullPointerException();
         }
         if (FILE_SIZE<file.getSize()){
-            throw new RuntimeException("上传文件超过2G");
+            throw new RuntimeException("上传文件超过" + FILE_SIZE / 1024 + "M");
         }
         file.transferTo(new File(PATH));
+    }
+    //上传文件，包含名称
+    public static void uploadFile(MultipartFile file, String path, String filename) throws Exception {
+        if (file == null) {
+            throw new NullPointerException();
+        }
+        if (FILE_SIZE < file.getSize()) {
+            throw new RuntimeException("上传文件超过" + FILE_SIZE / 1024 + "M");
+        }
+        createFolder(PATH + "/" + path);
+        file.transferTo(new File(PATH + "/" + path + "/" + filename));
+    }
+    public static void uploadFile(MultipartFile file, String path, String filename,int file_size) throws Exception {
+        if (file == null) {
+            throw new NullPointerException();
+        }
+        if (file_size < file.getSize()/1024/1024) {
+            throw new RuntimeException("上传文件超过" + file_size  + "M");
+        }
+        createFolder( path);
+        File diskFile=new File(path + "/" + filename);
+        file.transferTo(diskFile);
+        EncryptionAndDeciphering.encryptFile(diskFile);//加密
+    }
+    //创建文件夹
+    public static void createFolder(String path) {
+        File folderPath = new File(path);
+        if (!folderPath.exists()) {
+            try {
+                folderPath.mkdirs();
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw e;
+            }
+
+        }
     }
 
     /**
      * 删除文件(不能有子目录)
      * @param url
      */
-    public static void delFile(String url){
+/*    public static void delFile(String url){
         File file=new File(url);
         if(file.exists()&&file.isFile())
+            file.delete();
+    }*/
+    public static void delFile(String url) {
+        File file = new File(PATH + "/" + url);
+        if (file.exists() && file.isFile())
+            file.delete();
+    }
+    /**
+     * 删除文件(不能有子目录)
+     * @param url
+     */
+    public static void delUploadFile(String url) {
+        File file = new File(url);
+        if (file.exists() && file.isFile())
             file.delete();
     }
 

@@ -50,9 +50,9 @@
     </select>
 
     <!--新增所有列-->
-    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into ZZ_MSG_TAB_INFO(GROUP_ID, USER_ID, MSG_ID, TAB_TYPE)
-        values (#{groupId}, #{userId}, #{msgId}, #{tabType})
+    <insert id="insert">
+        insert into ZZ_MSG_TAB_INFO(ID,GROUP_ID, USER_ID, MSG_ID, TAB_TYPE)
+        values (#{id},#{groupId}, #{userId}, #{msgId}, #{tabType})
     </insert>
 
     <!--通过主键修改数据-->

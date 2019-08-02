@@ -70,11 +70,20 @@
     </select>
 
     <!--新增所有列-->
-    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into WORKHUB_IWORK.ZZ_DICTIONARY_WORDS(WORD_TYPE, WORD_CODE, WORD_NAME, REPLACE_WORD, CREATE_TIME, CREATE_USER, UPDATE_TIME, UPDATE_USER, IS_USE)
-        values (#{wordType}, #{wordCode}, #{wordName}, #{replaceWord}, #{createTime}, #{createUser}, #{updateTime}, #{updateUser}, #{isUse})
+    <insert id="insert" >
+        insert into WORKHUB_IWORK.ZZ_DICTIONARY_WORDS(ID,WORD_TYPE, WORD_CODE, WORD_NAME, REPLACE_WORD, CREATE_TIME, CREATE_USER)
+        values (#{id},#{wordType}, #{wordCode}, #{wordName}, #{replaceWord}, #{createTime}, #{createUser})
     </insert>
-
+    <!-- 新增、修改前判断是否存在记录-->
+    <select id="selcount"  resultType="java.lang.Long">
+        select count(1) as cnt
+        from zz_dictionary_words
+         where word_name = #{wordName}
+         and   WORD_TYPE = #{wordType}
+         <if test="id != null and id!=''">
+             and id != #{id}
+         </if>
+    </select>
     <!--通过主键修改数据-->
     <update id="update">
         update WORKHUB_IWORK.ZZ_DICTIONARY_WORDS
@@ -82,28 +91,20 @@
             <if test="wordType != null and wordType != ''">
                 WORD_TYPE = #{wordType},
             </if>
-            <if test="wordCode != null and wordCode != ''">
+            <if test="wordCode != null">
                 WORD_CODE = #{wordCode},
             </if>
             <if test="wordName != null and wordName != ''">
                 WORD_NAME = #{wordName},
             </if>
-            <if test="replaceWord != null and replaceWord != ''">
+            <if test="replaceWord != null">
                 REPLACE_WORD = #{replaceWord},
             </if>
-            <if test="createTime != null">
-                CREATE_TIME = #{createTime},
-            </if>
-            <if test="createUser != null and createUser != ''">
-                CREATE_USER = #{createUser},
-            </if>
-            <if test="updateTime != null">
-                UPDATE_TIME = #{updateTime},
-            </if>
+            UPDATE_TIME = sysdate,
             <if test="updateUser != null and updateUser != ''">
                 UPDATE_USER = #{updateUser},
             </if>
-            <if test="isUse != null">
+            <if test="isUse != null and isUse != ''">
                 IS_USE = #{isUse},
             </if>
         </set>
@@ -114,5 +115,55 @@
     <delete id="deleteById">
         delete from WORKHUB_IWORK.ZZ_DICTIONARY_WORDS where ID = #{id}
     </delete>
+    <!-- 停用 启用-->
+    <update id="stopUse">
+        update WORKHUB_IWORK.ZZ_DICTIONARY_WORDS
+              set
+              is_use = #{flg},
+              update_user = #{userId},
+              update_time = sysdate
+              where id = #{id }
+    </update>
+    <!--查询分页-->
+    <select id="query" resultMap="ZzDictionaryWordsMap">
+        select
+          ID, WORD_TYPE, WORD_CODE, WORD_NAME, REPLACE_WORD, CREATE_TIME, CREATE_USER, UPDATE_TIME, UPDATE_USER, IS_USE
+        from WORKHUB_IWORK.ZZ_DICTIONARY_WORDS
+        where 1=1
+        <if test=" type != null and type != ''">
+            and WORD_TYPE=#{type}
+        </if>
+        <if test=" code != null and code != ''">
+            and WORD_CODE=#{code}
+        </if>
+        <if test=" name != null and name != ''">
+            and WORD_NAME like '%'||#{name}||'%'
+        </if>
+        <if test=" replace != null and replace != ''">
+            and REPLACE_WORD like '%'||#{replace}||'%'
+        </if>
+        <if test=" isUse != null and isUse != ''">
+            and IS_USE = #{isUse}
+        </if>
+        order by nvl(UPDATE_TIME,CREATE_TIME) desc
+    </select>
+    <update id="importData">
+        merge into WORKHUB_IWORK.ZZ_DICTIONARY_WORDS a
+        using ( select #{wordName} as word_name from dual ) b
+        on (a.word_name = b.word_name)
+        when not matched then
+        insert  (id,word_type,word_name,word_code,replace_word,create_time,create_user)
+        values(#{id},#{wordType},#{wordName},#{wordCode},#{replaceWord},sysdate,#{createUser})
+    </update>
 
+    <update id="importDataList" parameterType="Map">
+        <foreach collection="list" item="temp"  index="index"  open="begin" close=";end;" separator=";">
+            merge into WORKHUB_IWORK.ZZ_DICTIONARY_WORDS a
+            using ( select #{temp.wordName} as word_name from dual ) b
+            on (a.word_name = b.word_name)
+            when not matched then
+            insert  (id,word_type,word_name,word_code,replace_word,create_time,create_user)
+            values(#{temp.id},#{temp.wordType},#{temp.wordName},#{temp.wordCode},#{temp.replaceWord},sysdate,#{temp.createUser})
+        </foreach>
+    </update>
 </mapper>

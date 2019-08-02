@@ -21,7 +21,7 @@
         <!--</jdbcConnection>-->
 
         <jdbcConnection driverClass="oracle.jdbc.OracleDriver"
-                        connectionURL="jdbc:oracle:thin:@localhost:1521:WORKHUB"
+                        connectionURL="jdbc:oracle:thin:@10.12.97.30:1521:arltr"
                         userId="lark_admin"
                         password="123456">
         </jdbcConnection>
@@ -54,15 +54,17 @@
         <!--</table>-->
         <!--<table tableName="gate_log" domainObjectName="GateLog">-->
         <!--</table>-->
-        <table tableName="resourceRoleMap" domainObjectName="ResourceRoleMap">
-        </table>
+        <!--<table tableName="resourceRoleMap" domainObjectName="ResourceRoleMap">-->
+        <!--</table>-->
         <!--<table tableName="menu" domainObjectName="Menu">-->
         <!--</table>-->
-        <!--<table tableName="org" domainObjectName="Org">-->
-        <!--</table>-->
+
         <!--<table tableName="roleUserMap" domainObjectName="RoleUserMap">-->
         <!--</table>-->
-        <!--<table tableName="user" domainObjectName="User">-->
+        <table tableName="admin_notice" domainObjectName="Notice">
+        </table>
+
+        <!--<table tableName="auth_client_service" domainObjectName="ClientService">-->
         <!--</table>-->
         <!--<table tableName="orgUserMap" domainObjectName="OrgUserMap">-->
         <!--</table>-->

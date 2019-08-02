@@ -1,13 +1,17 @@
 package com.workhub.z.servicechat.service.impl;
 
-import com.github.hollykunge.security.common.biz.BaseBiz;
-import com.workhub.z.servicechat.entity.ZzMsgTabInfo;
+import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.dao.ZzMsgTabInfoDao;
+import com.workhub.z.servicechat.entity.ZzMsgTabInfo;
 import com.workhub.z.servicechat.service.ZzMsgTabInfoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+
+import static com.workhub.z.servicechat.config.common.putEntityNullToEmptyString;
 
 /**
  * 消息标记信息表(ZzMsgTabInfo)表服务实现类
@@ -16,7 +20,8 @@ import java.util.List;
  * @since 2019-05-23 16:46:13
  */
 @Service("zzMsgTabInfoService")
-public class ZzMsgTabInfoServiceImpl extends BaseBiz<ZzMsgTabInfoDao, ZzMsgTabInfo> implements ZzMsgTabInfoService {
+public class ZzMsgTabInfoServiceImpl implements ZzMsgTabInfoService {
+    private static Logger log = LoggerFactory.getLogger(ZzMsgTabInfoServiceImpl.class);
     @Resource
     private ZzMsgTabInfoDao zzMsgTabInfoDao;
 
@@ -28,7 +33,14 @@ public class ZzMsgTabInfoServiceImpl extends BaseBiz<ZzMsgTabInfoDao, ZzMsgTabIn
      */
     @Override
     public ZzMsgTabInfo queryById(String id) {
-        return this.zzMsgTabInfoDao.queryById(id);
+        ZzMsgTabInfo zzMsgTabInfo = this.zzMsgTabInfoDao.queryById(id);
+        try {
+            common.putVoNullStringToEmptyString(zzMsgTabInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(common.getExceptionMessage(e));
+        }
+        return zzMsgTabInfo;
     }
 
     /**
@@ -51,15 +63,20 @@ public class ZzMsgTabInfoServiceImpl extends BaseBiz<ZzMsgTabInfoDao, ZzMsgTabIn
      */
     @Override
     public void insert(ZzMsgTabInfo zzMsgTabInfo) {
+        try {
+            putEntityNullToEmptyString(zzMsgTabInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         int insert = this.zzMsgTabInfoDao.insert(zzMsgTabInfo);
 //        return insert;
     }
 
-    @Override
+    /*@Override
     protected String getPageName() {
         return null;
     }
-
+*/
     /**
      * 修改数据
      *

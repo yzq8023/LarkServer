@@ -1,14 +1,21 @@
 package com.workhub.z.servicechat.service.impl;
 
-import com.github.hollykunge.security.common.biz.BaseBiz;
-import com.workhub.z.servicechat.entity.ZzAt;
+import com.github.hollykunge.security.common.msg.TableResultResponse;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.dao.ZzAtDao;
+import com.workhub.z.servicechat.entity.ZzAt;
 import com.workhub.z.servicechat.service.ZzAtService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+
+import static com.workhub.z.servicechat.config.common.putEntityNullToEmptyString;
 
 /**
  * 提及（@）功能实现(ZzAt)表服务实现类
@@ -17,7 +24,8 @@ import java.util.List;
  * @since 2019-05-10 14:22:34
  */
 @Service("zzAtService")
-public class ZzAtServiceImpl extends BaseBiz<ZzAtDao,ZzAt> implements ZzAtService  {
+public class ZzAtServiceImpl implements ZzAtService  {
+    private static Logger log = LoggerFactory.getLogger(ZzAtServiceImpl.class);
     @Resource
     private ZzAtDao zzAtDao;
 
@@ -29,7 +37,14 @@ public class ZzAtServiceImpl extends BaseBiz<ZzAtDao,ZzAt> implements ZzAtServic
      */
     @Override
     public ZzAt queryById(String id) {
-        return this.zzAtDao.queryById(id);
+        ZzAt zzAt = this.zzAtDao.queryById(id);
+        try {
+            common.putVoNullStringToEmptyString(zzAt);
+        } catch (Exception e) {
+            log.error(common.getExceptionMessage(e));
+
+        }
+        return zzAt;
     }
 
     /**
@@ -53,7 +68,12 @@ public class ZzAtServiceImpl extends BaseBiz<ZzAtDao,ZzAt> implements ZzAtServic
     @Override
     @Transactional
     public void insert(ZzAt zzAt) {
-        super.insert(zzAt);
+        //super.insert(zzAt);
+        try {
+            putEntityNullToEmptyString(zzAt);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         int insert = this.zzAtDao.insert(zzAt);
 //        return insert;
     }
@@ -83,8 +103,34 @@ public class ZzAtServiceImpl extends BaseBiz<ZzAtDao,ZzAt> implements ZzAtServic
         return this.zzAtDao.deleteById(id) > 0;
     }
 
-    @Override
+    /*@Override
     protected String getPageName() {
         return null;
+    }*/
+    /**
+     * 查询分页
+     * @param
+     * @return  分页列表
+     * @author zhuqz
+     * @since 2019-06-14
+     */
+    public TableResultResponse<ZzAt> getList(String receiverId, String groupId, int pageNum, int pageSize) throws Exception{
+        PageHelper.startPage(pageNum, pageSize);
+        List<ZzAt> list = this.zzAtDao.getList(receiverId,groupId);
+        try {
+            common.putVoNullStringToEmptyString(list);
+        } catch (Exception e) {
+            log.error(common.getExceptionMessage(e));
+
+        }
+        PageInfo<ZzAt> pageInfo = new PageInfo<>(list);
+        TableResultResponse<ZzAt> res = new TableResultResponse<ZzAt>(
+                pageInfo.getPageSize(),
+                pageInfo.getPageNum(),
+                pageInfo.getPages(),
+                pageInfo.getTotal(),
+                pageInfo.getList()
+        );
+        return res;
     }
 }

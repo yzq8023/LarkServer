@@ -1,17 +1,15 @@
 package com.workhub.z.servicechat.feign;
 
 import com.github.hollykunge.security.api.vo.user.UserInfo;
-import com.github.hollykunge.security.auth.configuration.FeignConfiguration;
+import com.github.hollykunge.security.common.msg.ListRestResponse;
+import com.github.hollykunge.security.common.vo.OrgUser;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.data.repository.RepositoryDefinition;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-import java.util.Set;
 
 @FeignClient(value = "ace-admin")
 @Repository
@@ -29,12 +27,16 @@ public interface IUserService {
 //    @RequestMapping(value = "/api/user/test", method = RequestMethod.POST)
 //    public void test();
 
-    @RequestMapping(value = "/user/userlist", method = RequestMethod.POST)
-    public List<UserInfo> userList(@RequestParam("userIdSet") Set<String> userIdSet);
+    @RequestMapping(value = "/api/user/list", method = RequestMethod.POST)
+    public List<UserInfo> userList(@RequestParam("userIds") String userIdSet);
 
-    @RequestMapping(value = "/user/all", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/user/all", method = RequestMethod.POST)
     public List<UserInfo> all();
 
-    @RequestMapping(value = "/user/info", method = RequestMethod.POST)
-    public UserInfo info(Integer userId);
+    @RequestMapping(value = "/api/user/info", method = RequestMethod.POST)
+    public UserInfo info(@RequestParam("userId") String userId);
+
+    @RequestMapping(value = "/api/orgUsers", method = RequestMethod.GET)
+    public String orgUsers(@RequestParam("parentTreeId") String parentTreeId);
+
 }

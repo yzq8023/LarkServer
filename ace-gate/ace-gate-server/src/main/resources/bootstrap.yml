@@ -11,6 +11,10 @@ eureka:
 #            defaultZone: http://localhost:8761/eureka/
                     # docker 部署开启
             defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka/
+              ###向注册中心上注册自己
+            register-with-eureka: true
+              ###是否需要从eureka上获取注册信息
+            fetch-registry: true
 
 #请求和响应GZIP压缩支持
 feign:

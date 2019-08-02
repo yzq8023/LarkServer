@@ -13,7 +13,7 @@ import java.util.List;
  */
 @FeignClient(value = "${auth.serviceId}",configuration = {})
 public interface ServiceAuthFeign {
-    @RequestMapping(value = "/client/myClient")
+    @RequestMapping(value = "/client/myClient",method = RequestMethod.POST)
     public ObjectRestResponse<List<String>> getAllowedClient(@RequestParam("serviceId") String serviceId, @RequestParam("secret") String secret);
     @RequestMapping(value = "/client/token",method = RequestMethod.POST)
     public ObjectRestResponse getAccessToken(@RequestParam("clientId") String clientId, @RequestParam("secret") String secret);

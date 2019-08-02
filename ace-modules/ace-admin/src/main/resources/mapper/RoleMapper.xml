@@ -12,7 +12,7 @@
     <result column="PATH" property="path" jdbcType="VARCHAR" />
 
     <result column="TYPE" property="type" jdbcType="CHAR" />
-    <result column="GROUP_TYPE" property="groupType" jdbcType="DECIMAL" />
+    <result column="GROUP_TYPE" property="groupType" jdbcType="NUMERIC" />
     <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
     <result column="ORG_ID" property="orgId" jdbcType="VARCHAR" />
     <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
@@ -29,10 +29,6 @@
     <result column="ATTR2" property="attr2" jdbcType="VARCHAR" />
     <result column="ATTR3" property="attr3" jdbcType="VARCHAR" />
     <result column="ATTR4" property="attr4" jdbcType="VARCHAR" />
-        <result column="ATTR5" property="attr5" jdbcType="VARCHAR" />
-    <result column="ATTR6" property="attr6" jdbcType="VARCHAR" />
-    <result column="ATTR7" property="attr7" jdbcType="VARCHAR" />
-    <result column="ATTR8" property="attr8" jdbcType="VARCHAR" />
   </resultMap>
     <!-- 根据角色id批量删除用户 -->
     <delete id="deleteUsersByRoleId" parameterType="java.lang.String">

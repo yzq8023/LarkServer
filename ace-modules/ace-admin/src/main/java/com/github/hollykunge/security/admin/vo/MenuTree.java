@@ -8,7 +8,7 @@ import com.github.hollykunge.security.common.vo.TreeNode;
 public class MenuTree extends TreeNode {
     String icon;
     String title;
-    String href;
+    String uri;
     boolean spread = false;
     String path;
     String component;
@@ -69,13 +69,13 @@ public class MenuTree extends TreeNode {
     public MenuTree() {
     }
 
-    public MenuTree(int id, String name, int parentId) {
+    public MenuTree(String id, String name, String parentId) {
         this.id = id;
         this.parentId = parentId;
         this.title = name;
         this.label = name;
     }
-    public MenuTree(int id, String name, MenuTree parent) {
+    public MenuTree(String id, String name, MenuTree parent) {
         this.id = id;
         this.parentId = parent.getId();
         this.title = name;
@@ -97,12 +97,12 @@ public class MenuTree extends TreeNode {
         this.title = title;
     }
 
-    public String getHref() {
-        return href;
+    public String getUri() {
+        return uri;
     }
 
-    public void setHref(String href) {
-        this.href = href;
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 
     public boolean isSpread() {

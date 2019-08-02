@@ -1,15 +1,17 @@
 package com.github.hollykunge.security.admin.entity;
 
+import lombok.Data;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
-
-@Table(name = "GATE_LOG")
+@Data
+@Table(name = "ADMIN_GATELOG")
 public class GateLog {
     @Id
     @Column(name = "ID")
-    private Long id;
+    private String id;
 
     @Column(name = "MENU")
     private String menu;
@@ -32,115 +34,10 @@ public class GateLog {
     @Column(name = "CRT_HOST")
     private String crtHost;
 
-    /**
-     * @return ID
-     */
-    public Long getId() {
-        return id;
-    }
+    @Column(name = "IS_SUCCESS")
+    private String isSuccess;
 
-    /**
-     * @param id
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Column(name = "P_ID")
+    private String pid;
 
-    /**
-     * @return MENU
-     */
-    public String getMenu() {
-        return menu;
-    }
-
-    /**
-     * @param menu
-     */
-    public void setMenu(String menu) {
-        this.menu = menu;
-    }
-
-    /**
-     * @return OPT
-     */
-    public String getOpt() {
-        return opt;
-    }
-
-    /**
-     * @param opt
-     */
-    public void setOpt(String opt) {
-        this.opt = opt;
-    }
-
-    /**
-     * @return URI
-     */
-    public String getUri() {
-        return uri;
-    }
-
-    /**
-     * @param uri
-     */
-    public void setUri(String uri) {
-        this.uri = uri;
-    }
-
-    /**
-     * @return CRT_TIME
-     */
-    public Date getCrtTime() {
-        return crtTime;
-    }
-
-    /**
-     * @param crtTime
-     */
-    public void setCrtTime(Date crtTime) {
-        this.crtTime = crtTime;
-    }
-
-    /**
-     * @return CRT_USER
-     */
-    public String getCrtUser() {
-        return crtUser;
-    }
-
-    /**
-     * @param crtUser
-     */
-    public void setCrtUser(String crtUser) {
-        this.crtUser = crtUser;
-    }
-
-    /**
-     * @return CRT_NAME
-     */
-    public String getCrtName() {
-        return crtName;
-    }
-
-    /**
-     * @param crtName
-     */
-    public void setCrtName(String crtName) {
-        this.crtName = crtName;
-    }
-
-    /**
-     * @return CRT_HOST
-     */
-    public String getCrtHost() {
-        return crtHost;
-    }
-
-    /**
-     * @param crtHost
-     */
-    public void setCrtHost(String crtHost) {
-        this.crtHost = crtHost;
-    }
 }

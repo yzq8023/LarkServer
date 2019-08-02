@@ -1,10 +1,12 @@
 package com.workhub.z.servicechat.dao;
 
+import com.workhub.z.servicechat.VO.PrivateFileVO;
 import com.workhub.z.servicechat.entity.ZzPrivateMsg;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 私人消息(ZzPrivateMsg)表数据库访问层
@@ -63,5 +65,28 @@ public interface ZzPrivateMsgDao extends Mapper<ZzPrivateMsg> {
      * @return 影响行数
      */
     int deleteById(String msgId);
-
+    /**
+     * 查询消息记录--最近
+     *
+     * @param param 参数集合：sender发送人，receiver接收人，begin_time开始时间，end_time结束时间
+     * @return 对象列表
+     */
+    List<ZzPrivateMsg> queryMsgRecent(Map<String,String> param);
+    /**
+     * 查询消息记录--历史
+     *
+     * @param param 参数集合：sender发送人，receiver接收人，begin_time开始时间，end_time结束时间
+     * @return 对象列表
+     */
+    List<ZzPrivateMsg> queryMsgHis(Map<String,String> param);
+    /**
+     * 查询消息记录--历史+最近
+     *
+     * @param param 参数集合：sender发送人，receiver接收人，begin_time开始时间，end_time结束时间
+     * @return 对象列表
+     */
+    List<ZzPrivateMsg> queryMsgCurrentAndHis(Map<String,String> param);
+    //查询私有聊天文件
+    //query文件名称
+    List<PrivateFileVO> getFileList(@Param("userId") String userId,@Param("receiverId") String receiverId,@Param("query") String query);
 }

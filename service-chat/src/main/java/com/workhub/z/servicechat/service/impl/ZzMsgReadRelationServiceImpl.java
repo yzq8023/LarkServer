@@ -1,15 +1,19 @@
 package com.workhub.z.servicechat.service.impl;
 
-import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.workhub.z.servicechat.VO.NoReadVo;
-import com.workhub.z.servicechat.entity.ZzMsgReadRelation;
+import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.dao.ZzMsgReadRelationDao;
+import com.workhub.z.servicechat.entity.ZzMsgReadRelation;
 import com.workhub.z.servicechat.service.ZzMsgReadRelationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+
+import static com.workhub.z.servicechat.config.common.putEntityNullToEmptyString;
 
 /**
  * 消息阅读状态关系表(ZzMsgReadRelation)表服务实现类
@@ -18,7 +22,8 @@ import java.util.List;
  * @since 2019-05-23 13:27:22
  */
 @Service("zzMsgReadRelationService")
-public class ZzMsgReadRelationServiceImpl extends BaseBiz<ZzMsgReadRelationDao,ZzMsgReadRelation > implements ZzMsgReadRelationService {
+public class ZzMsgReadRelationServiceImpl implements ZzMsgReadRelationService {
+    private static Logger log = LoggerFactory.getLogger(ZzMsgReadRelationServiceImpl.class);
     @Resource
     private ZzMsgReadRelationDao zzMsgReadRelationDao;
 
@@ -30,7 +35,14 @@ public class ZzMsgReadRelationServiceImpl extends BaseBiz<ZzMsgReadRelationDao,Z
      */
     @Override
     public ZzMsgReadRelation queryById(String id) {
-        return this.zzMsgReadRelationDao.queryById(id);
+        ZzMsgReadRelation zzMsgReadRelation=this.zzMsgReadRelationDao.queryById(id);
+        try {
+            common.putVoNullStringToEmptyString(zzMsgReadRelation);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(common.getExceptionMessage(e));
+        }
+        return zzMsgReadRelation;
     }
 
     /**
@@ -54,14 +66,19 @@ public class ZzMsgReadRelationServiceImpl extends BaseBiz<ZzMsgReadRelationDao,Z
     @Override
     @Transactional
     public void insert(ZzMsgReadRelation zzMsgReadRelation) {
-        int insert = this.zzMsgReadRelationDao.insert(zzMsgReadRelation);
-//        return insert;
+        try {
+            putEntityNullToEmptyString(zzMsgReadRelation);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        zzMsgReadRelationDao.insert(zzMsgReadRelation);
     }
 
-    @Override
+    /*@Override
     protected String getPageName() {
         return null;
     }
+    */
 
     /**
      * 修改数据
@@ -90,8 +107,8 @@ public class ZzMsgReadRelationServiceImpl extends BaseBiz<ZzMsgReadRelationDao,Z
 
     @Override
     @Transactional
-    public boolean deleteByConsumerAndSender(String sender, String consumer,String sendType) {
-        return this.zzMsgReadRelationDao.deleteByConsumerAndSender(sender,consumer,sendType);
+    public boolean deleteByConsumerAndSender(String sender, String consumer) {
+        return this.zzMsgReadRelationDao.deleteByConsumerAndSender(sender,consumer);
     }
 
     @Override
@@ -102,5 +119,17 @@ public class ZzMsgReadRelationServiceImpl extends BaseBiz<ZzMsgReadRelationDao,Z
     @Override
     public List<NoReadVo> queryNoReadCountList(String consumer) {
         return this.zzMsgReadRelationDao.queryNoReadCountList(consumer);
+    }
+
+    /**
+    *@Description:
+    *@Param: receiver 当前登录人，sender 消息发送人
+    *@return: 未读消息条数
+    *@Author: 忠
+    *@date: 2019/6/23
+    */
+    @Override
+    public int queryNoReadMsgBySenderAndReceiver(String sender, String receiver) {
+        return Math.toIntExact(this.zzMsgReadRelationDao.queryNoReadMsgBySenderAndReceiver(sender, receiver));
     }
 }

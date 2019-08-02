@@ -24,7 +24,11 @@ public class LogInfo implements Serializable{
 
     private String crtHost;
 
-    public LogInfo(String menu, String option, String uri,  Date crtTime, String crtUser, String crtName, String crtHost) {
+    private String isSuccess;
+
+    private String pid;
+
+    public LogInfo(String menu, String option, String uri,  Date crtTime, String crtUser, String crtName, String crtHost,String isSuccess,String pid) {
         this.menu = menu;
         this.opt = option;
         this.uri = uri;
@@ -32,6 +36,8 @@ public class LogInfo implements Serializable{
         this.crtUser = crtUser;
         this.crtName = crtName;
         this.crtHost = crtHost;
+        this.isSuccess = isSuccess;
+        this.pid = pid;
     }
 
     public LogInfo() {
@@ -91,5 +97,21 @@ public class LogInfo implements Serializable{
 
     public void setCrtHost(String crtHost) {
         this.crtHost = crtHost;
+    }
+
+    public String getIsSuccess() {
+        return isSuccess;
+    }
+
+    public void setIsSuccess(String isSuccess) {
+        this.isSuccess = isSuccess;
+    }
+
+    public String getPid() {
+        return pid;
+    }
+
+    public void setPid(String pid) {
+        this.pid = pid;
     }
 }

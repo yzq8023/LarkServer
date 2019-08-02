@@ -2,12 +2,17 @@ package com.github.hollykunge.security.admin.biz;
 
 import com.ace.cache.annotation.Cache;
 import com.ace.cache.annotation.CacheClear;
+import com.alibaba.fastjson.JSON;
 import com.github.hollykunge.security.admin.constant.AdminCommonConstant;
 import com.github.hollykunge.security.admin.entity.*;
 import com.github.hollykunge.security.admin.mapper.*;
 import com.github.hollykunge.security.admin.vo.*;
+import com.github.hollykunge.security.api.vo.authority.ActionEntitySet;
+import com.github.hollykunge.security.api.vo.authority.FrontPermission;
 import com.github.hollykunge.security.common.biz.BaseBiz;
 import com.github.hollykunge.security.common.exception.BaseException;
+import com.github.hollykunge.security.common.util.EntityUtils;
+import com.github.hollykunge.security.common.util.UUIDUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +21,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author 协同设计小组
@@ -42,12 +48,10 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
         return null;
     }
 
-    @Cache(key = "admin:getUsers")
-    public List<AdminUser> getRoleUsers(int roleId) {
+    public List<AdminUser> getRoleUsers(String roleId) {
         List<AdminUser> resultData = new ArrayList<>();
-        List<User> usersByOrgId = userMapper.selectUsersByRoleId(roleId + "");
-        List<User> users = Collections.synchronizedList(usersByOrgId);
-        users.parallelStream().forEach(user -> {
+        List<User> usersByOrgId = userMapper.selectUsersByRoleId(roleId );
+        usersByOrgId.stream().forEach(user -> {
             AdminUser frontUser = new AdminUser();
             BeanUtils.copyProperties(user, frontUser);
             resultData.add(frontUser);
@@ -55,7 +59,7 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
         return resultData;
     }
 
-    @CacheClear(pre = "permission")
+//    @CacheClear(pre = "permission")
     public void modifyRoleUsers(String roleId, String users) {
         RoleUserMap roleParams = new RoleUserMap();
         roleParams.setRoleId(roleId);
@@ -63,19 +67,31 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
         if (deleteCount < 0) {
             throw new BaseException("系统异常错误...");
         }
+        RoleUserMap roleUserMapDo;
         if (!StringUtils.isEmpty(users)) {
             String[] mem = users.split(",");
             for (String m : mem) {
-                RoleUserMap roleUserMapDo = new RoleUserMap();
-                roleUserMapDo.setRoleId(roleId + "");
+                roleUserMapDo = new RoleUserMap();
+                roleUserMapDo.setRoleId(roleId);
                 roleUserMapDo.setUserId(m);
-                roleUserMapMapper.insert(roleUserMapDo);
+                //给基类赋值
+                EntityUtils.setCreatAndUpdatInfo(roleUserMapDo);
+                roleUserMapMapper.insertSelective(roleUserMapDo);
             }
         }
     }
 
-    @CacheClear(keys = {"permission:menu", "permission:u","role:adminPermission"})
+    @Override
+    @CacheClear(keys = {"permission:menu", "permission:u","frontPermission{1}"})
+    public void deleteById(String id) {
+        super.deleteById(id);
+    }
+
+    @CacheClear(keys = {"permission:menu", "permission:u","frontPermission{1}"})
     public void modifyAuthorityMenu(String roleId, List<AdminPermission> permissionList) {
+        if(StringUtils.isEmpty(roleId)||permissionList.isEmpty()){
+            throw new BaseException("args is null...");
+        }
         //用roleId删除所有与角色相关的资源
         Example resourceRoleExample = new Example(ResourceRoleMap.class);
         resourceRoleExample.createCriteria().andEqualTo("roleId",roleId);
@@ -100,16 +116,21 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
             authority = new ResourceRoleMap();
             authority.setRoleId(roleId + "");
             authority.setResourceId(menuId);
+            authority.setResourceType(AdminCommonConstant.RESOURCE_TYPE_MENU);
+            EntityUtils.setCreatAndUpdatInfo(authority);
             resourceRoleMapMapper.insertSelective(authority);
         }
         //并行添加element到resourceRoleMap中
-        permissionList.parallelStream().forEach(adminPermission -> {
+        permissionList.stream().forEach(adminPermission -> {
             adminPermission.getActionEntitySetList().stream().forEach(element ->{
-                ResourceRoleMap resourceRoleMap = new ResourceRoleMap();
-                resourceRoleMap.setResourceId(element.getId());
-                resourceRoleMap.setResourceType(AdminCommonConstant.RESOURCE_TYPE_BTN);
-                resourceRoleMap.setRoleId(roleId);
-                resourceRoleMapMapper.insertSelective(resourceRoleMap);
+                if(element.getDefaultCheck()){
+                    ResourceRoleMap resourceRoleMap = new ResourceRoleMap();
+                    resourceRoleMap.setResourceId(element.getId());
+                    resourceRoleMap.setResourceType(AdminCommonConstant.RESOURCE_TYPE_BTN);
+                    resourceRoleMap.setRoleId(roleId);
+                    EntityUtils.setCreatAndUpdatInfo(resourceRoleMap);
+                    resourceRoleMapMapper.insertSelective(resourceRoleMap);
+                }
             });
         });
     }
@@ -120,7 +141,7 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
      * @return
      */
     private List<String> getPermissionMenu(List<AdminPermission> permissionList){
-        List<String> listResult = null;
+        List<String> listResult = new ArrayList<>();
         if(permissionList.isEmpty()){
             throw new BaseException("参数为空....");
         }
@@ -141,13 +162,12 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
         relationMenus.add(parentId);
         findParentID(map, relationMenus, parentId);
     }
-    @Cache(key = "role:adminPermission")
     public List<AdminPermission> getAuthorityMenu(String roleId) {
         //定义固定返回参数
         List<AdminPermission> resultPermission = new ArrayList<>();
         //获取所有的menu和所有的menu下的所有的Element
         List<Menu> menus = menuMapper.selectAll();
-        menus.parallelStream().forEach(menu -> {
+        for (Menu menu: menus){
             //根据menuid获取所有的Menu下的Element
             Element params = new Element();
             params.setMenuId(menu.getId());
@@ -155,16 +175,19 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
             List<Element> allElement = elementMapper.select(params);
             //roleId下的element
             List<Element> resourceElement = elementMapper.
-                    getAuthorityMenuElement(roleId,menu.getId(), AdminCommonConstant.RESOURCE_TYPE_BTN);
+                    getAuthorityMenuElement(roleId, menu.getId(), AdminCommonConstant.RESOURCE_TYPE_BTN);
 
-            List<AdminElement> menuElemnt = this.setDefaultCheck(allElement,resourceElement);
+            List<AdminElement> menuElement = this.setDefaultCheck(allElement,resourceElement);
             //添加AdminPermission参数
             AdminPermission adminPermission = new AdminPermission();
             BeanUtils.copyProperties(menu,adminPermission);
+            //单独处理menuid,roleId
+            adminPermission.setMenuId(menu.getId());
+            adminPermission.setRoleId(roleId);
             //给菜单赋值所有的Element
-            adminPermission.setActionEntitySetList(menuElemnt);
+            adminPermission.setActionEntitySetList(menuElement);
             resultPermission.add(adminPermission);
-        });
+        }
         return resultPermission;
     }
 
@@ -184,6 +207,8 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
             AdminElement rAdminElement = new AdminElement();
             if(resourceElement.stream().anyMatch(matchEntity -> aElement.getId().equals(matchEntity.getId()))){
                 rAdminElement.setDefaultCheck(true);
+            }else{
+                rAdminElement.setDefaultCheck(false);
             }
             BeanUtils.copyProperties(aElement,rAdminElement);
             menuElement.add(rAdminElement);
@@ -200,17 +225,91 @@ public class RoleBiz extends BaseBiz<RoleMapper, Role> {
         RoleUserMap roleUserParams = new RoleUserMap();
         roleUserParams.setUserId(userId);
         List<RoleUserMap> roleList = roleUserMapMapper.select(roleUserParams);
-        Role role = null;
+        List<Role> allRole = mapper.selectAll();
         List<Role> resultRole = new ArrayList<>();
-        if(roleList.size()>0){
-            for (RoleUserMap roleUserMap:roleList) {
-                role = new Role();
-                role.setId(roleUserMap.getRoleId());
-                role = mapper.selectOne(role);
-                resultRole.add(role);
-            }
+        for (RoleUserMap roleUserMap:
+                roleList ) {
+            resultRole.addAll(allRole.stream().filter((Role role) -> roleUserMap.getRoleId().equals(role.getId())) .collect(Collectors.toList()));
         }
         return resultRole;
+    }
+
+    /**
+     * 根据角色id获取角色所拥有的菜单和菜单element
+     * ps：提供给远程服务
+     * @param roleId 角色id
+     * @return 
+     */
+    @Cache(key = "frontPermission{1}")
+    public List<FrontPermission> frontAuthorityMenu(String roleId) {
+        //定义固定返回参数
+        List<FrontPermission> resultPermission = new ArrayList<>();
+        //获取权限下的menu
+        List<Menu> menus = menuMapper.selectMenuByRoleId(roleId);
+
+        for (Menu menu:menus){
+            //roleId下的element
+            List<Element> elementList = elementMapper.getAuthorityMenuElement(roleId, menu.getId(), AdminCommonConstant.RESOURCE_TYPE_BTN);
+//            List<Element> elementList = resourceElement.stream().filter((Element e) -> menu.getId().contains(e.getMenuId())).collect(Collectors.toList());
+            if(elementList.size() > 0){
+                FrontPermission frontPermission = this.transferFrontPermission(menu, roleId, elementList);
+                resultPermission.add(frontPermission);
+            }
+        }
+        return resultPermission;
+    }
+
+    /**
+     * 将elements赋值给菜单
+     * @param menu 菜单实体类
+     * @param roleId 角色
+     * @param elements 功能集
+     * @return AdminPermission供前端显示
+     */
+    private FrontPermission transferFrontPermission(Menu menu,String roleId,List<Element> elements){
+        //添加AdminPermission参数
+        FrontPermission frontPermission = new FrontPermission();
+        BeanUtils.copyProperties(menu,frontPermission);
+        //单独处理menuid,roleId
+        frontPermission.setMenuId(menu.getId());
+        frontPermission.setRoleId(roleId);
+
+        List<ActionEntitySet> actionEntitySet = JSON.parseArray(JSON.toJSONString(elements),ActionEntitySet.class);
+
+        actionEntitySet.parallelStream().forEach(actionEntitySetEntity ->{
+            actionEntitySetEntity.setDefaultCheck(true);
+        });
+        //给菜单赋值所有的Element
+        frontPermission.setActionEntitySetList(actionEntitySet);
+        return frontPermission;
+    }
+
+    @Override
+    public void insertSelective(Role entity) {
+        super.insertSelective(entity);
+        //增加角色时，默认给角色三个权限，1.登录 2.工作舱 3.研讨服务
+        String[] menuCodes = AdminCommonConstant.DEFAULT_MENU_PERMISSION_CODE_LIST.split(",");
+        for (String menuCode:
+                menuCodes) {
+            Menu menu = new Menu();
+            menu.setCode(menuCode);
+            menu = menuMapper.selectOne(menu);
+            if(menu == null){
+                throw new BaseException("系统中菜单信息集中不匹配code");
+            }
+            Element element = new Element();
+            element.setMenuId(menu.getId());
+            List<Element> elements = elementMapper.select(element);
+            elements.stream().forEach((Element eleDTO) ->{
+                ResourceRoleMap resourceRoleMap = new ResourceRoleMap();
+                EntityUtils.setCreatAndUpdatInfo(resourceRoleMap);
+                resourceRoleMap.setRoleId(entity.getId());
+                resourceRoleMap.setResourceId(eleDTO.getId());
+                resourceRoleMap.setResourceType(AdminCommonConstant.RESOURCE_TYPE_BTN);
+                resourceRoleMapMapper.insertSelective(resourceRoleMap);
+            });
+        }
+
     }
 }
 

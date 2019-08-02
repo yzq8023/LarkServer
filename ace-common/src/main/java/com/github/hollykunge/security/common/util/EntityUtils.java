@@ -1,5 +1,7 @@
 package com.github.hollykunge.security.common.util;
 
+import com.github.hollykunge.security.common.constant.CommonConstants;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -43,9 +45,17 @@ public class EntityUtils {
 		String id = "";
 		String pkID = "";
 		if(request!=null) {
-			hostIp = String.valueOf(request.getHeader("userHost"));
-			name = String.valueOf(request.getHeader("userName"));
-			id = String.valueOf(request.getHeader("userId"));
+		    if(!StringUtils.isEmpty(request.getHeader(CommonConstants.WEB_USERHOST))){
+                hostIp = String.valueOf(request.getHeader(CommonConstants.WEB_USERHOST));
+            }
+            if(!StringUtils.isEmpty(request.getHeader(CommonConstants.WEB_USERNAME))){
+                name = String.valueOf(request.getHeader(CommonConstants.WEB_USERNAME));
+                //TODO:存入数据库有乱码
+				name = URLDecoder.decode(name);
+            }
+            if(!StringUtils.isEmpty(request.getHeader(CommonConstants.WEB_USERID))){
+                id = String.valueOf(request.getHeader(CommonConstants.WEB_USERID));
+            }
 		}
 		pkID = UUIDUtils.generateShortUuid();
 		// 默认属性
@@ -72,10 +82,16 @@ public class EntityUtils {
 		String name = "";
 		String id = "";
 		if(request!=null) {
-			hostIp = String.valueOf(request.getHeader("userHost"));
-			name = String.valueOf(request.getHeader("userName"));
-			name = URLDecoder.decode(name);
-			id = String.valueOf(request.getHeader("userId"));
+			if(!StringUtils.isEmpty(request.getHeader(CommonConstants.WEB_USERHOST))){
+				hostIp = String.valueOf(request.getHeader(CommonConstants.WEB_USERHOST));
+			}
+			if(!StringUtils.isEmpty(request.getHeader(CommonConstants.WEB_USERNAME))){
+				name = String.valueOf(request.getHeader(CommonConstants.WEB_USERNAME));
+				name = URLDecoder.decode(name);
+			}
+			if(!StringUtils.isEmpty(request.getHeader(CommonConstants.WEB_USERID))){
+				id = String.valueOf(request.getHeader(CommonConstants.WEB_USERID));
+			}
 		}
 		// 默认属性
 		String[] fields = {"updName","updUser","updHost","updTime"};

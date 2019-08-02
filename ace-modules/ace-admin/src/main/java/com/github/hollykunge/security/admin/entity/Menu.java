@@ -4,10 +4,10 @@ import com.github.hollykunge.security.common.entity.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.Column;
-import javax.persistence.Id;
-import java.util.Date;
+import javax.persistence.Table;
 
 @Data
+@Table(name = "ADMIN_MENU")
 public class Menu extends BaseEntity {
 
     @Column(name = "CODE")
@@ -19,8 +19,8 @@ public class Menu extends BaseEntity {
     @Column(name = "PARENT_ID")
     private String parentId;
 
-    @Column(name = "HREF")
-    private String href;
+    @Column(name = "URI")
+    private String uri;
 
     @Column(name = "ICON")
     private String icon;
@@ -39,4 +39,7 @@ public class Menu extends BaseEntity {
 
     @Column(name = "ENABLED")
     private String enabled;
+
+    @Column(name = "PERMISSION_ID")
+    private String permissionId;
 }

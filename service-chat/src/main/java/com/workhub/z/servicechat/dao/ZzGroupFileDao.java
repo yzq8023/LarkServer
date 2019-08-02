@@ -1,12 +1,14 @@
 package com.workhub.z.servicechat.dao;
 
-import com.workhub.z.servicechat.VO.GroupInfoVO;
-import com.workhub.z.servicechat.entity.ZzAt;
+import com.workhub.z.servicechat.VO.FileMonitoringVO;
+import com.workhub.z.servicechat.VO.GroupFileVo;
 import com.workhub.z.servicechat.entity.ZzGroupFile;
+import com.workhub.z.servicechat.entity.ZzUploadFile;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 群文件(ZzGroupFile)表数据库访问层
@@ -66,7 +68,20 @@ public interface ZzGroupFileDao extends Mapper<ZzGroupFile> {
      */
     int deleteById(String fileId);
 
-    List<GroupInfoVO> groupFileList(@Param("id") String id, @Param("start") Integer start, @Param("end") Integer end);
+    //List<GroupInfoVO> groupFileList(@Param("id") String id, @Param("start") Integer start, @Param("end") Integer end);
 
     Long groupFileListTotal(@Param("id")String id);
+
+    List<GroupFileVo> groupFileList(@Param("id") String id,@Param("query") String query);
+    //查询附件大小
+    double queryFileSize(@Param("dateFmat") String dateFmat,@Param("date") String date,@Param("unit") long unit );
+    //查询附件大小(日期范围)
+    List<Map> queryFileSizeRange(@Param("dateFmat") String dateFmat, @Param("dateBegin") String dateBegin, @Param("dateEnd") String dateEnd, @Param("unit") long unit );
+    //文件信息补全
+    int fileRecord(@Param("param") ZzUploadFile zzUploadFile);
+    //文件信息补全
+    int fileUpdate(@Param("param") ZzUploadFile zzUploadFile);
+    List<FileMonitoringVO> fileMonitoring(@Param("params")  Map<String,Object> param);
+
+    int setFileApproveFLg(@Param("params") List<Map<String,String>> params);
 }

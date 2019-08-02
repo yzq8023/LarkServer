@@ -9,7 +9,7 @@ import javax.xml.rpc.ParameterMode;
  */
 public class AxisTest
 {
-    public static void main( String[] args ) throws Exception
+    /*public static void main( String[] args ) throws Exception
     {
         Service service = new Service();
         Call call = ( Call ) service.createCall();
@@ -29,5 +29,5 @@ public class AxisTest
         String [] param={"uum","0","bizWebService.bizQueryOrgEmp",bizDataXML};
         Object response=call.invoke( param );
         System.out.println(" CALL BIZ RESULT IS  " + (String)response);
-    }
+    }*/
 }

@@ -58,7 +58,7 @@ public class ServiceAuthUtil{
         BaseResponse resp = serviceAuthFeign.getAllowedClient(serviceAuthConfig.getClientId(), serviceAuthConfig.getClientSecret());
         if (resp.getStatus() == 200) {
             ObjectRestResponse<List<String>> allowedClient = (ObjectRestResponse<List<String>>) resp;
-            this.allowedClient = allowedClient.getData();
+            this.allowedClient = allowedClient.getResult();
         }
     }
     /**
@@ -70,7 +70,7 @@ public class ServiceAuthUtil{
         BaseResponse resp = serviceAuthFeign.getAccessToken(serviceAuthConfig.getClientId(), serviceAuthConfig.getClientSecret());
         if (resp.getStatus() == 200) {
             ObjectRestResponse<String> clientToken = (ObjectRestResponse<String>) resp;
-            this.clientToken = clientToken.getData();
+            this.clientToken = clientToken.getResult();
         }
     }
 
