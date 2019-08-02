@@ -54,6 +54,7 @@ public class ZzGroupController  {
 
     @Resource
     private ZzGroupMsgService groupMsgService;
+
     @Resource
     private ZzMessageInfoService messageInfoService;
 
@@ -313,7 +314,7 @@ public class ZzGroupController  {
     @GetMapping("removeMember")
     public ObjectRestResponse removeMember(@RequestParam("groupId") String groupId, @RequestParam("userId") String userId) {
         zzGroupService.removeMember(groupId, userId);
-        return new ObjectRestResponse().rel(true).msg("研讨组已解散");
+        return new ObjectRestResponse().rel(true).msg("成功移除组成员");
     }
 
     /**
@@ -322,6 +323,6 @@ public class ZzGroupController  {
     @GetMapping("addMember")
     public ObjectRestResponse addMember(@RequestParam("groupId") String groupId, @RequestParam("userIds") String userIds) {
         zzGroupService.addMember(groupId, userIds);
-        return new ObjectRestResponse().rel(true).msg("研讨组已解散");
+        return new ObjectRestResponse().rel(true).msg("成功添加组成员");
     }
 }
