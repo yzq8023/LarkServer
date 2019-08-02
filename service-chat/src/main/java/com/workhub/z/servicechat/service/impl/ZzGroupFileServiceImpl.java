@@ -264,7 +264,7 @@ public class ZzGroupFileServiceImpl implements ZzGroupFileService {
 
     public int setFileApproveFLg(String files,String userId) throws Exception{
         List<Map<String,String>> params = new ArrayList<>();
-        String[] fileArr = files.split(";");
+        List<String> fileArr = common.stringToList(files,";");
         for(String temp:fileArr){
             String[] fileParam = temp.split(",",-1);
             if(fileParam[0]==null||fileParam[0].equals("")){
