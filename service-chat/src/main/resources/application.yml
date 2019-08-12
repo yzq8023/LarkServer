@@ -50,6 +50,7 @@ spring:
         max-wait: 200s
     host: 127.0.0.1
     timeout: 3000s
+    password: 123456
 #处理无用附件的定时任务时间
 #每天凌晨两点
 #deal_unused_file_job_cron: 0 0 2 * * ?
