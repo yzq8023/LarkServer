@@ -40,6 +40,8 @@ public class ToolOrgController {
     @PostMapping("/add")
     public ObjectRestResponse add(@RequestParam Map params) throws Exception{
         ObjectRestResponse res = new ObjectRestResponse();
+        res.msg("200");
+        res.rel(true);
         String userId = CommonUtil.nulToEmptyString(httpServletRequest.getHeader("userId"));
         String userName = URLDecoder.decode(CommonUtil.nulToEmptyString(httpServletRequest.getHeader("userName")),"UTF-8");
         params.put("userId",userId);

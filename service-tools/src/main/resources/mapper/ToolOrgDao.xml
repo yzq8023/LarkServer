@@ -6,5 +6,9 @@
         insert into tool_tree(id,node_name, pid, create_time, creator,order_by)
         values (#{params.id},#{params.name}, #{params.pid}, sysdate, #{params.userId}, #{params.order})
     </insert>
-
+    <!--新增树与组织关联-->
+    <insert id="addTreeOrg" >
+        insert into tool_tree_org (id,tree_id,org_code,create_time,creator)
+        values (#{params.id},#{params.treeId}, #{params.orgCode}, sysdate, #{params.userId})
+    </insert>
 </mapper>

@@ -16,4 +16,13 @@ public interface ToolOrgDao extends Mapper<ToolTree> {
      * @Date: 2019/8/13
     **/
     int add(@Param("params") Map param);
+    /**
+    * @MethodName: addTreeOrg
+     * @Description: 添加组织和工具树的映射关系
+     * @Param: [param] userId、orgCode、treeId树的根节点id、id主键
+     * @Return: int
+     * @Author: admin
+     * @Date: 2019/8/13
+    **/
+    int addTreeOrg(@Param("params") Map param);
 }
