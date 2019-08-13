@@ -160,7 +160,7 @@ redis:
          maxIdle: 100
          maxWait: 10000
       #需要修改地址
-    host: ${REDIS_HOST:127.0.0.1}
+    host: ${REDIS_HOST:10.11.24.138}
     port:  ${REDIS_PORT:6379}
     password: 123456
     timeout: 20000
