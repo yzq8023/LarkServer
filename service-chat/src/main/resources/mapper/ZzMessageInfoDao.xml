@@ -207,7 +207,9 @@
                     from zz_user_group c
                     where 1 = 1
                     and c.user_id = #{userId}
-                    and c.group_id = #{contactId})
+                    and c.group_id = #{contactId}
+                    and c.createtime &lt;= mes.createtime
+                    )
         order by mes.createtime desc
     </select>
 
