@@ -35,7 +35,12 @@ public class OperateLogAspect {
             "&& !execution(public * com.workhub.z.servicechat.service.impl.ZzPrivateMsgServiceImpl.*(..)) " +
             "&& !execution(public * com.workhub.z.servicechat.service.impl.ZzGroupMsgServiceImpl.*(..))" +
             "&& !execution(public * com.workhub.z.servicechat.service.impl.ZzMessageInfoServiceImpl.*(..)) " +
-            "&& !execution(public * com.workhub.z.servicechat.service.impl.ZzAtServiceImpl.*(..)) ")
+            "&& !execution(public * com.workhub.z.servicechat.service.impl.ZzAtServiceImpl.*(..)) " +
+            "&& !execution(public * com.workhub.z.servicechat.service.impl.ZzGroupServiceImpl.queryGroupListByUserId(..)) " +
+            "&& !execution(public * com.workhub.z.servicechat.service.impl.ZzGroupServiceImpl.queryGroupUserIdListByGroupId(..)) " +
+            "&& !execution(public * com.workhub.z.servicechat.service.impl.ZzMsgReadRelationServiceImpl.*(..)) "
+    )
+
     public void operateLogAspect(){}
 
     //环绕通知
