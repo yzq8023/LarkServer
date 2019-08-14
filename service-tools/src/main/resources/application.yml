@@ -25,3 +25,12 @@ spring:
     username: lark_tool
 mybatis:
   mapper-locations: classpath:mapper/*.xml
+#是否显示控制台输出，1显示0不显示，生产环境配置0即可
+showConsoleInf: 1
+#运行日志
+logging:
+  file: ${user.home}/logs/tools.log
+# logback日志配置
+log:
+  env:
+    module: service-tools
