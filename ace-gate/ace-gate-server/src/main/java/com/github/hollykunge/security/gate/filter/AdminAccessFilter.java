@@ -96,6 +96,10 @@ public class AdminAccessFilter extends ZuulFilter {
         //获取内网网关地址
         String clientIp =  request.getHeader(CommonConstants.CLIENT_IP_ARG);
         BaseContextHandler.set(CommonConstants.CLIENT_IP_ARG,clientIp);
+        //将院网关ip携带给云雀服务，供其他服务使用
+        if(!StringUtils.isEmpty(clientIp)){
+            ctx.addZuulRequestHeader(CommonConstants.CLIENT_IP_ARG, clientIp);
+        }
         if(StringUtils.isEmpty(dnname)){
 //            throw new BaseException("请求头中无身份信息...");
             /**
