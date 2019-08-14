@@ -71,6 +71,74 @@ public class ZzGroupFileController {
         return pageInfo;
     }
 
+    /**
+     * 我上传的群文件查询
+     * @param groupId
+     * @return
+     */
+    //query 查询文件名称
+    @PostMapping("/groupFileListByMe")
+    public TableResultResponse<GroupFileVo> groupFileListByMe(@RequestParam("groupId")String groupId,
+                                                          @RequestParam("userId")String userId,
+                                                          @RequestParam(value = "page",defaultValue = "1")Integer page,
+                                                          @RequestParam(value = "size",defaultValue = "10")Integer size){
+
+        TableResultResponse<GroupFileVo> pageInfo = null;
+        Long total = 0L;
+        try {
+            pageInfo = this.zzGroupFileService.groupFileListByMe(groupId, userId, page, size);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//        T data, int pageSize, int pageNo, int totalPage, int totalCount
+        return pageInfo;
+    }
+
+    /**
+     * 群文件待审批查询
+     * @param groupId
+     * @return
+     */
+    //query 查询文件名称
+    @PostMapping("/groupFileListByOwner")
+    public TableResultResponse<GroupFileVo> groupFileListByOwner(@RequestParam("groupId")String groupId,
+                                                          @RequestParam("userId")String userId,
+                                                          @RequestParam(value = "page",defaultValue = "1")Integer page,
+                                                          @RequestParam(value = "size",defaultValue = "10")Integer size){
+        TableResultResponse<GroupFileVo> pageInfo = null;
+        Long total = 0L;
+        try {
+            pageInfo = this.zzGroupFileService.groupFileListByOwner(groupId, userId, page, size);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//        T data, int pageSize, int pageNo, int totalPage, int totalCount
+        return pageInfo;
+    }
+
+    /**
+     * 群文件通过审批查询
+     * @param groupId
+     * @return
+     */
+    //query 查询文件名称
+    @PostMapping("/groupFileListByPass")
+    public TableResultResponse<GroupFileVo> groupFileListByPass(@RequestParam("groupId")String groupId,
+                                                          @RequestParam("userId")String userId,
+                                                          @RequestParam(value = "page",defaultValue = "1")Integer page,
+                                                          @RequestParam(value = "size",defaultValue = "10")Integer size){
+
+        TableResultResponse<GroupFileVo> pageInfo = null;
+        Long total = 0L;
+        try {
+            pageInfo = this.zzGroupFileService.groupFileListByPass(groupId, userId, page, size);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//        T data, int pageSize, int pageNo, int totalPage, int totalCount
+        return pageInfo;
+    }
+
 
     /**
      * 文件删除(删记录)
