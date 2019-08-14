@@ -31,6 +31,7 @@
 <!--        <module>ace-config</module>-->
         <module>service-webservice</module>
         <module>service-dfsfile</module>
+        <module>service-tools</module>
     </modules>
     <packaging>pom</packaging>
     <developers>
