@@ -414,8 +414,12 @@ public class ZzFileManageController {
     *@date: 2019/8/2
     */
     @GetMapping("/getFilesStatus")
-    public String getFilesStatus(String fileIds){
+    public ObjectRestResponse getFilesStatus(String fileIds){
         ZzGroupFile zzGroupFile = zzGroupFileService.queryById(fileIds);
-        return zzGroupFile.getApproveFlg();
+        ObjectRestResponse obj = new ObjectRestResponse();
+        obj.rel(true);
+        obj.msg("200");
+        obj.data(zzGroupFile.getApproveFlg());
+        return obj;
     }
 }

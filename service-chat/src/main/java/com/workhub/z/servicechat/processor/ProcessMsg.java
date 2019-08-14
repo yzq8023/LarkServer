@@ -82,6 +82,7 @@ public class ProcessMsg extends AbstractMsgProcessor{
                 case MSG_EDIT_READ:
                     JSONObject temp = JSONObject.parseObject(message);
                     super.deleteNoReadMsg(temp.getString("sender"),temp.getString("reviser"));
+                    break;
                 default:
                     System.out.println("你说的什么鬼");
                     break;
