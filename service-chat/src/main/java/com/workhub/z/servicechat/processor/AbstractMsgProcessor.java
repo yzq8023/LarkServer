@@ -1,5 +1,6 @@
 package com.workhub.z.servicechat.processor;
 
+import com.alibaba.fastjson.JSON;
 import com.workhub.z.servicechat.VO.MsgAnswerVO;
 import com.workhub.z.servicechat.entity.ZzDictionaryWords;
 import com.workhub.z.servicechat.entity.ZzMessageInfo;
@@ -8,6 +9,7 @@ import com.workhub.z.servicechat.server.IworkServerConfig;
 import com.workhub.z.servicechat.service.ZzDictionaryWordsService;
 import com.workhub.z.servicechat.service.ZzMessageInfoService;
 import com.workhub.z.servicechat.service.ZzMsgReadRelationService;
+import org.nutz.json.Json;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tio.core.ChannelContext;
@@ -106,11 +108,12 @@ public class AbstractMsgProcessor {
     public void msgAnswer(String msg,String nId,ChannelContext channelContext) throws Exception {
         MsgAnswerVO msgAnswerVO = new MsgAnswerVO();
         msgAnswerVO.setCode(MSG_ANSWER);
-        msgAnswerVO.setContactId((String)getJsonStringKeyValue(msg,"toId"));
+        msgAnswerVO.setContactId((String)getJsonStringKeyValue(msg,"data.toId"));
         msgAnswerVO.setnId(nId);
-        msgAnswerVO.setoId((String)getJsonStringKeyValue(msg,"id"));
+        msgAnswerVO.setoId((String)getJsonStringKeyValue(msg,"data.id"));
         msgAnswerVO.setStatus(SUCCESS_ANSWER);
-        Tio.sendToUser(channelContext.getGroupContext(),(String)getJsonStringKeyValue(msg,"fromId"),this.getWsResponse(msgAnswerVO.toString()));
+//        System.out.println((String)getJsonStringKeyValue(msg,"data.fromId"));
+        Tio.sendToUser(channelContext.getGroupContext(),(String)getJsonStringKeyValue(msg,"data.fromId"),this.getWsResponse(JSON.toJSONString(msgAnswerVO)));
     }
 
 }

@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.tio.core.ChannelContext;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -304,7 +305,7 @@ public class ZzGroupController  {
      * 解散本研讨组
      */
     @GetMapping("dissolve")
-    public ObjectRestResponse dissolve(@RequestParam("groupId") String groupId) {
+    public ObjectRestResponse dissolve(@RequestParam("groupId") String groupId,ChannelContext channelContext) {
         zzGroupService.dissolveGroup(groupId);
         return new ObjectRestResponse().rel(true).msg("研讨组已解散...");
     }
@@ -322,7 +323,7 @@ public class ZzGroupController  {
      * 添加研讨组成员
      */
     @GetMapping("addMember")
-    public ObjectRestResponse addMember(@RequestParam("groupId") String groupId, @RequestParam("userIds") String userIds) {
+    public ObjectRestResponse addMember(@RequestParam("groupId") String groupId, @RequestParam("userIds") String userIds,ChannelContext channelContext) {
         zzGroupService.addMember(groupId, userIds);
         return new ObjectRestResponse().rel(true).msg("成功添加组成员");
     }
