@@ -18,7 +18,7 @@ public class ToolTree implements Serializable {
     private Date updateTime;
     private String updator;
     private String orderBy;
-
+    private String isDelete;
     public String getId() {
         return id;
     }
@@ -81,5 +81,13 @@ public class ToolTree implements Serializable {
 
     public void setOrderBy(String orderBy) {
         this.orderBy = orderBy;
+    }
+
+    public String getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(String isDelete) {
+        this.isDelete = isDelete;
     }
 }

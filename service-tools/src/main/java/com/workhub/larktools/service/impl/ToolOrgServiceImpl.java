@@ -1,11 +1,14 @@
 package com.workhub.larktools.service.impl;
 
 import com.github.hollykunge.security.api.vo.user.UserInfo;
+import com.github.hollykunge.security.common.msg.ListRestResponse;
 import com.github.hollykunge.security.common.util.UUIDUtils;
 import com.workhub.larktools.dao.ToolOrgDao;
+import com.workhub.larktools.entity.ToolTree;
 import com.workhub.larktools.feign.IUserService;
 import com.workhub.larktools.service.ToolOrgService;
 import com.workhub.larktools.tool.CommonUtil;
+import com.workhub.larktools.vo.ToolTreeVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -13,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 //import com.workhub.larktools.feign.IUserService;
@@ -54,5 +58,27 @@ public class ToolOrgServiceImpl implements ToolOrgService {
 
 
         return this.toolOrgDao.add(param);
+    }
+    public  int update(Map param){
+        return this.toolOrgDao.update(param);
+    }
+    public  int updateTreeNodeParent(Map param){
+        return this.toolOrgDao.updateTreeNodeParent(param);
+    }
+    @Transactional
+    public  int delete(Map param){
+        ToolTree node = this.toolOrgDao.querySingleNode(param);
+        //如果是根节点，删除树和组织结构关联信息
+        if(node!=null && node.getPid().equals("-1")){
+            Map newparams = new HashMap();
+            newparams.put("treeId",param.get("id"));
+            newparams.put("userId",param.get("userId"));
+            this.toolOrgDao.deleteTreeOrg(newparams);
+        }
+        return this.toolOrgDao.deleteNode(param);
+    }
+    public  ListRestResponse<ToolTreeVo> query(Map param){
+        List<ToolTreeVo> dataList = this.toolOrgDao.query(param);
+        return   new ListRestResponse("200",dataList.size(),dataList);
     }
 }
