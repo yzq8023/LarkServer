@@ -140,10 +140,92 @@ public class ZzGroupFileServiceImpl implements ZzGroupFileService {
      * @throws Exception
      */
     @Override
-    public TableResultResponse<GroupFileVo> groupFileList(String id,String query, int page, int size) throws Exception {
+    public TableResultResponse<GroupFileVo> groupFileList(String id,String userId,String query, int page, int size) throws Exception {
         if (StringUtil.isEmpty(id)) throw new NullPointerException("id is null");
         PageHelper.startPage(page, size);
-        List<GroupFileVo> dataList =this.zzGroupFileDao.groupFileList(id,query);
+        List<GroupFileVo> dataList =this.zzGroupFileDao.groupFileList(id,userId,query);
+        //null的String类型属性转换空字符串
+        common.putVoNullStringToEmptyString(dataList);
+        PageInfo<GroupFileVo> pageInfo = new PageInfo<>(dataList);
+        TableResultResponse<GroupFileVo> res = new TableResultResponse<GroupFileVo>(
+                pageInfo.getPageSize(),
+                pageInfo.getPageNum(),
+                pageInfo.getPages(),
+                pageInfo.getTotal(),
+                pageInfo.getList()
+        );
+        return res;
+    }
+
+
+    /**
+     * 查询群内我上传文件信息
+     * @param groupId
+     * @param page
+     * @param size
+     * @param userId
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public TableResultResponse<GroupFileVo> groupFileListByMe(String groupId,String userId, int page, int size) throws Exception {
+        if (StringUtil.isEmpty(groupId)) throw new NullPointerException("id is null");
+        PageHelper.startPage(page, size);
+        List<GroupFileVo> dataList =this.zzGroupFileDao.groupFileListByMe(groupId,userId);
+        //null的String类型属性转换空字符串
+        common.putVoNullStringToEmptyString(dataList);
+        PageInfo<GroupFileVo> pageInfo = new PageInfo<>(dataList);
+        TableResultResponse<GroupFileVo> res = new TableResultResponse<GroupFileVo>(
+                pageInfo.getPageSize(),
+                pageInfo.getPageNum(),
+                pageInfo.getPages(),
+                pageInfo.getTotal(),
+                pageInfo.getList()
+        );
+        return res;
+    }
+
+    /**
+     * 查询群内待审批文件信息
+     * @param groupId
+     * @param page
+     * @param size
+     * @param userId
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public TableResultResponse<GroupFileVo> groupFileListByOwner(String groupId,String userId, int page, int size) throws Exception {
+        if (StringUtil.isEmpty(groupId)) throw new NullPointerException("id is null");
+        PageHelper.startPage(page, size);
+        List<GroupFileVo> dataList =this.zzGroupFileDao.groupFileListByOwner(groupId,userId);
+        //null的String类型属性转换空字符串
+        common.putVoNullStringToEmptyString(dataList);
+        PageInfo<GroupFileVo> pageInfo = new PageInfo<>(dataList);
+        TableResultResponse<GroupFileVo> res = new TableResultResponse<GroupFileVo>(
+                pageInfo.getPageSize(),
+                pageInfo.getPageNum(),
+                pageInfo.getPages(),
+                pageInfo.getTotal(),
+                pageInfo.getList()
+        );
+        return res;
+    }
+
+    /**
+     * 查询群内通过审批文件信息
+     * @param groupId
+     * @param page
+     * @param size
+     * @param userId
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public TableResultResponse<GroupFileVo> groupFileListByPass(String groupId,String userId, int page, int size) throws Exception {
+        if (StringUtil.isEmpty(groupId)) throw new NullPointerException("id is null");
+        PageHelper.startPage(page, size);
+        List<GroupFileVo> dataList =this.zzGroupFileDao.groupFileListByPass(groupId);
         //null的String类型属性转换空字符串
         common.putVoNullStringToEmptyString(dataList);
         PageInfo<GroupFileVo> pageInfo = new PageInfo<>(dataList);
@@ -258,8 +340,24 @@ public class ZzGroupFileServiceImpl implements ZzGroupFileService {
         );
         return res;
     }
-    //设置文件审计标记 fileId 、approveFlg
-    public int setFileApproveFLg(Map<String,String> param) throws Exception{
-        return this.zzGroupFileDao.setFileApproveFLg(param);
+    //设置文件审计标记 参数格式fileId,approveFlg;fileId,approveFlg;fileId,approveFlg;fileId,approveFlg
+    //组内分割用逗号，第一个表示文件id，第二个表示审计标记；组间分割用分号
+    //例如 adcssdsf,1;dsadgeggsd,0;13353ddeww,1 表示传递了三个文件，分别把它们审计标记改成通过，不通过，通过
+
+    public int setFileApproveFLg(String files,String userId) throws Exception{
+        List<Map<String,String>> params = new ArrayList<>();
+        List<String> fileArr = common.stringToList(files,";");
+        for(String temp:fileArr){
+            String[] fileParam = temp.split(",",-1);
+            if(fileParam[0]==null||fileParam[0].equals("")){
+                continue;
+            }
+            Map<String,String> singleFile = new HashMap<>();
+            singleFile.put("fileId",fileParam[0]);
+            singleFile.put("approveFlg",(fileParam[1]==null||fileParam[1].equals(""))?"1":fileParam[1]);
+            singleFile.put("updator",userId);
+            params.add(singleFile);
+        }
+        return this.zzGroupFileDao.setFileApproveFLg(params);
     }
 }

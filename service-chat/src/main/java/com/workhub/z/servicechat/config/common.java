@@ -553,4 +553,37 @@ public class common {
         }
         return iscross;
     }
+    //String to List 同时去重复
+    public static List<String>  stringToList(String str){
+        return stringToList(str,",",true);
+    }
+    //String to List 同时去重复
+    public static List<String>  stringToList(String str,String markFlg){
+        return stringToList(str,markFlg,true);
+    }
+    //String to List 同时去重复
+    public static List<String>  stringToList(String str,boolean clearMul){
+        return stringToList(str,",",clearMul);
+    }
+    //String to List 同时去重复 str 待处理字符串；markFlg 分隔符；clearMul是否去重复
+    public static List<String>  stringToList(String str,String markFlg , boolean clearMul){
+        List<String> res = new ArrayList<>();
+        String[] arr = str.split(markFlg);
+        if(arr!=null && arr.length>0){
+
+           for(String temp : arr){
+               if (clearMul){
+                   if(res.contains(temp)){
+                       continue;
+                   }else{
+                       res.add(temp);
+                   }
+               }else {
+                   res.add(temp);
+               }
+
+           }
+        }
+        return res;
+    }
 }

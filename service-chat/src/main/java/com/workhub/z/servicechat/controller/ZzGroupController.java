@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.tio.core.ChannelContext;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -54,6 +55,7 @@ public class ZzGroupController  {
 
     @Resource
     private ZzGroupMsgService groupMsgService;
+
     @Resource
     private ZzMessageInfoService messageInfoService;
 
@@ -275,6 +277,7 @@ public class ZzGroupController  {
             vo.setOrgId(userTemp.getOrgCode());
             vo.setOrgName(userTemp.getOrgName());
             vo.setAvatar(userTemp.getAvatar());
+            //ToDo 群成员是否在线需要完善
             vo.setOnline("1");
             dataList.add(vo);
         }
@@ -302,9 +305,9 @@ public class ZzGroupController  {
      * 解散本研讨组
      */
     @GetMapping("dissolve")
-    public ObjectRestResponse dissolve(@RequestParam("groupId") String groupId) {
+    public ObjectRestResponse dissolve(@RequestParam("groupId") String groupId,ChannelContext channelContext) {
         zzGroupService.dissolveGroup(groupId);
-        return new ObjectRestResponse().rel(true).msg("研讨组已解散");
+        return new ObjectRestResponse().rel(true).msg("研讨组已解散...");
     }
 
     /**
@@ -313,15 +316,15 @@ public class ZzGroupController  {
     @GetMapping("removeMember")
     public ObjectRestResponse removeMember(@RequestParam("groupId") String groupId, @RequestParam("userId") String userId) {
         zzGroupService.removeMember(groupId, userId);
-        return new ObjectRestResponse().rel(true).msg("研讨组已解散");
+        return new ObjectRestResponse().rel(true).msg("成功移除组成员");
     }
 
     /**
      * 添加研讨组成员
      */
     @GetMapping("addMember")
-    public ObjectRestResponse addMember(@RequestParam("groupId") String groupId, @RequestParam("userIds") String userIds) {
+    public ObjectRestResponse addMember(@RequestParam("groupId") String groupId, @RequestParam("userIds") String userIds,ChannelContext channelContext) {
         zzGroupService.addMember(groupId, userIds);
-        return new ObjectRestResponse().rel(true).msg("研讨组已解散");
+        return new ObjectRestResponse().rel(true).msg("成功添加组成员");
     }
 }

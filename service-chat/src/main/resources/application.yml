@@ -28,7 +28,7 @@ spring:
     url: jdbc:oracle:thin:@10.11.24.136:1521:arltr
     username: workhub_iwork
   rabbitmq:
-    host: 127.0.0.1
+    host: 10.11.24.136
     port: 5672
     username: hollykunge
     password: 123456
@@ -48,8 +48,9 @@ spring:
         min-idle: 50
         max-active: 500
         max-wait: 200s
-    host: 127.0.0.1
+    host: 10.11.24.138
     timeout: 3000s
+    password: 123456
 #处理无用附件的定时任务时间
 #每天凌晨两点
 #deal_unused_file_job_cron: 0 0 2 * * ?
@@ -69,6 +70,16 @@ logging:
 #文件上传配置（用户级别）
 #文件上传目录（最后要有斜杠）
 file_save_path_group: C:/file-management-center/upload/group/
+
+#增加ribbon超时连接
+ribbon:
+  eureka:
+    enabled: true
+  ReadTimeout: 30000
+  ConnectTimeout: 30000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 1
+  OkToRetryOnAllOperations: false
 
 feign:
   okhttp:
