@@ -77,6 +77,23 @@ public class ToolOrgServiceImpl implements ToolOrgService {
         }
         return this.toolOrgDao.deleteNode(param);
     }
+    /**
+    * @MethodName: queryCurrentUserTree
+     * @Description: 获取当前用户的树结构
+     * @Param: []
+     * @Return: com.github.hollykunge.security.common.msg.ListRestResponse<com.workhub.larktools.vo.ToolTreeVo>
+     * @Author: zhuqz
+     * @Date: 2019/8/15
+    **/
+    public  ListRestResponse<ToolTreeVo> queryCurrentUserTree(String userId){
+        UserInfo userInfo = this.iUserService.info(userId);
+        if(userInfo==null){
+            return  null;
+        }
+        List<ToolTreeVo> dataList = this.toolOrgDao.queryCurrentUserTree(userInfo.getOrgCode());
+        return   new ListRestResponse("200",dataList.size(),dataList);
+    }
+
     public  ListRestResponse<ToolTreeVo> query(Map param){
         List<ToolTreeVo> dataList = this.toolOrgDao.query(param);
         return   new ListRestResponse("200",dataList.size(),dataList);

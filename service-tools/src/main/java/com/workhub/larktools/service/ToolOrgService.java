@@ -10,5 +10,6 @@ public interface ToolOrgService {
     int update(Map param);
     int updateTreeNodeParent(Map param);
     int delete(Map param);
+    ListRestResponse<ToolTreeVo> queryCurrentUserTree(String userId);
     ListRestResponse<ToolTreeVo> query(Map param);
 }
