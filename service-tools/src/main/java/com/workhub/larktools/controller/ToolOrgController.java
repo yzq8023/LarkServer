@@ -107,6 +107,19 @@ public class ToolOrgController {
         return res;
     }
     /**
+    * @MethodName: queryCurrentUserTree
+     * @Description: 获取当前登录用户端树结构
+     * @Param: [params]
+     * @Return: com.github.hollykunge.security.common.msg.ListRestResponse<com.workhub.larktools.vo.ToolTreeVo>
+     * @Author: admin
+     * @Date: 2019/8/15
+    **/
+    @GetMapping("/queryCurrentUserTree")
+    public ListRestResponse<ToolTreeVo> queryCurrentUserTree() throws Exception{
+        String userId = CommonUtil.nulToEmptyString(httpServletRequest.getHeader("userId"));
+        return  this.toolOrgService.queryCurrentUserTree(userId);
+    }
+    /**
      * @MethodName: query
      * @Description: 查询整个树结构
      * @Param: [params]id树节点id

@@ -81,4 +81,14 @@ public interface ToolOrgDao extends Mapper<ToolTree> {
      * @Date: 2019/8/13
      **/
     ToolTree querySingleNode(@Param("params") Map param);
+    /**
+     * @MethodName: queryCurrentUserTree
+     * @Description: 根据用户的组织id查询树
+     * @Param: [param] orgId
+     * @Return: 树结构
+     * @Author: zhuqz
+     * @Date: 2019/8/13
+     **/
+    List<ToolTreeVo> queryCurrentUserTree(@Param("orgId") String orgId);
+
 }

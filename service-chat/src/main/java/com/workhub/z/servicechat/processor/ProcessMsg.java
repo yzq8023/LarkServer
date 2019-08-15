@@ -5,8 +5,6 @@ import com.workhub.z.servicechat.config.RandomId;
 import com.workhub.z.servicechat.config.common;
 import com.workhub.z.servicechat.entity.ZzUploadFile;
 import com.workhub.z.servicechat.service.ZzGroupFileService;
-import com.workhub.z.servicechat.service.ZzGroupService;
-import com.workhub.z.servicechat.service.ZzUserGroupService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +54,12 @@ public class ProcessMsg extends AbstractMsgProcessor{
                     zzUploadFile.setUserName(common.nulToEmptyString(common.getJsonStringKeyValue(message,"username")));
                     zzUploadFile.setReceiverName(common.nulToEmptyString(common.nulToEmptyString(common.getJsonStringKeyValue(message,"toName"))));//接收人姓名
                     zzUploadFile.setSuccessFlg("1");//是否发送成功
+                    zzUploadFile.setApproveFlg("0");//默认都是审批不通过
+                    if(zzUploadFile.getIsGroup().equals("1")){
+                        if(zzUploadFile.getLevels().equals("30")){//如果是非密文件
+                            zzUploadFile.setApproveFlg("1");//直接审批通过
+                        }
+                    }
                     zzGroupFileService.fileRecord(zzUploadFile);
                 }
             } catch (Exception e) {
