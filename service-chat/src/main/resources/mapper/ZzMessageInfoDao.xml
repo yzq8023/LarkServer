@@ -212,11 +212,12 @@
                     )
         order by mes.createtime desc
     </select>
-    <select id="queryAllMessagePrivate" resultType="Map">
+    <select id="queryAllMessagePrivate" resultType="java.util.Map">
         select content,to_char(createtime, 'yyyy-mm-dd HH24:MI:SS') sendtime
         from zz_message_info
         where 1 = 1
         and type = 'USER'
+        and levels = '30'
         and content like '%"type":1,%'
         <if test="params.timeEnd != null and params.timeEnd != ''">
             and to_char(createtime, 'yyyy-mm-dd') &lt;= #{params.timeEnd}
@@ -239,11 +240,12 @@
         order by createtime desc
     </select>
 
-    <select id="queryAllMessageGroup" resultType="Map">
+    <select id="queryAllMessageGroup" resultType="java.util.Map">
         select content,to_char(createtime, 'yyyy-mm-dd HH24:MI:SS') sendtime
         from zz_message_info
         where 1 = 1
         and type = 'GROUP'
+        and levels = '30'
         and content like '%"type":1,%'
         <if test="params.timeEnd != null and params.timeEnd != ''">
             and to_char(createtime, 'yyyy-mm-dd') &lt;= #{params.timeEnd}
