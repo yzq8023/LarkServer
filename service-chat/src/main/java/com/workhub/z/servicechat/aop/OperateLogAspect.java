@@ -35,10 +35,7 @@ public class OperateLogAspect {
             "&& !execution(public * com.workhub.z.servicechat.service.impl.ZzPrivateMsgServiceImpl.*(..)) " +
             "&& !execution(public * com.workhub.z.servicechat.service.impl.ZzGroupMsgServiceImpl.*(..))" +
             "&& !execution(public * com.workhub.z.servicechat.service.impl.ZzMessageInfoServiceImpl.*(..)) " +
-            "&& !execution(public * com.workhub.z.servicechat.service.impl.ZzAtServiceImpl.*(..)) " +
-            "&& !execution(public * com.workhub.z.servicechat.service.impl.ZzGroupServiceImpl.queryGroupListByUserId(..)) " +
-            "&& !execution(public * com.workhub.z.servicechat.service.impl.ZzGroupServiceImpl.queryGroupUserIdListByGroupId(..)) " +
-            "&& !execution(public * com.workhub.z.servicechat.service.impl.ZzMsgReadRelationServiceImpl.*(..)) "
+            "&& !execution(public * com.workhub.z.servicechat.service.impl.ZzAtServiceImpl.*(..)) "
     )
 
     public void operateLogAspect(){}
@@ -47,11 +44,15 @@ public class OperateLogAspect {
     @Around(value = "operateLogAspect()")
     public Object logAround (ProceedingJoinPoint joinPoint) throws Throwable {
         // 接收到请求，记录请求内容
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = attributes.getRequest();
         boolean isSocket = false;//是否socket日志
-        if(request==null){//socket无法获取request
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if(attributes==null){//socket无法获取request
             isSocket = true;
+        }
+        HttpServletRequest request = null;
+
+        if(!isSocket){//socket无法获取request
+            request = attributes.getRequest();
         }
         ZzChatLog zzChatLog = new ZzChatLog();
         zzChatLog.setId(RandomId.getUUID());
