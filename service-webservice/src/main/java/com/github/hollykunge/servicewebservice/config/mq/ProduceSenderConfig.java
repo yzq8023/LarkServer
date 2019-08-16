@@ -31,7 +31,8 @@ public class ProduceSenderConfig {
         CorrelationData correlationData = new CorrelationData(ids);
         String json = JSONArray.toJSONString(orgList);
         Message message = MessageBuilder.withBody(json.getBytes())
-                .setContentType(MessageProperties.CONTENT_TYPE_JSON).setContentEncoding("utf-8")
+                .setContentType(MessageProperties.CONTENT_TYPE_JSON)
+//                .setContentEncoding("utf-8")
                 .build();
         orgRabbitTemplate.convertAndSend(CommonConstants.WERSERVICE_ADMIN_USERANDORG_EXCHANGE,CommonConstants.ADMINORG_ROTEING_KEY,message,correlationData);
         log.info("org消息发送至admin:" + orgList.toString());
@@ -41,7 +42,8 @@ public class ProduceSenderConfig {
         CorrelationData correlationData = new CorrelationData(ids);
         String json = JSONArray.toJSONString(userList);
         Message message = MessageBuilder.withBody(json.getBytes())
-                .setContentType(MessageProperties.CONTENT_TYPE_JSON).setContentEncoding("utf-8")
+                .setContentType(MessageProperties.CONTENT_TYPE_JSON)
+//                .setContentEncoding("utf-8")
                 .build();
         userRabbitTemplate.convertAndSend(CommonConstants.WERSERVICE_ADMIN_USERANDORG_EXCHANGE,CommonConstants.ADMINUSER_ROTEING_KEY,message,correlationData);
         log.info("user消息发送至admin:" + userList.toString());
