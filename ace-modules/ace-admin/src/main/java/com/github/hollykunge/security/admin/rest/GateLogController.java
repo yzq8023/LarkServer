@@ -60,7 +60,6 @@ public class GateLogController extends BaseController<GateLogBiz,GateLog> {
         userPidlist.add("3");
 //        Log.debug(userName+SYSTEM_USER+LOG_USER+SECURITY_USER);
         Log.debug("用户姓名" +request.getHeader("userName")+"用户身份证"+request.getHeader("dnname"));
-        System.out.println(userName+SYSTEM_USER+LOG_USER+SECURITY_USER);
         System.out.println("用户姓名" +request.getHeader("userName")+"用户身份证"+request.getHeader("dnname"));
         if (userName.equals(LOG_USER))
         {
@@ -73,11 +72,11 @@ public class GateLogController extends BaseController<GateLogBiz,GateLog> {
         }
         else if (pid.equals("3"))
         {
-            params.put("pId",userPidlist);
+            params.put("pid",userPidlist);
             return baseBiz.selectByQueryM( new Query(params),"log");
         }
         else if(pid.equals("4")){
-            params.put("pId",userPidlist);
+            params.put("pid",userPidlist);
             return baseBiz.selectByQueryM( new Query(params),"Security");
         }
 
