@@ -1,5 +1,6 @@
 package com.github.hollykunge.security.admin.rest;
 
+import com.esotericsoftware.minlog.Log;
 import com.github.hollykunge.security.common.util.ExportExcelUtils;
 import com.github.hollykunge.security.common.util.Query;
 import com.github.pagehelper.PageHelper;
@@ -40,24 +41,57 @@ public class GateLogController extends BaseController<GateLogBiz,GateLog> {
     @Override
     public TableResultResponse<GateLog> page(@RequestParam Map<String, Object> params){
         String userName = null;
+        String pid = null;
         try {
-            userName = URLDecoder.decode(request.getHeader("userName"), "UTF-8");
+            if (request.getHeader("userName").isEmpty()||request.getHeader("userName").equals("")){
+                userName = URLDecoder.decode(request.getHeader("userName"), "UTF-8");
+            }
+            if (request.getHeader("dnname").isEmpty()||request.getHeader("dnname").equals("")){
+                pid = URLDecoder.decode(request.getHeader("dnname"), "UTF-8");
+            }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         List<String> userlist = new ArrayList();
         userlist.add(SYSTEM_USER);
         userlist.add(LOG_USER);
-        switch (userName){
-            case LOG_USER:
-                params.put("crtName",userlist);
-                return baseBiz.selectByQueryM( new Query(params),"log");
-            case SECURITY_USER:
-                params.put("crtName",userlist);
-                return baseBiz.selectByQueryM( new Query(params),"Security");
-            default:
-                return baseBiz.selectByQuery( new Query(params));
+        List<String> userPidlist = new ArrayList();
+        userPidlist.add("2");
+        userPidlist.add("3");
+//        Log.debug(userName+SYSTEM_USER+LOG_USER+SECURITY_USER);
+        Log.debug("用户姓名" +request.getHeader("userName")+"用户身份证"+request.getHeader("dnname"));
+        System.out.println(userName+SYSTEM_USER+LOG_USER+SECURITY_USER);
+        System.out.println("用户姓名" +request.getHeader("userName")+"用户身份证"+request.getHeader("dnname"));
+        if (userName.equals(LOG_USER))
+        {
+            params.put("crtName",userlist);
+            return baseBiz.selectByQueryM( new Query(params),"log");
         }
+        else if(userName.equals(SECURITY_USER)){
+            params.put("crtName",userlist);
+            return baseBiz.selectByQueryM( new Query(params),"Security");
+        }
+        else if (pid.equals("3"))
+        {
+            params.put("pId",userPidlist);
+            return baseBiz.selectByQueryM( new Query(params),"log");
+        }
+        else if(pid.equals("4")){
+            params.put("pId",userPidlist);
+            return baseBiz.selectByQueryM( new Query(params),"Security");
+        }
+
+//        switch (userName){
+//            case LOG_USER:
+//                params.put("crtName",userlist);
+//                return baseBiz.selectByQueryM( new Query(params),"log");
+//            case SECURITY_USER:
+//                params.put("crtName",userlist);
+//                return baseBiz.selectByQueryM( new Query(params),"Security");
+//            default:
+//                return baseBiz.selectByQuery( new Query(params));
+//        }
+        return null;
 
     }
     @GetMapping("/export")
