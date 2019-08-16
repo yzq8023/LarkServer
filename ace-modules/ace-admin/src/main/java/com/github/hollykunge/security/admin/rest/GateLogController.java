@@ -73,11 +73,11 @@ public class GateLogController extends BaseController<GateLogBiz,GateLog> {
         }
         else if (pid.equals("3"))
         {
-            params.put("pId",userPidlist);
+            params.put("pid",userPidlist);
             return baseBiz.selectByQueryM( new Query(params),"log");
         }
         else if(pid.equals("4")){
-            params.put("pId",userPidlist);
+            params.put("pid",userPidlist);
             return baseBiz.selectByQueryM( new Query(params),"Security");
         }
 
