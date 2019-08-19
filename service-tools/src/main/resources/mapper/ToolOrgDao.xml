@@ -91,6 +91,22 @@
         connect by t.pid = prior t.id
         order by level,t.order_by ,t.create_time desc
     </select>
+    <!-- 根据组织code查询树结构  -->
+    <select id="queryCurrentUserTree" resultMap="toolTreeVo">
+        select t.id,
+               t.node_name,
+               level,
+               t.pid,
+               to_char(t.create_time, 'yyyy-mm-dd hh24:mi:ss') as create_time,
+               order_by,
+               connect_by_isleaf is_leaf
+          from tool_tree t
+          where t.is_delete = '0'
+         start with t.id in (select org.tree_id from tool_tree_org org where org.is_delete = '0' and org.org_code=#{orgId})
+        connect by t.pid = prior t.id
+        order by level,t.order_by ,t.create_time desc
+    </select>
+
     <!-- 查询单个节点  -->
     <select id="querySingleNode" resultMap="toolTree">
         select *

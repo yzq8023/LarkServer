@@ -295,7 +295,8 @@
         update ZZ_GROUP_FILE
         set SEND_FLG='1',
         LEVELS=#{param.levels},
-        GROUP_ID=#{param.receiver}
+        GROUP_ID=#{param.receiver},
+        APPROVE_FLG=#{param.approveFlg}
         where FILE_ID=#{param.fileId}
     </update>
     <insert id="fileRecord">
