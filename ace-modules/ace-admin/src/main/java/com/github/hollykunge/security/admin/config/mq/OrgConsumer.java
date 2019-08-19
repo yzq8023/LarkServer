@@ -46,7 +46,6 @@ public class OrgConsumer {
     public void handleMessage(Message message, @Headers Map<String, Object> headers, Channel channel) throws Exception {
 
         String msg = new String(message.getBody(), "gb2312");
-        log.info(msg);
         List<AdminOrgVO> adminOrgVOS = JSONArray.parseArray(msg, AdminOrgVO.class);
         List<AdminOrgVO> setMqOrgVO = new ArrayList<AdminOrgVO>();
         for (AdminOrgVO adminOrgVO :
