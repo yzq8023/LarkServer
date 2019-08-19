@@ -45,7 +45,7 @@ public class OrgConsumer {
     @RabbitListener(queues = CommonConstants.ADMINORG_QUEUE_NAME, containerFactory = "rabbitListenerContainerFactory")
     public void handleMessage(Message message, @Headers Map<String, Object> headers, Channel channel) throws Exception {
 
-        String msg = new String(message.getBody());
+        String msg = new String(message.getBody(), "gb2312");
         List<AdminOrgVO> adminOrgVOS = JSONArray.parseArray(msg, AdminOrgVO.class);
         List<AdminOrgVO> setMqOrgVO = new ArrayList<AdminOrgVO>();
         for (AdminOrgVO adminOrgVO :
